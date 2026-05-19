@@ -1672,9 +1672,7 @@ and <code>nextTick</code> do not.</p>
 </tr>
 </tbody>
 </table>
-<p>The server can only process one action per tick, so per-frame action
-firing is wasted work that the spoofer will throttle. Move action
-logic to <code>onTick</code> and use <code>pulse</code> only for checks.</p>
+<p>Move action logic to <code>onTick</code> and use <code>pulse</code> only for checks.</p>
 <h3 id="nexttick-onnext"><code>nextTick</code> / <code>onNext</code><a class="headerlink" href="#nexttick-onnext" title="Permanent link">&para;</a></h3>
 <p><code>nextTick</code> (Lua) / <code>tickScheduler-&gt;onNext</code> (C++) bridge fast pulse
 detection to server-aligned firing: evaluate a condition inside <code>pulse</code>
