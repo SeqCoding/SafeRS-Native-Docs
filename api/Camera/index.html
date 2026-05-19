@@ -1658,9 +1658,6 @@
 
 <h1 id="camera">Camera<a class="headerlink" href="#camera" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Camera</code> / <code>srs.camera</code></p>
-<p>DreamBot-style camera surface. Mirrors the public methods of
-<code>org.dreambot.api.methods.input.Camera</code> so ported scripts run with
-minimal change.</p>
 <div class="admonition note">
 <p class="admonition-title">Plugin facade vs. GameSDK Camera</p>
 <p>This is the plugin-API facade for camera control. Internal engine
@@ -1825,11 +1822,8 @@ keyboard for the script.</p>
 </tbody>
 </table>
 <div class="admonition note">
-<p class="admonition-title">Zoom derivation</p>
-<p>OSRS native client has no user-zoom int (RE'd 2026-05-18 — camera
-distance derives from pitch + viewport). <code>getZoom</code> returns a value
-normalized to DreamBot's documented [330, 3000] range so ported
-scripts compute against a stable scale.</p>
+<p class="admonition-title">Zoom Impl</p>
+<p>Zoom is currently broken</p>
 </div>
 <h2 id="rotation-default-memory-write">Rotation (default — memory write)<a class="headerlink" href="#rotation-default-memory-write" title="Permanent link">&para;</a></h2>
 <p>All <code>rotateTo*</code> calls clamp pitch to <code>[128, 383]</code> and mask yaw with
