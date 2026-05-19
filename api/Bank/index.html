@@ -583,10 +583,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#container-reads" class="md-nav__link">
+  <a href="#named-locations-walking" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Container reads
+        Named locations + walking
       
     </span>
   </a>
@@ -598,6 +598,61 @@
     <span class="md-ellipsis">
       
         Open / close
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-reads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container reads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scrolling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-item-withdraw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-item withdraw
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-item-deposit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-item deposit
       
     </span>
   </a>
@@ -620,6 +675,17 @@
     <span class="md-ellipsis">
       
         Withdraw quantity preset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#engineering-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engineering primitives
       
     </span>
   </a>
@@ -1475,10 +1541,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#container-reads" class="md-nav__link">
+  <a href="#named-locations-walking" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Container reads
+        Named locations + walking
       
     </span>
   </a>
@@ -1490,6 +1556,61 @@
     <span class="md-ellipsis">
       
         Open / close
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-reads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container reads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scrolling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-item-withdraw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-item withdraw
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-item-deposit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-item deposit
       
     </span>
   </a>
@@ -1512,6 +1633,17 @@
     <span class="md-ellipsis">
       
         Withdraw quantity preset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#engineering-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Engineering primitives
       
     </span>
   </a>
@@ -1548,8 +1680,10 @@
 
 <h1 id="bank">Bank<a class="headerlink" href="#bank" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Bank</code> / <code>srs.bank</code></p>
-<p>Bank UI (widget group 12) state + container reads + bulk deposit /
-withdraw-quantity preset. Constants lifted from RuneLite.</p>
+<p>Full bank workflow: navigation to named banks, opening / closing, tab
+switching, per-item withdraw + deposit, bulk deposit, scrolling, and the
+"1 / 5 / 10 / X / All" quantity preset. Constants lifted from RuneLite
+(<code>InterfaceID.Bankmain</code>, <code>VarbitID.BANK_*</code>, <code>ScriptID.UPDATE_SCROLLBAR</code>).</p>
 <h2 id="state">State<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1577,6 +1711,176 @@ withdraw-quantity preset. Constants lifted from RuneLite.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="named-locations-walking">Named locations + walking<a class="headerlink" href="#named-locations-walking" title="Permanent link">&para;</a></h2>
+<p>Bank locations are exposed as <code>Bank::BankLocation</code> (enum) / Lua int
+constants on <code>srs.bank.*</code>. Tile picks land on a banker booth row so
+<code>Bank::open</code>'s ~6-tile NPC scan succeeds on arrival.</p>
+<table>
+<thead>
+<tr>
+<th>C++ enum value</th>
+<th>Lua const</th>
+<th>Tile (x, y, plane)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BankLocation::VarrockEast</code></td>
+<td><code>srs.bank.VarrockEast</code></td>
+<td>(3253, 3420, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::VarrockWest</code></td>
+<td><code>srs.bank.VarrockWest</code></td>
+<td>(3185, 3437, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::GrandExchange</code></td>
+<td><code>srs.bank.GrandExchange</code></td>
+<td>(3164, 3489, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::Edgeville</code></td>
+<td><code>srs.bank.Edgeville</code></td>
+<td>(3094, 3491, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::Draynor</code></td>
+<td><code>srs.bank.Draynor</code></td>
+<td>(3092, 3243, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::Falador_East</code></td>
+<td><code>srs.bank.Falador_East</code></td>
+<td>(3013, 3355, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::Falador_West</code></td>
+<td><code>srs.bank.Falador_West</code></td>
+<td>(2946, 3368, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::SeersVillage</code></td>
+<td><code>srs.bank.SeersVillage</code></td>
+<td>(2725, 3493, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::Camelot</code></td>
+<td><code>srs.bank.Camelot</code></td>
+<td>(2725, 3493, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::Catherby</code></td>
+<td><code>srs.bank.Catherby</code></td>
+<td>(2808, 3441, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::ArdougneNorth</code></td>
+<td><code>srs.bank.ArdougneNorth</code></td>
+<td>(2616, 3332, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::ArdougneSouth</code></td>
+<td><code>srs.bank.ArdougneSouth</code></td>
+<td>(2655, 3283, 0)</td>
+</tr>
+<tr>
+<td><code>BankLocation::LumbridgeUpstairs</code></td>
+<td><code>srs.bank.LumbridgeUpstairs</code></td>
+<td>(3208, 3220, 2)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lookup info</td>
+<td><code>Bank::info(loc) → BankInfo{x,y,plane,name}</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Walk to bank</td>
+<td><code>Bank::walkTo(ctx, loc) → bool</code></td>
+<td><code>srs.bank.walkTo(loc) → bool</code></td>
+</tr>
+<tr>
+<td>Nearest bank</td>
+<td><code>Bank::nearestBank(ctx) → optional&lt;BankLocation&gt;</code></td>
+<td><code>srs.bank.nearestBank() → int or nil</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>walkTo</code> returns <code>true</code> once the player is within 6 tiles (ready for
+<code>Bank::open</code>). Call once per tick — it handles the "already at" /
+"already walking" cases internally.</p>
+<p><code>nearestBank</code> is chebyshev distance over the enum tiles. It does <strong>not</strong>
+filter members-only / quest-locked banks.</p>
+<h2 id="open-close">Open / close<a class="headerlink" href="#open-close" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Open via nearest banker</td>
+<td><code>Bank::open(ctx) → bool</code></td>
+<td><code>srs.bank.open() → bool</code></td>
+</tr>
+<tr>
+<td>Close (X-button)</td>
+<td><code>Bank::close(ctx) → bool</code></td>
+<td><code>srs.bank.close() → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>open</code> matches bankers by name list (Banker / Banker Tutor / Sigli the
+Huntsman / Astley / Felkrash) and routes through <code>Interact::perform</code> on
+the nearest match. Returns false if no banker is in scene.</p>
+<h2 id="tabs">Tabs<a class="headerlink" href="#tabs" title="Permanent link">&para;</a></h2>
+<p>The bank has 10 tabs: 0 = "All Items" (∞ icon), 1..9 = user-configurable.
+Current tab lives in varbit <code>BANK_CURRENTTAB</code> (4150). Most scrolling /
+per-item flows operate on the All Items view — <code>Bank::scrollToSlot</code>
+auto-switches to it if you're on another tab.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current tab</td>
+<td><code>Bank::currentTab(ctx) → int (0..9)</code></td>
+<td><code>srs.bank.currentTab() → int</code></td>
+</tr>
+<tr>
+<td>Open a specific tab</td>
+<td><code>Bank::openTab(ctx, idx) → bool</code></td>
+<td><code>srs.bank.openTab(idx) → bool</code></td>
+</tr>
+<tr>
+<td>Open All Items (∞)</td>
+<td><code>Bank::openMainTab(ctx) → bool</code></td>
+<td><code>srs.bank.openMainTab() → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p>Tab clicks route as CC_OP (slot 57) packets at widget <code>(12, 10)</code> with
+subSlot = <code>10 + tabIndex*4</code>, identifier = 1, itemId = 0xFFFF — matches
+real-player wire bytes captured 2026-05-19.</p>
 <h2 id="container-reads">Container reads<a class="headerlink" href="#container-reads" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1614,12 +1918,18 @@ withdraw-quantity preset. Constants lifted from RuneLite.</p>
 </tr>
 </tbody>
 </table>
+<p>Name lookups match the item's in-game display name (case- and whitespace-insensitive substring). <code>contains("prayer potion")</code> matches all 4 dose variants because every dose string contains it.</p>
 <div class="admonition note">
 <p class="admonition-title">Bank slot index</p>
 <p>The <code>slot</code> field on items returned from <code>Bank::all</code> is the bank
-slot index (0..hundreds), <strong>not</strong> a backpack 0..27 index.</p>
+container index (0..hundreds), <strong>not</strong> a backpack 0..27 index. The
+container is laid out in tab order — slots <code>[0..N1-1]</code> for tab 1,
+then <code>[N1..N1+N2-1]</code> for tab 2, ..., then untabbed (tab 0) at the
+end. The "All Items" visual view renders untabbed FIRST with
+partial-row breaks between sections — <code>scrollToSlot</code> does the
+visual-row math for you.</p>
 </div>
-<h2 id="open-close">Open / close<a class="headerlink" href="#open-close" title="Permanent link">&para;</a></h2>
+<h2 id="scrolling">Scrolling<a class="headerlink" href="#scrolling" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1630,20 +1940,110 @@ slot index (0..hundreds), <strong>not</strong> a backpack 0..27 index.</p>
 </thead>
 <tbody>
 <tr>
-<td>Open via nearest banker</td>
-<td><code>Bank::open(ctx) → bool</code></td>
-<td><code>srs.bank.open() → bool</code></td>
+<td>Scroll a slot into view</td>
+<td><code>Bank::scrollToSlot(ctx, slotIndex) → bool</code></td>
+<td><code>srs.bank.scrollToSlot(slot) → bool</code></td>
 </tr>
 <tr>
-<td>Close (Escape key)</td>
-<td><code>Bank::close(ctx) → bool</code></td>
-<td><code>srs.bank.close() → bool</code></td>
+<td>Mouse-wheel notches</td>
+<td><code>Bank::scrollWheel(ctx, notches) → bool</code></td>
+<td><code>srs.bank.scrollWheel(n) → bool</code></td>
+</tr>
+<tr>
+<td>Raw widget scrollY read</td>
+<td>—</td>
+<td><code>srs.widget.scrollY(g, c) → int or nil</code></td>
+</tr>
+<tr>
+<td>Raw widget scrollY write</td>
+<td>—</td>
+<td><code>srs.widget.setScrollY(g, c, y) → bool</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>open</code> matches bankers by name list (Banker / Banker Tutor / Sigli the
-Huntsman / Astley / Felkrash) and routes through <code>Npc::interact</code> on the
-nearest match. Returns false if no banker is in scene.</p>
+<p><code>scrollToSlot</code> is the high-level helper: it auto-switches to the All
+Items tab if needed, computes the visual row accounting for tab
+partial-row breaks, and fires Microbot's trio (<code>setVarcInt(BANK_SCROLL,
+y)</code> + <code>runScript(UPDATE_SCROLLBAR, ...)</code> + direct <code>IfType+0x88</code>
+write). Returns <code>true</code> if the row is already in view (no-op).</p>
+<p><code>scrollWheel</code> synthesizes WM_MOUSEWHEEL events over the bank center —
+positive notches scroll DOWN, negative UP. Blocks ~16 ms per notch.</p>
+<h2 id="per-item-withdraw">Per-item withdraw<a class="headerlink" href="#per-item-withdraw" title="Permanent link">&para;</a></h2>
+<p>All variants route a CC_OP (slot 57) packet at widget <code>(12, 12)</code> —
+Bankmain.ITEMS — with <code>subSlot = bank slot index</code>, <code>itemId</code> from the
+container at that slot, and the menu identifier per quantity. The
+caller picks the item by id or by name (case-insensitive partial
+match).</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Withdraw 1</td>
+<td><code>Bank::withdrawOne(ctx, id\|name) → bool</code></td>
+<td><code>srs.bank.withdrawOne(id\|name) → bool</code></td>
+</tr>
+<tr>
+<td>Withdraw N</td>
+<td><code>Bank::withdrawX(ctx, id\|name, amount) → bool</code></td>
+<td><code>srs.bank.withdrawX(id\|name, amount) → bool</code></td>
+</tr>
+<tr>
+<td>Withdraw all</td>
+<td><code>Bank::withdrawAll(ctx, id\|name) → bool</code></td>
+<td><code>srs.bank.withdrawAll(id\|name) → bool</code></td>
+</tr>
+<tr>
+<td>Withdraw all-but-one</td>
+<td><code>Bank::withdrawAllButOne(ctx, id\|name) → bool</code></td>
+<td><code>srs.bank.withdrawAllButOne(id\|name) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Identifier mapping</strong> (matches Microbot's <code>Rs2Bank.invokeMenu</code>):
+- 2 = Withdraw-1, 3 = Withdraw-5, 4 = Withdraw-10
+- 7 = Withdraw-All, 8 = Withdraw-All-but-1</p>
+<p><strong><code>withdrawX</code> amount semantics:</strong>
+- <code>{1, 5, 10}</code> → single packet via fixed identifier (instant)
+- Any other amount → opens the Withdraw-X prompt (identifier 6),
+  blocks ~1 second while <code>InputManager::typeString</code> types each digit
+  and <code>keyTap(VK_RETURN)</code> submits</p>
+<p>Placeholders (id present, quantity 0) are skipped — <code>withdrawX</code> finds
+the first slot with a positive quantity.</p>
+<h2 id="per-item-deposit">Per-item deposit<a class="headerlink" href="#per-item-deposit" title="Permanent link">&para;</a></h2>
+<p>The deposit-side inventory inside the bank window is widget <code>(15, 3)</code>
+(Bankside.ITEMS). Clicks route as CC_OP (slot 57) at that widget with
+<code>subSlot = backpack slot (0..27)</code>, <code>itemId</code> from the backpack cache,
+and Deposit-All identifier 7.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deposit all except (by id)</td>
+<td><code>Bank::depositAllExcept(ctx, vector&lt;int32_t&gt;) → bool</code></td>
+<td><code>srs.bank.depositAllExcept({ids...}) → bool</code></td>
+</tr>
+<tr>
+<td>Deposit all except (by name)</td>
+<td><code>Bank::depositAllExcept(ctx, vector&lt;string&gt;) → bool</code></td>
+<td><code>srs.bank.depositAllExcept({"names"...}) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>depositAllExcept</code> fires Deposit-All on the FIRST non-kept inventory
+slot per call and returns <code>false</code>; the script polls each tick until
+only kept items remain, at which point it returns <code>true</code>.</p>
 <h2 id="bulk-deposit">Bulk deposit<a class="headerlink" href="#bulk-deposit" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1727,17 +2127,60 @@ button row at the bottom of the bank UI.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="engineering-primitives">Engineering primitives<a class="headerlink" href="#engineering-primitives" title="Permanent link">&para;</a></h2>
+<p>For the rare script that needs low-level CS2 access (e.g. invoking a
+script the bank API doesn't expose), the engine helpers used internally
+are also bound at <code>srs.engine</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Lua</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>srs.engine.setVarcInt(varcId, value)</code></td>
+<td>RuneLite <code>setVarcIntValue</code> equivalent</td>
+</tr>
+<tr>
+<td><code>srs.engine.getVarcInt(varcId)</code></td>
+<td>Read a VarClient int</td>
+</tr>
+<tr>
+<td><code>srs.engine.runScript(scriptId, ...args)</code></td>
+<td>Invoke a CS2 script with int args</td>
+</tr>
+<tr>
+<td><code>srs.widget.address(g, c)</code></td>
+<td>Raw IfType pointer for diagnostics</td>
+</tr>
+<tr>
+<td><code>srs.engine.releaseInputBlock()</code></td>
+<td>Diagnostic only — lifts the script's input gate so the user can interact mid-script</td>
+</tr>
+<tr>
+<td><code>srs.engine.takeInputBlock()</code></td>
+<td>Restore the input gate</td>
+</tr>
+</tbody>
+</table>
 <h2 id="deferred-not-yet-shipped">Deferred (not yet shipped)<a class="headerlink" href="#deferred-not-yet-shipped" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Per-item withdraw</strong> — bank slot widgets are dynamic children
-  with scrollable layout; the rect-from-grid math doesn't apply.
-  Needs per-slot widget rect resolved through the IfRender capture by
-  index.</li>
-<li><strong>Per-item deposit</strong> — same dynamic-child problem on the inventory
-  side when the bank is open ("Deposit-1" etc.).</li>
-<li><strong>Bank PIN entry</strong> — keypad slots A..J are randomized per session;
-  each click target's digit must be read from the rendered widget at
-  click time.</li>
+<li><strong><code>withdrawAndEquip</code></strong> / <strong><code>withdrawDeficit</code></strong> — convenience over
+  what we have. <code>withdrawDeficit(item, target)</code> would compute
+  <code>target - currentInvCount</code> and call <code>withdrawX</code> with the result.</li>
+<li><strong>Predicate-based withdraw / deposit</strong> — <code>withdrawWhere(filter, n)</code>.
+  Needs a callable type bound to both C++ and Lua.</li>
+<li><strong>Per-item deposit variants</strong> (<code>depositOne</code>, <code>depositX</code>, <code>depositAll</code>
+  by id) — same widget + identifier mapping as <code>depositAllExcept</code> but
+  targeting one slot. Trivial follow-up.</li>
+<li><strong>Bank PIN auto-entry</strong> — keypad slots A..J are randomized per
+  session; each click target's displayed digit must be read from the
+  rendered widget at click time.</li>
+<li><strong>Bank data cache</strong> — event-driven mirror so <code>Bank::all</code> /
+  <code>contains</code> / <code>count</code> work while the bank is closed.</li>
+<li><strong>Bank search box</strong> — type a query into the bank's search field.</li>
 </ul>
 
 

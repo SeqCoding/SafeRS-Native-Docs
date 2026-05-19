@@ -1311,6 +1311,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#transports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1431,6 +1442,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#transports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1505,10 +1527,42 @@ intent) when <code>ctx.pathExecutor</code> isn't wired (pre-init host).</p>
 <li><code>useTransports = false</code> forces a walk-only path (free accounts,
   missing quest reqs).</li>
 <li>Plane is read from the player's current plane — there's no
-  cross-plane API surface yet.</li>
+  cross-plane API surface yet. Cross-plane navigation still works
+  via transports (manholes, ladders, stairs) — the destination
+  argument is a world tile, the executor will route through whichever
+  plane transitions are needed.</li>
 <li><code>hasArrived</code> returns <code>true</code> when no walk has been issued yet (or
   the executor got as close as <code>PathExecutor::CLOSE_ENOUGH</code> allows).</li>
 </ul>
+<h2 id="transports">Transports<a class="headerlink" href="#transports" title="Permanent link">&para;</a></h2>
+<p>When <code>useTransports = true</code> (default), the executor invokes doors,
+agility shortcuts, fairy rings, manholes, ladders, etc. automatically
+as the path crosses them. Scripts don't need to detect or fire these
+themselves — call <code>to(x, y)</code> with a destination on the far side of a
+transport and the walker handles the rest.</p>
+<p>A few things the executor handles internally so you don't have to:</p>
+<ul>
+<li><strong>Live object-tile resolution.</strong> The Skretzo/Microbot <code>transports.tsv</code>
+  origin column is the player STAND tile, not the LocType's actual tile
+  (the object often sits 1 tile off). The walker queries the live scene
+  by object id at fire time and uses the engine-visible tile, so OPLOC1
+  packets aren't silently rejected.</li>
+<li><strong>Multi-step transport chains.</strong> Manholes (Open → Climb-down),
+  levers-then-doors, and similar two-row TSV entries with the same
+  origin+destination are emitted as a chain. The walker advances
+  through them automatically when it detects the live object's id
+  has flipped to the next step's expected value.</li>
+<li><strong>Recalculation on completion.</strong> After any transport (success or
+  timeout), the executor re-plans from the player's actual landing
+  tile — cross-plane edges where the engine commits the plane swap
+  before settling the tile coord are handled, as are partial failures.</li>
+</ul>
+<p>If you have a character that genuinely can't use a transport on the
+shortest route (missing agility level, no Lunar spellbook, etc.) and
+the pathfinder still tries to route through it, pass <code>useTransports
+= false</code> to force a walk-only path. Future work will plumb live
+skill/quest filters into <code>PathfinderConfig</code> so this gate isn't
+needed.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">

@@ -1515,6 +1515,7 @@ local player.</p>
 </tr>
 </tbody>
 </table>
+<p>Name lookups match the item's in-game display name (case- and whitespace-insensitive substring). <code>byName("bones")</code> returns all bone variants on the floor.</p>
 <p><code>loot</code> / <code>lootByName</code> route through <code>Interact</code> (always-on spoof +
 DoAction) using <code>MenuAction::GROUND_ITEM_FIRST_OPTION</code> (opcode 20).
 Returns <code>false</code> if no match, the tile isn't visible on screen, or the
