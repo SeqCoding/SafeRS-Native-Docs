@@ -1542,6 +1542,41 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td><code>Player::idleTicks(ctx) → int32</code></td>
 <td><code>srs.player.idleTicks() → int</code></td>
 </tr>
+<tr>
+<td>Boosted skill level</td>
+<td><code>Player::skillLevel(ctx, Skill) → int32</code></td>
+<td><code>srs.player.skillLevel(Skill) → int</code></td>
+</tr>
+<tr>
+<td>Base skill level</td>
+<td><code>Player::skillBase(ctx, Skill) → int32</code></td>
+<td><code>srs.player.skillBase(Skill) → int</code></td>
+</tr>
+<tr>
+<td>Skill XP</td>
+<td><code>Player::skillXp(ctx, Skill) → int32</code></td>
+<td><code>srs.player.skillXp(Skill) → int</code></td>
+</tr>
+<tr>
+<td>Current hitpoints</td>
+<td><code>Player::hitpoints(ctx) → int32</code></td>
+<td><code>srs.player.hitpoints() → int</code></td>
+</tr>
+<tr>
+<td>Max hitpoints</td>
+<td><code>Player::maxHitpoints(ctx) → int32</code></td>
+<td><code>srs.player.maxHitpoints() → int</code></td>
+</tr>
+<tr>
+<td>Current prayer points</td>
+<td><code>Player::prayer(ctx) → int32</code></td>
+<td><code>srs.player.prayer() → int</code></td>
+</tr>
+<tr>
+<td>Prayer level (base)</td>
+<td><code>Player::maxPrayer(ctx) → int32</code></td>
+<td><code>srs.player.maxPrayer() → int</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="detail">Detail<a class="headerlink" href="#detail" title="Permanent link">&para;</a></h3>
@@ -1560,6 +1595,14 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <li><strong><code>idleTicks</code></strong> — number of consecutive game ticks the player's
   active animation has been -1. Reset to 0 the moment any non-idle
   animation plays. Maintained by <code>GameData::onTick</code>.</li>
+<li><strong><code>skillLevel</code> / <code>skillBase</code> / <code>skillXp</code></strong> — read the boosted level,
+  base level, or total XP for any skill. Returns 0 when GS isn't
+  resolved.</li>
+<li><strong><code>hitpoints</code> / <code>maxHitpoints</code></strong> — shorthand for
+  <code>skillLevel(Skill::Hitpoints)</code> / <code>skillBase(Skill::Hitpoints)</code>.</li>
+<li><strong><code>prayer</code> / <code>maxPrayer</code></strong> — current prayer points (live, drains with
+  use) + base prayer level. Mirrors <code>srs::api::Prayer::points</code> /
+  <code>Prayer::level</code>.</li>
 </ul>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>WorldTile</code></strong> (read-only):</p>
@@ -1585,6 +1628,12 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 </tr>
 </tbody>
 </table>
+<p><strong><code>Skill</code></strong> enum — values match the engine's skill table:</p>
+<p><code>Attack</code>, <code>Defence</code>, <code>Strength</code>, <code>Hitpoints</code>, <code>Ranged</code>, <code>Prayer</code>,
+<code>Magic</code>, <code>Cooking</code>, <code>Woodcutting</code>, <code>Fletching</code>, <code>Fishing</code>, <code>Firemaking</code>,
+<code>Crafting</code>, <code>Smithing</code>, <code>Mining</code>, <code>Herblore</code>, <code>Agility</code>, <code>Thieving</code>,
+<code>Slayer</code>, <code>Farming</code>, <code>Runecraft</code>, <code>Hunter</code>, <code>Construction</code>, <code>Sailing</code>.</p>
+<p>In Lua: <code>Skill.Hitpoints</code>, etc. (registered at Lua global scope, same as <code>CameraMode</code>).</p>
 
 
 

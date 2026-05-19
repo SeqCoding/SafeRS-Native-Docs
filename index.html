@@ -397,6 +397,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#nexttick-onnext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nextTick / onNext
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1518,6 +1529,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#nexttick-onnext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nextTick / onNext
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1617,14 +1639,17 @@ fail-closed (if it can't inject, the action drops).</p>
 </span></code></pre></div>
 <p>Plugins export <code>CreateScript</code> / <code>DestroyScript</code> functions and ship as
 DLLs in the <code>plugins/</code> directory.</p>
+<p>To defer a one-shot to the next game tick from inside <code>pulse</code>, call
+<code>ctx.tickScheduler-&gt;onNext(fn)</code> — see <a href="#nexttick-onnext"><code>nextTick</code> / <code>onNext</code></a> below.</p>
 <h3 id="lua-callback-registration">Lua — callback registration<a class="headerlink" href="#lua-callback-registration" title="Permanent link">&para;</a></h3>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">pulse</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span><span class="w">   </span><span class="c1">-- per frame</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span><span class="w">  </span><span class="c1">-- per game tick</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span><span class="w">    </span><span class="c1">-- per frame, inside ImGui frame</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">pulse</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span><span class="w">     </span><span class="c1">-- per frame</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span><span class="w">    </span><span class="c1">-- per game tick</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">script</span><span class="p">.</span><span class="nf">nextTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span><span class="w">  </span><span class="c1">-- one-shot, fires on the next tick only</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span><span class="w">      </span><span class="c1">-- per frame, inside ImGui frame</span>
 </span></code></pre></div>
 <p><code>script.draw</code> is the only callback where <code>srs.draw.*</code> calls are valid
-— the host guarantees a live ImGui frame for it. <code>pulse</code> and <code>onTick</code>
-do not.</p>
+— the host guarantees a live ImGui frame for it. <code>pulse</code>, <code>onTick</code>,
+and <code>nextTick</code> do not.</p>
 <h3 id="pulse-vs-ontick"><code>pulse</code> vs <code>onTick</code><a class="headerlink" href="#pulse-vs-ontick" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -1650,52 +1675,137 @@ do not.</p>
 <p>The server can only process one action per tick, so per-frame action
 firing is wasted work that the spoofer will throttle. Move action
 logic to <code>onTick</code> and use <code>pulse</code> only for checks.</p>
+<h3 id="nexttick-onnext"><code>nextTick</code> / <code>onNext</code><a class="headerlink" href="#nexttick-onnext" title="Permanent link">&para;</a></h3>
+<p><code>nextTick</code> (Lua) / <code>tickScheduler-&gt;onNext</code> (C++) bridge fast pulse
+detection to server-aligned firing: evaluate a condition inside <code>pulse</code>
+(~60Hz so you don't miss a short-lived window), and when it fires,
+queue a closure to run on the <strong>very next game tick</strong>, then drop it.</p>
+<p>Each call queues exactly one callback. The host drains the queue once
+per tick <strong>after</strong> the regular <code>onTick</code> fan, so steady-state tick
+handlers always run first. A re-queue from inside a deferred callback
+lands on the next tick, not this one.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cadence</td>
+<td>one-shot — fires on the next tick rollover, then dropped</td>
+</tr>
+<tr>
+<td>Order</td>
+<td>after <code>onTick</code>, before the BreakManager scheduler</td>
+</tr>
+<tr>
+<td>Pause / disable</td>
+<td>owning plugin/script disabled or paused before drain → callback is silently dropped (same gating as <code>pulse</code> / <code>onTick</code>)</td>
+</tr>
+<tr>
+<td>Re-entrancy</td>
+<td><code>onNext</code> called from inside a deferred fn schedules for the NEXT tick</td>
+</tr>
+<tr>
+<td>ImGui frame</td>
+<td>not guaranteed — call <code>srs.draw.*</code> only from <code>script.draw</code> / <code>onDraw</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to use each:</strong></p>
+<ul>
+<li>Always firing every tick? Use <code>onTick</code>.</li>
+<li>Need fast detection (a projectile, a hitsplat, a tick-aligned animation start) but the action itself must land aligned to the server? Detect in <code>pulse</code>, defer with <code>nextTick</code> / <code>onNext</code>.</li>
+<li>Per-frame visual work? Use <code>pulse</code> (state) + <code>draw</code> / <code>onDraw</code> (paint).</li>
+</ul>
+<h4 id="lua-example">Lua example<a class="headerlink" href="#lua-example" title="Permanent link">&para;</a></h4>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Detect the &quot;tick-eat&quot; window in pulse (need ≥60Hz to catch it),</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1">-- then fire the eat exactly once on the next tick.</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">pulse</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">pending</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">hpPercent</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">35</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="nv">pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="nv">script</span><span class="p">.</span><span class="nf">nextTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interact</span><span class="p">(</span><span class="s2">&quot;Shark&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Eat&quot;</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">            </span><span class="nv">pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="kr">end</span><span class="p">)</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
+<h4 id="c-example">C++ example<a class="headerlink" href="#c-example" title="Permanent link">&para;</a></h4>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">pulse</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_pending</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">hpPercent</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">35</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="n">m_pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">        </span><span class="n">ctx</span><span class="p">.</span><span class="n">tickScheduler</span><span class="o">-&gt;</span><span class="n">onNext</span><span class="p">([</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">]{</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">            </span><span class="n">Inventory</span><span class="o">::</span><span class="n">interact</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Shark&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Eat&quot;</span><span class="p">);</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">            </span><span class="n">m_pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="p">});</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>The <code>m_pending</code> flag prevents queueing the same action 36× across the
+~600 ms tick window before <code>nextTick</code> actually fires. Without it,
+every <code>pulse</code> between detection and the next tick would push another
+copy of the closure onto the queue.</p>
+<div class="admonition warning">
+<p class="admonition-title">Lifetime of captured pointers</p>
+<p><code>ScriptContext</code> references stay valid for the lifetime of the
+enabled plugin/script. Capturing <code>ctx</code> by reference in a closure
+is safe because the deferred callback is dropped if the owning
+plugin/script is disabled before the drain runs. Do <strong>not</strong>
+capture raw pointers into game-state nodes that may rotate
+between ticks (e.g. an <code>NpcInstance*</code> from <code>EntityQuery</code>) —
+re-resolve from <code>ctx</code> inside the closure body.</p>
+</div>
 <h2 id="example-minimal-lua-script">Example — minimal Lua script<a class="headerlink" href="#example-minimal-lua-script" title="Permanent link">&para;</a></h2>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Drop every shrimp the moment it lands in the backpack.</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="s2">&quot;Shrimps&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Shrimps&quot;</span><span class="p">)</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="kr">end</span><span class="p">)</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">beginAnchoredOverlay</span><span class="p">(</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">            </span><span class="s2">&quot;##fish-hud&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">162</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">Corner</span><span class="p">.</span><span class="py">TopRight</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">text</span><span class="p">(</span><span class="s2">&quot;Caught: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s2">&quot;Shrimps&quot;</span><span class="p">))</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">endOverlay</span><span class="p">()</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="kr">end</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">-- Drop every shrimp the moment it lands in the backpack.</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="s2">&quot;Shrimps&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Shrimps&quot;</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="kr">end</span><span class="p">)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">beginAnchoredOverlay</span><span class="p">(</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">            </span><span class="s2">&quot;##fish-hud&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">162</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">Corner</span><span class="p">.</span><span class="py">TopRight</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">text</span><span class="p">(</span><span class="s2">&quot;Caught: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s2">&quot;Shrimps&quot;</span><span class="p">))</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">endOverlay</span><span class="p">()</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="example-minimal-c-plugin">Example — minimal C++ plugin<a class="headerlink" href="#example-minimal-c-plugin" title="Permanent link">&para;</a></h2>
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">FishingPlugin</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IScript</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">public</span><span class="o">:</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Fishing&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">onLoad</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onUnload</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onTick</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Inventory</span><span class="o">::</span><span class="n">contains</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Shrimps&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">            </span><span class="n">Inventory</span><span class="o">::</span><span class="n">dropAll</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Shrimps&quot;</span><span class="p">);</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onDraw</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Drawing</span><span class="o">::</span><span class="n">beginAnchoredOverlay</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;##fish-hud&quot;</span><span class="p">,</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">                                          </span><span class="mi">162</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">                                          </span><span class="n">Drawing</span><span class="o">::</span><span class="n">Corner</span><span class="o">::</span><span class="n">TopRight</span><span class="p">,</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">                                          </span><span class="mi">-4</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">            </span><span class="n">Drawing</span><span class="o">::</span><span class="n">text</span><span class="p">(</span><span class="s">&quot;Caught: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">                </span><span class="n">Inventory</span><span class="o">::</span><span class="n">count</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;Shrimps&quot;</span><span class="p">))));</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">            </span><span class="n">Drawing</span><span class="o">::</span><span class="n">endOverlay</span><span class="p">();</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="p">};</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span><span class="w"> </span><span class="n">IScript</span><span class="o">*</span><span class="w"> </span><span class="n">CreateScript</span><span class="p">()</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">FishingPlugin</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">DestroyScript</span><span class="p">(</span><span class="n">IScript</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">delete</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">FishingPlugin</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IScript</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">public</span><span class="o">:</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Fishing&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">onLoad</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onUnload</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onTick</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Inventory</span><span class="o">::</span><span class="n">contains</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Shrimps&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">            </span><span class="n">Inventory</span><span class="o">::</span><span class="n">dropAll</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Shrimps&quot;</span><span class="p">);</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onDraw</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Drawing</span><span class="o">::</span><span class="n">beginAnchoredOverlay</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;##fish-hud&quot;</span><span class="p">,</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">                                          </span><span class="mi">162</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">                                          </span><span class="n">Drawing</span><span class="o">::</span><span class="n">Corner</span><span class="o">::</span><span class="n">TopRight</span><span class="p">,</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">                                          </span><span class="mi">-4</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">            </span><span class="n">Drawing</span><span class="o">::</span><span class="n">text</span><span class="p">(</span><span class="s">&quot;Caught: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">                </span><span class="n">Inventory</span><span class="o">::</span><span class="n">count</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;Shrimps&quot;</span><span class="p">))));</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">            </span><span class="n">Drawing</span><span class="o">::</span><span class="n">endOverlay</span><span class="p">();</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="p">};</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span><span class="w"> </span><span class="n">IScript</span><span class="o">*</span><span class="w"> </span><span class="n">CreateScript</span><span class="p">()</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">FishingPlugin</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">DestroyScript</span><span class="p">(</span><span class="n">IScript</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">delete</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="browse-the-api">Browse the API<a class="headerlink" href="#browse-the-api" title="Permanent link">&para;</a></h2>
 <p>Jump to a module from the sidebar, or start at the
