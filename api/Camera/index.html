@@ -10,11 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/World/">
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Camera/">
       
       
-        <link rel="prev" href="../Widget/">
+        <link rel="prev" href="../Breaks/">
       
+      
+        <link rel="next" href="../Cannon/">
       
       
         
@@ -25,7 +27,7 @@
     
     
       
-        <title>World - OSRSClient API</title>
+        <title>Camera - OSRSClient API</title>
       
     
     
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#world" class="md-skip">
+        <a href="#camera" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              World
+              Camera
             
           </span>
         </div>
@@ -563,10 +565,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Camera/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Camera
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -582,6 +611,147 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rotation-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotation modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-getters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State getters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rotation-default-memory-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotation (default — memory write)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mouse-rotation-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mouse-rotation family
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keyboard-rotation-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keyboard-rotation family
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zoom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zoom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helper-calculators-no-side-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helper calculators (no side effects)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#low-level-event-firing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Low-level event firing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-based-rotation-deferred-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event-based rotation (deferred execution)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1291,37 +1461,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    World
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../World/" class="md-nav__link">
         
   
   
@@ -1337,37 +1480,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Methods
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1407,10 +1519,120 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
+  <a href="#rotation-modes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Methods
+        Rotation modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-getters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State getters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rotation-default-memory-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotation (default — memory write)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mouse-rotation-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mouse-rotation family
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keyboard-rotation-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keyboard-rotation family
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zoom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zoom
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helper-calculators-no-side-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helper calculators (no side effects)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#low-level-event-firing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Low-level event firing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-based-rotation-deferred-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event-based rotation (deferred execution)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
       
     </span>
   </a>
@@ -1434,14 +1656,108 @@
 
 
 
-<h1 id="world">World<a class="headerlink" href="#world" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::World</code> / <code>srs.world</code></p>
-<p>Current world / server number.</p>
-<p>The world int (e.g. 302, 398) is stored in the GS struct at
-<code>GameSDK::Offsets::GlobalState::WorldId</code> (= 0x321C). This API just
-wraps <code>GameData::worldId()</code> so plugins / Lua can read it without
-touching memory directly.</p>
-<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<h1 id="camera">Camera<a class="headerlink" href="#camera" title="Permanent link">&para;</a></h1>
+<p><code>srs::api::Camera</code> / <code>srs.camera</code></p>
+<p>DreamBot-style camera surface. Mirrors the public methods of
+<code>org.dreambot.api.methods.input.Camera</code> so ported scripts run with
+minimal change.</p>
+<div class="admonition note">
+<p class="admonition-title">Plugin facade vs. GameSDK Camera</p>
+<p>This is the plugin-API facade for camera control. Internal engine
+access via <code>OSRSClient/GameSDK/Camera.h</code> (low-level state) is
+<em>not</em> part of the public API — use <code>srs::api::Camera</code> from plugins
+and scripts.</p>
+</div>
+<h2 id="rotation-modes">Rotation modes<a class="headerlink" href="#rotation-modes" title="Permanent link">&para;</a></h2>
+<p>Three "modes" are exposed via three method families:</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Mechanism</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rotateTo*</code></td>
+<td>Direct write to engine <code>TargetPitch</code> / <code>TargetYaw</code></td>
+<td>Instant, no smoothing. Cheap and reliable. <strong>Default.</strong></td>
+</tr>
+<tr>
+<td><code>keyboardRotateTo*</code></td>
+<td>Arrow-key holds through <code>InputManager</code></td>
+<td>Slower, human-looking. For antiban scenarios.</td>
+</tr>
+<tr>
+<td><code>mouseRotateTo*</code></td>
+<td>DreamBot uses scroll-wheel here</td>
+<td>OSRS scroll is bound to <strong>zoom</strong>, not yaw, so this falls back to the direct memory path on this client. Kept for source compatibility with ported scripts.</td>
+</tr>
+</tbody>
+</table>
+<p>Hold duration on <code>keyboardRotateTo*</code> is proportional to angle delta;
+capped at ~2.5 s per call so a runaway rotation doesn't lock the
+keyboard for the script.</p>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Lua const</th>
+<th>C++</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>—</td>
+<td><code>Camera::kLowestPitch</code></td>
+<td>128</td>
+<td>Lowest pitch (nearly horizontal)</td>
+</tr>
+<tr>
+<td>—</td>
+<td><code>Camera::kHighestPitch</code></td>
+<td>383</td>
+<td>Highest pitch (top-down)</td>
+</tr>
+<tr>
+<td>—</td>
+<td><code>Camera::kYawMod</code></td>
+<td>2048</td>
+<td>2048 units = 360°</td>
+</tr>
+</tbody>
+</table>
+<p><code>CameraMode</code> enum (registered at Lua global as <code>CameraMode.*</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Lua const</th>
+<th>C++</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CameraMode.MouseOrKeyboard</code></td>
+<td><code>Mode::MouseOrKeyboard</code></td>
+<td>Default — direct memory write</td>
+</tr>
+<tr>
+<td><code>CameraMode.MouseOnly</code></td>
+<td><code>Mode::MouseOnly</code></td>
+<td>Scroll / middle-drag (middle-drag is TODO)</td>
+</tr>
+<tr>
+<td><code>CameraMode.KeyboardOnly</code></td>
+<td><code>Mode::KeyboardOnly</code></td>
+<td>Arrow-key holds</td>
+</tr>
+</tbody>
+</table>
+<h2 id="state-getters">State getters<a class="headerlink" href="#state-getters" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1452,14 +1768,310 @@ touching memory directly.</p>
 </thead>
 <tbody>
 <tr>
-<td>Current world id</td>
-<td><code>World::getId(ctx) → int32</code></td>
-<td><code>srs.world.getId() → int</code></td>
+<td>Pitch</td>
+<td><code>Camera::getPitch(ctx) → int32</code></td>
+<td><code>srs.camera.getPitch() → int</code></td>
+</tr>
+<tr>
+<td>Yaw</td>
+<td><code>Camera::getYaw(ctx) → int32</code></td>
+<td><code>srs.camera.getYaw() → int</code></td>
+</tr>
+<tr>
+<td>Scene-fine X</td>
+<td><code>Camera::getX(ctx) → int32</code></td>
+<td><code>srs.camera.getX() → int</code></td>
+</tr>
+<tr>
+<td>Scene-fine Y (vertical)</td>
+<td><code>Camera::getY(ctx) → int32</code></td>
+<td><code>srs.camera.getY() → int</code></td>
+</tr>
+<tr>
+<td>Scene-fine Z</td>
+<td><code>Camera::getZ(ctx) → int32</code></td>
+<td><code>srs.camera.getZ() → int</code></td>
+</tr>
+<tr>
+<td>Current zoom (normalized to [330, 3000])</td>
+<td><code>Camera::getZoom(ctx) → int32</code></td>
+<td><code>srs.camera.getZoom() → int</code></td>
+</tr>
+<tr>
+<td>Min zoom</td>
+<td><code>Camera::getMinZoom(ctx) → int32</code></td>
+<td><code>srs.camera.getMinZoom() → int</code></td>
+</tr>
+<tr>
+<td>Max zoom</td>
+<td><code>Camera::getMaxZoom(ctx) → int32</code></td>
+<td><code>srs.camera.getMaxZoom() → int</code></td>
+</tr>
+<tr>
+<td>Lowest pitch constant</td>
+<td><code>Camera::getLowestPitch() → int32</code></td>
+<td><code>srs.camera.getLowestPitch() → int</code></td>
+</tr>
+<tr>
+<td>Current camera mode</td>
+<td><code>Camera::getCameraMode() → Mode</code></td>
+<td><code>srs.camera.getCameraMode() → CameraMode</code></td>
+</tr>
+<tr>
+<td>Set camera mode</td>
+<td><code>Camera::setCameraMode(Mode)</code></td>
+<td><code>srs.camera.setCameraMode(m)</code></td>
 </tr>
 </tbody>
 </table>
-<p>Returns <code>-1</code> if GS isn't resolved or the value is the pre-login
-sentinel.</p>
+<div class="admonition note">
+<p class="admonition-title">Zoom derivation</p>
+<p>OSRS native client has no user-zoom int (RE'd 2026-05-18 — camera
+distance derives from pitch + viewport). <code>getZoom</code> returns a value
+normalized to DreamBot's documented [330, 3000] range so ported
+scripts compute against a stable scale.</p>
+</div>
+<h2 id="rotation-default-memory-write">Rotation (default — memory write)<a class="headerlink" href="#rotation-default-memory-write" title="Permanent link">&para;</a></h2>
+<p>All <code>rotateTo*</code> calls clamp pitch to <code>[128, 383]</code> and mask yaw with
+<code>&amp; 0x7FF</code> before writing. Return <code>true</code> on a successful write,
+<code>false</code> if the camera state isn't resolved or the write faults.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Both axes</td>
+<td><code>Camera::rotateTo(ctx, yaw, pitch) → bool</code></td>
+<td><code>srs.camera.rotateTo(yaw, pitch) → bool</code></td>
+</tr>
+<tr>
+<td>Yaw only</td>
+<td><code>Camera::rotateToYaw(ctx, yaw) → bool</code></td>
+<td><code>srs.camera.rotateToYaw(yaw) → bool</code></td>
+</tr>
+<tr>
+<td>Pitch only</td>
+<td><code>Camera::rotateToPitch(ctx, pitch) → bool</code></td>
+<td><code>srs.camera.rotateToPitch(pitch) → bool</code></td>
+</tr>
+<tr>
+<td>Face a tile</td>
+<td><code>Camera::rotateToTile(ctx, tile) → bool</code></td>
+<td><code>srs.camera.rotateToTile(tile) → bool</code></td>
+</tr>
+<tr>
+<td>Face an entity</td>
+<td><code>Camera::rotateToEntity(ctx, target) → bool</code></td>
+<td><code>srs.camera.rotateToEntity(target) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p>Interrupt-condition overloads (C++): <code>rotateToTile</code> and
+<code>rotateToEntity</code> accept a <code>Predicate interrupt</code> polled between
+micro-steps. Return <code>true</code> from it to abort early.</p>
+<h2 id="mouse-rotation-family">Mouse-rotation family<a class="headerlink" href="#mouse-rotation-family" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mouseRotateTo, mouseRotateToYaw, mouseRotateToPitch,
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mouseRotateToTile, mouseRotateToEntity
+</span></code></pre></div>
+<p>Same signatures as the <code>rotateTo*</code> family. <strong>Falls back to the
+direct memory path on this client</strong> — OSRS scroll-wheel is mapped to
+zoom, not rotation, and a true scroll-rotate isn't available without
+middle-mouse-drag support (TODO).</p>
+<h2 id="keyboard-rotation-family">Keyboard-rotation family<a class="headerlink" href="#keyboard-rotation-family" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>keyboardRotateTo, keyboardRotateToYaw, keyboardRotateToPitch,
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>keyboardRotateToTile, keyboardRotateToEntity
+</span></code></pre></div>
+<p>Same signatures. Drives the game's arrow-key camera-rotate via
+<code>InputManager</code>. Slower, human-looking.</p>
+<h2 id="zoom">Zoom<a class="headerlink" href="#zoom" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Set zoom level</td>
+<td><code>Camera::setZoom(ctx, zoom) → bool</code></td>
+<td><code>srs.camera.setZoom(zoom) → bool</code></td>
+</tr>
+<tr>
+<td>Fire raw zoom event</td>
+<td><code>Camera::fireZoomEvent(ctx, zoom)</code></td>
+<td><code>srs.camera.fireZoomEvent(zoom)</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>setZoom</code> injects <code>WM_MOUSEWHEEL</code> events into the game's WndProc
+until live zoom matches <code>zoomLevel</code> within tolerance. Returns
+<code>false</code> if the wheel injector or camera state isn't ready, or if zoom
+didn't converge after ~30 wheel ticks.</p>
+<h2 id="helper-calculators-no-side-effects">Helper calculators (no side effects)<a class="headerlink" href="#helper-calculators-no-side-effects" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Yaw needed to face a tile</td>
+<td><code>Camera::getYawForTile(ctx, tile) → int32</code></td>
+<td><code>srs.camera.getYawForTile(tile) → int</code></td>
+</tr>
+<tr>
+<td>Yaw needed to face an entity</td>
+<td><code>Camera::getYawForEntity(ctx, target) → int32</code></td>
+<td><code>srs.camera.getYawForEntity(target) → int</code></td>
+</tr>
+<tr>
+<td>Pitch needed for a tile</td>
+<td><code>Camera::getPitchForTile(ctx, tile) → int32</code></td>
+<td><code>srs.camera.getPitchForTile(tile) → int</code></td>
+</tr>
+<tr>
+<td>Pitch needed for an entity</td>
+<td><code>Camera::getPitchForEntity(ctx, target) → int32</code></td>
+<td><code>srs.camera.getPitchForEntity(target) → int</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="low-level-event-firing">Low-level event firing<a class="headerlink" href="#low-level-event-firing" title="Permanent link">&para;</a></h2>
+<p>Direct, no clamping beyond what the engine itself enforces.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw pitch+yaw write</td>
+<td><code>Camera::firePitchAndYawEvent(ctx, pitch, yaw)</code></td>
+<td><code>srs.camera.firePitchAndYawEvent(pitch, yaw)</code></td>
+</tr>
+<tr>
+<td>Raw zoom write</td>
+<td><code>Camera::fireZoomEvent(ctx, zoom)</code></td>
+<td><code>srs.camera.fireZoomEvent(zoom)</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="event-based-rotation-deferred-execution">Event-based rotation (deferred execution)<a class="headerlink" href="#event-based-rotation-deferred-execution" title="Permanent link">&para;</a></h2>
+<p>DreamBot's <code>CameraEvent</code> holds a pending rotation that the caller
+executes later. Stash one and run it on a different tick.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build "rotate to yaw/pitch" event</td>
+<td><code>Camera::rotateToEvent(yaw, pitch) → Event</code></td>
+<td><code>srs.camera.rotateToEvent(yaw, pitch) → Event</code></td>
+</tr>
+<tr>
+<td>Yaw only</td>
+<td><code>Camera::rotateToYawEvent(yaw) → Event</code></td>
+<td><code>srs.camera.rotateToYawEvent(yaw) → Event</code></td>
+</tr>
+<tr>
+<td>Pitch only</td>
+<td><code>Camera::rotateToPitchEvent(pitch) → Event</code></td>
+<td><code>srs.camera.rotateToPitchEvent(pitch) → Event</code></td>
+</tr>
+<tr>
+<td>Face a tile</td>
+<td><code>Camera::rotateToTileEvent(ctx, tile) → Event</code></td>
+<td><code>srs.camera.rotateToTileEvent(tile) → Event</code></td>
+</tr>
+<tr>
+<td>Face an entity</td>
+<td><code>Camera::rotateToEntityEvent(ctx, target) → Event</code></td>
+<td><code>srs.camera.rotateToEntityEvent(target) → Event</code></td>
+</tr>
+<tr>
+<td>Execute a stored event</td>
+<td><code>event.execute(ctx) → bool</code></td>
+<td><code>event:execute() → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>Event</code></strong> fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>yaw</code></td>
+<td>int32</td>
+<td><code>-1</code> = leave this axis alone</td>
+</tr>
+<tr>
+<td><code>pitch</code></td>
+<td>int32</td>
+<td><code>-1</code> = leave this axis alone</td>
+</tr>
+<tr>
+<td><code>zoom</code></td>
+<td>int32</td>
+<td><code>-1</code> = leave this axis alone</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td><code>Mode</code></td>
+<td>Rotation mode</td>
+</tr>
+</tbody>
+</table>
+<p><code>execute</code> returns <code>true</code> if every set component succeeded; no-op if
+all axes are <code>-1</code>.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">entityQuery</span><span class="o">-&gt;</span><span class="n">nearestNpc</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">Camera</span><span class="o">::</span><span class="n">rotateToEntity</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">npc</span><span class="p">);</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="n">Camera</span><span class="o">::</span><span class="n">setZoom</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">1500</span><span class="p">);</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToEntity</span><span class="p">(</span><span class="nv">npc</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">setZoom</span><span class="p">(</span><span class="mi">1500</span><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kr">end</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1">-- Or build a deferred event and execute next tick:</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToYawEvent</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">pending</span><span class="p">:</span><span class="nf">execute</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
 
 
 

@@ -10,11 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/World/">
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Breaks/">
       
       
-        <link rel="prev" href="../Widget/">
+        <link rel="prev" href="../Bank/">
       
+      
+        <link rel="next" href="../Camera/">
       
       
         
@@ -25,7 +27,7 @@
     
     
       
-        <title>World - OSRSClient API</title>
+        <title>Breaks - OSRSClient API</title>
       
     
     
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#world" class="md-skip">
+        <a href="#breaks" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              World
+              Breaks
             
           </span>
         </div>
@@ -535,10 +537,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Breaks/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Breaks
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -554,6 +583,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State queries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break handshake
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enums" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enums
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-break-aware-fishing-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example — break-aware fishing script
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1291,37 +1417,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    World
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../World/" class="md-nav__link">
         
   
   
@@ -1337,37 +1436,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Methods
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1407,10 +1475,76 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
+  <a href="#lifecycle-control" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Methods
+        Lifecycle control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State queries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#break-handshake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Break handshake
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enums" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enums
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-break-aware-fishing-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example — break-aware fishing script
       
     </span>
   </a>
@@ -1434,14 +1568,25 @@
 
 
 
-<h1 id="world">World<a class="headerlink" href="#world" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::World</code> / <code>srs.world</code></p>
-<p>Current world / server number.</p>
-<p>The world int (e.g. 302, 398) is stored in the GS struct at
-<code>GameSDK::Offsets::GlobalState::WorldId</code> (= 0x321C). This API just
-wraps <code>GameData::worldId()</code> so plugins / Lua can read it without
-touching memory directly.</p>
-<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<h1 id="breaks">Breaks<a class="headerlink" href="#breaks" title="Permanent link">&para;</a></h1>
+<p><code>srs::api::Breaks</code> / <code>srs.breaks</code></p>
+<p>Script/plugin-facing surface for the BreakManager — schedule, observe,
+and react to break cycles (work → request → logout → idle → login →
+recover).</p>
+<div class="admonition warning">
+<p class="admonition-title">Credentials are sandboxed</p>
+<p>Scripts can <strong>not</strong> see or set credentials — those are owned by
+SafeRSClient's <code>AccountStore</code> and the DLL-internal <code>CredentialStore</code>.
+Scripts can only observe state, request/skip breaks, and subscribe
+to phase events.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Auto-pause / resume</p>
+<p>The Scheduler pauses scripts during a break; their <code>pulse</code> / <code>onTick</code>
+callbacks just stop firing. Scripts don't need to call <code>setPaused</code>
+on themselves.</p>
+</div>
+<h2 id="lifecycle-control">Lifecycle control<a class="headerlink" href="#lifecycle-control" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -1452,14 +1597,410 @@ touching memory directly.</p>
 </thead>
 <tbody>
 <tr>
-<td>Current world id</td>
-<td><code>World::getId(ctx) → int32</code></td>
-<td><code>srs.world.getId() → int</code></td>
+<td>Start the scheduler</td>
+<td><code>Breaks::start()</code></td>
+<td><code>srs.breaks.start()</code></td>
+</tr>
+<tr>
+<td>Stop the scheduler</td>
+<td><code>Breaks::stop()</code></td>
+<td><code>srs.breaks.stop()</code></td>
+</tr>
+<tr>
+<td>Request a break now (optional minutes; <code>-1</code> = profile-driven)</td>
+<td><code>Breaks::requestBreakNow(minutes=-1)</code></td>
+<td><code>srs.breaks.requestBreakNow(minutes?)</code></td>
+</tr>
+<tr>
+<td>Skip the next scheduled break (one-shot)</td>
+<td><code>Breaks::skipNextBreak()</code></td>
+<td><code>srs.breaks.skipNextBreak()</code></td>
+</tr>
+<tr>
+<td>Recover from a failed login cycle</td>
+<td><code>Breaks::resetFromFailed()</code></td>
+<td><code>srs.breaks.resetFromFailed()</code></td>
 </tr>
 </tbody>
 </table>
-<p>Returns <code>-1</code> if GS isn't resolved or the value is the pre-login
-sentinel.</p>
+<h2 id="state-queries">State queries<a class="headerlink" href="#state-queries" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current <code>Phase</code> enum</td>
+<td><code>Breaks::phase() → Phase</code></td>
+<td><code>srs.breaks.phase() → int</code></td>
+</tr>
+<tr>
+<td>Human-readable phase name</td>
+<td><code>Breaks::phaseName(p) → const char*</code></td>
+<td><code>srs.breaks.phaseName() → string</code></td>
+</tr>
+<tr>
+<td>Last login-failure reason</td>
+<td><code>Breaks::lastFailureReason() → FailureReason</code></td>
+<td><code>srs.breaks.lastFailureReason() → int</code></td>
+</tr>
+<tr>
+<td>Last failure name</td>
+<td><code>Breaks::failureName(r) → const char*</code></td>
+<td><code>srs.breaks.failureName() → string</code></td>
+</tr>
+<tr>
+<td>Seconds until next break</td>
+<td><code>Breaks::secondsUntilBreak() → int64</code></td>
+<td><code>srs.breaks.secondsUntilBreak() → int</code></td>
+</tr>
+<tr>
+<td>Seconds remaining in current break</td>
+<td><code>Breaks::secondsRemainingInBreak() → int64</code></td>
+<td><code>srs.breaks.secondsRemainingInBreak() → int</code></td>
+</tr>
+<tr>
+<td>Daily play time so far (seconds)</td>
+<td><code>Breaks::dailyPlaySecondsAccumulated() → int64</code></td>
+<td><code>srs.breaks.dailyPlaySecondsAccumulated() → int</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="break-handshake">Break handshake<a class="headerlink" href="#break-handshake" title="Permanent link">&para;</a></h2>
+<p>For scripts that need to reach a safe state (banked, out of combat,
+etc.) before they get paused:</p>
+<ol>
+<li>Call <code>declareBreakAware()</code> once (from <code>onTick</code> / <code>onLoad</code> / pulse)
+   to register as a script the Scheduler will wait on.</li>
+<li>Check <code>isBreakRequested()</code> each tick during normal work.</li>
+<li>Once safe, call <code>signalReady()</code> — idempotent, fine every tick.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Has a break been requested?</td>
+<td><code>Breaks::isBreakRequested() → bool</code></td>
+<td><code>srs.breaks.isBreakRequested() → bool</code></td>
+</tr>
+<tr>
+<td>Opt this script into the wait set</td>
+<td><code>Breaks::declareBreakAware()</code></td>
+<td><code>srs.breaks.declareBreakAware()</code></td>
+</tr>
+<tr>
+<td>Mark this script ready for break</td>
+<td><code>Breaks::signalReady()</code></td>
+<td><code>srs.breaks.signalReady()</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Caller attribution + no grace timeout</p>
+<p>Handshake calls <strong>must</strong> be made from inside an <code>onTick</code> / <code>pulse</code> /
+<code>onDraw</code> callback — the Scheduler reads the currently-firing script
+index for attribution. Calls from outside any callback (e.g.
+top-level chunk during <code>loadFile</code>) won't attribute correctly and
+are silently dropped.</p>
+<p>There is <strong>no grace timeout</strong>: a script that opts in but never
+signals will block every future break. Don't <code>declareBreakAware</code>
+unless you intend to signal.</p>
+</div>
+<h2 id="profile">Profile<a class="headerlink" href="#profile" title="Permanent link">&para;</a></h2>
+<p>Timing-only (no credential fields).</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read</td>
+<td><code>Breaks::profile() → Profile</code></td>
+<td><code>srs.breaks.getProfile() → table</code></td>
+</tr>
+<tr>
+<td>Write (missing keys keep existing value)</td>
+<td><code>Breaks::setProfile(Profile)</code></td>
+<td><code>srs.breaks.setProfile(table)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>Profile</code></strong> fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>workMinutesMin</code></td>
+<td>25</td>
+<td>Min work segment</td>
+</tr>
+<tr>
+<td><code>workMinutesMax</code></td>
+<td>55</td>
+<td>Max work segment</td>
+</tr>
+<tr>
+<td><code>breakMinutesMin</code></td>
+<td>5</td>
+<td>Min break length</td>
+</tr>
+<tr>
+<td><code>breakMinutesMax</code></td>
+<td>20</td>
+<td>Max break length</td>
+</tr>
+<tr>
+<td><code>dailyPlayCapMinutes</code></td>
+<td>480</td>
+<td>8 h cap</td>
+</tr>
+<tr>
+<td><code>logoutDuringBreak</code></td>
+<td><code>false</code></td>
+<td>Idle-in-place vs. logout. Flip true after the logout-widget click is live-verified.</td>
+</tr>
+<tr>
+<td><code>maxLoginRetries</code></td>
+<td>4</td>
+<td>Login retry budget</td>
+</tr>
+<tr>
+<td><code>loginRetryBaseSeconds</code></td>
+<td>5</td>
+<td>Exponential backoff base</td>
+</tr>
+<tr>
+<td><code>enableLoginWatchdog</code></td>
+<td><code>true</code></td>
+<td>Watchdog on login transition</td>
+</tr>
+<tr>
+<td><code>loginWatchdogTimeoutMinutes</code></td>
+<td>10</td>
+<td>Watchdog timeout</td>
+</tr>
+<tr>
+<td><code>extendedSleepDurationMinutes</code></td>
+<td>30</td>
+<td>After failure</td>
+</tr>
+</tbody>
+</table>
+<h2 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h2>
+<p>Each subscriber returns an integer handle; pass it to <code>unsubscribe</code>
+to remove.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phase change (<code>from</code>, <code>to</code>)</td>
+<td><code>Breaks::onPhaseChange(fn) → int</code></td>
+<td><code>srs.breaks.onPhaseChange(function(from, to) end) → int</code></td>
+</tr>
+<tr>
+<td>Break requested (entry to <code>BreakRequested</code>)</td>
+<td><code>Breaks::onBreakRequested(fn) → int</code></td>
+<td><code>srs.breaks.onBreakRequested(function() end) → int</code></td>
+</tr>
+<tr>
+<td>Before logout (entry to <code>BreakPending</code>)</td>
+<td><code>Breaks::onBeforeLogout(fn) → int</code></td>
+<td><code>srs.breaks.onBeforeLogout(function() end) → int</code></td>
+</tr>
+<tr>
+<td>After successful login</td>
+<td><code>Breaks::onAfterLogin(fn) → int</code></td>
+<td><code>srs.breaks.onAfterLogin(function() end) → int</code></td>
+</tr>
+<tr>
+<td>Login failed (<code>reason</code>, <code>detail</code>)</td>
+<td><code>Breaks::onLoginFailed(fn) → int</code></td>
+<td><code>srs.breaks.onLoginFailed(function(reason, detail) end) → int</code></td>
+</tr>
+<tr>
+<td>Remove subscription</td>
+<td><code>Breaks::unsubscribe(handle)</code></td>
+<td><code>srs.breaks.unsubscribe(handle)</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Subscribers fire on the engine tick thread</p>
+<p>Don't do heavy work inside event callbacks — post to a queue if
+needed.</p>
+</div>
+<h2 id="enums">Enums<a class="headerlink" href="#enums" title="Permanent link">&para;</a></h2>
+<p><strong><code>Phase</code></strong> (<code>Phase</code> / <code>srs.breaks.phase()</code> returns int):</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>Stopped</code></td>
+<td>Scheduler not running</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>Running</code></td>
+<td>Normal work segment</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>BreakRequested</code></td>
+<td>Waiting on opted-in scripts to <code>signalReady</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>BreakPending</code></td>
+<td>Ready to log out</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>LoggingOut</code></td>
+<td>Logout in flight</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>Idle</code></td>
+<td>In-break</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>LoggingIn</code></td>
+<td>Login in flight</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>Recovering</code></td>
+<td>Post-login recovery</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>ExtendedSleep</code></td>
+<td>Extended sleep after repeated failure</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>Failed</code></td>
+<td>Login failed — needs <code>resetFromFailed</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>FailureReason</code></strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>AuthFailed</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>Banned</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>NotMember</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>NoCredentials</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>MaxRetriesExceeded</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>WatchdogTimeout</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>Unknown</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="example-break-aware-fishing-script">Example — break-aware fishing script<a class="headerlink" href="#example-break-aware-fishing-script" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Fishing::onLoad</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="c1">// (no-op; declareBreakAware must come from a callback)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">}</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Fishing::onTick</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n">Breaks</span><span class="o">::</span><span class="n">declareBreakAware</span><span class="p">();</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Breaks</span><span class="o">::</span><span class="n">isBreakRequested</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">atSafeState</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="n">Breaks</span><span class="o">::</span><span class="n">signalReady</span><span class="p">();</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="n">doFishingWork</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">breaks</span><span class="p">.</span><span class="nf">declareBreakAware</span><span class="p">()</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">breaks</span><span class="p">.</span><span class="nf">isBreakRequested</span><span class="p">()</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nf">atSafeState</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">breaks</span><span class="p">.</span><span class="nf">signalReady</span><span class="p">()</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="kr">return</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nf">doFishingWork</span><span class="p">()</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kr">end</span><span class="p">)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1">-- Optional: log every phase transition</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="kd">local</span><span class="w"> </span><span class="nv">handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">breaks</span><span class="p">.</span><span class="nf">onPhaseChange</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="nv">from</span><span class="p">,</span><span class="w"> </span><span class="nv">to</span><span class="p">)</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;phase &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; → &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">to</span><span class="p">)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="kr">end</span><span class="p">)</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1">-- Later: srs.breaks.unsubscribe(handle)</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
 
 
 
