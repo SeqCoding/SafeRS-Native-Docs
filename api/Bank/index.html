@@ -1861,6 +1861,15 @@ switching, per-item withdraw + deposit, bulk deposit, scrolling, and the
 </tr>
 </tbody>
 </table>
+<div class="admonition danger">
+<p class="admonition-title">Bank PIN — in progress, untested</p>
+<p><code>isPinOpen</code> and the rest of the bank-PIN handling path are
+<strong>work-in-progress and untested</strong>. The detection signature has
+not yet been validated against a PIN-locked account, and there
+is no auto-entry helper exposed. Scripts that may encounter a
+PIN-locked bank should not rely on this method until this
+notice is removed.</p>
+</div>
 <h2 id="named-locations-walking">Named locations + walking<a class="headerlink" href="#named-locations-walking" title="Permanent link">&para;</a></h2>
 <p>Bank locations are exposed as <code>Bank::BankLocation</code> (enum) / Lua int
 constants on <code>srs.bank.*</code>. Tile picks land on a banker booth row so

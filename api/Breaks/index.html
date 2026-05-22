@@ -1720,6 +1720,14 @@
 
 <h1 id="breaks">Breaks<a class="headerlink" href="#breaks" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Breaks</code> / <code>srs.breaks</code></p>
+<div class="admonition danger">
+<p class="admonition-title">In progress — untested</p>
+<p>The entire Breaks surface is <strong>work-in-progress and untested</strong>.
+Bindings compile and signatures are stable, but the full
+work → logout → idle → login → recover cycle has not yet been
+validated end-to-end against a live account. Do not rely on
+these calls in production scripts until this notice is removed.</p>
+</div>
 <p>Script/plugin-facing surface for the BreakManager — schedule, observe,
 and react to break cycles (work → request → logout → idle → login →
 recover).</p>
