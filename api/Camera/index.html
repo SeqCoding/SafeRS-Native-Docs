@@ -392,6 +392,16 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -904,6 +914,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../Engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Entity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Equipment/" class="md-nav__link">
         
   
@@ -1016,6 +1082,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GraphicsObjects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphicsObjects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GroundItem/" class="md-nav__link">
         
   
@@ -1024,6 +1118,34 @@
     
   
     GroundItem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Input/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input
   
 
     
@@ -1136,6 +1258,34 @@
     
   
     NPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Object
   
 
     
@@ -1863,11 +2013,23 @@ keyboard for the script.</p>
 <td><code>Camera::rotateToEntity(ctx, target) → bool</code></td>
 <td><code>srs.camera.rotateToEntity(target) → bool</code></td>
 </tr>
+<tr>
+<td>Face a tile, interruptible</td>
+<td><code>Camera::rotateToTile(ctx, tile, Predicate) → bool</code></td>
+<td><code>srs.camera.rotateToTile(tile, fn) → bool</code></td>
+</tr>
+<tr>
+<td>Face an entity, interruptible</td>
+<td><code>Camera::rotateToEntity(ctx, target, Predicate) → bool</code></td>
+<td><code>srs.camera.rotateToEntity(target, fn) → bool</code></td>
+</tr>
 </tbody>
 </table>
-<p>Interrupt-condition overloads (C++): <code>rotateToTile</code> and
-<code>rotateToEntity</code> accept a <code>Predicate interrupt</code> polled between
-micro-steps. Return <code>true</code> from it to abort early.</p>
+<p>Interrupt overloads on <code>rotateToTile</code> and <code>rotateToEntity</code> poll the
+predicate between micro-steps. Return <code>true</code> from it to abort early
+(e.g. the player started a fight and the rotation should bail).
+Lua predicate is any callable that returns truthy/falsy; raising an
+error in the predicate aborts the rotation cleanly.</p>
 <h2 id="mouse-rotation-family">Mouse-rotation family<a class="headerlink" href="#mouse-rotation-family" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mouseRotateTo, mouseRotateToYaw, mouseRotateToPitch,
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mouseRotateToTile, mouseRotateToEntity

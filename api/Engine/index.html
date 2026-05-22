@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/MenuEntry/">
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Engine/">
       
       
-        <link rel="prev" href="../Magic/">
+        <link rel="prev" href="../Drawing/">
       
       
-        <link rel="next" href="../Npc/">
+        <link rel="next" href="../Entity/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>MenuEntry - SafeRS Native API</title>
+        <title>Engine - SafeRS Native API</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#menuentry" class="md-skip">
+        <a href="#engine" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MenuEntry
+              Engine
             
           </span>
         </div>
@@ -743,10 +743,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Engine/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engine
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -762,6 +789,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#input-gating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input gating
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#varclient-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VarClient access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runscript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        runScript
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1051,37 +1142,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    MenuEntry
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../MenuEntry/" class="md-nav__link">
         
   
   
@@ -1097,76 +1161,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setters
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setters">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#field-semantics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Field semantics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#opcode-constants" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Opcode constants
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1598,49 +1592,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#input-gating" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input gating
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#varclient-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VarClient access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runscript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        runScript
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
         Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Setters
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Setters">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#field-semantics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Field semantics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#opcode-constants" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Opcode constants
       
     </span>
   </a>
@@ -1664,145 +1652,97 @@
 
 
 
-<h1 id="menuentry">MenuEntry<a class="headerlink" href="#menuentry" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::MenuEntry</code> / <code>srs.menuEntry</code></p>
-<p>Typed fluent builder over <code>Interact::doActionRaw</code>. Goes through the
-same spoof-then-DoAction path as every other facade — fail-closed if
-the spoofer can't inject.</p>
-<p>Use this when you need raw control over MenuAction params (e.g. while
-RE'ing a new interaction type) without bypassing the input simulation
-contract.</p>
-<p>Equivalent to Microbot's <code>NewMenuEntry</code>, minus the option/target text
-fields (those route through <code>Interact::perform</code>'s higher-level path;
-this builder targets the raw MenuAction dispatch path).</p>
+<h1 id="engine">Engine<a class="headerlink" href="#engine" title="Permanent link">&para;</a></h1>
+<p><code>srs.engine</code> (Lua only)</p>
+<p>Low-level engine primitives — RuneLite-style <code>Client.*</code> methods. Mostly
+for diagnostic / RE work; production helpers should live in their own
+<code>srs.*</code> module (Camera, Walk, etc.).</p>
+<p>There is no public C++ header for this surface. Plugins that need
+the same functionality go straight to the underlying engine objects
+(<code>VarpSystem</code>, <code>WndProcHook</code>, etc.).</p>
+<h2 id="input-gating">Input gating<a class="headerlink" href="#input-gating" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pop the script's input block</td>
+<td><code>srs.engine.releaseInputBlock()</code></td>
+<td>User can interact with the game while the script runs</td>
+</tr>
+<tr>
+<td>Re-take the input block</td>
+<td><code>srs.engine.takeInputBlock()</code></td>
+<td>Restore normal scripting (input goes to scripts)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition danger">
+<p class="admonition-title">Don't release mid-spoof</p>
+<p>Production scripts MUST NOT call <code>releaseInputBlock</code>. Leaving
+user input enabled mid-spoof corrupts the engine's click slot.
+Only use these from one-shot diagnostic probes (REPL, debug
+overlays) where the user actually needs to wheel-scroll or
+click for themselves. The block is re-taken on script reload.</p>
+</div>
+<h2 id="varclient-access">VarClient access<a class="headerlink" href="#varclient-access" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read varc int</td>
+<td><code>srs.engine.getVarcInt(varcId) → int \| nil</code></td>
+</tr>
+<tr>
+<td>Write varc int</td>
+<td><code>srs.engine.setVarcInt(varcId, value) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>nil</code> indicates the resolver hasn't been wired (pre-init). <code>setVarcInt</code>
+returns <code>false</code> if the resolver isn't ready or the value isn't
+writable. See <code>re_varclient_system</code> memory for the resolver chain.</p>
+<h2 id="runscript">runScript<a class="headerlink" href="#runscript" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Invoke a CS2 script</td>
+<td><code>srs.engine.runScript(scriptId, ...) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p>Variadic call — only <code>int32</code> args supported. Mirrors Microbot's
+<code>Client.runScript(id, args)</code>. Used for things like tab switching
+(<code>srs.engine.runScript(915, 3)</code> opens the inventory tab) when the
+high-level facade doesn't cover the case.</p>
+<p><code>false</code> if the resolver isn't wired or no script id was passed.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="n">srs</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">MenuEntry</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">MenuEntry</span><span class="p">()</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">.</span><span class="n">worldX</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="n">worldY</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p">.</span><span class="n">opcode</span><span class="p">(</span><span class="cm">/*CC_OP*/</span><span class="w"> </span><span class="mi">57</span><span class="p">)</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">.</span><span class="n">screen</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">)</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">.</span><span class="n">fire</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Diagnostic probe: let the user scroll the bank manually</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">releaseInputBlock</span><span class="p">()</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">script</span><span class="p">.</span><span class="nf">nextTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">takeInputBlock</span><span class="p">()</span><span class="w">  </span><span class="c1">-- always re-take after one frame</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">-- Read a varc int for debug overlay</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">sb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">getVarcInt</span><span class="p">(</span><span class="mi">171</span><span class="p">)</span><span class="w">  </span><span class="c1">-- top-level panel index</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nv">srs</span><span class="p">.</span><span class="py">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;top-level panel = &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nv">sb</span><span class="p">))</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">menuEntry</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">e</span><span class="p">:</span><span class="nf">worldX</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span><span class="nf">worldY</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w"> </span><span class="p">:</span><span class="nf">opcode</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">menuEntry</span><span class="p">.</span><span class="py">CC_OP</span><span class="p">)</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w"> </span><span class="p">:</span><span class="nf">screen</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">)</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w"> </span><span class="p">:</span><span class="nf">fire</span><span class="p">()</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="setters">Setters<a class="headerlink" href="#setters" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Setter</th>
-<th>C++ signature</th>
-<th>Lua signature</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>worldX(v)</code></td>
-<td><code>MenuEntry&amp; worldX(int32)</code></td>
-<td><code>entry:worldX(v) → entry</code></td>
-</tr>
-<tr>
-<td><code>worldY(v)</code></td>
-<td><code>MenuEntry&amp; worldY(int32)</code></td>
-<td><code>entry:worldY(v) → entry</code></td>
-</tr>
-<tr>
-<td><code>widget(g, c)</code></td>
-<td><code>MenuEntry&amp; widget(int32, int32)</code></td>
-<td><code>entry:widget(g, c) → entry</code></td>
-</tr>
-<tr>
-<td><code>opcode(op)</code></td>
-<td><code>MenuEntry&amp; opcode(int32)</code></td>
-<td><code>entry:opcode(op) → entry</code></td>
-</tr>
-<tr>
-<td><code>spawnIndex(v)</code></td>
-<td><code>MenuEntry&amp; spawnIndex(int32)</code></td>
-<td><code>entry:spawnIndex(v) → entry</code></td>
-</tr>
-<tr>
-<td><code>subject(v)</code></td>
-<td><code>MenuEntry&amp; subject(uint32)</code></td>
-<td><code>entry:subject(v) → entry</code></td>
-</tr>
-<tr>
-<td><code>screen(x, y)</code></td>
-<td><code>MenuEntry&amp; screen(int32, int32)</code></td>
-<td><code>entry:screen(x, y) → entry</code></td>
-</tr>
-<tr>
-<td><code>fire()</code></td>
-<td><code>bool fire(ctx)</code></td>
-<td><code>entry:fire() → bool</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="field-semantics">Field semantics<a class="headerlink" href="#field-semantics" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>worldX</code> / <code>worldY</code></strong> — primary param pair. For tile actions
-  these are world tile coords; for inventory / widget actions,
-  <code>worldX</code> is the slot/sub-id and <code>worldY</code> is the encoded widget id.</li>
-<li><strong><code>widget(g, c)</code></strong> — convenience that encodes <code>(groupId, childId)</code>
-  into <code>worldY = (group &lt;&lt; 16) | child</code>.</li>
-<li><strong><code>screen(x, y)</code></strong> — <strong>required</strong>. Pixel coords of the click
-  target. The spoofer needs these to draw a plausible mouse trail.
-  Sentinel <code>(0, 0)</code> causes the spoofer to skip and fail-closed.</li>
-</ul>
-<h2 id="opcode-constants">Opcode constants<a class="headerlink" href="#opcode-constants" title="Permanent link">&para;</a></h2>
-<p><code>srs.menuEntry.*</code>:</p>
-<table>
-<thead>
-<tr>
-<th>Lua const</th>
-<th>Value</th>
-<th>RuneLite MenuAction</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>WALK</code></td>
-<td>23</td>
-<td><code>WALK</code></td>
-</tr>
-<tr>
-<td><code>GROUND_ITEM_FIRST_OPTION</code></td>
-<td>20</td>
-<td><code>GROUND_ITEM_FIRST_OPTION</code></td>
-</tr>
-<tr>
-<td><code>ITEM_USE</code></td>
-<td>25</td>
-<td><code>ITEM_USE</code></td>
-</tr>
-<tr>
-<td><code>CC_OP</code></td>
-<td>57</td>
-<td><code>CC_OP</code> (most widget / inventory actions)</td>
-</tr>
-<tr>
-<td><code>WIDGET_USE_ON_WIDGET</code></td>
-<td>58</td>
-<td><code>WIDGET_USE_ON_WIDGET</code> (second click of "Use")</td>
-</tr>
-<tr>
-<td><code>CC_OP_LOW_PRIORITY</code></td>
-<td>1007</td>
-<td><code>CC_OP_LOW_PRIORITY</code> (Drop, Examine)</td>
-</tr>
-</tbody>
-</table>
 
 
 
