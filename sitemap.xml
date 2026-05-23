@@ -53,6 +53,10 @@
          <lastmod>2026-05-23</lastmod>
     </url>
     <url>
+         <loc>https://seqcoding.github.io/SafeRS-Native-Docs/api/Entity/</loc>
+         <lastmod>2026-05-23</lastmod>
+    </url>
+    <url>
          <loc>https://seqcoding.github.io/SafeRS-Native-Docs/api/Equipment/</loc>
          <lastmod>2026-05-23</lastmod>
     </url>
@@ -69,7 +73,15 @@
          <lastmod>2026-05-23</lastmod>
     </url>
     <url>
+         <loc>https://seqcoding.github.io/SafeRS-Native-Docs/api/GraphicsObjects/</loc>
+         <lastmod>2026-05-23</lastmod>
+    </url>
+    <url>
          <loc>https://seqcoding.github.io/SafeRS-Native-Docs/api/GroundItem/</loc>
+         <lastmod>2026-05-23</lastmod>
+    </url>
+    <url>
+         <loc>https://seqcoding.github.io/SafeRS-Native-Docs/api/Input/</loc>
          <lastmod>2026-05-23</lastmod>
     </url>
     <url>
@@ -86,6 +98,10 @@
     </url>
     <url>
          <loc>https://seqcoding.github.io/SafeRS-Native-Docs/api/Npc/</loc>
+         <lastmod>2026-05-23</lastmod>
+    </url>
+    <url>
+         <loc>https://seqcoding.github.io/SafeRS-Native-Docs/api/Object/</loc>
          <lastmod>2026-05-23</lastmod>
     </url>
     <url>
