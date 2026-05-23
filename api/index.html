@@ -774,7 +774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Entity/" class="md-nav__link">
+      <a href="Entity.md" class="md-nav__link">
         
   
   
@@ -914,7 +914,7 @@
   
   
     <li class="md-nav__item">
-      <a href="GraphicsObjects/" class="md-nav__link">
+      <a href="GraphicsObjects.md" class="md-nav__link">
         
   
   
@@ -970,7 +970,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Input/" class="md-nav__link">
+      <a href="Input.md" class="md-nav__link">
         
   
   
@@ -1110,7 +1110,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Object/" class="md-nav__link">
+      <a href="Object.md" class="md-nav__link">
         
   
   
@@ -1585,15 +1585,9 @@ public contract.</p>
 </tr>
 <tr>
 <td><a href="Engine/">Engine</a></td>
-<td>—</td>
+<td><code>srs::api::Engine</code></td>
 <td><code>srs.engine</code></td>
-<td>Low-level engine primitives (varc, runScript, input gating)</td>
-</tr>
-<tr>
-<td><a href="Entity/">Entity</a></td>
-<td>—</td>
-<td><code>entity</code></td>
-<td>NPC / player live query</td>
+<td>Per-tick action-cap introspection + low-level engine primitives</td>
 </tr>
 <tr>
 <td><a href="Equipment/">Equipment</a></td>
@@ -1620,22 +1614,10 @@ public contract.</p>
 <td>Scene loc objects (trees, doors, banks, …)</td>
 </tr>
 <tr>
-<td><a href="GraphicsObjects/">GraphicsObjects</a></td>
-<td><code>srs::api::GraphicsObjects</code></td>
-<td><code>srs.graphicsObjects</code></td>
-<td>Tile-bound SpotAnims (RE in progress)</td>
-</tr>
-<tr>
 <td><a href="GroundItem/">GroundItem</a></td>
 <td><code>srs::api::GroundItem</code></td>
 <td><code>srs.grounditem</code></td>
 <td>Dropped-item enumeration + loot</td>
-</tr>
-<tr>
-<td><a href="Input/">Input</a></td>
-<td>—</td>
-<td><code>srs.input</code></td>
-<td>Low-level keyboard primitives (<code>keyTap</code> / <code>osKeyTap</code> / VK constants)</td>
 </tr>
 <tr>
 <td><a href="Inventory/">Inventory</a></td>
@@ -1660,12 +1642,6 @@ public contract.</p>
 <td><code>srs::api::Npc</code></td>
 <td><code>srs.npc</code></td>
 <td>Per-NPC actions (attack / talk-to / bank / generic)</td>
-</tr>
-<tr>
-<td><a href="Object/">Object</a></td>
-<td>—</td>
-<td><code>object</code></td>
-<td>Scene loc live query (heavier than <code>srs.gameobject</code>)</td>
 </tr>
 <tr>
 <td><a href="Player/">Player</a></td>

@@ -16,7 +16,7 @@
         <link rel="prev" href="../Drawing/">
       
       
-        <link rel="next" href="../Entity/">
+        <link rel="next" href="../Equipment/">
       
       
         
@@ -806,10 +806,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#input-gating" class="md-nav__link">
+  <a href="#action-cap-introspection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Input gating
+        Action-cap introspection
       
     </span>
   </a>
@@ -817,32 +817,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#varclient-access" class="md-nav__link">
+  <a href="#diagnostic-primitives-lua-only" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VarClient access
+        Diagnostic primitives (Lua-only)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Diagnostic primitives (Lua-only)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#varclient-cs2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VarClient + CS2
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#runscript" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#input-block-toggle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        runScript
+        Input-block toggle
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example
+        See also
       
     </span>
   </a>
@@ -865,7 +882,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Entity/" class="md-nav__link">
+      <a href="../Entity.md" class="md-nav__link">
         
   
   
@@ -1005,7 +1022,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../GraphicsObjects/" class="md-nav__link">
+      <a href="../GraphicsObjects.md" class="md-nav__link">
         
   
   
@@ -1061,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Input/" class="md-nav__link">
+      <a href="../Input.md" class="md-nav__link">
         
   
   
@@ -1201,7 +1218,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Object/" class="md-nav__link">
+      <a href="../Object.md" class="md-nav__link">
         
   
   
@@ -1592,10 +1609,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#input-gating" class="md-nav__link">
+  <a href="#action-cap-introspection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Input gating
+        Action-cap introspection
       
     </span>
   </a>
@@ -1603,32 +1620,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#varclient-access" class="md-nav__link">
+  <a href="#diagnostic-primitives-lua-only" class="md-nav__link">
     <span class="md-ellipsis">
       
-        VarClient access
+        Diagnostic primitives (Lua-only)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Diagnostic primitives (Lua-only)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#varclient-cs2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VarClient + CS2
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#runscript" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#input-block-toggle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        runScript
+        Input-block toggle
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example
+        See also
       
     </span>
   </a>
@@ -1653,96 +1687,149 @@
 
 
 <h1 id="engine">Engine<a class="headerlink" href="#engine" title="Permanent link">&para;</a></h1>
-<p><code>srs.engine</code> (Lua only)</p>
-<p>Low-level engine primitives — RuneLite-style <code>Client.*</code> methods. Mostly
-for diagnostic / RE work; production helpers should live in their own
-<code>srs.*</code> module (Camera, Walk, etc.).</p>
-<p>There is no public C++ header for this surface. Plugins that need
-the same functionality go straight to the underlying engine objects
-(<code>VarpSystem</code>, <code>WndProcHook</code>, etc.).</p>
-<h2 id="input-gating">Input gating<a class="headerlink" href="#input-gating" title="Permanent link">&para;</a></h2>
+<p><code>srs::api::Engine</code> / <code>srs.engine</code></p>
+<p>Engine-level introspection and low-level primitives. Two distinct surfaces
+live in the same Lua table:</p>
+<ol>
+<li><strong>Action-cap introspection</strong> — observe the per-server-tick action
+   counter that <code>PacketSendHook</code> maintains and <code>GameData::onTick</code> resets.
+   Backs the official C++ API at <code>srs::api::Engine</code>.</li>
+<li><strong>Diagnostic primitives</strong> — RuneLite-style <code>client.*</code> helpers
+   (VarClient reads / writes, raw CS2 <code>runScript</code>, input-block toggle).
+   Lua-only — no equivalent in <code>srs::api::Engine</code> because they're
+   intended for one-shot RE / diagnostic probes, not production scripts.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Scripts MUST NOT block</p>
+<p><code>pulse</code> / <code>onTick</code> / <code>draw</code> handlers run on the engine main thread.
+To gate on action capacity, check <code>canDispatchAction()</code> and yield via
+<code>script.nextTick(...)</code> if it returns false — never spin-wait.</p>
+</div>
+<h2 id="action-cap-introspection">Action-cap introspection<a class="headerlink" href="#action-cap-introspection" title="Permanent link">&para;</a></h2>
+<p>The OSRS server enforces a cap of <strong>8 action-class packets per game
+cycle</strong> (vanilla). The DLL counts every action-class opcode that
+<code>srs::engine::isAction()</code> recognises — <code>OpLoc*</code>, <code>OpNpc*</code>, <code>OpObj*</code>,
+<code>IfButton*</code>, etc. — but <strong>not</strong> input-bundle traffic (mouse moves,
+clicks, key events, heartbeats). The actual gating happens automatically
+inside <code>EngineDispatch::drainOnMainThread</code>, so scripts can burst-fire
+actions (drop-all, mass-eat, gear-swap) without manually pacing.</p>
+<p>These accessors exist purely for diagnostic UIs / metrics. Background:
+<a href="../../re-notes/outbound-packets/"><code>outbound-packets.md</code></a>.</p>
 <table>
 <thead>
 <tr>
 <th>Method</th>
+<th>C++</th>
 <th>Lua</th>
-<th>What it does</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Pop the script's input block</td>
-<td><code>srs.engine.releaseInputBlock()</code></td>
-<td>User can interact with the game while the script runs</td>
+<td>Actions sent this tick</td>
+<td><code>Engine::actionsSentThisTick(ctx) → int</code></td>
+<td><code>srs.engine.actionsSentThisTick() → int</code></td>
 </tr>
 <tr>
-<td>Re-take the input block</td>
+<td>Per-tick action cap</td>
+<td><code>Engine::actionLimit(ctx) → int</code></td>
+<td><code>srs.engine.actionLimit() → int</code></td>
+</tr>
+<tr>
+<td>Can dispatch another?</td>
+<td><code>Engine::canDispatchAction(ctx) → bool</code></td>
+<td><code>srs.engine.canDispatchAction() → bool</code></td>
+</tr>
+<tr>
+<td>Lifetime action count</td>
+<td><code>Engine::totalActionsCounted(ctx) → uint64</code></td>
+<td><code>srs.engine.totalActionsCounted() → number</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>canDispatchAction()</code> is a probabilistic guard, not a guarantee — the
+server has the final say, and the client observes what it <strong>sent</strong>, not
+what the server <strong>processed</strong>. For burst-action scripts the match is
+much closer to engine behaviour than a blind sleep.</p>
+<p><code>actionLimit()</code> is currently the constant <code>8</code>. If a future OSRS revision
+makes the cap per-opcode, the method signature will keep returning a
+single int and an opcode-aware overload will be added alongside.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">canDispatchAction</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Big bones&quot;</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="kr">end</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="diagnostic-primitives-lua-only">Diagnostic primitives (Lua-only)<a class="headerlink" href="#diagnostic-primitives-lua-only" title="Permanent link">&para;</a></h2>
+<p>For RE work, one-shot probes, and scripts that need a CS2 hook the
+high-level API doesn't expose yet. Mirrors a subset of RuneLite's
+<code>client.*</code> surface. No C++ equivalent on <code>srs::api::Engine</code> — these
+intentionally live only in Lua so they don't accidentally become part
+of the production plugin contract.</p>
+<h3 id="varclient-cs2">VarClient + CS2<a class="headerlink" href="#varclient-cs2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Lua</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>srs.engine.getVarcInt(varcId) → int or nil</code></td>
+<td>Read a <code>VarClientInt</code>. Returns <code>nil</code> if the id is unset.</td>
+</tr>
+<tr>
+<td><code>srs.engine.setVarcInt(varcId, value) → bool</code></td>
+<td>Write a <code>VarClientInt</code>. RuneLite's <code>setVarcIntValue</code> equivalent.</td>
+</tr>
+<tr>
+<td><code>srs.engine.runScript(scriptId, ...args) → bool</code></td>
+<td>Invoke a CS2 client script. Variadic ints only — mirrors Microbot's <code>Client.runScript(id, args)</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>runScript</code> powers things like the bank scrollbar sync
+(<code>runScript(UPDATE_SCROLLBAR, ...)</code>); use it when there's no
+purpose-built API for the CS2 routine you need to drive.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Read the current bank scroll position</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">scrollY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">getVarcInt</span><span class="p">(</span><span class="nv">BANK_SCROLL_VARC</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="input-block-toggle">Input-block toggle<a class="headerlink" href="#input-block-toggle" title="Permanent link">&para;</a></h3>
+<p>The script engine holds an input gate that prevents the user's WndProc
+clicks from racing the script's spoofed clicks (which would corrupt the
+engine's click slot mid-spoof). These two calls pop / push that gate.</p>
+<table>
+<thead>
+<tr>
+<th>Lua</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>srs.engine.releaseInputBlock()</code></td>
+<td>Lift the gate so the <strong>user</strong> can interact with the game mid-script.</td>
+</tr>
+<tr>
 <td><code>srs.engine.takeInputBlock()</code></td>
-<td>Restore normal scripting (input goes to scripts)</td>
+<td>Restore the gate.</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition danger">
-<p class="admonition-title">Don't release mid-spoof</p>
-<p>Production scripts MUST NOT call <code>releaseInputBlock</code>. Leaving
-user input enabled mid-spoof corrupts the engine's click slot.
-Only use these from one-shot diagnostic probes (REPL, debug
-overlays) where the user actually needs to wheel-scroll or
-click for themselves. The block is re-taken on script reload.</p>
+<p class="admonition-title">Production scripts MUST NOT call these</p>
+<p>Leaving user input enabled mid-spoof corrupts the engine's click
+slot. Use this only where you are testing something locally and
+want to see what value would be returned by a manual action on the
+client. The gate is re-taken automatically on script reload.</p>
 </div>
-<h2 id="varclient-access">VarClient access<a class="headerlink" href="#varclient-access" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Lua</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Read varc int</td>
-<td><code>srs.engine.getVarcInt(varcId) → int \| nil</code></td>
-</tr>
-<tr>
-<td>Write varc int</td>
-<td><code>srs.engine.setVarcInt(varcId, value) → bool</code></td>
-</tr>
-</tbody>
-</table>
-<p><code>nil</code> indicates the resolver hasn't been wired (pre-init). <code>setVarcInt</code>
-returns <code>false</code> if the resolver isn't ready or the value isn't
-writable. See <code>re_varclient_system</code> memory for the resolver chain.</p>
-<h2 id="runscript">runScript<a class="headerlink" href="#runscript" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Lua</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Invoke a CS2 script</td>
-<td><code>srs.engine.runScript(scriptId, ...) → bool</code></td>
-</tr>
-</tbody>
-</table>
-<p>Variadic call — only <code>int32</code> args supported. Mirrors Microbot's
-<code>Client.runScript(id, args)</code>. Used for things like tab switching
-(<code>srs.engine.runScript(915, 3)</code> opens the inventory tab) when the
-high-level facade doesn't cover the case.</p>
-<p><code>false</code> if the resolver isn't wired or no script id was passed.</p>
-<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Diagnostic probe: let the user scroll the bank manually</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">releaseInputBlock</span><span class="p">()</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">script</span><span class="p">.</span><span class="nf">nextTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">takeInputBlock</span><span class="p">()</span><span class="w">  </span><span class="c1">-- always re-take after one frame</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span><span class="p">)</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">-- Read a varc int for debug overlay</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">sb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">getVarcInt</span><span class="p">(</span><span class="mi">171</span><span class="p">)</span><span class="w">  </span><span class="c1">-- top-level panel index</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nv">srs</span><span class="p">.</span><span class="py">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;top-level panel = &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nv">sb</span><span class="p">))</span>
-</span></code></pre></div>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../Inventory/">Inventory</a> — <code>pendingDropCount()</code> works hand-in-hand
+  with <code>canDispatchAction()</code> for paced drop loops.</li>
+<li><a href="../Bank/">Bank</a> — already documents the same <code>srs.engine.*</code>
+  diagnostic helpers under its "Engineering primitives" section.</li>
+</ul>
 
 
 
