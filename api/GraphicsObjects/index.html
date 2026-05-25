@@ -985,10 +985,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#types" class="md-nav__link">
+  <a href="#fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Types
+        Fields
       
     </span>
   </a>
@@ -996,10 +996,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#live-discovery-workflow" class="md-nav__link">
+  <a href="#examples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Live-discovery workflow
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-active-gfx-near-the-player" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List active gfx near the player
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dodge-dangerous-tiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dodge dangerous tiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-to-a-specific-cast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        React to a specific cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
       
     </span>
   </a>
@@ -1592,10 +1642,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#types" class="md-nav__link">
+  <a href="#fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Types
+        Fields
       
     </span>
   </a>
@@ -1603,10 +1653,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#live-discovery-workflow" class="md-nav__link">
+  <a href="#examples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Live-discovery workflow
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-active-gfx-near-the-player" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List active gfx near the player
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dodge-dangerous-tiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dodge dangerous tiles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#react-to-a-specific-cast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        React to a specific cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
       
     </span>
   </a>
@@ -1632,17 +1732,12 @@
 
 <h1 id="graphicsobjects">GraphicsObjects<a class="headerlink" href="#graphicsobjects" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::GraphicsObjects</code> / <code>srs.graphicsObjects</code></p>
-<p>Read-only enumeration of tile-bound SpotAnims (falling debris during
-Olm, acid pools, blood splatters, spell-impact tile effects, teleport
-sparkles, etc.) — equivalent to RuneLite's <code>Scene.graphicsObjects</code>.</p>
-<div class="admonition warning">
-<p class="admonition-title">RE incomplete</p>
-<p>The underlying container offset on <code>WorldInstance</code> is not pinned
-yet for patch 238.x. Calls below return empty / <code>nil</code> until
-<code>scan()</code> finds the offset and <code>setContainerOffset()</code> is called.
-See <code>memory/re_graphics_object_system.md</code> (auto-memory) for the
-discovery playbook.</p>
-</div>
+<p>Read-only enumeration of tile-bound SpotAnims — falling debris during
+boss fights, acid pools (Vasa, Tekton), blood splatters, spell-impact
+tile effects, teleport sparkles, run-energy regen sparkles, and so on.</p>
+<p>The container is auto-bound at DLL load — there's no per-session setup
+required. Calls below start returning data the moment the player is
+logged in.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1664,37 +1759,19 @@ discovery playbook.</p>
 <td><code>srs.graphicsObjects.nearby(cx, cz, plane, radius) → table[]</code></td>
 </tr>
 <tr>
-<td>Next-to-finish</td>
+<td>Earliest-started entry</td>
 <td><code>GraphicsObjects::next(ctx) → optional&lt;…&gt;</code></td>
 <td><code>srs.graphicsObjects.next() → table \| nil</code></td>
 </tr>
-<tr>
-<td>Live-discovery probe</td>
-<td><code>GraphicsObjects::scan(ctx, base=0) → vector&lt;GraphicsObjectScanRow&gt;</code></td>
-<td><code>srs.graphicsObjects.scan() → table[]</code>, <code>srs.graphicsObjects.scan(base) → table[]</code></td>
-</tr>
-<tr>
-<td>Pin the container offset</td>
-<td><code>GraphicsObjects::setContainerOffset(ctx, offset, base=0) → bool</code></td>
-<td><code>srs.graphicsObjects.setContainerOffset(off) → bool</code>, <code>setContainerOffset(off, base) → bool</code></td>
-</tr>
-<tr>
-<td>Current container offset</td>
-<td><code>GraphicsObjects::containerOffset(ctx) → int64</code></td>
-<td><code>srs.graphicsObjects.containerOffset() → int64</code></td>
-</tr>
-<tr>
-<td>Current container base</td>
-<td><code>GraphicsObjects::containerBase(ctx) → int32</code></td>
-<td><code>srs.graphicsObjects.containerBase() → int</code></td>
-</tr>
 </tbody>
 </table>
-<p>The <code>scan(base)</code> / <code>setContainerOffset(off, base)</code> 2-arg forms let you
-probe <code>WorldInstance</code> (<code>base=0</code>, default) vs the <code>Scene</code> struct
-(<code>base=1</code>).</p>
-<h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
-<p><strong><code>GraphicsObjectEntry</code></strong> (Lua: plain table with these keys):</p>
+<p><code>nearby(cx, cz, plane, radius)</code> returns entries whose <code>tileX/tileZ</code> are
+within Chebyshev distance <code>radius</code> of <code>(cx, cz)</code> on the given plane.</p>
+<p><code>next()</code> returns the entry with the smallest <code>startCycle</code> — best-effort
+"first to finish" (the engine doesn't expose a finish cycle, so this is
+a heuristic based on what started rendering longest ago).</p>
+<h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h2>
+<p>Each entry (Lua: plain table; C++: <code>GraphicsObjectEntry</code>):</p>
 <table>
 <thead>
 <tr>
@@ -1706,109 +1783,149 @@ probe <code>WorldInstance</code> (<code>base=0</code>, default) vs the <code>Sce
 <tbody>
 <tr>
 <td><code>id</code></td>
-<td>int32</td>
-<td>spotanim cache id (group 0xd)</td>
+<td>int</td>
+<td>SpotAnim cache id.</td>
 </tr>
 <tr>
 <td><code>animationId</code></td>
-<td>int32</td>
-<td>resolved AnimSlot.anim_id</td>
+<td>int</td>
+<td>The bound animation id (resolved from the spotanim's animation definition). Negative until the engine binds the animation.</td>
 </tr>
 <tr>
 <td><code>plane</code></td>
-<td>int32</td>
-<td></td>
+<td>int</td>
+<td>0..3</td>
 </tr>
 <tr>
 <td><code>tileX</code></td>
-<td>int32</td>
-<td>scene tile X</td>
+<td>int</td>
+<td>World tile X.</td>
 </tr>
 <tr>
 <td><code>tileZ</code></td>
-<td>int32</td>
-<td>scene tile Z</td>
+<td>int</td>
+<td>World tile Y (Z in our naming).</td>
+</tr>
+<tr>
+<td><code>fineX</code></td>
+<td>int</td>
+<td>Engine sub-tile coordinate (<code>localTileX * 128 + 64</code>).</td>
+</tr>
+<tr>
+<td><code>fineY</code></td>
+<td>int</td>
+<td>Engine sub-tile coordinate.</td>
 </tr>
 <tr>
 <td><code>height</code></td>
-<td>int32</td>
-<td></td>
-</tr>
-<tr>
-<td><code>framesUntilFinished</code></td>
-<td>int32</td>
-<td>30 ms frames remaining</td>
-</tr>
-<tr>
-<td><code>ticksUntilFinished</code></td>
-<td>int32</td>
-<td>game ticks remaining</td>
-</tr>
-<tr>
-<td><code>absoluteEndCycle</code></td>
-<td>int32</td>
-<td>engine cycle at which it disappears</td>
-</tr>
-</tbody>
-</table>
-<p>All fields except <code>id</code> are <strong>provisional</strong> until the live entry-layout
-RE is verified.</p>
-<p><strong><code>GraphicsObjectScanRow</code></strong> (returned by <code>scan</code>):</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>offset</code></td>
-<td>int64</td>
-<td>WI- or Scene-relative offset probed</td>
-</tr>
-<tr>
-<td><code>base</code></td>
 <td>int</td>
-<td>0 = WorldInstance, 1 = Scene</td>
+<td>Height value relative to the tile.</td>
 </tr>
 <tr>
-<td><code>entriesFound</code></td>
-<td>int64</td>
-<td>plausible entries discovered</td>
+<td><code>startCycle</code></td>
+<td>int</td>
+<td>The engine cycle at which this gfx began (or will begin) rendering. The gfx is in a "pending" state until <code>currentCycle &gt;= startCycle</code>, then plays for the duration baked into its animation definition.</td>
 </tr>
 <tr>
-<td><code>shapeOk</code></td>
+<td><code>framesSinceStart</code></td>
+<td>int</td>
+<td><code>currentFrame - startCycle</code>. Negative while pending, positive while rendering. <strong>Not</strong> a lifetime countdown — the actual end is determined by the animation's own length.</td>
+</tr>
+<tr>
+<td><code>finished</code></td>
 <td>bool</td>
-<td>begin/end/cap looked like a sorted-set</td>
-</tr>
-<tr>
-<td><code>idsLookValid</code></td>
-<td>bool</td>
-<td>plausible cache-group-0xd ids</td>
-</tr>
-<tr>
-<td><code>firstId</code></td>
-<td>int32</td>
-<td>sample id for visual recognition</td>
+<td><code>true</code> once the engine has released the bound animation (the gfx is done playing and will be pruned on the next engine tick).</td>
 </tr>
 </tbody>
 </table>
-<h2 id="live-discovery-workflow">Live-discovery workflow<a class="headerlink" href="#live-discovery-workflow" title="Permanent link">&para;</a></h2>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- 1. Get a known-active gfx in scene (cast a teleport, get hit, …)</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">-- 2. Probe both bases:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">base</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">})</span><span class="w"> </span><span class="kr">do</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">row</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">graphicsObjects</span><span class="p">.</span><span class="nf">scan</span><span class="p">(</span><span class="nv">base</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">row</span><span class="p">.</span><span class="py">idsLookValid</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">row</span><span class="p">.</span><span class="py">entriesFound</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;base=%d offset=0x%X first=%d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">                </span><span class="nv">base</span><span class="p">,</span><span class="w"> </span><span class="nv">row</span><span class="p">.</span><span class="py">offset</span><span class="p">,</span><span class="w"> </span><span class="nv">row</span><span class="p">.</span><span class="py">firstId</span><span class="p">))</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">graphicsObjects</span><span class="p">.</span><span class="nf">setContainerOffset</span><span class="p">(</span><span class="nv">row</span><span class="p">.</span><span class="py">offset</span><span class="p">,</span><span class="w"> </span><span class="nv">base</span><span class="p">)</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="kr">end</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kr">end</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">-- 3. Persists for the rest of the session.</span>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="list-active-gfx-near-the-player">List active gfx near the player<a class="headerlink" href="#list-active-gfx-near-the-player" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">auto</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">position</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">auto</span><span class="w"> </span><span class="n">nearby</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GraphicsObjects</span><span class="o">::</span><span class="n">nearby</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">pos</span><span class="p">.</span><span class="n">plane</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">nearby</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="n">Engine</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gfx id=%d at (%d, %d)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">tileX</span><span class="p">,</span><span class="w"> </span><span class="n">g</span><span class="p">.</span><span class="n">tileZ</span><span class="p">);</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
 </span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">graphicsObjects</span><span class="p">.</span><span class="nf">nearby</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">plane</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;gfx id=%d at (%d, %d)&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">tileX</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">tileZ</span><span class="p">))</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kr">end</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="dodge-dangerous-tiles">Dodge dangerous tiles<a class="headerlink" href="#dodge-dangerous-tiles" title="Permanent link">&para;</a></h3>
+<p>A boss-mechanic dodger. Maintains a set of "lethal" spotanim ids and
+walks the player off any tile currently flagged as dangerous.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Tune for the boss you&#39;re fighting.</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">DANGEROUS_IDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">[</span><span class="mi">1448</span><span class="p">]</span><span class="o">=</span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1295</span><span class="p">]</span><span class="o">=</span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1259</span><span class="p">]</span><span class="o">=</span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="c1">-- Build the current dangerous-tile list from live gfx.</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">danger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">graphicsObjects</span><span class="p">.</span><span class="nf">all</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">DANGEROUS_IDS</span><span class="p">[</span><span class="nv">g</span><span class="p">.</span><span class="py">id</span><span class="p">]</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">finished</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">            </span><span class="nv">danger</span><span class="p">[</span><span class="o">#</span><span class="nv">danger</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="o">=</span><span class="nv">g</span><span class="p">.</span><span class="py">tileX</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="o">=</span><span class="nv">g</span><span class="p">.</span><span class="py">tileZ</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="o">=</span><span class="nv">g</span><span class="p">.</span><span class="py">plane</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="kr">end</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="o">#</span><span class="nv">danger</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="kr">return</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">onDanger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">d</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">danger</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">d</span><span class="p">.</span><span class="py">plane</span><span class="o">==</span><span class="nv">p</span><span class="p">.</span><span class="py">plane</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">d</span><span class="p">.</span><span class="py">x</span><span class="o">==</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">d</span><span class="p">.</span><span class="py">y</span><span class="o">==</span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">            </span><span class="nv">onDanger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="kr">break</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">        </span><span class="kr">end</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">onDanger</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="kr">return</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">    </span><span class="c1">-- Find the closest walkable safe tile and walk there.</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">game</span><span class="p">.</span><span class="nf">findSafeTile</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">danger</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">        </span><span class="nv">game</span><span class="p">.</span><span class="nf">walkSmart</span><span class="p">(</span><span class="nv">safe</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">plane</span><span class="p">)</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;Dodging to (%d, %d)&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">y</span><span class="p">))</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
+<p>See <a href="../Walk/">Walk</a> for <code>findSafeTile</code> / <code>walkSmart</code> / <code>walkFastCanvas</code>
+documentation.</p>
+<h3 id="react-to-a-specific-cast">React to a specific cast<a class="headerlink" href="#react-to-a-specific-cast" title="Permanent link">&para;</a></h3>
+<p>Wait until a particular spotanim id appears and react once it's been
+rendering for a few frames.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">TARGET_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1042</span><span class="w">   </span><span class="c1">-- replace with the id you care about</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">graphicsObjects</span><span class="p">.</span><span class="nf">all</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">TARGET_ID</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">framesSinceStart</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">finished</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">            </span><span class="c1">-- gfx is currently rendering — react now</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">            </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;Target gfx active at (%d, %d)&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">tileX</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">tileZ</span><span class="p">))</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">            </span><span class="kr">return</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="kr">end</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>framesSinceStart</code> is NOT a "time until removal" countdown.</strong> The
+  engine prunes the gfx based on the animation's natural length, not
+  from a counter on the gfx-object itself. Use <code>finished</code> to detect
+  end-of-life.</li>
+<li><strong><code>fineX/fineY</code> vs <code>tileX/tileZ</code>.</strong> Both are exposed for convenience.
+  <code>tileX/tileZ</code> give world tile coordinates; <code>fineX/fineY</code> give the
+  engine's sub-tile units (<code>tile * 128 + 64</code>). For tile-equality
+  comparisons against <code>Player.position()</code>, use <code>tileX/tileZ</code>.</li>
+<li><strong>Pending gfx.</strong> When a spotanim has a start-delay in its packet
+  (chained / sequenced effects), it appears in the list with
+  <code>framesSinceStart &lt; 0</code> before it actually starts rendering. Filter on
+  <code>framesSinceStart &gt;= 0</code> if you only care about currently-visible
+  effects.</li>
+</ul>
 
 
 

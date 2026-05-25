@@ -1458,13 +1458,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-dispatch-should-i-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which dispatch should I use?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#transports" class="md-nav__link">
+  <a href="#walkfastcanvas-single-click-no-client-pathfinding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Transports
+        walkFastCanvas — single-click, no client pathfinding
       
     </span>
   </a>
@@ -1472,10 +1489,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
+  <a href="#walksmart-automatic-dispatch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example
+        walkSmart — automatic dispatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#findsafetile-pick-the-closest-walkable-tile-not-in-danger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        findSafeTile — pick the closest walkable tile not in danger
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#to-full-pathfinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to — full pathfinder
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transports-full-pathfinder-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transports (full pathfinder only)
       
     </span>
   </a>
@@ -1589,13 +1639,30 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-dispatch-should-i-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which dispatch should I use?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
-  <a href="#transports" class="md-nav__link">
+  <a href="#walkfastcanvas-single-click-no-client-pathfinding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Transports
+        walkFastCanvas — single-click, no client pathfinding
       
     </span>
   </a>
@@ -1603,10 +1670,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
+  <a href="#walksmart-automatic-dispatch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example
+        walkSmart — automatic dispatch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#findsafetile-pick-the-closest-walkable-tile-not-in-danger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        findSafeTile — pick the closest walkable tile not in danger
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#to-full-pathfinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to — full pathfinder
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transports-full-pathfinder-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transports (full pathfinder only)
       
     </span>
   </a>
@@ -1631,14 +1731,13 @@
 
 
 <h1 id="walk">Walk<a class="headerlink" href="#walk" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Walk</code> / <code>srs.walk</code></p>
-<p>High-level navigation facade over <code>PathExecutor</code>. Handles pathfinding
-(local A* + DaxWalker fallback), multi-leg navigation, transport
-invocation, and stall recovery internally.</p>
-<p>Plugins should call <code>Walk::to(ctx, x, y)</code> and then poll <code>Walk::hasArrived</code>
-each tick instead of reaching into <code>ctx.pathExecutor</code> directly.</p>
+<p><code>srs::api::Walk</code> / <code>srs.walk</code> + <code>game.*</code> aliases</p>
+<p>Navigation API covering full pathfinding, single-tile clicks, and
+safe-tile selection. The same C++ surface is exposed both as
+<code>srs::api::Walk</code> and on the Lua <code>game.*</code> table for short, readable
+script call sites.</p>
 <p>All calls are safe no-ops (returning <code>false</code> / <code>true</code> depending on
-intent) when <code>ctx.pathExecutor</code> isn't wired (pre-init host).</p>
+intent) when the executor isn't wired (pre-init host).</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1650,91 +1749,224 @@ intent) when <code>ctx.pathExecutor</code> isn't wired (pre-init host).</p>
 </thead>
 <tbody>
 <tr>
-<td>Walk to tile</td>
+<td>Path-routed walk (hybrid)</td>
 <td><code>Walk::to(ctx, x, y, useTransports=true) → bool</code></td>
-<td><code>srs.walk.to(x, y, useTransports?) → bool</code></td>
+<td><code>srs.walk.to(x, y, useTransports?) → bool</code><br><code>game.moveTo(x, y[, useTransports]) → bool</code></td>
+</tr>
+<tr>
+<td>Path-routed canvas walk</td>
+<td>—</td>
+<td><code>game.walkTo(x, y[, useTransports]) → bool</code></td>
+</tr>
+<tr>
+<td>Path-routed minimap walk</td>
+<td>—</td>
+<td><code>game.minimapWalkTo(x, y[, useTransports]) → bool</code></td>
+</tr>
+<tr>
+<td><strong>Single-click canvas walk</strong></td>
+<td><code>Walk::fastCanvas(ctx, x, y, plane=-1) → bool</code></td>
+<td><code>game.walkFastCanvas(x, y[, plane]) → bool</code></td>
+</tr>
+<tr>
+<td><strong>Smart auto-dispatch</strong></td>
+<td><code>Walk::walkSmart(ctx, x, y, plane=-1) → bool</code></td>
+<td><code>game.walkSmart(x, y[, plane]) → bool</code></td>
+</tr>
+<tr>
+<td><strong>Find a safe walkable tile</strong></td>
+<td><code>Walk::findSafeTile(ctx, originX, originY, danger, radius, plane=-1) → SafeTile</code></td>
+<td><code>game.findSafeTile(originX, originY, danger[, radius[, plane]]) → table \| nil</code></td>
 </tr>
 <tr>
 <td>Stop walking</td>
 <td><code>Walk::cancel(ctx)</code></td>
-<td><code>srs.walk.cancel()</code></td>
+<td><code>srs.walk.cancel()</code> / <code>game.cancelMove()</code></td>
 </tr>
 <tr>
 <td>Currently walking</td>
 <td><code>Walk::isMoving(ctx) → bool</code></td>
-<td><code>srs.walk.isMoving() → bool</code></td>
+<td><code>srs.walk.isMoving()</code> / <code>game.isMoving() → bool</code></td>
 </tr>
 <tr>
 <td>At goal</td>
 <td><code>Walk::hasArrived(ctx) → bool</code></td>
-<td><code>srs.walk.hasArrived() → bool</code></td>
+<td><code>srs.walk.hasArrived()</code> / <code>game.hasArrived() → bool</code></td>
+</tr>
+<tr>
+<td>Tile walkable?</td>
+<td>—</td>
+<td><code>game.isWalkable(x, y) → bool</code></td>
 </tr>
 </tbody>
 </table>
+<h3 id="which-dispatch-should-i-use">Which dispatch should I use?<a class="headerlink" href="#which-dispatch-should-i-use" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Long-distance navigation, may need transports/multi-leg</td>
+<td><code>srs.walk.to</code> / <code>game.moveTo</code></td>
+</tr>
+<tr>
+<td>Force minimap clicks (long-haul behavior even close-up)</td>
+<td><code>game.minimapWalkTo</code></td>
+</tr>
+<tr>
+<td>Force canvas clicks throughout the path</td>
+<td><code>game.walkTo</code></td>
+</tr>
+<tr>
+<td>Short, time-critical dodge (1–2 ticks, single tile)</td>
+<td><code>game.walkFastCanvas</code></td>
+</tr>
+<tr>
+<td>"Just get me there, I don't care how"</td>
+<td><code>game.walkSmart</code></td>
+</tr>
+<tr>
+<td>Pick the closest safe tile, then walk there</td>
+<td><code>game.findSafeTile</code> + <code>game.walkSmart</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="walkfastcanvas-single-click-no-client-pathfinding"><code>walkFastCanvas</code> — single-click, no client pathfinding<a class="headerlink" href="#walkfastcanvas-single-click-no-client-pathfinding" title="Permanent link">&para;</a></h2>
+<p>Fires one canvas "Walk here" click at the destination tile and returns
+immediately. The OSRS server resolves the route, the client does no
+A*.</p>
+<p>Use this for short, time-critical movements where you need a single
+click to fire on the current tick (dodging a falling-rocks tile,
+side-stepping a tick-attack hitbox).</p>
+<p><strong>Behavior:</strong></p>
 <ul>
-<li><code>to</code> returns <code>false</code> if the executor isn't available or refused to
-  start the walk (already-arrived, identical goal, etc.).</li>
-<li><code>useTransports = false</code> forces a walk-only path (free accounts,
-  missing quest reqs).</li>
-<li>Plane is read from the player's current plane — there's no
-  cross-plane API surface yet. Cross-plane navigation still works
-  via transports (manholes, ladders, stairs) — the destination
-  argument is a world tile, the executor will route through whichever
-  plane transitions are needed.</li>
-<li><code>hasArrived</code> returns <code>true</code> when no walk has been issued yet (or
-  the executor got as close as <code>PathExecutor::CLOSE_ENOUGH</code> allows).</li>
+<li>Returns <code>false</code> if the tile is off-viewport (the engine can't click
+  what it can't see). Camera angle matters — tiles behind the player or
+  above the screen edge don't project.</li>
+<li>No path validation. If a wall sits between you and the target, the
+  server walks around it (or refuses); the client has no opinion.</li>
+<li>No arrival polling. It's fire-and-forget. Re-check
+  <code>srs.player.position()</code> next tick if you need to confirm.</li>
+<li><code>plane</code> defaults to the player's current plane.</li>
 </ul>
-<h2 id="transports">Transports<a class="headerlink" href="#transports" title="Permanent link">&para;</a></h2>
-<p>When <code>useTransports = true</code> (default), the executor invokes doors,
-agility shortcuts, fairy rings, manholes, ladders, etc. automatically
-as the path crosses them. Scripts don't need to detect or fire these
-themselves — call <code>to(x, y)</code> with a destination on the far side of a
-transport and the walker handles the rest.</p>
-<p>A few things the executor handles internally so you don't have to:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Side-step east by one tile, immediately.</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">game</span><span class="p">.</span><span class="nf">walkFastCanvas</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">plane</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="walksmart-automatic-dispatch"><code>walkSmart</code> — automatic dispatch<a class="headerlink" href="#walksmart-automatic-dispatch" title="Permanent link">&para;</a></h2>
+<p>Picks <code>walkFastCanvas</code> if the target tile projects onto the canvas,
+otherwise falls back to the hybrid path executor (<code>Walk::to</code>).</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Caller doesn&#39;t need to know whether the tile is visible.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">game</span><span class="p">.</span><span class="nf">walkSmart</span><span class="p">(</span><span class="nv">targetX</span><span class="p">,</span><span class="w"> </span><span class="nv">targetY</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Returns <code>true</code> if a walk was dispatched. Useful when you have a target
+tile from some computation (<code>findSafeTile</code>, a script's own planning,
+etc.) and don't care which dispatch path is used.</p>
+<h2 id="findsafetile-pick-the-closest-walkable-tile-not-in-danger"><code>findSafeTile</code> — pick the closest walkable tile not in danger<a class="headerlink" href="#findsafetile-pick-the-closest-walkable-tile-not-in-danger" title="Permanent link">&para;</a></h2>
+<p>Searches outward by Chebyshev distance from <code>(originX, originY)</code> for the
+closest tile that satisfies all of:</p>
+<ol>
+<li>Not in the <code>dangerTiles</code> list (plane-aware match).</li>
+<li>Walkable according to the live collision map.</li>
+<li><strong>Preferably</strong> on the current canvas (one-click reachable).</li>
+</ol>
+<p>The origin tile itself is skipped — call this when the origin is the
+problem. If multiple candidates tie on distance, on-canvas tiles win
+(so the result can usually be reached via <code>walkFastCanvas</code>). If the
+search exhausts without finding any on-canvas safe tile, the closest
+off-canvas safe tile is returned (so <code>walkSmart</code> can fall back to the
+path executor for the multi-tick approach).</p>
+<p><strong>Arguments:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Arg</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>originX, originY</code></td>
+<td>—</td>
+<td>Where to search around (usually the player's current tile).</td>
+</tr>
+<tr>
+<td><code>dangerTiles</code></td>
+<td>—</td>
+<td>List of <code>{x=, y=, plane=}</code> tables. <code>plane</code> defaults to the search plane if omitted.</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td><code>5</code></td>
+<td>Search radius in tiles (Chebyshev). Capped at 32.</td>
+</tr>
+<tr>
+<td><code>plane</code></td>
+<td><code>-1</code></td>
+<td>Search plane. <code>-1</code> uses the player's current plane.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong> (Lua):</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">onCanvas</span><span class="o">=</span><span class="kc">true</span><span class="o">|</span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nv">walkable</span><span class="o">=</span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p>or <code>nil</code> if nothing in range qualifies.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">danger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="nv">x</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">plane</span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1">-- I&#39;m standing on it</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kd">local</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">game</span><span class="p">.</span><span class="nf">findSafeTile</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">danger</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kr">if</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nv">game</span><span class="p">.</span><span class="nf">walkSmart</span><span class="p">(</span><span class="nv">safe</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">plane</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kr">end</span>
+</span></code></pre></div>
+<h2 id="to-full-pathfinder"><code>to</code> — full pathfinder<a class="headerlink" href="#to-full-pathfinder" title="Permanent link">&para;</a></h2>
+<p>The original navigation API. Runs the local A* (or <code>StaticPathfinder</code>
+across regions) and executes the path with hybrid minimap/canvas clicks
+across multiple ticks. Handles transports automatically.</p>
 <ul>
-<li><strong>Live object-tile resolution.</strong> The Skretzo/Microbot <code>transports.tsv</code>
-  origin column is the player STAND tile, not the LocType's actual tile
-  (the object often sits 1 tile off). The walker queries the live scene
-  by object id at fire time and uses the engine-visible tile, so OPLOC1
-  packets aren't silently rejected.</li>
+<li><code>useTransports = true</code> (default): doors, agility shortcuts, fairy
+  rings, manholes, ladders, etc. are invoked as the path crosses them.
+  Set <code>false</code> to force a walk-only path (free accounts, missing quest
+  reqs).</li>
+<li>Plane is read from the player's current plane — there's no
+  cross-plane API surface, but cross-plane navigation still works via
+  transports.</li>
+<li><code>hasArrived()</code> returns <code>true</code> when no walk has been issued yet, or
+  the executor reached <code>PathExecutor::CLOSE_ENOUGH</code> of the goal.</li>
+</ul>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1">-- … later ticks …</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">hasArrived</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nf">doStuffAtDestination</span><span class="p">()</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kr">end</span>
+</span></code></pre></div>
+<h2 id="transports-full-pathfinder-only">Transports (full pathfinder only)<a class="headerlink" href="#transports-full-pathfinder-only" title="Permanent link">&para;</a></h2>
+<p>When <code>useTransports = true</code>, the executor handles:</p>
+<ul>
+<li><strong>Live object-tile resolution.</strong> The transport-table origin column is
+  the player STAND tile, not the LocType's actual tile (the object
+  often sits 1 tile off). The walker queries the live scene by object
+  id at fire time so OPLOC1 packets aren't silently rejected.</li>
 <li><strong>Multi-step transport chains.</strong> Manholes (Open → Climb-down),
-  levers-then-doors, and similar two-row TSV entries with the same
+  levers-then-doors, and similar two-row entries with the same
   origin+destination are emitted as a chain. The walker advances
-  through them automatically when it detects the live object's id
-  has flipped to the next step's expected value.</li>
+  through them when it detects the live object's id has flipped to the
+  next step.</li>
 <li><strong>Recalculation on completion.</strong> After any transport (success or
   timeout), the executor re-plans from the player's actual landing
-  tile — cross-plane edges where the engine commits the plane swap
-  before settling the tile coord are handled, as are partial failures.</li>
+  tile.</li>
 </ul>
-<p>If you have a character that genuinely can't use a transport on the
-shortest route (missing agility level, no Lunar spellbook, etc.) and
-the pathfinder still tries to route through it, pass <code>useTransports
-= false</code> to force a walk-only path. Future work will plumb live
-skill/quest filters into <code>PathfinderConfig</code> so this gate isn't
-needed.</p>
-<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Walk</span><span class="o">::</span><span class="n">to</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">);</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// ... later ticks ...</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Walk</span><span class="o">::</span><span class="n">hasArrived</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="n">doStuffAtDestination</span><span class="p">();</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
-</span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">)</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">-- ... later ticks ...</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">hasArrived</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nf">doStuffAtDestination</span><span class="p">()</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
+<p>If your character genuinely can't use a transport on the shortest route
+(missing agility level, no Lunar spellbook, etc.) and the pathfinder
+still tries to route through it, pass <code>useTransports = false</code> to force
+a walk-only path.</p>
+<p><code>walkFastCanvas</code> does <strong>not</strong> invoke transports — it's a one-shot
+canvas click, so anything more elaborate than "click this tile" needs
+the full pathfinder.</p>
 
 
 

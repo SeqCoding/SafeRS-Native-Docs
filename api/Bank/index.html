@@ -1912,30 +1912,60 @@ the buffer before returning.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Per-digit flow</strong> (mirrors Microbot's <code>Rs2Bank.handleBankPin</code>):</p>
+<p><strong>Per-call flow</strong> (one keypad click per pulse — tick-driven):</p>
 <ol>
-<li>Poll widget <code>(213, 10)</code> for the instruction text (<code>"FIRST digit"</code>,
-   <code>"SECOND digit"</code>, <code>"THIRD digit"</code>, <code>"FOURTH digit"</code>) — up to 2 s.</li>
-<li>Scan group <code>213</code> for a widget whose <code>text</code> equals the digit char.</li>
-<li>Fire <code>CC_OP</code> at that widget through <code>Interact::performWidget</code> —
-   packet + mouse spoof, same dispatch path as every other Bank click.</li>
-<li>Sleep ~250 ms for the engine to advance the instruction widget.</li>
+<li>Bail with <code>true</code> (no-op success) if the PIN widget isn't open.</li>
+<li>Bail with <code>false</code> if no account is bound, the account has no PIN, or
+   the keypad's digit labels haven't been populated yet (the engine's
+   CS2 script that writes them runs on the next engine tick after the
+   keypad opens — see "Why tick-driven" below).</li>
+<li>Read widget <code>(213, 10)</code> to determine which digit position the keypad
+   is currently asking for (<code>FIRST</code> / <code>SECOND</code> / <code>THIRD</code> / <code>FOURTH</code>).
+   Bail with <code>false</code> if the text doesn't match yet (engine mid-update).</li>
+<li>Lease the PIN, look up the digit char for the current position, scan
+   the keypad letter slots' dynamic children for one whose text matches.</li>
+<li>Prime the mouse-spoof ring + write the LL-hook AFK timestamps, then
+   synthesize a <code>WM_MOUSEMOVE</code> / <code>WM_LBUTTONDOWN</code> / <code>WM_LBUTTONUP</code>
+   sequence on the game window via the engine's own <code>WndProc</code>. The
+   engine's input pipeline emits the natural <code>MOUSE_MOVE_1/2</code> +
+   <code>CLICK_1/2</code> + <code>CC_OP</code> packet on its next tick.</li>
+<li>Drop the lease (destructor zeros the PIN bytes).</li>
 </ol>
+<p><strong>Why tick-driven</strong>: when the script itself opened the bank, the queued
+<code>DoAction</code> for the banker click and the CS2 script that writes the
+keypad's digit labels both run on the <strong>engine main thread</strong> — which is
+the same thread the script's <code>pulse</code> callback runs on. Blocking inside
+<code>handleBankPin</code> (via <code>sleep_for</code>) starves the engine of the very frames
+it needs to populate those labels, so the wait would time out even
+though the keypad is visible. Each call now returns in &lt;1 ms with no
+blocking; the script re-polls every tick until the widget closes.</p>
+<p><strong>Why <code>WndProc</code> synth instead of the packet path</strong>: real-player keypad
+clicks route through the <strong>dyn child's wrapper pointer</strong> (verified via
+live packet capture 2026-05-23), but <code>Interact::resolveWidget(group,
+child)</code> returns the static parent's wrapper. The packet path produced
+silently-dropped packets. Letting the engine's own input pipeline turn a
+<code>WndProc</code> click into the wire packet bypasses that mismatch and matches
+real-player wire bytes — same mechanism <code>Tab::switchTo</code> and
+<code>Interact::walkToMinimapPoint</code> use.</p>
 <p><strong>Return values:</strong></p>
 <ul>
-<li><code>true</code> — PIN widget isn't open (no-op) or all 4 digits dispatched.</li>
-<li><code>false</code> — no account bound, account has no PIN, instruction text didn't
-  appear within 2 s, the digit widget can't be found in group 213, or the
-  click dispatch was refused.</li>
+<li><code>true</code> — PIN widget isn't open (no-op) <strong>or</strong> a click was dispatched
+  this tick.</li>
+<li><code>false</code> — no account bound, account has no PIN, keypad labels aren't
+  populated yet, instruction text doesn't match a known phrase, the
+  digit widget can't be found in group 213, or the WndProc hook isn't
+  installed yet.</li>
 </ul>
-<p><strong>Blocking:</strong> up to ~8 s per call (4 × 2 s instruction timeout). Call from
-a script tick — never from the render thread.</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">isPinOpen</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">handleBankPin</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nv">osrs</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="s2">&quot;Bank PIN entry failed — bind a PIN via the launcher Accounts panel&quot;</span><span class="p">)</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kr">return</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="kr">end</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kr">end</span>
+<p><strong>Calling pattern</strong> — call every pulse while the PIN widget is open:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">pulse</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">isPinOpen</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">hasBoundBankPin</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nv">osrs</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="s2">&quot;Bind an account with a PIN via the launcher Accounts panel&quot;</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="kr">return</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">handleBankPin</span><span class="p">()</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="kr">end</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 <p>To set a PIN for an account, open the launcher's <strong>Accounts</strong> modal,
 enter a 4-digit PIN in the "Bank PIN" field, and save. The PIN is
