@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -894,6 +898,62 @@
     
   
     GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
   
 
     
@@ -1688,9 +1748,9 @@ all-in-one <a href="../Camera/"><code>srs.camera.keyboardRotateTo*</code></a> he
 <td>Press now, schedule release in <code>holdMs</code></td>
 </tr>
 <tr>
-<td>Tap a key (OS-level)</td>
+<td>Tap a key (deprecated alias)</td>
 <td><code>srs.input.osKeyTap(vk, holdMs)</code></td>
-<td>Same, but via <code>SendInput</code> — updates system kbd state</td>
+<td>Forwards to <code>keyTap</code> — same WndProc path</td>
 </tr>
 <tr>
 <td>Any release scheduled?</td>
@@ -1700,27 +1760,12 @@ all-in-one <a href="../Camera/"><code>srs.camera.keyboardRotateTo*</code></a> he
 </tbody>
 </table>
 <h3 id="keytap-vs-oskeytap">keyTap vs osKeyTap<a class="headerlink" href="#keytap-vs-oskeytap" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variant</th>
-<th>Path</th>
-<th>When to use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>keyTap</code></td>
-<td>WndProc message injection</td>
-<td>Most game-input scenarios; deterministic</td>
-</tr>
-<tr>
-<td><code>osKeyTap</code></td>
-<td><code>SendInput</code> syscall</td>
-<td>Arrow keys / movement keys the engine polls via <code>GetAsyncKeyState</code> instead of WM_KEYDOWN. <strong>Requires the game window to be foreground.</strong></td>
-</tr>
-</tbody>
-</table>
+<p>There is now <strong>one</strong> path: all scripted input goes through WndProc
+(<code>CallWindowProcW</code>), which is per-window and so works in the background
+and across multiple clients. <code>osKeyTap</code> is a <strong>deprecated alias</strong> that
+forwards to <code>keyTap</code> — it no longer uses <code>SendInput</code> and has no
+foreground requirement. Prefer <code>keyTap</code>; <code>osKeyTap</code> is kept only so older
+ported scripts keep compiling.</p>
 <p><code>keyTap</code> release fires from <code>InputManager::update()</code> which runs every
 rendered frame (~16 ms granularity, driven by <code>PathExecutor::onFrame</code>
 in dllmain). <code>holdMs &lt; 0</code> is clamped to 0.</p>
@@ -1772,7 +1817,7 @@ in dllmain). <code>holdMs &lt; 0</code> is clamped to 0.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Calibrate yaw-rotation rate: hold left arrow for 1s, measure delta</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">y0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">getYaw</span><span class="p">()</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="nf">osKeyTap</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="py">VK</span><span class="p">.</span><span class="py">LEFT</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="nf">keyTap</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="py">VK</span><span class="p">.</span><span class="py">LEFT</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">nextTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">y1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">getYaw</span><span class="p">()</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;Δyaw over 1s = %d units&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">((</span><span class="nv">y1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">y0</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2048</span><span class="p">))</span>

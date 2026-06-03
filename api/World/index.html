@@ -400,6 +400,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -892,6 +896,62 @@
     
   
     GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
   
 
     
@@ -1606,10 +1666,23 @@ touching memory directly.</p>
 <td><code>World::getId(ctx) → int32</code></td>
 <td><code>srs.world.getId() → int</code></td>
 </tr>
+<tr>
+<td>Seamless world hop</td>
+<td><code>World::hopTo(ctx, world) → bool</code></td>
+<td><code>srs.world.hopTo(world) → bool</code></td>
+</tr>
 </tbody>
 </table>
-<p>Returns <code>-1</code> if GS isn't resolved or the value is the pre-login
+<p><code>getId</code> returns <code>-1</code> if GS isn't resolved or the value is the pre-login
 sentinel.</p>
+<p><code>hopTo</code> performs a seamless in-game world switch (the native
+world-switcher — no logout). It is scheduled onto the engine main thread,
+so it returns as soon as the hop is <strong>accepted</strong>, not when the new world
+finishes loading — poll <code>getId()</code> / <code>Game::state()</code> for completion.
+Returns <code>false</code> (nothing scheduled) when not logged in, when <code>world</code> is
+the current world, when <code>world</code> isn't a known world, or when the engine
+isn't resolved. Must be logged in; for a members world the account must be
+a member (the engine silently rejects ineligible targets).</p>
 
 
 

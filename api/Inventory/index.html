@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -914,6 +918,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GraphicsObjects/" class="md-nav__link">
         
   
@@ -1073,6 +1133,17 @@
     <span class="md-ellipsis">
       
         Actions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-item-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use item on…
       
     </span>
   </a>
@@ -1614,6 +1685,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#use-item-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use item on…
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1751,6 +1833,16 @@ DoAction).</p>
 <td><code>srs.inventory.interactByName(name, action) → bool</code></td>
 </tr>
 <tr>
+<td>Click lowest dose of a potion family</td>
+<td><code>Inventory::interactByLowestDose(ctx, baseName, action) → bool</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Examine slot's item</td>
+<td><code>Inventory::examine(ctx, slot) → bool</code></td>
+<td><code>srs.inventory.examine(slot) → bool</code></td>
+</tr>
+<tr>
 <td>Drop all by id</td>
 <td><code>Inventory::dropAll(ctx, id) → int32</code></td>
 <td><code>srs.inventory.dropAll(id) → int</code></td>
@@ -1760,15 +1852,87 @@ DoAction).</p>
 <td><code>Inventory::dropAll(ctx, name) → int32</code></td>
 <td><code>srs.inventory.dropAll(name) → int</code></td>
 </tr>
+<tr>
+<td>Drops still queued</td>
+<td><code>Inventory::pendingDropCount(ctx) → int32</code></td>
+<td><code>srs.inventory.pendingDropCount() → int</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>action</code> is the exact menu-option string (e.g. <code>"Eat"</code>, <code>"Drop"</code>,
 <code>"Wield"</code>, <code>"Bury"</code>, <code>"Drink"</code>, <code>"Use"</code>). Returns <code>false</code> on any of:
 slot out of range, slot empty, action not in the opcode table, slot
 widget not currently rendered, or spoofer failure.</p>
-<p><code>dropAll</code> returns the number of drops queued. Each drop fires its own
-DoAction on the next render frame the slot is visible — most callers
-will run <code>dropAll</code> once per game tick.</p>
+<p><code>interactByLowestDose</code> targets the <strong>lowest</strong> dose of a potion family —
+<code>interactByLowestDose(ctx, "Prayer potion", "Drink")</code> drinks a <code>(1)</code>
+before a fresh <code>(4)</code> to free inventory slots sooner (the trailing <code>(N)</code>
+is stripped from <code>baseName</code>). C++-facade only; no Lua binding.</p>
+<p><code>examine</code> fires the item's right-click <strong>Examine</strong> and the engine prints
+the description to chat (info-only, no server cost).</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>dropAll</code> is asynchronous — poll <code>pendingDropCount</code></p>
+<p><code>dropAll</code> returns the number of drops it <strong>queued</strong> and schedules them
+with human-like spacing (~50–200 ms apart plus a slot-distance term),
+so a full 28-slot drop plays out over several seconds. Do <strong>not</strong> call
+<code>dropAll</code> again each tick to "keep dropping" — that re-queues the whole
+set. Fire it once, then treat the drop as finished when
+<code>pendingDropCount()</code> returns <code>0</code>.</p>
+</div>
+<h2 id="use-item-on">Use item on…<a class="headerlink" href="#use-item-on" title="Permanent link">&para;</a></h2>
+<p>Stage an inventory item, then apply it to a target (the Microbot
+<code>Rs2Inventory.useItemOn*</code> mirror). Each takes either ids or a
+<code>(srcSlot, entry)</code> overload where <code>entry</code> is the finder result from the
+matching module.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>…on object</td>
+<td><code>Inventory::useItemOnObject(ctx, itemId, objectId) → bool</code></td>
+<td><code>srs.inventory.useItemOnObject(itemId, objectId) → bool</code></td>
+</tr>
+<tr>
+<td>…on object (slot + entry)</td>
+<td><code>Inventory::useItemOnObject(ctx, srcSlot, GameObjectEntry) → bool</code></td>
+<td><code>srs.inventory.useItemOnObject(srcSlot, entry) → bool</code></td>
+</tr>
+<tr>
+<td>…on item</td>
+<td><code>Inventory::useItemOnItem(ctx, srcItemId, dstItemId) → bool</code></td>
+<td><code>srs.inventory.useItemOnItem(srcId, dstId) → bool</code></td>
+</tr>
+<tr>
+<td>…on item, burst mode</td>
+<td><code>Inventory::useItemOnItemBatch(ctx, srcItemId, dstItemId, count) → bool</code></td>
+<td><code>srs.inventory.useItemOnItemBatch(srcId, dstId, count) → bool</code></td>
+</tr>
+<tr>
+<td>…on NPC</td>
+<td><code>Inventory::useItemOnNpc(ctx, itemId, npcId) → bool</code></td>
+<td><code>srs.inventory.useItemOnNpc(itemId, npcId) → bool</code></td>
+</tr>
+<tr>
+<td>…on ground item</td>
+<td><code>Inventory::useItemOnGroundItem(ctx, itemId, groundItemId) → bool</code></td>
+<td><code>srs.inventory.useItemOnGroundItem(itemId, groundItemId) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>useItemOnItem</code> picks the first inventory slot holding each id (returns
+<code>false</code> if both resolve to the same slot). <code>useItemOnItemBatch</code> repeats the
+item-on-item up to <code>count</code> ∈ [1, 8] times for fast-fletching-style bursts.</p>
+<div class="admonition warning">
+<p class="admonition-title">Not yet wired</p>
+<p><code>useItemOnNpc</code> and <code>useItemOnGroundItem</code> are skeletons — they log and
+return <code>false</code> pending a captured wire format. <code>useItemOnObject</code> and
+<code>useItemOnItem</code> are live.</p>
+</div>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>InventoryItem</code></strong> (read-only):</p>
 <table>

@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -675,6 +679,17 @@
     <span class="md-ellipsis">
       
         Rotation (default — memory write)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ensure-visible-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ensure visible (C++)
       
     </span>
   </a>
@@ -1062,6 +1077,62 @@
     
   
     GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
   
 
     
@@ -1713,6 +1784,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ensure-visible-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ensure visible (C++)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mouse-rotation-family" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1972,8 +2054,13 @@ keyboard for the script.</p>
 </tbody>
 </table>
 <div class="admonition note">
-<p class="admonition-title">Zoom Impl</p>
-<p>Zoom is currently broken</p>
+<p class="admonition-title">How zoom works</p>
+<p>OSRS has no user-zoom integer — camera distance derives from pitch +
+viewport. <code>getZoom</code> returns a value normalized to DreamBot's
+<code>[330, 3000]</code> range, and <code>setZoom</code> reaches a target by injecting
+<code>WM_MOUSEWHEEL</code> events (see <a href="#zoom">Zoom</a> below). Convergence is
+best-effort: <code>setZoom</code> returns <code>false</code> if it can't settle within
+tolerance.</p>
 </div>
 <h2 id="rotation-default-memory-write">Rotation (default — memory write)<a class="headerlink" href="#rotation-default-memory-write" title="Permanent link">&para;</a></h2>
 <p>All <code>rotateTo*</code> calls clamp pitch to <code>[128, 383]</code> and mask yaw with
@@ -2018,6 +2105,34 @@ keyboard for the script.</p>
 <p>Interrupt-condition overloads (C++): <code>rotateToTile</code> and
 <code>rotateToEntity</code> accept a <code>Predicate interrupt</code> polled between
 micro-steps. Return <code>true</code> from it to abort early.</p>
+<h2 id="ensure-visible-c">Ensure visible (C++)<a class="headerlink" href="#ensure-visible-c" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ensure a tile is on-screen</td>
+<td><code>Camera::ensureVisible(ctx, tile) → bool</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Ensure an entity is on-screen</td>
+<td><code>Camera::ensureVisible(ctx, target) → bool</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Opt-in helper to call before a canvas click: a no-op returning <code>true</code>
+when the target already projects to visible pixels, otherwise it rotates
+via <code>rotateToTile</code> / <code>rotateToEntity</code>. Returns <code>false</code> only when camera
+state can't be read or the rotation faults. A <code>true</code> does <strong>not</strong>
+guarantee same-frame projection — the engine renders one frame after the
+angle write, so the pixel lands on-screen next frame. C++-facade only.</p>
 <h2 id="mouse-rotation-family">Mouse-rotation family<a class="headerlink" href="#mouse-rotation-family" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mouseRotateTo, mouseRotateToYaw, mouseRotateToPitch,
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mouseRotateToTile, mouseRotateToEntity

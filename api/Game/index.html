@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -974,6 +978,62 @@
     
   
     GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
   
 
     
@@ -1672,6 +1732,16 @@ reading the live login index.</p>
 <td><code>Game::loginIndex(ctx) → int32</code></td>
 <td><code>srs.game.loginIndex() → int</code></td>
 </tr>
+<tr>
+<td>Members world?</td>
+<td><code>Game::isMembersWorld(ctx) → bool</code></td>
+<td><code>srs.game.isMembersWorld() → bool</code></td>
+</tr>
+<tr>
+<td>Item display name by id</td>
+<td><code>Game::itemName(ctx, itemId) → string</code></td>
+<td><code>srs.game.itemName(id) → string</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>state</code> reads <code>GS+0x2150</code> via <code>GameData</code>.</p>
@@ -1680,6 +1750,16 @@ meaningful when <code>state()</code> is <code>LoginScreen</code> / <code>Logging
 <code>-1</code> when the LoginIndex signature didn't resolve — in that case the
 BreakManager's LoginDriver falls back to widget-based detection.
 See the <code>re_login_index.md</code> memory for the value table.</p>
+<p><code>isMembersWorld</code> is <code>true</code> iff the currently-selected world is a members
+world (RuneLite's <code>WorldType.MEMBERS</code>). It reads the cached world flags;
+returns <code>false</code> pre-login, so use <code>state()</code> to tell pre-login apart from
+an actual F2P world.</p>
+<p><code>itemName</code> resolves an item's in-game display name by id — even for
+<strong>off-screen</strong> items the renderer never touched — by invoking the
+engine's load-on-demand item loader on the engine thread. It <strong>blocks
+briefly</strong> (up to ~3 s) while the load completes, falling back to the live
+cache on timeout, and returns an empty string for <code>id &lt;= 0</code> or total
+failure.</p>
 <h2 id="state-enum">State enum<a class="headerlink" href="#state-enum" title="Permanent link">&para;</a></h2>
 <p><strong><code>State</code></strong> (<code>State</code> / <code>srs.game.state()</code> returns int):</p>
 <table>

@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -914,6 +918,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GraphicsObjects/" class="md-nav__link">
         
   
@@ -1142,6 +1202,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#finding-npcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding NPCs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#methods" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1164,10 +1235,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actiontarget-fields" class="md-nav__link">
+  <a href="#target-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ActionTarget fields
+        Target fields
       
     </span>
   </a>
@@ -1592,6 +1663,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#finding-npcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Finding NPCs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#methods" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1614,10 +1696,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actiontarget-fields" class="md-nav__link">
+  <a href="#target-fields" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ActionTarget fields
+        Target fields
       
     </span>
   </a>
@@ -1654,13 +1736,63 @@
 
 <h1 id="npc">NPC<a class="headerlink" href="#npc" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Npc</code> / <code>srs.npc</code></p>
-<p>Per-NPC actions. The target is an <code>ActionTarget</code> — usually obtained
-from the entity query API (<code>entityQuery</code>) or other facade returns. The
-<code>ActionTarget</code> carries the spawn index and world coords that DoAction
-needs.</p>
-<p>All <code>interact</code> / <code>attack</code> / <code>talkTo</code> / <code>bank</code> calls route through
-<code>Interact</code>, which always spoofs mouse motion + click before DoAction
-(no escape hatch).</p>
+<p>Find NPCs in the scene and act on them. The <code>srs.npc</code> table carries both
+the <strong>finders</strong> (which NPCs are nearby) and the <strong>actions</strong> (attack,
+talk-to, …) so scripts can stay in one table.</p>
+<p>A target is identified by its spawn index + world coords. In C++ the
+finders return <code>NpcEntry</code> (the recommended form for new plugin code); in
+Lua they return the <code>ActionTarget</code> usertype. The action methods accept
+either, so <code>srs.npc.attack(npc)</code> / <code>npc:attack()</code> work on whatever a
+finder handed you.</p>
+<p>All <code>interact</code> / <code>attack</code> / <code>talkTo</code> / <code>bank</code> / <code>examine</code> calls route
+through <code>Interact</code>, which always spoofs mouse motion + click before
+DoAction (no escape hatch).</p>
+<h2 id="finding-npcs">Finding NPCs<a class="headerlink" href="#finding-npcs" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All NPCs in scene</td>
+<td><code>Npc::all(ctx) → vector&lt;NpcEntry&gt;</code></td>
+<td><code>srs.npc.all() → table</code></td>
+</tr>
+<tr>
+<td>By id</td>
+<td><code>Npc::byId(ctx, npcId) → vector&lt;NpcEntry&gt;</code></td>
+<td><code>srs.npc.byId(id) → table</code></td>
+</tr>
+<tr>
+<td>By name</td>
+<td><code>Npc::byName(ctx, name) → vector&lt;NpcEntry&gt;</code></td>
+<td><code>srs.npc.byName(name) → table</code></td>
+</tr>
+<tr>
+<td>Nearest (any)</td>
+<td><code>Npc::nearest(ctx) → optional&lt;NpcEntry&gt;</code></td>
+<td><code>srs.npc.nearest() → ActionTarget \| nil</code></td>
+</tr>
+<tr>
+<td>Nearest by id</td>
+<td><code>Npc::nearestById(ctx, npcId) → optional&lt;NpcEntry&gt;</code></td>
+<td><code>srs.npc.nearestById(id) → ActionTarget \| nil</code></td>
+</tr>
+<tr>
+<td>Nearest by name</td>
+<td><code>Npc::nearestByName(ctx, name) → optional&lt;NpcEntry&gt;</code></td>
+<td><code>srs.npc.nearestByName(name) → ActionTarget \| nil</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>byName</code> / <code>nearestByName</code> normalize the name internally (case- and
+whitespace-insensitive), so pass the in-game name as shown (<code>"Banker"</code>,
+<code>"Grand Exchange Clerk"</code>). These mirror the global <code>entity.*</code> table; the
+<code>srs.npc</code> finders are the recommended going-forward form.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1692,6 +1824,11 @@ needs.</p>
 <td><code>srs.npc.bank(target) → bool</code></td>
 </tr>
 <tr>
+<td>Examine</td>
+<td><code>Npc::examine(ctx, target) → bool</code></td>
+<td><code>srs.npc.examine(target) → bool</code></td>
+</tr>
+<tr>
 <td>Still in world map</td>
 <td><code>Npc::isAlive(ctx, target) → bool</code></td>
 <td><code>srs.npc.isAlive(target) → bool</code></td>
@@ -1699,7 +1836,9 @@ needs.</p>
 </tbody>
 </table>
 <p><code>action</code> is the exact menu-option string the game shows (<code>"Attack"</code>,
-<code>"Talk-to"</code>, <code>"Bank"</code>, <code>"Pickpocket"</code>, <code>"Trade"</code>, <code>"Steal-from"</code>, …).</p>
+<code>"Talk-to"</code>, <code>"Bank"</code>, <code>"Pickpocket"</code>, <code>"Trade"</code>, <code>"Steal-from"</code>, …).
+<code>examine</code> fires the right-click <strong>Examine</strong> and the engine prints the
+NPC's description to chat.</p>
 <div class="admonition note">
 <p class="admonition-title">isAlive semantics</p>
 <p><code>isAlive</code> is a host-side check that the NPC's <code>NpcInstance</code> is
@@ -1720,8 +1859,19 @@ panel column or <code>entity.npcById(...)</code>.</p>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">interact</span><span class="p">(</span><span class="s2">&quot;Pickpocket&quot;</span><span class="p">)</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kr">end</span>
 </span></code></pre></div>
-<h2 id="actiontarget-fields">ActionTarget fields<a class="headerlink" href="#actiontarget-fields" title="Permanent link">&para;</a></h2>
-<p>Read-only:</p>
+<div class="admonition note">
+<p class="admonition-title"><code>examine</code> has no usertype shortcut</p>
+<p><code>examine</code> is the one action <strong>not</strong> exposed as an <code>ActionTarget</code>
+method — there is no <code>npc:examine()</code>. Call <code>srs.npc.examine(npc)</code>.</p>
+</div>
+<h2 id="target-fields">Target fields<a class="headerlink" href="#target-fields" title="Permanent link">&para;</a></h2>
+<p>In <strong>Lua</strong>, finders return the <code>ActionTarget</code> usertype. In <strong>C++</strong>, finders
+return <code>NpcEntry</code> — a plain struct with NPC-specific fields:
+<code>id</code>, <code>spawnIndex</code>, <code>name</code>, <code>tileX</code>, <code>tileY</code>, <code>plane</code>,
+<code>animationId</code> (−1 = idle), <code>orientation</code> (−1 = unknown),
+<code>currentHp</code> / <code>maxHp</code> (−1 = unknown), <code>combatLevel</code> (−1 = unknown). The
+action methods accept either type.</p>
+<p>The <code>ActionTarget</code> usertype (Lua return) — read-only:</p>
 <table>
 <thead>
 <tr>
@@ -1756,7 +1906,7 @@ panel column or <code>entity.npcById(...)</code>.</p>
 </tr>
 <tr>
 <td><code>currentHp</code>, <code>maxHp</code></td>
-<td>Live HP — see <a href="#">Project Status</a> notes on boss scale</td>
+<td>Live HP (−1 = unknown; boss HP scaling is approximate)</td>
 </tr>
 <tr>
 <td><code>interactTarget</code></td>

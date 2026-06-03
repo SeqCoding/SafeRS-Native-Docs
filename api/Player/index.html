@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -894,6 +898,62 @@
     
   
     GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
   
 
     
@@ -1663,6 +1723,11 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td><code>srs.player.position() → WorldTile</code></td>
 </tr>
 <tr>
+<td>Template-space position</td>
+<td><code>Player::templatePosition(ctx) → WorldTile</code></td>
+<td>—</td>
+</tr>
+<tr>
 <td>Display name</td>
 <td><code>Player::displayName(ctx) → string</code></td>
 <td><code>srs.player.displayName() → string</code></td>
@@ -1727,13 +1792,29 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td><code>Player::maxPrayer(ctx) → int32</code></td>
 <td><code>srs.player.maxPrayer() → int</code></td>
 </tr>
+<tr>
+<td>Quest completion state</td>
+<td><code>Player::questState(ctx, Quest) → QuestState</code></td>
+<td><code>srs.player.questState(Quest) → QuestState</code></td>
+</tr>
+<tr>
+<td>Quest raw progress</td>
+<td><code>Player::questProgress(ctx, Quest) → int32</code></td>
+<td><code>srs.player.questProgress(Quest) → int</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="detail">Detail<a class="headerlink" href="#detail" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong><code>position</code></strong> — returns <code>{0, 0, 0}</code> when GS or the player struct
   isn't resolved (pre-login). Callers that care about the
-  difference should check <code>World::getId(ctx) &gt;= 0</code> first.</li>
+  difference should check <code>World::getId(ctx) &gt;= 0</code> first. Inside an
+  instance this is the raw instance-local tile.</li>
+<li><strong><code>templatePosition</code></strong> — same as <code>position</code> outside an instance; inside
+  an instance it maps the raw instance-local tile back through the engine's
+  chunk layout to the <strong>template</strong> world tile (the wiki / RuneLite /
+  Microbot coordinate), falling back to <code>position</code> when the conversion
+  can't be made. C++-facade only — no Lua binding.</li>
 <li><strong><code>displayName</code></strong> — empty string pre-login. Resolved via WI-map
   (GS+0xCA40 → WorldInstance → PlayerSubMap.find(LocalPlayerIndex))
   in patch 238+.</li>
@@ -1753,6 +1834,24 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <li><strong><code>prayer</code> / <code>maxPrayer</code></strong> — current prayer points (live, drains with
   use) + base prayer level. Mirrors <code>srs::api::Prayer::points</code> /
   <code>Prayer::level</code>.</li>
+<li><strong><code>questState</code></strong> — completion bucket for a quest (<code>NotStarted</code> /
+  <code>InProgress</code> / <code>Finished</code>). Backed by the engine's <code>QUEST_STATUS_GET</code>
+  clientscript (CS2 4029) — the same source RuneLite/Microbot use — so it is
+  correct for every quest with no hand-maintained thresholds. The script must
+  run on the engine thread while scripts run on the render thread, so the
+  value is <strong>cached</strong> and refreshed asynchronously on the engine thread
+  (EngineDispatch's non-click work lane, drained on every outbound packet):
+  the first lookup of a given quest returns <code>QuestState::Unknown</code> and kicks
+  off a refresh that lands <strong>within a tick or two on its own — no click
+  needed</strong>, then stays live. Poll until <code>!= Unknown</code>, or just read it each
+  tick. Subsequent reads are instant.</li>
+<li><strong><code>questProgress</code></strong> — the raw varbit/varp that increments as a quest
+  advances (RuneLite <code>QuestVarbits</code> / <code>QuestVarPlayer</code>) — i.e. the step
+  number a questing script wants. Thread-safe and instant (a plain var read,
+  no clientscript). <code>0</code> before the quest is started; quest-specific value as
+  it advances; <code>-1</code> for the handful of quests with no single tracked progress
+  var, or when <code>VarpSystem</code> isn't ready. Use <code>questState</code> for completion;
+  use this for "which step am I on".</li>
 </ul>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>WorldTile</code></strong> (read-only):</p>
@@ -1784,6 +1883,41 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <code>Crafting</code>, <code>Smithing</code>, <code>Mining</code>, <code>Herblore</code>, <code>Agility</code>, <code>Thieving</code>,
 <code>Slayer</code>, <code>Farming</code>, <code>Runecraft</code>, <code>Hunter</code>, <code>Construction</code>, <code>Sailing</code>.</p>
 <p>In Lua: <code>Skill.Hitpoints</code>, etc. (registered at Lua global scope, same as <code>CameraMode</code>).</p>
+<p><strong><code>Quest</code></strong> enum — every quest the engine tracks (currently 209), value
+= stable index. Names + the underlying quest-config struct ids are ported
+from RuneLite's <code>Quest</code> enum (via Microbot's bundled Quest Helper). Examples:
+<code>Quest.CooksAssistant</code>, <code>Quest.DragonSlayerI</code>, <code>Quest.MonkeyMadnessIi</code>,
+<code>Quest.RecipeForDisaster</code>, <code>Quest.DesertTreasureIiTheFallenEmpire</code>. Registered
+at Lua global scope (same as <code>Skill</code>). Regenerate after a game update with
+<code>tools/gen_quest_sources.py</code> (sourced from <code>tools/quest_table.txt</code>).</p>
+<p><strong><code>QuestState</code></strong> enum:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Unknown</code></td>
+<td>Not cached yet — <code>questState</code> hasn't primed for this quest. Sentinel; never returned by the engine</td>
+</tr>
+<tr>
+<td><code>NotStarted</code></td>
+<td>Quest not begun</td>
+</tr>
+<tr>
+<td><code>InProgress</code></td>
+<td>Quest started, not finished</td>
+</tr>
+<tr>
+<td><code>Finished</code></td>
+<td>Quest complete</td>
+</tr>
+</tbody>
+</table>
+<p>In Lua: <code>QuestState.Finished</code>, etc. (registered at Lua global scope).</p>
 
 
 

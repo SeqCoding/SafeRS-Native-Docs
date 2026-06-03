@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -894,6 +898,62 @@
     
   
     GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
   
 
     
@@ -1539,6 +1599,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#scrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scrolling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#click" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1692,6 +1763,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#scrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scrolling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#click" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1812,6 +1894,11 @@ holds the option label or item-derived caption.</p>
 <td><code>Widget::isHidden(ctx, g, c) → bool</code></td>
 <td><code>srs.widget.isHidden(g, c) → bool</code></td>
 </tr>
+<tr>
+<td>Wait until rendered (poll)</td>
+<td><code>Widget::waitVisible(ctx, g, c, timeoutMs) → bool</code></td>
+<td><code>srs.widget.waitVisible(g, c, timeoutMs) → bool</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>isVisible</code> returns <code>true</code> iff the engine actually drew the widget
@@ -1823,6 +1910,9 @@ recursive <code>Widget.isHidden()</code> semantics for free.</p>
 <li><code>isVisible(g, c)</code> → <code>false</code> when widget can't be found</li>
 <li><code>isHidden(g, c)</code> → <code>true</code> when widget can't be found</li>
 </ul>
+<p><code>waitVisible</code> polls until <code>(g, c)</code> is actually rendered or <code>timeoutMs</code>
+elapses, returning the final visibility. Use it to gate keyboard entry on
+a prompt being open — typing into an unrendered box is silently dropped.</p>
 <h2 id="hit-test">Hit-test<a class="headerlink" href="#hit-test" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1846,6 +1936,35 @@ recursive <code>Widget.isHidden()</code> semantics for free.</p>
 </tbody>
 </table>
 <p>Rect fields are absolute screen coords for these two methods.</p>
+<h2 id="scrolling">Scrolling<a class="headerlink" href="#scrolling" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read scroll position</td>
+<td><code>Widget::scrollY(ctx, g, c) → optional&lt;int32&gt;</code></td>
+<td><code>srs.widget.scrollY(g, c) → int \| nil</code></td>
+</tr>
+<tr>
+<td>Write scroll position</td>
+<td><code>Widget::setScrollY(ctx, g, c, y) → bool</code></td>
+<td><code>srs.widget.setScrollY(g, c, y) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>scrollY</code> reads a scrollable widget's vertical scroll offset (<code>nil</code> if it
+isn't resolved / allocated yet). <code>setScrollY</code> writes it — the engine
+picks it up on the next render frame — clamped to
+<code>[0, max(0, scrollHeight − height)]</code>. The visible scrollbar thumb is
+painted by a separate CS2 script we don't invoke, so the thumb may look
+stale until the mouse moves, but items inside the viewport reflect the new
+offset immediately. Backs <code>Bank::scrollToSlot</code>.</p>
 <h2 id="click">Click<a class="headerlink" href="#click" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1861,13 +1980,63 @@ recursive <code>Widget.isHidden()</code> semantics for free.</p>
 <td><code>Widget::click(ctx, g, c, action) → bool</code></td>
 <td><code>srs.widget.click(g, c, action) → bool</code></td>
 </tr>
+<tr>
+<td>Click a specific op (X-aware)</td>
+<td><code>Widget::clickOp(ctx, g, c, op, actionIndex, action, itemId = -1) → bool</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Native CS2-button click (by position)</td>
+<td><code>Widget::clickFire(ctx, g, c) → bool</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Real-input click (whole widget)</td>
+<td><code>Widget::clickReal(ctx, g, c) → bool</code></td>
+<td><code>srs.widget.clickReal(g, c) → bool</code></td>
+</tr>
+<tr>
+<td>Real-input click (dynamic child)</td>
+<td><code>Widget::clickRealDynChild(ctx, g, c, dynIndex) → bool</code></td>
+<td><code>srs.widget.clickRealDynChild(g, c, dynIndex) → bool</code></td>
+</tr>
+<tr>
+<td>Real-input click (sub-rect)</td>
+<td><code>Widget::clickRealAt(ctx, g, c, dx, dy, w, h) → bool</code></td>
+<td><code>srs.widget.clickRealAt(g, c, dx, dy, w, h) → bool</code></td>
+</tr>
 </tbody>
 </table>
-<p>Click a named action on a widget. Resolves the widget's absolute
-screen rect via the live IfRender capture, picks a random point in
-the rect, and routes through <code>Interact</code> (always-on spoof + DoAction).</p>
-<p>For inventory slots prefer <a href="../Inventory/">Inventory::interact</a> — same
-mechanism, narrower API.</p>
+<p><code>click</code> resolves the widget's absolute screen rect via the live IfRender
+capture, picks a random point in the rect, and routes through <code>Interact</code>
+(always-on spoof + DoAction). For inventory slots prefer
+<a href="../Inventory/">Inventory::interact</a> — same mechanism, narrower API.</p>
+<p><code>clickOp</code> is the X-aware sibling of <code>click</code>: it exposes the two DoAction
+fields <code>click</code> hard-codes — <code>op</code> (the menu sub-op selector; <code>-1</code> = none)
+and <code>actionIndex</code> (the spawn index; <code>1</code> for almost all widget actions,
+<code>2</code> for GE coin-collect). <code>itemId</code> carries the item context (<code>-1</code> for
+plain buttons). Always dispatched as a CC_OP (menu slot 57); the <code>action</code>
+string is used only for the entity text + the ~600 ms dedupe key (keyed
+on <code>(slot, group, child, op, action)</code>), so space repeated identical
+sub-op clicks ≥ 1 tick apart. C++-facade only.</p>
+<div class="admonition note">
+<p class="admonition-title">Clicking Grand Exchange buttons</p>
+<p>Some CS2 buttons — every Grand Exchange offer / stepper / confirm /
+collect button — need the engine to build their hover context itself,
+so a synthesized DoAction no-ops on them. Use <code>clickFire</code> (native
+click dispatcher; op resolved by <strong>position</strong>, so the widget's rect
+must land on the intended button) or the <code>clickReal*</code> family (drives
+the real WndProc input pipeline — a curved <code>WM_MOUSEMOVE</code> then
+<code>WM_LBUTTONDOWN</code>/<code>UP</code> to a random point in the rect; focus-independent
+and background / multi-client safe). The <code>clickReal*</code> calls <strong>block</strong>
+until the move + click finishes and return <code>false</code> if the widget isn't
+rendered this frame. <code>clickRealDynChild</code> targets a parent-relative
+dynamic child (search-result rows, side-inventory cells, steppers);
+<code>clickRealAt</code> targets a widget-relative sub-rect (icons that aren't
+separately hit-testable, e.g. an empty GE box's Buy icon). These mostly
+back the <a href="../GrandExchange/">Grand Exchange</a> facade — prefer that
+surface.</p>
+</div>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>WidgetSnapshot</code></strong> (read-only):</p>
 <table>

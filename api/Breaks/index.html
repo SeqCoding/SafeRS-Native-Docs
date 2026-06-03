@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1018,6 +1022,62 @@
     
   
     GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
   
 
     
@@ -1771,8 +1831,23 @@ on themselves.</p>
 <td><code>Breaks::resetFromFailed()</code></td>
 <td><code>srs.breaks.resetFromFailed()</code></td>
 </tr>
+<tr>
+<td>Hop to a world after each relogin (<code>0</code> / <code>-1</code> = off)</td>
+<td><code>Breaks::setHopWorld(world)</code></td>
+<td><code>srs.breaks.setHopWorld(world)</code></td>
+</tr>
+<tr>
+<td>Provide the relogin hop world via callback</td>
+<td><code>Breaks::setHopWorldProvider(fn)</code></td>
+<td>—</td>
+</tr>
 </tbody>
 </table>
+<p><code>setHopWorld</code> / <code>setHopWorldProvider</code> make the BreakManager hop to a
+different world when it logs back in after a break. The provider form
+takes a callback returning the target world each relogin (return <code>&lt;= 0</code>
+to skip) and supersedes the fixed <code>setHopWorld</code>; a <code>0</code> / negative value
+disables hopping. <code>setHopWorldProvider</code> is C++-facade only.</p>
 <h2 id="state-queries">State queries<a class="headerlink" href="#state-queries" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1910,6 +1985,16 @@ unless you intend to signal.</p>
 <td>Max work segment</td>
 </tr>
 <tr>
+<td><code>workSecondsMin</code></td>
+<td>0</td>
+<td>Sub-minute work override — when either bound is <code>&gt; 0</code> it takes precedence over the work-minutes pair</td>
+</tr>
+<tr>
+<td><code>workSecondsMax</code></td>
+<td>0</td>
+<td>Upper bound of the work-seconds override</td>
+</tr>
+<tr>
 <td><code>breakMinutesMin</code></td>
 <td>5</td>
 <td>Min break length</td>
@@ -1918,6 +2003,16 @@ unless you intend to signal.</p>
 <td><code>breakMinutesMax</code></td>
 <td>20</td>
 <td>Max break length</td>
+</tr>
+<tr>
+<td><code>breakSecondsMin</code></td>
+<td>0</td>
+<td>Sub-minute break override — when either bound is <code>&gt; 0</code> it takes precedence over the break-minutes pair</td>
+</tr>
+<tr>
+<td><code>breakSecondsMax</code></td>
+<td>0</td>
+<td>Upper bound of the break-seconds override</td>
 </tr>
 <tr>
 <td><code>dailyPlayCapMinutes</code></td>

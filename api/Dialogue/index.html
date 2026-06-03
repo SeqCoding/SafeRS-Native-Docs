@@ -402,6 +402,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -758,6 +762,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#microbot-style-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microbot-style aliases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -963,6 +984,62 @@
     
   
     GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
   
 
     
@@ -1578,6 +1655,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#microbot-style-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microbot-style aliases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1698,9 +1792,57 @@ number keys 1..9. Option 10+ requires a mouse click on the option row
 <td><code>Dialogue::selectOptionByText(ctx, text) → bool</code></td>
 <td><code>srs.dialogue.selectOptionByText(text) → bool</code></td>
 </tr>
+<tr>
+<td>Current dialogue body text</td>
+<td><code>Dialogue::getDialogueText(ctx) → string</code></td>
+<td><code>srs.dialogue.getDialogueText() → string</code></td>
+</tr>
+<tr>
+<td>Body contains substring</td>
+<td><code>Dialogue::hasDialogueText(ctx, sub) → bool</code></td>
+<td><code>srs.dialogue.hasDialogueText(sub) → bool</code></td>
+</tr>
+<tr>
+<td>Any option contains substring</td>
+<td><code>Dialogue::hasDialogueOption(ctx, sub) → bool</code></td>
+<td><code>srs.dialogue.hasDialogueOption(sub) → bool</code></td>
+</tr>
 </tbody>
 </table>
-<p><code>selectOptionByText</code> is case-insensitive substring matching.</p>
+<p><code>selectOptionByText</code>, <code>hasDialogueText</code>, and <code>hasDialogueOption</code> all use
+case-insensitive substring matching. <code>getDialogueText</code> returns the body
+text of the open dialog (empty if none is up or it hasn't populated yet);
+<code>hasDialogueText</code> / <code>hasDialogueOption</code> are pure queries — they don't
+click.</p>
+<h3 id="microbot-style-aliases">Microbot-style aliases<a class="headerlink" href="#microbot-style-aliases" title="Permanent link">&para;</a></h3>
+<p>Convenience names mirroring Microbot's <code>Rs2Dialogue</code>, available in both
+C++ and Lua — each is a thin wrapper:</p>
+<table>
+<thead>
+<tr>
+<th>Alias</th>
+<th>Same as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>isInDialogue()</code></td>
+<td><code>isOpen()</code></td>
+</tr>
+<tr>
+<td><code>hasSelectAnOption()</code></td>
+<td><code>hasOptions()</code></td>
+</tr>
+<tr>
+<td><code>continueSpace()</code></td>
+<td><code>clickContinue()</code></td>
+</tr>
+<tr>
+<td><code>clickOption(n)</code> / <code>clickOption(text)</code></td>
+<td><code>selectOption(n)</code> / <code>selectOptionByText(text)</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">

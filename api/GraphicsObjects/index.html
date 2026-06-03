@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/GraphicsObjects/">
       
       
-        <link rel="prev" href="../GameObject/">
+        <link rel="prev" href="../GrandExchange/">
       
       
         <link rel="next" href="../GroundItem/">
@@ -328,6 +328,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -911,6 +915,62 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -978,6 +1038,17 @@
     <span class="md-ellipsis">
       
         Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offset-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Offset discovery
       
     </span>
   </a>
@@ -1642,6 +1713,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#offset-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Offset discovery
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#fields" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1735,9 +1817,14 @@
 <p>Read-only enumeration of tile-bound SpotAnims — falling debris during
 boss fights, acid pools (Vasa, Tekton), blood splatters, spell-impact
 tile effects, teleport sparkles, run-energy regen sparkles, and so on.</p>
-<p>The container is auto-bound at DLL load — there's no per-session setup
-required. Calls below start returning data the moment the player is
-logged in.</p>
+<div class="admonition warning">
+<p class="admonition-title">Experimental — offset still being verified</p>
+<p>The container offset on <code>WorldInstance</code> isn't fully live-verified yet.
+The query methods return empty / <code>nil</code> until the offset is pinned for
+your client build — discover it at runtime with <code>scan()</code> and lock it in
+with <code>setContainerOffset()</code> (see <a href="#offset-discovery">Offset discovery</a>).
+Treat every field <strong>except <code>id</code></strong> as provisional.</p>
+</div>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1767,9 +1854,88 @@ logged in.</p>
 </table>
 <p><code>nearby(cx, cz, plane, radius)</code> returns entries whose <code>tileX/tileZ</code> are
 within Chebyshev distance <code>radius</code> of <code>(cx, cz)</code> on the given plane.</p>
-<p><code>next()</code> returns the entry with the smallest <code>startCycle</code> — best-effort
-"first to finish" (the engine doesn't expose a finish cycle, so this is
-a heuristic based on what started rendering longest ago).</p>
+<p><code>next()</code> returns the graphics object that will finish (disappear) soonest,
+or <code>nil</code> when none are active.</p>
+<h2 id="offset-discovery">Offset discovery<a class="headerlink" href="#offset-discovery" title="Permanent link">&para;</a></h2>
+<p>Helpers for pinning the container offset on a new client build (see the
+warning above). Most scripts never need these.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Probe candidate offsets</td>
+<td><code>GraphicsObjects::scan(ctx, base = 0) → vector&lt;GraphicsObjectScanRow&gt;</code></td>
+<td><code>srs.graphicsObjects.scan(base?) → table[]</code></td>
+</tr>
+<tr>
+<td>Pin the container offset</td>
+<td><code>GraphicsObjects::setContainerOffset(ctx, offset, base = 0) → bool</code></td>
+<td><code>srs.graphicsObjects.setContainerOffset(offset, base?) → bool</code></td>
+</tr>
+<tr>
+<td>Read the current offset</td>
+<td><code>GraphicsObjects::containerOffset(ctx) → int64</code></td>
+<td><code>srs.graphicsObjects.containerOffset() → int</code></td>
+</tr>
+<tr>
+<td>Read the current base</td>
+<td><code>GraphicsObjects::containerBase(ctx) → int32</code></td>
+<td><code>srs.graphicsObjects.containerBase() → int</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>scan</code> walks each <code>WorldInstance</code> (<code>base = 0</code>) or its <code>Scene</code> (<code>base = 1</code>)
+looking for a list shaped like the gfx-object container, returning one row
+per candidate. Pick the plausible row and pass its <code>offset</code> / <code>base</code> to
+<code>setContainerOffset</code>; the choice is session-persistent.</p>
+<p><strong><code>GraphicsObjectScanRow</code></strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>offset</code></td>
+<td>int64</td>
+<td>Base-relative offset probed</td>
+</tr>
+<tr>
+<td><code>base</code></td>
+<td>int</td>
+<td><code>0</code> = WorldInstance, <code>1</code> = Scene</td>
+</tr>
+<tr>
+<td><code>entriesFound</code></td>
+<td>int64</td>
+<td>Plausible entries at that offset</td>
+</tr>
+<tr>
+<td><code>shapeOk</code></td>
+<td>bool</td>
+<td>Begin/end looked like a sorted-set</td>
+</tr>
+<tr>
+<td><code>idsLookValid</code></td>
+<td>bool</td>
+<td>Entries had plausible spotanim ids</td>
+</tr>
+<tr>
+<td><code>firstId</code></td>
+<td>int</td>
+<td>A sample id, to recognize the effect</td>
+</tr>
+</tbody>
+</table>
 <h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h2>
 <p>Each entry (Lua: plain table; C++: <code>GraphicsObjectEntry</code>):</p>
 <table>
