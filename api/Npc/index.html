@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -890,6 +898,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -926,6 +962,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1300,6 +1364,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1392,6 +1484,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1791,8 +1911,57 @@ DoAction (no escape hatch).</p>
 </table>
 <p><code>byName</code> / <code>nearestByName</code> normalize the name internally (case- and
 whitespace-insensitive), so pass the in-game name as shown (<code>"Banker"</code>,
-<code>"Grand Exchange Clerk"</code>). These mirror the global <code>entity.*</code> table; the
-<code>srs.npc</code> finders are the recommended going-forward form.</p>
+<code>"Grand Exchange Clerk"</code>). The <code>srs.npc</code> finders are the recommended
+going-forward form.</p>
+<div class="admonition note">
+<p class="admonition-title">Three equivalent finder surfaces</p>
+<p>Lua exposes the same finders three times — all hit the same
+<code>EntityQuery</code> backend, so pick whichever reads best and don't mix
+them for "different" results:</p>
+<table>
+<thead>
+<tr>
+<th>Global <code>npc.*</code></th>
+<th><code>srs.npc.*</code></th>
+<th><a href="../Entity/"><code>entity.*</code></a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npc.all()</code></td>
+<td><code>srs.npc.all()</code></td>
+<td><code>entity.npcs()</code></td>
+</tr>
+<tr>
+<td><code>npc.byId(id)</code></td>
+<td><code>srs.npc.byId(id)</code></td>
+<td><code>entity.npcById(id)</code></td>
+</tr>
+<tr>
+<td><code>npc.byName(name)</code></td>
+<td><code>srs.npc.byName(name)</code></td>
+<td><code>entity.npcByName(name)</code></td>
+</tr>
+<tr>
+<td><code>npc.nearest()</code></td>
+<td><code>srs.npc.nearest()</code></td>
+<td><code>entity.nearestNpc()</code></td>
+</tr>
+<tr>
+<td><code>npc.nearestById(id)</code></td>
+<td><code>srs.npc.nearestById(id)</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>npc.nearestByName(name)</code></td>
+<td><code>srs.npc.nearestByName(name)</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>All return <code>ActionTarget</code> (lists or single-or-<code>nil</code>). The global
+<code>npc</code> table is a plain alias kept for source compatibility.</p>
+</div>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1833,12 +2002,24 @@ whitespace-insensitive), so pass the in-game name as shown (<code>"Banker"</code
 <td><code>Npc::isAlive(ctx, target) → bool</code></td>
 <td><code>srs.npc.isAlive(target) → bool</code></td>
 </tr>
+<tr>
+<td>Overhead prayer headicon</td>
+<td><code>Npc::overheadPrayer(ctx, target) → OverheadPrayer</code></td>
+<td><code>srs.npc.overheadPrayer(target) → OverheadPrayer</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>action</code> is the exact menu-option string the game shows (<code>"Attack"</code>,
 <code>"Talk-to"</code>, <code>"Bank"</code>, <code>"Pickpocket"</code>, <code>"Trade"</code>, <code>"Steal-from"</code>, …).
 <code>examine</code> fires the right-click <strong>Examine</strong> and the engine prints the
 NPC's description to chat.</p>
+<p><code>overheadPrayer</code> reads the NPC's protection-prayer headicon (live
+override when set, else the <code>NpcType</code> definition). Returns
+<code>OverheadPrayer.None</code> when the NPC shows no prayer icon or has
+despawned; only prayer-archive (440) icons are reported. The C++ side
+takes an <code>NpcEntry</code> (a legacy <code>ActionTarget</code> overload also exists). See
+<a href="../Prayer/">Prayer</a> for the <code>OverheadPrayer</code> enum values —
+it's a Lua <strong>global</strong> enum, not under <code>srs.npc</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">isAlive semantics</p>
 <p><code>isAlive</code> is a host-side check that the NPC's <code>NpcInstance</code> is
@@ -1857,7 +2038,8 @@ panel column or <code>entity.npcById(...)</code>.</p>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">talkTo</span><span class="p">()</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">bank</span><span class="p">()</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">interact</span><span class="p">(</span><span class="s2">&quot;Pickpocket&quot;</span><span class="p">)</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kr">end</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">overheadPrayer</span><span class="p">()</span><span class="w"> </span><span class="c1">-- == srs.npc.overheadPrayer(npc)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kr">end</span>
 </span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title"><code>examine</code> has no usertype shortcut</p>
@@ -1869,7 +2051,8 @@ method — there is no <code>npc:examine()</code>. Call <code>srs.npc.examine(np
 return <code>NpcEntry</code> — a plain struct with NPC-specific fields:
 <code>id</code>, <code>spawnIndex</code>, <code>name</code>, <code>tileX</code>, <code>tileY</code>, <code>plane</code>,
 <code>animationId</code> (−1 = idle), <code>orientation</code> (−1 = unknown),
-<code>currentHp</code> / <code>maxHp</code> (−1 = unknown), <code>combatLevel</code> (−1 = unknown). The
+<code>currentHp</code> / <code>maxHp</code> (−1 = unknown), <code>combatLevel</code> (−1 = unknown),
+<code>modelMagnitude</code> (engine getXYZMag half-extent; 0 = unknown). The
 action methods accept either type.</p>
 <p>The <code>ActionTarget</code> usertype (Lua return) — read-only:</p>
 <table>
@@ -1917,11 +2100,30 @@ action methods accept either type.</p>
 <td>Active anim id</td>
 </tr>
 <tr>
+<td><code>modelMagnitude</code></td>
+<td>Engine getXYZMag half-extent (0 = unknown)</td>
+</tr>
+<tr>
+<td><code>orientation</code></td>
+<td>Facing angle 0–2047 (0 = N, 512 = E, 1024 = S, 1536 = W); −1 = unknown</td>
+</tr>
+<tr>
+<td><code>combatLevel</code></td>
+<td>Combat level (−1 = unknown)</td>
+</tr>
+<tr>
 <td><code>isValid()</code></td>
 <td>Method, returns bool</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title"><code>orientation</code> / <code>combatLevel</code> population status</p>
+<p>The two fields exist on every <code>ActionTarget</code>, but today only the
+<strong>player</strong> producer fills them — NPC targets read <code>-1</code> for both
+until the NPC-side producer is wired up. C++ <code>NpcEntry</code> carries the
+real NPC values already.</p>
+</div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">

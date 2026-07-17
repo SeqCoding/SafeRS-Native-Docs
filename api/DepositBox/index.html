@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -737,6 +745,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#open-close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open / close
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bulk-deposit" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -744,6 +763,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-item-deposit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-item deposit
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Per-item deposit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-item-ops-are-positional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The item ops are positional
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -970,6 +1017,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -1006,6 +1081,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1278,6 +1381,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1370,6 +1501,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1652,6 +1811,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#open-close" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open / close
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bulk-deposit" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1659,6 +1829,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-item-deposit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-item deposit
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Per-item deposit">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-item-ops-are-positional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The item ops are positional
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1694,10 +1892,10 @@
 <p><code>srs::api::DepositBox</code> / <code>srs.depositbox</code></p>
 <p>Deposit-box variant of bank operations. Reads the player's inventory
 (container 93) directly — there's no separate "deposit-box container".
-Group 192 (BankDepositbox) hosts the buttons.</p>
-<p>Same pattern as <a href="../Bank/">Bank</a>: bulk-deposit buttons + quantity preset
-are shipped here. Per-item deposit is deferred (same dynamic-children
-rect issue).</p>
+Group 192 (BankDepositbox) hosts the buttons and the deposit-side item
+grid (child 24).</p>
+<p>Same pattern as <a href="../Bank/">Bank</a>: open (via the scene loc), close, bulk-
+deposit buttons, per-item <code>depositAllExcept</code>, and the quantity preset.</p>
 <h2 id="state">State<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1715,6 +1913,40 @@ rect issue).</p>
 </tr>
 </tbody>
 </table>
+<h2 id="open-close">Open / close<a class="headerlink" href="#open-close" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Open via nearest loc</td>
+<td><code>DepositBox::open(ctx) → bool</code></td>
+<td><code>srs.depositbox.open() → bool</code></td>
+</tr>
+<tr>
+<td>Close (X-button)</td>
+<td><code>DepositBox::close(ctx) → bool</code></td>
+<td><code>srs.depositbox.close() → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>open</code> mirrors <code>Bank::open</code>'s nearest-object resolution but targets a
+scene <strong>loc</strong> instead of a banker NPC: it tries <code>"Bank deposit box"</code> then
+<code>"Deposit box"</code>, resolves the nearest instance that actually exposes the
+<code>"Deposit"</code> verb (decorative twins are filtered), cancels any in-flight
+walk, and fires OPLOC1 on the loc's SW anchor. Returns <code>true</code> (no-op) if
+the box is already open, <code>false</code> if no deposit box is in scene.</p>
+<p><code>close</code> clicks the close "X" — a runtime <strong>dynamic child [11] of
+component (192, 1)</strong> (the title-bar frame) — via CC_OP (slot 57) with
+that child's wrapper as <code>overrideWidgetPtr</code>. Verified from a live
+DoAction capture (build 239): <code>slot=57 X=11 Y=12582913 "Close"</code>, i.e.
+<code>(192, 1)</code> subSlot 11 — the same shape as the bank's own close. Returns
+<code>false</code> if the box isn't open or the button isn't rendered this frame.</p>
 <h2 id="bulk-deposit">Bulk deposit<a class="headerlink" href="#bulk-deposit" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1742,6 +1974,61 @@ rect issue).</p>
 </tr>
 </tbody>
 </table>
+<h2 id="per-item-deposit">Per-item deposit<a class="headerlink" href="#per-item-deposit" title="Permanent link">&para;</a></h2>
+<p>The deposit-side inventory is widget <code>(192, 24)</code> — the box renders the
+player's backpack in its own grid (not the sidebar). These are UI/CS2
+widget actions, so they dispatch as engine <strong>invokes (DoAction)</strong>, not
+wire packets: a CC_OP (slot 57) at that widget with <code>subSlot = backpack
+slot (0..27)</code>, <code>itemId</code> from the backpack cache, and op index <strong>1</strong>
+(<code>spawnIdx</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deposit all except (by id)</td>
+<td><code>DepositBox::depositAllExcept(ctx, vector&lt;int32_t&gt;) → bool</code></td>
+<td><code>srs.depositbox.depositAllExcept({ids...}) → bool</code></td>
+</tr>
+<tr>
+<td>Deposit all except (by name)</td>
+<td><code>DepositBox::depositAllExcept(ctx, vector&lt;string&gt;) → bool</code></td>
+<td><code>srs.depositbox.depositAllExcept({"names"...}) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>depositAllExcept</code> fires one deposit click on the FIRST non-kept inventory
+slot per call and returns <code>false</code>; the script polls each tick until only
+kept items remain, at which point it returns <code>true</code>.</p>
+<h3 id="the-item-ops-are-positional">The item ops are positional<a class="headerlink" href="#the-item-ops-are-positional" title="Permanent link">&para;</a></h3>
+<p>The box's item ops are <strong>positional</strong>: op index 1 is whichever quantity the
+<a href="#quantity-preset">quantity preset</a> currently selects — <em>not</em> literally
+Deposit-All — and the action string passed along with the click is cosmetic,
+since only the index dispatches. A click labelled <code>"Deposit-All"</code> therefore
+deposits a <strong>single item</strong> while the preset says 1, which is what the box
+opens on.</p>
+<p><code>depositAllExcept</code> handles this for you: before its first deposit click it
+reads the preset and, if it isn't <code>ALL</code>, clicks the All button and returns
+<code>false</code>. The next poll deposits normally — one extra tick per box visit, no
+blocking, and scripts never need to touch the preset themselves. A pack that
+is entirely kept items still returns <code>true</code> immediately without changing the
+preset.</p>
+<p>If you fire the ops yourself rather than through <code>depositAllExcept</code>, select
+<code>ALL</code> first and check it landed with <code>getQuantity</code> — do not assume the
+identifiers from a capture taken on some other preset.</p>
+<p>Keeping an in-inventory tool (e.g. a pickaxe) is the primary use case:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Bank ore at the deposit box while keeping the pickaxe in the pack.</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="nf">open</span><span class="p">()</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="nf">depositAllExcept</span><span class="p">({</span><span class="w"> </span><span class="s2">&quot;Bronze pickaxe&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Gem bag&quot;</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="kr">end</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kr">end</span>
+</span></code></pre></div>
 <h2 id="quantity-preset">Quantity preset<a class="headerlink" href="#quantity-preset" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1757,10 +2044,31 @@ rect issue).</p>
 <td><code>DepositBox::setQuantity(ctx, q) → bool</code></td>
 <td><code>srs.depositbox.setQuantity(q) → bool</code></td>
 </tr>
+<tr>
+<td>Read quantity</td>
+<td><code>DepositBox::getQuantity(ctx) → optional&lt;Quantity&gt;</code></td>
+<td><code>srs.depositbox.getQuantity() → q \| nil</code></td>
+</tr>
 </tbody>
 </table>
 <p><strong>Quantity constants</strong> (<code>DepositBox::Quantity</code> / <code>srs.depositbox.*</code>):
-<code>ONE</code>, <code>FIVE</code>, <code>TEN</code>, <code>X</code>, <code>ALL</code>.</p>
+<code>ONE</code>, <code>FIVE</code>, <code>TEN</code>, <code>X</code>, <code>ALL</code>. Same set as <a href="../Bank/">Bank</a>; the
+<a href="../Shop/">Shop</a> <code>Quantity</code> enum differs — <code>ONE / FIVE / TEN / FIFTY / X</code>,
+no <code>ALL</code> — so don't reuse constants across the tables.</p>
+<p><code>setQuantity</code> clicks the matching 1/5/10/X/All button and needs the box
+open. <code>getQuantity</code> reads varbit <code>DEPOSITBOX_MODE</code> (4430) instead, so it
+works whether or not the box is open — the preset is sticky across visits.
+It returns <code>nullopt</code> / <code>nil</code> if the varbit can't be read. Use it rather than
+reading 4430 yourself: the raw values are <strong>not</strong> in button order (measured
+in-client 2026-07-14 — <code>1</code>=0, <code>5</code>=1, <code>All</code>=2, <code>X</code>=3, <code>10</code>=4), so the mapping
+is not something to infer from the button layout.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- The preset is sticky, so a script that fires the item ops directly</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">-- should confirm it rather than trust the box&#39;s default.</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="nf">getQuantity</span><span class="p">()</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="py">ALL</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="nf">setQuantity</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="py">ALL</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="kr">return</span><span class="w">  </span><span class="c1">-- re-poll next tick; the click needs a tick to land</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kr">end</span>
+</span></code></pre></div>
 
 
 

@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -754,6 +762,39 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#a-messagebox-is-not-a-blocking-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ A Messagebox is not a blocking gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#widget-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widget groups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mechanism-and-what-clickcontinues-return-value-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mechanism, and what clickContinue's return value means
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#methods" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -976,6 +1017,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -1012,6 +1081,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1284,6 +1381,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1376,6 +1501,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1647,6 +1800,39 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#a-messagebox-is-not-a-blocking-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚠️ A Messagebox is not a blocking gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#widget-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widget groups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mechanism-and-what-clickcontinues-return-value-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mechanism, and what clickContinue's return value means
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#methods" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1708,45 +1894,103 @@
 <code>KeyboardSpoofer</code> (the engine's built-in keybind); option menus use
 number keys 1..9. Option 10+ requires a mouse click on the option row
 (not implemented here).</p>
-<p>Widget groups (RuneLite <code>gameval/InterfaceID.java</code>):</p>
+<h2 id="a-messagebox-is-not-a-blocking-gate">⚠️ A Messagebox is not a blocking gate<a class="headerlink" href="#a-messagebox-is-not-a-blocking-gate" title="Permanent link">&para;</a></h2>
+<p><strong><code>isOpen()</code> does not mean "the game is waiting on you."</strong></p>
+<p>Widget group 229 (Messagebox) is an <em>informational</em> chatbox notice — e.g.
+"Your inventory is too full to hold any more pay-dirt." with a "Click here
+to continue" line. Unlike NPC chat it <strong>does not pause the game</strong>: your
+character keeps walking, mining and clicking while it's up, and almost any
+action (walking especially) clears it on its own.</p>
+<p>So this idiom — which earlier versions of this page recommended — <strong>wedges
+your script forever</strong> the moment a Messagebox appears:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- ❌ BROKEN: spins forever on a Messagebox.</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">hasContinue</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">clickContinue</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kr">return</span><span class="w">   </span><span class="c1">-- nothing else ever runs</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span>
+</span></code></pre></div>
+<p>It fails silently and is nasty to diagnose: the state machine keeps
+reporting its intended state while the executor never runs, so every log
+line looks healthy. Gate blocking work on <code>isOpen() and not isMessagebox()</code>
+instead — see the example below.</p>
+<p><code>hasContinue()</code> is <strong>true</strong> for a Messagebox, and correctly so: 229 really
+does own a continue component (<code>229.4 Messagebox.CONTINUE</code>). It answers
+"does this dialogue have a continue arrow", not "is the game blocked". Use
+<code>isMessagebox()</code> to tell <em>informational, ignore it</em> from <em>must advance</em>.</p>
+<h2 id="widget-groups">Widget groups<a class="headerlink" href="#widget-groups" title="Permanent link">&para;</a></h2>
+<p>Groups (RuneLite <code>gameval/InterfaceID.java</code>), and which are advanceable with
+<code>clickContinue</code>:</p>
 <table>
 <thead>
 <tr>
 <th>Group</th>
 <th>Kind</th>
+<th>Blocks game?</th>
+<th>Advance with</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>229</td>
 <td>Messagebox — plain text</td>
+<td><strong>No</strong> — informational</td>
+<td><code>clickContinue</code> (or just ignore it)</td>
 </tr>
 <tr>
 <td>217</td>
 <td>ChatRight — player dialogue (head on right)</td>
+<td>Yes</td>
+<td><code>clickContinue</code></td>
 </tr>
 <tr>
 <td>231</td>
 <td>ChatLeft — NPC dialogue (head on left)</td>
+<td>Yes</td>
+<td><code>clickContinue</code></td>
 </tr>
 <tr>
 <td>60</td>
 <td>ChatBoth — two-portrait</td>
+<td>Yes</td>
+<td><code>clickContinue</code></td>
 </tr>
 <tr>
 <td>193</td>
 <td>Objectbox — single-sprite</td>
+<td>Yes</td>
+<td><code>clickContinue</code> (keystroke only)</td>
 </tr>
 <tr>
 <td>11</td>
 <td>ObjectboxDouble — two-sprite</td>
+<td>Yes</td>
+<td><code>clickContinue</code></td>
 </tr>
 <tr>
 <td>219</td>
 <td>Chatmenu — "Select an Option" menu</td>
+<td>Yes</td>
+<td><code>selectOption</code> / <code>selectOptionByText</code></td>
 </tr>
 </tbody>
 </table>
+<p>Every group except 219 is a continue-style dialog, and <code>hasContinue()</code> is
+true for all of them. 219 is the only one that needs <code>selectOption</code>.</p>
+<h2 id="mechanism-and-what-clickcontinues-return-value-means">Mechanism, and what <code>clickContinue</code>'s return value means<a class="headerlink" href="#mechanism-and-what-clickcontinues-return-value-means" title="Permanent link">&para;</a></h2>
+<p><code>clickContinue</code> and <code>selectOption</code> post their keystroke through the engine's
+<code>InputEventManager</code> — the same <code>keyPressed</code>/<code>keyChar</code>/<code>keyReleased</code> trio the
+client's own window procedure posts for a real key press. They are
+<strong>fire-and-forget</strong>: they enqueue on the engine thread and return
+immediately.</p>
+<p><strong><code>true</code> means "keystroke dispatched", not "dialogue advanced."</strong> Never
+treat the return value as confirmation. Poll <code>isOpen()</code> / <code>hasContinue()</code> on
+a later tick to see whether it landed, and give the dialogue a tick or two —
+a dialogue that is still up on the very next tick has not necessarily failed.</p>
+<p>If a live test shows the keystroke doesn't take for some group,
+<code>clickContinueByClick()</code> does the same job with a real mouse click on the
+group's continue component. It <strong>blocks</strong> the calling script (mouse move +
+click drain), so keep <code>clickContinue</code> as the per-tick default and reach for
+the click only as a fallback.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1768,14 +2012,24 @@ number keys 1..9. Option 10+ requires a mouse click on the option row
 <td><code>srs.dialogue.hasContinue() → bool</code></td>
 </tr>
 <tr>
+<td>Informational message (229) up</td>
+<td><code>Dialogue::isMessagebox(ctx) → bool</code></td>
+<td><code>srs.dialogue.isMessagebox() → bool</code></td>
+</tr>
+<tr>
 <td>Option-select up</td>
 <td><code>Dialogue::hasOptions(ctx) → bool</code></td>
 <td><code>srs.dialogue.hasOptions() → bool</code></td>
 </tr>
 <tr>
-<td>Advance continue</td>
+<td>Advance continue (keystroke, non-blocking)</td>
 <td><code>Dialogue::clickContinue(ctx) → bool</code></td>
 <td><code>srs.dialogue.clickContinue() → bool</code></td>
+</tr>
+<tr>
+<td>Advance continue (mouse fallback, <strong>blocks</strong>)</td>
+<td><code>Dialogue::clickContinueByClick(ctx) → bool</code></td>
+<td><code>srs.dialogue.clickContinueByClick() → bool</code></td>
 </tr>
 <tr>
 <td>Pick option (1-based)</td>
@@ -1844,21 +2098,46 @@ C++ and Lua — each is a thin wrapper:</p>
 </tbody>
 </table>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>Advance real dialogue, but never let an informational message stop the
+script working. The rule: <strong>only a non-Messagebox dialogue earns a <code>return</code>.</strong></p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dialogue</span><span class="o">::</span><span class="n">hasContinue</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w">   </span><span class="n">Dialogue</span><span class="o">::</span><span class="n">clickContinue</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dialogue</span><span class="o">::</span><span class="n">hasOptions</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w">    </span><span class="n">Dialogue</span><span class="o">::</span><span class="n">selectOptionByText</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Yes&quot;</span><span class="p">);</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">// A Messagebox blocks nothing — nudge it and carry on working.</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dialogue</span><span class="o">::</span><span class="n">isMessagebox</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="n">Dialogue</span><span class="o">::</span><span class="n">clickContinue</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="c1">// deliberately no return — walking clears it anyway</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dialogue</span><span class="o">::</span><span class="n">hasOptions</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="n">Dialogue</span><span class="o">::</span><span class="n">selectOptionByText</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Yes&quot;</span><span class="p">);</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span><span class="w">                       </span><span class="c1">// real dialogue: game is blocked</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dialogue</span><span class="o">::</span><span class="n">hasContinue</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="n">Dialogue</span><span class="o">::</span><span class="n">clickContinue</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span><span class="w">                       </span><span class="c1">// real dialogue: game is blocked</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">hasContinue</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">clickContinue</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">hasOptions</span><span class="p">()</span><span class="w">  </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">selectOptionByText</span><span class="p">(</span><span class="s2">&quot;Yes&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- A Messagebox blocks nothing — nudge it and carry on working.</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">isMessagebox</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">clickContinue</span><span class="p">()</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="c1">-- deliberately no return — walking clears it anyway</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="kr">elseif</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">hasOptions</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">selectOptionByText</span><span class="p">(</span><span class="s2">&quot;Yes&quot;</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kr">return</span><span class="w">                        </span><span class="c1">-- real dialogue: game is blocked</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="kr">elseif</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">hasContinue</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">dialogue</span><span class="p">.</span><span class="nf">clickContinue</span><span class="p">()</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="kr">return</span><span class="w">                        </span><span class="c1">-- real dialogue: game is blocked</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="kr">end</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
+<p>Because <code>clickContinue</code> reports dispatch rather than success, a script that
+<em>must</em> not stall on an unexpected dialogue should also cap how long it will
+keep trying — count consecutive ticks a dialogue has been open and fall
+through past a small budget, rather than returning forever.</p>
 
 
 

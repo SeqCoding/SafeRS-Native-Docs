@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -959,6 +967,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -995,6 +1031,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1267,6 +1331,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1359,6 +1451,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1695,7 +1815,7 @@ ignored. Add a plane-aware overload when an actual use case appears.</p>
 <tr>
 <td>In an instance</td>
 <td><code>Area::isInInstance(ctx) → bool</code></td>
-<td>—</td>
+<td><code>srs.area.isInInstance() → bool</code></td>
 </tr>
 </tbody>
 </table>
@@ -1709,8 +1829,9 @@ ignored. Add a plane-aware overload when an actual use case appears.</p>
 <p>Lua dispatches by arity: 4 args = rect, 3 args = radius.</p>
 <p><code>isInInstance</code> returns <code>true</code> when the current scene is a real instance
 (a private boss arena, raid, minigame lobby, …), read from the engine's
-in-instance flag; <code>false</code> when that flag can't be resolved. C++-facade
-only — no Lua binding.</p>
+in-instance flag; <code>false</code> when that flag can't be resolved. Pairs with
+<a href="../Player/"><code>srs.player.templatePosition()</code></a> for instance-aware
+coordinate handling.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">

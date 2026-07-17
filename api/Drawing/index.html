@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1036,6 +1044,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -1072,6 +1108,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1344,6 +1408,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1436,6 +1528,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1825,6 +1945,9 @@
 <h1 id="drawing">Drawing<a class="headerlink" href="#drawing" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Drawing</code> / <code>srs.draw</code></p>
 <p>Overlay drawing.</p>
+<p>For a themed, batteries-included HUD (dark-glass panels, per-skill
+accents, XP rows, animated bars, level rings) layered on top of these
+primitives, see <strong><a href="../Overlay/">Overlay</a></strong> (<code>srs.overlay</code>).</p>
 <div class="admonition warning">
 <p class="admonition-title">onDraw only</p>
 <p>Only valid inside <code>IScript::onDraw</code> (C++) or <code>script.draw(fn)</code>
@@ -2063,17 +2186,17 @@ screen-space. Safe to call from <code>onDraw</code> at any time.</p>
 <tr>
 <td>2D point</td>
 <td><code>Vec2 { float x, y }</code></td>
-<td><code>srs.Vec2.new(x, y)</code></td>
+<td><code>srs.Vec2.new()</code> / <code>srs.Vec2.new(x, y)</code></td>
 </tr>
 <tr>
 <td>Rectangle</td>
 <td><code>Rect { int32 x, y, w, h }</code></td>
-<td>read-only <code>srs.Rect</code> (returned by <code>widgetRect</code>)</td>
+<td>read-only <code>srs.Rect</code>, no constructor (returned by <code>widgetRect</code>)</td>
 </tr>
 <tr>
 <td>Color</td>
 <td><code>Color { float r, g, b, a }</code></td>
-<td><code>srs.Color.new(r, g, b, a)</code></td>
+<td><code>srs.Color.new()</code> / <code>srs.Color.new(r, g, b, a)</code></td>
 </tr>
 <tr>
 <td>Corner</td>

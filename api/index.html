@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -890,6 +898,34 @@
   
   
     <li class="md-nav__item">
+      <a href="GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="GameObject/" class="md-nav__link">
         
   
@@ -926,6 +962,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1198,6 +1262,34 @@
   
   
     <li class="md-nav__item">
+      <a href="Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="Player/" class="md-nav__link">
         
   
@@ -1290,6 +1382,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1653,7 +1773,7 @@ public contract.</p>
 <td><a href="Entity/">Entity</a></td>
 <td>—</td>
 <td><code>entity</code> (global)</td>
-<td>NPC / player scene query (returns ActionTarget)</td>
+<td>NPC / player scene query (returns ActionTarget); global <code>npc.*</code> aliases the same finders — see <a href="Npc/">NPC</a></td>
 </tr>
 <tr>
 <td><a href="Equipment/">Equipment</a></td>
@@ -1674,6 +1794,12 @@ public contract.</p>
 <td>Engine-level state (login screen, logged in, login index)</td>
 </tr>
 <tr>
+<td><a href="GameTable/">Game (legacy table)</a></td>
+<td>—</td>
+<td><code>game</code> (global)</td>
+<td>Projection, collision, transports, raw clicks — low-level</td>
+</tr>
+<tr>
 <td><a href="GameObject/">GameObject</a></td>
 <td><code>srs::api::GameObject</code></td>
 <td><code>srs.gameobject</code></td>
@@ -1686,6 +1812,12 @@ public contract.</p>
 <td>Live GE market / guide prices (wiki real-time API)</td>
 </tr>
 <tr>
+<td><a href="Globals/">Globals &amp; Enums</a></td>
+<td>—</td>
+<td>(global scope)</td>
+<td>Global enums, tables, and usertype index</td>
+</tr>
+<tr>
 <td><a href="GrandExchange/">Grand Exchange</a></td>
 <td><code>srs::api::GrandExchange</code></td>
 <td><code>srs.ge</code></td>
@@ -1695,7 +1827,7 @@ public contract.</p>
 <td><a href="GraphicsObjects/">GraphicsObjects</a></td>
 <td><code>srs::api::GraphicsObjects</code></td>
 <td><code>srs.graphicsObjects</code></td>
-<td>Tile-bound SpotAnims (debris, splatters, sparkles)</td>
+<td>Tile-bound SpotAnims (debris, splatters, sparkles) (EXPERIMENTAL — offset must be pinned per build)</td>
 </tr>
 <tr>
 <td><a href="GroundItem/">GroundItem</a></td>
@@ -1740,6 +1872,12 @@ public contract.</p>
 <td>Scene loc query (low-level — prefer <code>srs.gameobject</code>)</td>
 </tr>
 <tr>
+<td><a href="Overlay/">Overlay</a></td>
+<td><code>srs::api::Overlay</code></td>
+<td><code>srs.overlay</code></td>
+<td>Themed HUD kit (panels, XP rows, rings) layered on Drawing</td>
+</tr>
+<tr>
 <td><a href="Player/">Player</a></td>
 <td><code>srs::api::Player</code></td>
 <td><code>srs.player</code></td>
@@ -1749,7 +1887,7 @@ public contract.</p>
 <td><a href="Prayer/">Prayer</a></td>
 <td><code>srs::api::Prayer</code></td>
 <td><code>srs.prayer</code></td>
-<td>Prayer book state + clicks</td>
+<td>Prayer book state + clicks + overhead-prayer (headicon) enum</td>
 </tr>
 <tr>
 <td><a href="Projectiles/">Projectiles</a></td>
@@ -1762,6 +1900,12 @@ public contract.</p>
 <td><code>srs::api::RunePouch</code></td>
 <td><code>srs.runepouch</code></td>
 <td>Rune pouch contents (read-only)</td>
+</tr>
+<tr>
+<td><a href="Script/">Script lifecycle</a></td>
+<td>—</td>
+<td><code>script</code> / <code>log</code> / <code>srs.wait</code></td>
+<td>Callbacks, settings, logging, tick waits</td>
 </tr>
 <tr>
 <td><a href="Settings/">Settings</a></td>
@@ -1813,6 +1957,9 @@ public contract.</p>
 </tr>
 </tbody>
 </table>
+<p><code>srs.ge</code> is one Lua table backed by <strong>two</strong> C++ classes —
+<a href="GePrices/">GE Prices</a> (<code>GePrices</code>) and
+<a href="GrandExchange/">Grand Exchange</a> (<code>GrandExchange</code>).</p>
 
 
 

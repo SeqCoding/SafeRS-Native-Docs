@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Food/">
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/GameTable/">
       
       
-        <link rel="prev" href="../Equipment/">
+        <link rel="prev" href="../Game/">
       
       
-        <link rel="next" href="../Game/">
+        <link rel="next" href="../GameObject/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Food - SafeRS Native API</title>
+        <title>Game (legacy table) - SafeRS Native API</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#food" class="md-skip">
+        <a href="#game-legacy-table" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Food
+              Game (legacy table)
             
           </span>
         </div>
@@ -839,37 +839,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Food
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../Food/" class="md-nav__link">
         
   
   
@@ -885,70 +858,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Methods
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#constants" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Constants
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -986,10 +895,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../GameTable/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1005,6 +941,114 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#state-camera-projection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State / camera / projection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#minimap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Minimap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pathfinding-movement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pathfinding / movement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#live-collision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Live collision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-collision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Static collision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transport-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transport registry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-clicks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw clicks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1772,10 +1816,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
+  <a href="#state-camera-projection" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Methods
+        State / camera / projection
       
     </span>
   </a>
@@ -1783,10 +1827,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#constants" class="md-nav__link">
+  <a href="#minimap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Constants
+        Minimap
       
     </span>
   </a>
@@ -1794,10 +1838,54 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#types" class="md-nav__link">
+  <a href="#pathfinding-movement" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Types
+        Pathfinding / movement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#live-collision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Live collision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-collision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Static collision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transport-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transport registry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-clicks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw clicks
       
     </span>
   </a>
@@ -1832,108 +1920,303 @@
 
 
 
-<h1 id="food">Food<a class="headerlink" href="#food" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Food</code> / <code>srs.food</code></p>
-<p>Static metadata table for edible items + <code>eatBest()</code> helper that
-picks the highest-heal food currently in the backpack.</p>
-<p>The table is a representative subset — shrimp through anglerfish plus
-a few special-case heals. Items not in the table won't be
-auto-picked by <code>eatBest</code>, but any item id can still be fed to
-<a href="../Inventory/">Inventory::interact</a> directly.</p>
-<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<h1 id="game-legacy-table">Game (legacy table)<a class="headerlink" href="#game-legacy-table" title="Permanent link">&para;</a></h1>
+<p><code>game.*</code> (Lua only — global table)</p>
+<p>The original low-level scripting surface: projection math, minimap
+math, pathfinding, collision queries, the transport registry, and raw
+screen clicks. All Lua-only — there is no <code>srs::api</code> facade for this
+table. Prefer the <code>srs.*</code> facades where one exists
+(<a href="../Walk/">Walk</a>, <a href="../Tile/">Tile</a>, <a href="../Camera/">Camera</a>,
+<a href="../Player/">Player</a>); <code>game.*</code> is the layer underneath, kept for
+existing scripts and for the few things only it exposes.</p>
+<p>Not to be confused with <a href="../Game/"><code>srs.game</code></a> (engine login/session
+state), which is a separate, current facade.</p>
+<h2 id="state-camera-projection">State / camera / projection<a class="headerlink" href="#state-camera-projection" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
+<th>Returns</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Lookup by kind</td>
-<td><code>Food::info(kind) → FoodInfo</code></td>
-<td><code>srs.food.info(kind) → FoodInfo</code></td>
+<td>Player HP</td>
+<td><code>game.playerHealth()</code></td>
+<td><code>int \| nil</code></td>
 </tr>
 <tr>
-<td>Lookup by item id</td>
-<td><code>Food::byId(id) → optional&lt;FoodInfo&gt;</code></td>
-<td><code>srs.food.byId(id) → FoodInfo \| nil</code></td>
+<td>Player prayer points</td>
+<td><code>game.playerPrayer()</code></td>
+<td><code>int \| nil</code></td>
 </tr>
 <tr>
-<td>All food in inventory</td>
-<td><code>Food::inInventory(ctx) → vector&lt;FoodInfo&gt;</code></td>
-<td><code>srs.food.inInventory() → table</code></td>
+<td>Named offset lookup</td>
+<td><code>game.getAddress(name)</code></td>
+<td><code>int \| nil</code></td>
 </tr>
 <tr>
-<td>Eat highest-heal</td>
-<td><code>Food::eatBest(ctx) → bool</code></td>
-<td><code>srs.food.eatBest() → bool</code></td>
+<td>Player world tile</td>
+<td><code>game.playerPosition()</code></td>
+<td><code>{x, y, plane} \| nil</code></td>
 </tr>
 <tr>
-<td>Eat lowest-heal</td>
-<td><code>Food::eatWeakest(ctx) → bool</code></td>
-<td><code>srs.food.eatWeakest() → bool</code></td>
+<td>World → screen</td>
+<td><code>game.worldToScreen(x, y, z)</code></td>
+<td><code>{x, y} \| nil</code></td>
+</tr>
+<tr>
+<td>Tile → screen</td>
+<td><code>game.tileToScreen(tileX, tileY, tileZ)</code></td>
+<td><code>{x, y} \| nil</code></td>
+</tr>
+<tr>
+<td>Camera yaw</td>
+<td><code>game.cameraYaw()</code></td>
+<td><code>number \| nil</code></td>
+</tr>
+<tr>
+<td>Camera pitch</td>
+<td><code>game.cameraPitch()</code></td>
+<td><code>number \| nil</code></td>
+</tr>
+<tr>
+<td>Camera position</td>
+<td><code>game.cameraPos()</code></td>
+<td><code>{x, y, z} \| nil</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>inInventory</code> returns the food list sorted highest-heal first.</p>
-<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
-<p><strong>FoodKind constants</strong> (<code>FoodKind</code> / <code>srs.food.*</code>):</p>
-<p><code>SHRIMPS</code>, <code>ANCHOVIES</code>, <code>SARDINE</code>, <code>HERRING</code>, <code>MACKEREL</code>, <code>TROUT</code>,
-<code>COD</code>, <code>PIKE</code>, <code>SALMON</code>, <code>TUNA</code>, <code>LOBSTER</code>, <code>BASS</code>, <code>SWORDFISH</code>,
-<code>MONKFISH</code>, <code>KARAMBWAN</code>, <code>SHARK</code>, <code>SEA_TURTLE</code>, <code>MANTA</code>, <code>DARK_CRAB</code>,
-<code>ANGLERFISH</code>.</p>
-<h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
-<p><strong><code>FoodInfo</code></strong> (read-only):</p>
+<h2 id="minimap">Minimap<a class="headerlink" href="#minimap" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Field</th>
-<th>Type</th>
-<th>Notes</th>
+<th>Method</th>
+<th>Lua</th>
+<th>Returns</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>itemId</code></td>
-<td>int32</td>
-<td>OSRS item id</td>
+<td>Minimap geometry</td>
+<td><code>game.minimapInfo()</code></td>
+<td><code>{centerX, centerY, radiusPx, pxPerTile, rotates} \| nil</code></td>
 </tr>
 <tr>
-<td><code>heal</code></td>
-<td>int32</td>
-<td>Hitpoints restored</td>
+<td>Tile → minimap pixel</td>
+<td><code>game.tileToMinimap(tileX, tileY, playerX, playerY)</code></td>
+<td><code>{x, y} \| nil</code></td>
 </tr>
 <tr>
-<td><code>name</code></td>
-<td>string</td>
-<td>Canonical name</td>
+<td>Same, with intermediates</td>
+<td><code>game.tileToMinimapDebug(tileX, tileY, playerX, playerY)</code></td>
+<td>table (<code>minimapValid</code>, <code>playerX_fp</code>, <code>playerY_fp</code>, <code>targetX_fp</code>, <code>targetY_fp</code>, <code>rotX</code>, <code>rotY</code>, <code>yawUsed</code>, <code>dx_px</code>, <code>dy_px</code>, <code>px</code>, <code>py</code>, <code>inClipCircle</code>)</td>
 </tr>
 </tbody>
 </table>
+<h2 id="pathfinding-movement">Pathfinding / movement<a class="headerlink" href="#pathfinding-movement" title="Permanent link">&para;</a></h2>
+<p>The walk family — <code>game.moveTo</code>, <code>game.walkTo</code>, <code>game.minimapWalkTo</code>,
+<code>game.walkFastCanvas</code>, <code>game.walkSmart</code>, <code>game.isMoving</code>,
+<code>game.hasArrived</code>, <code>game.cancelMove</code> — is documented on
+<a href="../Walk/">Walk</a> alongside the newer <code>srs.walk</code> facade. Two functions
+live only here:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw path query</td>
+<td><code>game.findPath(goalX, goalY)</code></td>
+<td><code>{found, cost, nodesExplored, path={ {x,y}, ... }} \| nil</code></td>
+</tr>
+<tr>
+<td>Nearest safe tile</td>
+<td><code>game.findSafeTile(originX, originY, dangerTiles[, radius=5[, plane=player plane]])</code></td>
+<td><code>{x, y, plane, onCanvas, walkable} \| nil</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>game.findPath</code> runs the client-side pathfinder from the player's
+position without moving; useful for reachability and cost checks.</p>
+<p><code>game.findSafeTile</code> searches outward in Chebyshev square rings around
+the origin for the nearest walkable tile <strong>not</strong> in <code>dangerTiles</code>
+(a list of <code>{x=, y=, plane=}</code> tables); at equal distance, a tile
+projectable on the canvas beats an off-canvas one. The origin itself
+is skipped. Three overloads: <code>(originX, originY, dangerTiles)</code>,
+<code>(…, radius)</code>, <code>(…, radius, plane)</code>. Returns <code>nil</code> when no candidate
+within the radius qualifies.</p>
+<div class="admonition note">
+<p class="admonition-title">Unified with <code>Walk::findSafeTile</code></p>
+<p><code>game.findSafeTile</code> is a thin adapter over <code>Walk::findSafeTile</code>
+(<a href="../Walk/">Walk</a>) — both surfaces share a single ring-search
+implementation, so behavior cannot drift between them. The Lua
+contract is unchanged: same <code>{x, y, plane, onCanvas, walkable}</code>
+table (or <code>nil</code> where C++ reports <code>valid = false</code>), and danger
+entries without a <code>plane</code> key still default to the search plane.</p>
+</div>
+<h2 id="live-collision">Live collision<a class="headerlink" href="#live-collision" title="Permanent link">&para;</a></h2>
+<p>Player-plane only — <a href="../Tile/"><code>srs.tile</code></a> adds a plane argument plus
+<code>isReachable</code> / <code>height</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tile walkable?</td>
+<td><code>game.isWalkable(x, y)</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td>Raw collision flags</td>
+<td><code>game.getCollisionFlags(x, y)</code></td>
+<td><code>int \| nil</code> (nil if not in scene)</td>
+</tr>
+<tr>
+<td>Step between adjacent tiles?</td>
+<td><code>game.canTraverse(fromX, fromY, toX, toY)</code></td>
+<td><code>bool</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="static-collision">Static collision<a class="headerlink" href="#static-collision" title="Permanent link">&para;</a></h2>
+<p>Cache-derived (Skretzo substrate) world-wide collision — independent
+of the loaded scene. All return <code>false</code> if the static map isn't
+loaded.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Static map loaded?</td>
+<td><code>game.static_isLoaded()</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td>Tile walkable</td>
+<td><code>game.static_isWalkable(x, y, plane)</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td>Tile fully blocked</td>
+<td><code>game.static_isBlocked(x, y, plane)</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td>Directional step allowed</td>
+<td><code>game.static_canStep(x, y, plane, dx, dy)</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td>Cardinal steps</td>
+<td><code>game.static_canN(x, y, plane)</code> / <code>static_canS</code> / <code>static_canE</code> / <code>static_canW</code></td>
+<td><code>bool</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="transport-registry">Transport registry<a class="headerlink" href="#transport-registry" title="Permanent link">&para;</a></h2>
+<p>Data-only queries over the transports table (doors, stairs, ships,
+teleports) used by the walker.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Registry loaded?</td>
+<td><code>game.transports_loaded()</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td>Total transports</td>
+<td><code>game.transports_total()</code></td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td>Distinct origins</td>
+<td><code>game.transports_origin_count()</code></td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td>Teleport count</td>
+<td><code>game.transports_teleport_count()</code></td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td>Transports at origin</td>
+<td><code>game.transports_at(x, y, plane)</code></td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td>Transport by index</td>
+<td><code>game.transport_at_index(x, y, plane, index)</code></td>
+<td><code>{type, typeName, destination_x, destination_y, destination_plane, duration, action, displayInfo} \| nil</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="raw-clicks">Raw clicks<a class="headerlink" href="#raw-clicks" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Click a tile on the canvas</td>
+<td><code>game.clickTile(tileX, tileY)</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td>Click a screen point</td>
+<td><code>game.clickScreen(screenX, screenY)</code></td>
+<td><code>nil</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>clickTile</code> projects at height <code>z = 0</code> and clicks the resulting
+canvas point; <code>clickScreen</code> clicks raw screen coordinates. Both
+bypass every safety layered into the <code>srs.*</code> facades — last resort
+only.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Player</span><span class="o">::</span><span class="n">hitpoints</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">maxHitpoints</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">Food</span><span class="o">::</span><span class="n">eatBest</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Dodge: step to the nearest safe tile away from two danger tiles</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">me</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">game</span><span class="p">.</span><span class="nf">playerPosition</span><span class="p">()</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">me</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">danger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">me</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">me</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">me</span><span class="p">.</span><span class="py">plane</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">me</span><span class="p">.</span><span class="py">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">me</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">me</span><span class="p">.</span><span class="py">plane</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">game</span><span class="p">.</span><span class="nf">findSafeTile</span><span class="p">(</span><span class="nv">me</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">me</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">danger</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">onCanvas</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nv">game</span><span class="p">.</span><span class="nf">walkFastCanvas</span><span class="p">(</span><span class="nv">safe</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">y</span><span class="p">)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="kr">elseif</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="nv">game</span><span class="p">.</span><span class="nf">moveTo</span><span class="p">(</span><span class="nv">safe</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">y</span><span class="p">)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="kr">else</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="s2">&quot;No safe tile within 4&quot;</span><span class="p">)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">hitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">maxHitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">food</span><span class="p">.</span><span class="nf">eatBest</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">            </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;out of food — banking&quot;</span><span class="p">)</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="kr">end</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kr">end</span><span class="p">)</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

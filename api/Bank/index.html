@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -586,6 +594,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#constants-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants (C++)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#state" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -689,6 +708,17 @@
     <span class="md-ellipsis">
       
         Bulk deposit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coal-bag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coal bag
       
     </span>
   </a>
@@ -1080,6 +1110,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -1116,6 +1174,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1388,6 +1474,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1480,6 +1594,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1751,6 +1893,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#constants-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants (C++)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#state" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1861,6 +2014,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#coal-bag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coal bag
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#withdraw-quantity-preset" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1916,6 +2080,33 @@
 switching, per-item withdraw + deposit, bulk deposit, scrolling, and the
 "1 / 5 / 10 / X / All" quantity preset. Constants lifted from RuneLite
 (<code>InterfaceID.Bankmain</code>, <code>VarbitID.BANK_*</code>, <code>ScriptID.UPDATE_SCROLLBAR</code>).</p>
+<h2 id="constants-c">Constants (C++)<a class="headerlink" href="#constants-c" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Bank::kBankContainerId</code></td>
+<td>95</td>
+<td>Bank item container id</td>
+</tr>
+<tr>
+<td><code>Bank::kBankGroup</code></td>
+<td>12</td>
+<td>Bankmain widget group</td>
+</tr>
+<tr>
+<td><code>Bank::kBankPinGroup</code></td>
+<td>213</td>
+<td>Bank PIN keypad widget group</td>
+</tr>
+</tbody>
+</table>
 <h2 id="state">State<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2020,7 +2211,7 @@ real-player wire bytes — same mechanism <code>Tab::switchTo</code> and
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">pulse</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">isPinOpen</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">hasBoundBankPin</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nv">osrs</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="s2">&quot;Bind an account with a PIN via the launcher Accounts panel&quot;</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;Bind an account with a PIN via the launcher Accounts panel&quot;</span><span class="p">)</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="kr">return</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kr">end</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">handleBankPin</span><span class="p">()</span>
@@ -2111,6 +2302,12 @@ constants on <code>srs.bank.*</code>. Tile picks land on a banker booth row so
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Camelot = Seers' Village</p>
+<p><code>Camelot</code> and <code>SeersVillage</code> intentionally share the same tile in
+source — Camelot has no bank of its own, so the <code>Camelot</code> entry is
+an alias that routes to the Seers' Village bank booth row.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -2122,8 +2319,8 @@ constants on <code>srs.bank.*</code>. Tile picks land on a banker booth row so
 <tbody>
 <tr>
 <td>Lookup info</td>
-<td><code>Bank::info(loc) → BankInfo{x,y,plane,name}</code></td>
-<td>—</td>
+<td><code>Bank::info(loc) → BankInfo</code></td>
+<td><code>srs.bank.info(loc) → {x, y, plane, displayName}</code></td>
 </tr>
 <tr>
 <td>Walk to bank</td>
@@ -2137,6 +2334,33 @@ constants on <code>srs.bank.*</code>. Tile picks land on a banker booth row so
 </tr>
 </tbody>
 </table>
+<p><strong><code>BankInfo</code></strong> (returned by <code>Bank::info</code>; Lua receives a table with the
+same fields):</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code> / <code>y</code> / <code>plane</code></td>
+<td>int32</td>
+<td>Bank booth-row tile</td>
+</tr>
+<tr>
+<td><code>displayName</code></td>
+<td>const char*</td>
+<td>Human-readable location name</td>
+</tr>
+</tbody>
+</table>
+<p><code>srs.bank.info</code> takes a <code>BankLocation</code> int (<code>srs.bank.VarrockEast</code>
+etc.) and returns the tile + name behind it — handy for feeding a
+location's tile into <code>srs.walk.to</code> yourself or logging where
+<code>nearestBank()</code> chose.</p>
 <p><code>walkTo</code> returns <code>true</code> once the player is within 6 tiles (ready for
 <code>Bank::open</code>). Call once per tick — it handles the "already at" /
 "already walking" cases internally.</p>
@@ -2339,7 +2563,8 @@ the first slot with a positive quantity.</p>
 <p>The deposit-side inventory inside the bank window is widget <code>(15, 3)</code>
 (Bankside.ITEMS). Clicks route as CC_OP (slot 57) at that widget with
 <code>subSlot = backpack slot (0..27)</code>, <code>itemId</code> from the backpack cache,
-and Deposit-All identifier 7.</p>
+and Deposit-All identifier 2 (the deposit-side op ordering differs from
+the withdraw side — see <code>Bank.cpp</code> <code>fireDepositSlotClick</code>).</p>
 <table>
 <thead>
 <tr>
@@ -2364,6 +2589,19 @@ and Deposit-All identifier 7.</p>
 <p><code>depositAllExcept</code> fires Deposit-All on the FIRST non-kept inventory
 slot per call and returns <code>false</code>; the script polls each tick until
 only kept items remain, at which point it returns <code>true</code>.</p>
+<blockquote>
+<p><strong>Unverified: the bank's deposit ops may follow the quantity preset.</strong>
+The deposit box's item ops turned out to be positional — op 1 is
+whichever quantity the preset selects, so its Deposit-All constant only
+held on the preset it was captured under (see
+<a href="../DepositBox/#the-item-ops-are-positional">DepositBox</a>, fixed there).
+The bank's identifier 2 was confirmed live but we don't know on which
+preset. If the same model applies, 2 stays Deposit-All for every preset
+except <code>ALL</code>, where <code>depositAllExcept</code> would deposit one item per click.
+Until that's measured, treat a bank quantity preset of All as untested —
+the header comment on <code>fireDepositSlotClick</code> in <code>Bank.cpp</code> lists the
+experiment that settles it.</p>
+</blockquote>
 <h2 id="bulk-deposit">Bulk deposit<a class="headerlink" href="#bulk-deposit" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2391,6 +2629,29 @@ only kept items remain, at which point it returns <code>true</code>.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="coal-bag">Coal bag<a class="headerlink" href="#coal-bag" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fill coal bag</td>
+<td><code>Bank::fillCoalBag(ctx) → bool</code></td>
+<td><code>srs.bank.fillCoalBag() → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>fillCoalBag</code> fills the coal bag from the open bank via a captured
+CC_OP_LOW_PRIORITY (the bank-contextual "Fill" op). Returns <code>false</code> if
+the bank is closed or no coal bag is held. The empty half lives on
+<a href="../Inventory/">Inventory</a> as <code>Inventory::emptyCoalBag</code> /
+<code>srs.inventory.emptyCoalBag()</code> (works on the main inventory, no bank
+needed).</p>
 <h2 id="withdraw-quantity-preset">Withdraw quantity preset<a class="headerlink" href="#withdraw-quantity-preset" title="Permanent link">&para;</a></h2>
 <p>Sticky across subsequent withdraw clicks. Mirrors the "1 / 5 / 10 / X / All"
 button row at the bottom of the bank UI.</p>
@@ -2447,44 +2708,20 @@ button row at the bottom of the bank UI.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Quantity enums differ per interface</p>
+<p>Bank and <a href="../DepositBox/">DepositBox</a> share the
+<code>ONE / FIVE / TEN / X / ALL</code> set; the <a href="../Shop/">Shop</a> <code>Quantity</code>
+enum is <code>ONE / FIVE / TEN / FIFTY / X</code> — <strong>no <code>ALL</code></strong>, and <code>FIFTY</code>
+doesn't exist here. Don't reuse constants across the three tables.</p>
+</div>
 <h2 id="engineering-primitives">Engineering primitives<a class="headerlink" href="#engineering-primitives" title="Permanent link">&para;</a></h2>
 <p>For the rare script that needs low-level CS2 access (e.g. invoking a
-script the bank API doesn't expose), the engine helpers used internally
-are also bound at <code>srs.engine</code>:</p>
-<table>
-<thead>
-<tr>
-<th>Lua</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>srs.engine.setVarcInt(varcId, value)</code></td>
-<td>RuneLite <code>setVarcIntValue</code> equivalent</td>
-</tr>
-<tr>
-<td><code>srs.engine.getVarcInt(varcId)</code></td>
-<td>Read a VarClient int</td>
-</tr>
-<tr>
-<td><code>srs.engine.runScript(scriptId, ...args)</code></td>
-<td>Invoke a CS2 script with int args</td>
-</tr>
-<tr>
-<td><code>srs.widget.address(g, c)</code></td>
-<td>Raw IfType pointer for diagnostics</td>
-</tr>
-<tr>
-<td><code>srs.engine.releaseInputBlock()</code></td>
-<td>Diagnostic only — lifts the script's input gate so the user can interact mid-script</td>
-</tr>
-<tr>
-<td><code>srs.engine.takeInputBlock()</code></td>
-<td>Restore the input gate</td>
-</tr>
-</tbody>
-</table>
+script the bank API doesn't expose), use the engine helpers documented
+on <a href="../Engine/">Engine</a> — <code>srs.engine.setVarcInt</code> / <code>getVarcInt</code> /
+<code>runScript</code> and the diagnostic input-block toggles. The raw widget
+pointer probe <code>srs.widget.address(g, c)</code> is documented on
+<a href="../Widget/">Widget</a> (diagnostic-only, patch-unstable).</p>
 <h2 id="deferred-not-yet-shipped">Deferred (not yet shipped)<a class="headerlink" href="#deferred-not-yet-shipped" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong><code>withdrawAndEquip</code></strong> / <strong><code>withdrawDeficit</code></strong> — convenience over

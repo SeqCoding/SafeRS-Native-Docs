@@ -1,0 +1,2212 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+      
+      
+      
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/MouseProfileTrainer-Design/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Mouse Profile Trainer — Design - SafeRS Native API</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mouse-profile-trainer-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SafeRS Native API" class="md-header__button md-logo" aria-label="SafeRS Native API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SafeRS Native API
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Mouse Profile Trainer — Design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SafeRS Native API" class="md-nav__button md-logo" aria-label="SafeRS Native API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SafeRS Native API
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../api/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Antiban/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Area/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Area
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Breaks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Breaks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Camera/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Camera
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Cannon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cannon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Combat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/DepositBox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DepositBox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Dialogue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dialogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Drawing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Entity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Equipment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Equipment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Food/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Food
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GameObject/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GraphicsObjects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphicsObjects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GroundItem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GroundItem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Input/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Magic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Magic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MenuEntry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MenuEntry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Npc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Object
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Player/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Player
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Prayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Projectiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/RunePouch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Shop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Spells/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Tile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Walk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Walk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Widget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/World/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    World
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Goal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-current-state-what-this-builds-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Current state (what this builds on)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-capture-session-the-dot-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Capture session (the dot task)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-estimation-trial-traces-model-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Estimation (trial traces → model parameters)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-generation-model-pathmodel-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Generation model (PathModel v2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-profile-json-v2-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Profile JSON (v2 schema)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-runtime-integration-osrsclient-per-account-decorrelation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Runtime integration (OSRSClient) &amp; per-account decorrelation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-trainer-ui-three-tabs-in-the-launcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Trainer UI (three tabs in the launcher)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-phasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Phasing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-risks-open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Risks / open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="mouse-profile-trainer-design">Mouse Profile Trainer — Design<a class="headerlink" href="#mouse-profile-trainer-design" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2026-06-11 · <strong>Status:</strong> Proposed · <strong>Owner:</strong> SafeRSClient (trainer UI) + OSRSClient (runtime model)</p>
+<h2 id="1-goal">1. Goal<a class="headerlink" href="#1-goal" title="Permanent link">&para;</a></h2>
+<p>A tool inside SafeRSClient that builds a <strong>per-user mouse movement profile from the user's own
+clicks</strong>. The user runs a short session clicking dots of varying size/position; we measure their
+real motor signature (velocity shape, submovements, lateral bend, launch/landing perturbation,
+tau braking, mid-drift, OU micro-tremor, LF macro tremor, per-call sigma scatter, overshoot),
+fit each measurement into a <strong>bounded distribution</strong> (<code>{mu, sigma, lo, hi}</code>), and save the result
+as JSON in the client directory. OSRSClient loads that JSON at runtime and <strong>samples fresh
+parameter values per path</strong> — so synthesized movement is <em>modeled after the user</em> but never
+pixel-identical (stable statistical signature, fresh noise per click — same philosophy as the
+existing <code>MovementProfile</code> comment block).</p>
+<p>Reference: titanclient's "Mouse Path Testing" panel (screenshot 2026-06-11) — its tuning
+taxonomy (Duration/Fitts, Velocity profile, Submovements, Lateral bend twin-bumps, Launch/Landing
+perturbation 2D, Tau schedule, Mid-drift Cauchy, OU micro-tremor, LF macro tremor, Hyper per-call
+sigmas, Overshoot) is the model class we adopt, but <strong>we fit it from captured data instead of
+hand-tuned sliders</strong>.</p>
+<h2 id="2-current-state-what-this-builds-on">2. Current state (what this builds on)<a class="headerlink" href="#2-current-state-what-this-builds-on" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>OSRSClient/Input/MovementProfile.h</code> — v1 params-only model: cubic-bezier bow (<code>arcMag</code>,
+  <code>bezierMid1/2</code>), per-sample jitter, overshoot prob/dist, linear Fitts duration, event budget,
+  bimodal dt buckets, click dwell/hold. Seeded per-account via FNV-1a of character name
+  (<code>MovementProfiles::fromSeed</code>). <strong>Deliberate property: different accounts → decorrelated
+  signatures.</strong> This property must survive (see §8).</li>
+<li>Consumers: <code>MouseController</code> (per-frame WndProc curve: bezier + easeInOut + jitter + overshoot)
+  and <code>InputSpoofer</code> (ring-writer: event budget + dt buckets). <code>InputManager</code> pushes
+  <code>MovementProfiles::active()</code> before each move; <code>dllmain</code> calls <code>resolveFor()</code> per frame.</li>
+<li>SafeRSClient = native C++ WebView2 host (<code>main.cpp</code> routes <code>{type:...}</code> JSON messages,
+  nlohmann) + React/Vite UI (<code>ui/src/Launcher.tsx</code>, bridge in <code>ui/src/nativeBridge.ts</code>).</li>
+<li>Config root: <code>%LOCALAPPDATA%\SafeRS\</code> (AccountStore already uses <code>...\SafeRS\accounts</code>).</li>
+</ul>
+<h2 id="3-architecture">3. Architecture<a class="headerlink" href="#3-architecture" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌──────────────────────────── SafeRSClient.exe ────────────────────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  React UI (ui/src/MouseTrainer.tsx)            native host (main.cpp)    │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  ┌──────────┐ ┌─────────┐ ┌──────────┐   JSON bridge   ┌──────────────┐  │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  │ Capture  │ │  Review │ │ Simulate │ ◄──────────────► │ PathModel +  │  │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  │ (dots)   │ │  (fit)  │ │ (A→B ×N) │  mouse_trainer_* │ Estimators   │  │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  └──────────┘ └─────────┘ └──────────┘                  └──────┬───────┘  │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>└─────────────────────────────────────────────────────────────── │ ────────┘
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                       %LOCALAPPDATA%\SafeRS\mouse_profile.json ◄┘  (save)
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                                      │ (load at injection / relog)
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>┌──────────────────────────── OSRSClient.dll ──────────────────────────────┐
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│ MouseProfileStore ─► PathModel::generate(from,to,params,rng)             │
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│        │                    │ timed polyline (x,y,t)                     │
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│        ▼                    ▼                                            │
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│ MovementProfiles      MouseController (WndProc frames) / InputSpoofer    │
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│ (v1 fallback)         (ring events)  — emission machinery unchanged      │
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>└───────────────────────────────────────────────────────────────────────────┘
+</span></code></pre></div>
+<p><strong>Single source of truth:</strong> the generator (and the estimators) are C++ in
+<code>OSRSClient/Input/PathModel/</code>, compiled into <strong>both</strong> OSRSClient.dll and SafeRSClient.exe
+(sibling submodules in the SafeRS superproject — SafeRSClient.vcxproj references
+<code>..\OSRSClient\Input\PathModel\*.cpp</code>). The trainer UI never re-implements the model; Simulate
+calls the exact code that will run in-game, so preview == production. (Caveat: SafeRSClient then
+requires the sibling checkout to build — true for everyone using the superproject.)</p>
+<p>New files:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>OSRSClient/Input/PathModel/
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  PathModel.h/.cpp        // generate(): params → timed polyline. Pure, seedable, no Win32.
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  PathParams.h            // Band {mu,sigma,lo,hi} + per-family param structs + neutral defaults
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  ProfileJson.h/.cpp      // (de)serialize, validate, clamp, version-migrate, crc
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Estimators.h/.cpp       // trial traces → fitted Bands (trainer-side; small, ship anyway)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  MouseProfileStore.h/.cpp// runtime: locate/load/cache JSON, fallback chain (OSRSClient only)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>SafeRSClient/ui/src/MouseTrainer.tsx   // the three-tab tool
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>SafeRSClient/main.cpp                  // + mouse_trainer_* / mouse_profile_* message handlers
+</span></code></pre></div>
+<h2 id="4-capture-session-the-dot-task">4. Capture session (the dot task)<a class="headerlink" href="#4-capture-session-the-dot-task" title="Permanent link">&para;</a></h2>
+<p><strong>Window:</strong> full-stage canvas view in the launcher (game stage hidden via existing
+<code>set_stage_visible</code>). Dark background, one dot at a time.</p>
+<p><strong>Trial schedule — Fitts coverage grid.</strong> Each trial is a (distance D, width W, direction θ)
+cell: W ∈ {12, 20, 32, 48, 72} px diameter (spans menu rows → inventory slots → big UI
+buttons), D ∈ {60, 150, 300, 500, 800} px (clamped to window), θ ∈ 8 compass directions.
+Stratified-random order filling the grid; dot spawns at the sampled D/θ <strong>relative to the
+current cursor position</strong> (clamped to bounds; actual D recorded). Defaults: <strong>Standard = 120
+dots (~4–5 min)</strong>, Quick = 60, Thorough = 200. Live coverage meter shows unfilled cells.</p>
+<p><strong>Per-trial flow:</strong> idle gap 300–700 ms (jittered) → dot appears (spawn timestamp) → user moves
+and clicks it → ripple feedback → next. <strong>The idle gaps and the pre-click hover are first-class
+data</strong>: cursor-at-rest windows are pure tremor signal (voluntary motion ≈ 0), which is exactly
+where OU micro-tremor and LF macro tremor are estimable without contamination.</p>
+<p><strong>Sampling:</strong> <code>pointermove</code> + <code>getCoalescedEvents()</code> (device-rate history, typically 125–1000 Hz
+in Chromium/WebView2) + <code>pointerrawupdate</code> where available; <code>performance.now()</code> timestamps;
+coordinates × <code>devicePixelRatio</code> → <strong>physical px</strong> (what the game's WndProc sees). Preflight
+screen ("swirl the mouse for 3 s") measures effective sample rate and DPR; warn below ~100 Hz
+effective. If real-world rates disappoint, fallback is native <code>WM_INPUT</code> capture in the host
+streamed over the bridge — deferred unless needed.</p>
+<p><strong>Trial rejection (logged, not silently dropped):</strong> pointer left canvas / <code>visibilitychange</code>;
+reaction &lt; 80 ms (anticipation) or movement &gt; 4 s (distraction); inter-sample gap &gt; 50 ms
+mid-movement (hitch); first 8 trials (warm-up). Misclicks don't advance the dot but are recorded
+— miss rate feeds landing-sigma sanity and submovement stats.</p>
+<p><strong>Raw trial record (UI → host at session end, or incrementally):</strong></p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;dpr&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.25</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;dot&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="mi">812</span><span class="p">,</span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="mi">355</span><span class="p">,</span><span class="nt">&quot;r&quot;</span><span class="p">:</span><span class="mi">16</span><span class="p">},</span><span class="w"> </span><span class="nt">&quot;spawnT&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">91234.2</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;clickT&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">92110.7</span><span class="p">,</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;press&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;downT&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">92110.7</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;upT&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">92187.3</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;button&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">},</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;samples&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[[</span><span class="kc">t</span><span class="p">,</span><span class="err">x</span><span class="p">,</span><span class="err">y</span><span class="p">],</span><span class="w"> </span><span class="err">...</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w">            </span><span class="c1">// physical px, ms, device-rate</span>
+</span></code></pre></div>
+<h2 id="5-estimation-trial-traces-model-parameters">5. Estimation (trial traces → model parameters)<a class="headerlink" href="#5-estimation-trial-traces-model-parameters" title="Permanent link">&para;</a></h2>
+<p>Preprocess per trial: resample to uniform 4 ms (monotone cubic), Savitzky–Golay velocity/
+acceleration, movement onset = speed &gt; 5 % of trial peak sustained 3 samples; chord frame =
+(along s∈[0,1], perpendicular d). Then per family:</p>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Estimator (per trial → pooled)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Duration (Fitts)</strong></td>
+<td>Regress MT = a + b·log₂(D/W+1) across trials → <code>aMs</code>, <code>bMsPerBit</code>; residual spread → duration sigma. R² is a quality gate.</td>
+</tr>
+<tr>
+<td><strong>Velocity profile</strong></td>
+<td>Normalized v(s): time-to-peak fraction (skew), peak/mean ratio, spectral-arc-length smoothness → shape params of the base minimum-jerk-with-skew profile.</td>
+</tr>
+<tr>
+<td><strong>Submovements</strong></td>
+<td>Parse velocity local minima after primary peak → count of corrective submovements, amplitude (frac of D), duration; logistic prob vs ID.</td>
+</tr>
+<tr>
+<td><strong>Lateral bend</strong></td>
+<td>Signed d(s) least-squares-fit to twin-bump basis (two raised-cosine bumps: amp₁,c₁,w₁, amp₂,c₂,w₂). Signed amps capture handedness/curl direction bias.</td>
+</tr>
+<tr>
+<td><strong>Launch perturbation (2D)</strong></td>
+<td>Heading error angle + magnitude over first ~60 ms vs chord; fitted decay constant. Bias ≠ 0 is a real human signature — keep it.</td>
+</tr>
+<tr>
+<td><strong>Landing perturbation (2D)</strong></td>
+<td>First-arrival endpoint offset in chord frame → along/across sigmas + bias, scaling vs W.</td>
+</tr>
+<tr>
+<td><strong>Overshoot</strong></td>
+<td>Chord-axis overrun &gt; W/2 then reversal → P(overshoot</td>
+</tr>
+<tr>
+<td><strong>Tau schedule</strong></td>
+<td>Deceleration phase: τ(t) = gap/ġap; linear fit slope k (tau-coupling constant; k≈0.5 smooth stop, higher = harder braking) + engage fraction.</td>
+</tr>
+<tr>
+<td><strong>Mid-drift (Cauchy)</strong></td>
+<td>Residual after removing fitted bend, mid-window s∈[0.2,0.8]; increment distribution fitted by <strong>quantile-matched Cauchy scale</strong> (robust; tails are the point).</td>
+</tr>
+<tr>
+<td><strong>OU micro-tremor</strong></td>
+<td>From idle/hover windows: AR(1) on position residuals x[n+1]=αx[n]+ε → θ=−ln α/Δt, σ from ε. Movement-phase high-pass (&gt;6 Hz) residual as cross-check.</td>
+</tr>
+<tr>
+<td><strong>LF macro tremor</strong></td>
+<td>Idle windows band-pass 0.5–3 Hz → amplitude + dominant freq.</td>
+</tr>
+<tr>
+<td><strong>Hyper per-call sigmas</strong></td>
+<td>Per-trial residual RMS relative to pooled RMS → lognormal σ of a per-path multiplier. This is the "variance of variance" — some trials careful, some sloppy.</td>
+</tr>
+<tr>
+<td><strong>Click timing</strong></td>
+<td>dwell (arrival→down), hold (down→up) distributions → replaces v1 <code>clickDelay*</code>/<code>clickHold*</code>.</td>
+</tr>
+<tr>
+<td><strong>Reaction</strong></td>
+<td>spawn→onset distribution (useful for humanized response delays beyond paths).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Anti-overfit shrinkage:</strong> ~120 trials is thin for ~40 scalars. Every fitted Band is blended
+toward the neutral default: <code>mu' = w·mu_user + (1−w)·mu_neutral</code>, <code>w = n_accepted/(n_accepted+40)</code>
+(same for sigma). Quick sessions lean neutral; thorough sessions are mostly user.</p>
+<p><strong>Normalization with retained variance (the core requirement):</strong> each scalar is stored as a
+Band <code>{mu, sigma, lo, hi}</code> where <code>[lo,hi]</code> is the <strong>hand-authored global human-plausible range</strong>
+(the analog of titanclient's "client rules"). Fitted mu is clamped into the band; <strong>sigma is
+floored</strong> (never 0 — a zero-variance profile is itself a bot tell) and capped. At generation
+time each path samples <code>clamp(mu + sigma·m_hyper·N(0,1), lo, hi)</code> per parameter — every path
+differs, but the distribution is the user's.</p>
+<h2 id="6-generation-model-pathmodel-v2">6. Generation model (PathModel v2)<a class="headerlink" href="#6-generation-model-pathmodel-v2" title="Permanent link">&para;</a></h2>
+<p><code>generate(from, to, P, rng, bucketMs=0)</code> → timed polyline. Layers, applied in order:</p>
+<ol>
+<li><strong>Duration</strong> from Fitts Band (D, effective W of the target) → T.</li>
+<li><strong>Base kinematic</strong> s(t): minimum-jerk position profile warped by velocity-shape params
+   (time-to-peak skew, peak/mean flatness).</li>
+<li><strong>Tau braking</strong> reshapes the final approach segment per k (blend-in at engage fraction).</li>
+<li><strong>Lateral bend</strong>: d(s) = Σ twin bumps × D.</li>
+<li><strong>Launch perturbation</strong>: initial heading/speed error decaying over fitted window.</li>
+<li><strong>Mid-drift</strong>: Cauchy-stepped walk added in s∈[0.2,0.8], window-faded.</li>
+<li><strong>OU micro-tremor</strong> (per-axis OU process at sample rate) + <strong>LF macro tremor</strong> (band-limited sway).</li>
+<li><strong>Landing</strong>: endpoint drawn from 2D landing covariance; if outside target W or overshoot
+   triggered → <strong>corrective submovement(s)</strong> (small Fitts moves with their own bend/noise) until
+   inside; overshoot draws pass-distance then returns.</li>
+<li><strong>Hyper multiplier</strong> m ~ LogNormal(0, σ_hyper) sampled <strong>once per call</strong>, scaling all noise
+   families (3–11).</li>
+<li><strong>Output</strong>: ≥ internal 8 ms granularity; optional resample to fixed <code>bucketMs</code> buckets
+    (Simulate parity with titanclient-style invariants); last point == exact target; adjacent
+    duplicates collapsed; clamped to bounds.</li>
+</ol>
+<p>Determinism: rng is injected. Runtime uses fresh <code>random_device</code> per click (per existing v1
+philosophy); Simulate exposes a lockable seed for reproducible overlays; golden tests use fixed
+seeds.</p>
+<h2 id="7-profile-json-v2-schema">7. Profile JSON (v2 schema)<a class="headerlink" href="#7-profile-json-v2-schema" title="Permanent link">&para;</a></h2>
+<p><code>%LOCALAPPDATA%\SafeRS\mouse_profile.json</code> (user default) · optional per-account override
+<code>mouse_profile.&lt;account-slug&gt;.json</code> (slug per AccountStore's <code>slugify</code>). Versioned, CRC'd,
+unknown fields ignored, every value re-clamped on load (hand-edited files can't go robotic).</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  &quot;schema&quot;: &quot;safers.mouseProfile/2&quot;,
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  &quot;createdUtc&quot;: &quot;2026-06-11T18:00:00Z&quot;,
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  &quot;trainer&quot;: { &quot;trials&quot;: 120, &quot;accepted&quot;: 104, &quot;sampleHzMedian&quot;: 498, &quot;dpr&quot;: 1.25,
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>               &quot;qualityScore&quot;: 0.87, &quot;appVersion&quot;: &quot;...&quot; },
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  // every leaf below is a Band: {&quot;mu&quot;:…,&quot;sigma&quot;:…,&quot;lo&quot;:…,&quot;hi&quot;:…}
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  &quot;fitts&quot;:     { &quot;aMs&quot;: B, &quot;bMsPerBit&quot;: B, &quot;durSigmaFrac&quot;: B },
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  &quot;velocity&quot;:  { &quot;timeToPeakFrac&quot;: B, &quot;peakOverMean&quot;: B, &quot;smoothness&quot;: B },
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  &quot;submove&quot;:   { &quot;extraCount&quot;: B, &quot;ampFracOfD&quot;: B, &quot;durMs&quot;: B, &quot;probPerBit&quot;: B },
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  &quot;bend&quot;:      { &quot;amp1FracOfD&quot;: B, &quot;c1&quot;: B, &quot;w1&quot;: B, &quot;amp2FracOfD&quot;: B, &quot;c2&quot;: B, &quot;w2&quot;: B },
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  &quot;launch&quot;:    { &quot;angleSigmaDeg&quot;: B, &quot;angleBiasDeg&quot;: B, &quot;magFrac&quot;: B, &quot;decayFrac&quot;: B },
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  &quot;landing&quot;:   { &quot;alongSigmaPx&quot;: B, &quot;acrossSigmaPx&quot;: B, &quot;alongBiasPx&quot;: B, &quot;wScale&quot;: B },
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  &quot;tau&quot;:       { &quot;k&quot;: B, &quot;engageFrac&quot;: B },
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  &quot;midDrift&quot;:  { &quot;cauchyScalePx&quot;: B },
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>  &quot;ouTremor&quot;:  { &quot;thetaHz&quot;: B, &quot;sigmaPx&quot;: B },
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>  &quot;lfTremor&quot;:  { &quot;freqHz&quot;: B, &quot;ampPx&quot;: B },
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>  &quot;hyper&quot;:     { &quot;sigmaLn&quot;: B },
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>  &quot;overshoot&quot;: { &quot;prob&quot;: B, &quot;distFracOfD&quot;: B, &quot;returnMsPerPx&quot;: B },
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>  &quot;clicks&quot;:    { &quot;dwellMs&quot;: B, &quot;holdMs&quot;: B },
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>  &quot;reaction&quot;:  { &quot;ms&quot;: B },
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>  &quot;accountDecorrelation&quot;: { &quot;enabled&quot;: true, &quot;muShiftFracOfSigma&quot;: 0.5, &quot;sigmaScalePct&quot;: 15 },
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>  &quot;legacyV1&quot;:  { /* mapped MovementProfile fields — lets v1 consumers run pre-switchover */ },
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>  &quot;crc32&quot;: &quot;…&quot;
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>}
+</span></code></pre></div>
+<p><code>legacyV1</code> mapping ships in phase 1 so the existing <code>MouseController</code>/<code>InputSpoofer</code> immediately
+inherit user-fitted <em>v1</em> values (arc ≈ bend amp, jitter ≈ tremor σ, durations from Fitts fit,
+dwell/hold, overshoot) even before the v2 generator switchover.</p>
+<h2 id="8-runtime-integration-osrsclient-per-account-decorrelation">8. Runtime integration (OSRSClient) &amp; per-account decorrelation<a class="headerlink" href="#8-runtime-integration-osrsclient-per-account-decorrelation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>MouseProfileStore::resolve()</code> runs at injection and inside <code>MovementProfiles::resolveFor</code>
+  (name-change path; add cheap mtime re-stat so re-saving from the trainer takes effect on
+  relog, no client restart). Precedence: <strong>per-account JSON → user JSON → v1 <code>fromSeed(name)</code></strong>.
+  Any parse/validation failure → log once, fall back; input must never hard-fail.</li>
+<li><strong>Keep cross-account decorrelation.</strong> A single shared user JSON would make all of a user's
+  accounts emit one identical statistical fingerprint — exactly what v1's FNV-1a seeding was
+  built to prevent (linkage risk). Default-on: account seed shifts each <code>mu</code> by up to
+  ±0.5·sigma (within band) and scales sigma ±15 %. Same human style-envelope, different
+  individual per account. Toggleable in the JSON for users who insist.</li>
+<li>Consumers: <code>MouseController::generateTrajectory</code> swaps bezier/easeInOut/jitter for a PathModel
+  polyline (per-frame <code>update()</code> interpolates it; WndProc emission + AFK-timer touch unchanged).
+  <code>InputSpoofer</code> resamples the polyline into its event budget/dt-bucket ring format. Both behind
+  a <code>pathModelV2</code> kill-switch defaulting off until A/B'd.</li>
+</ul>
+<h2 id="9-trainer-ui-three-tabs-in-the-launcher">9. Trainer UI (three tabs in the launcher)<a class="headerlink" href="#9-trainer-ui-three-tabs-in-the-launcher" title="Permanent link">&para;</a></h2>
+<p><strong>Capture</strong> — preflight (sample-rate/DPR calibration) → dot session with progress bar, live
+coverage grid, accepted/rejected counters, abort/pause. <strong>Review</strong> — per-family cards: fitted
+<code>mu ± sigma</code> rendered inside the <code>[lo, hi]</code> band bar, shrinkage weight, quality gates (Fitts R²
+≥ 0.5, accepted ≥ 50, sample rate ≥ 100 Hz…), warnings ("trackpad-like signature: tremor floor
+clamped"), then <strong>Save / Set active / Save as account override</strong>. <strong>Simulate</strong> — click two
+points on a canvas (or randomize), N = 1–200 paths (user-configurable), optional seed lock,
+bucket-ms control; renders overlaid polylines + a batch table (mean/σ/min/max of point count,
+duration, arc length, straightness, avg/peak speed, lateral dev, overshoot rate) + invariant
+checklist (exact target, bucket spacing, bounds, adjacent-distinct, monotonic t) — deliberately
+mirroring the titanclient panel — plus <strong>"vs. my real trials"</strong>: overlays captured trials of
+similar D/W and shows per-metric percentile chips ("synth peak speed = p43 of yours").</p>
+<p>Bridge messages (all host-side handlers in <code>main.cpp</code>, work off the UI thread):
+<code>mouse_trainer_fit {trials[]}</code> → <code>mouse_trainer_fit_result {profile, diagnostics}</code> ·
+<code>mouse_trainer_generate {profile?, from, to, n, seed?, bucketMs}</code> → <code>mouse_trainer_paths
+{paths[][], metrics, invariants}</code> · <code>mouse_profile_save / list / load / set_active</code> →
+correspondingly-named replies. Raw session is also dumped to
+<code>%LOCALAPPDATA%\SafeRS\profiles\sessions\&lt;ts&gt;.json.gz</code> so fits can be re-run after estimator
+improvements without re-clicking.</p>
+<h2 id="10-phasing">10. Phasing<a class="headerlink" href="#10-phasing" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>PathModel lib + schema + golden tests</strong> (no UI): generator, ProfileJson, neutral profile,
+   invariant tests, legacyV1 mapping. Synthetic-profile sanity via existing DebugPanel.
+   <strong>[DONE 2026-06-11]</strong> — <code>OSRSClient/Input/PathModel/</code> (PathMath/PathParams/PathModel/
+   ProfileJson/Estimators/PathModelSelfTest), DebugPanel <strong>Path Lab</strong> tab, standalone runner
+   <code>OSRSClient/tools/pathmodel_tests/build_and_run.ps1</code> (39 tests green, incl. estimator
+   round-trip). Gotcha: <code>Profile::hyper</code> had to be <code>hyperVar</code> — rpcndr.h <code>#define hyper __int64</code>
+   leaks through the DLL PCH.</li>
+<li><strong>Trainer UI</strong>: capture + fit + save through the bridge; Review/Simulate tabs.
+   <strong>[DONE 2026-06-11]</strong> — <code>SafeRSClient/MouseTrainerHost.{h,cpp}</code> (compiles the shared
+   <code>..\OSRSClient\Input\PathModel\*.cpp</code> + <code>MovementProfileNeutral.cpp</code>; verbs
+   <code>mouse_trainer_fit</code> / <code>mouse_trainer_generate</code> / <code>mouse_profile_{save,load}</code> /
+   <code>mouse_trainer_session_save</code>, atomic write to <code>%LOCALAPPDATA%\SafeRS\mouse_profile.json</code>),
+   bridge wrappers in <code>nativeBridge.ts</code>, <code>ui/src/MouseTrainer.tsx</code> (Capture/Review/Simulate),
+   dock entry. Both binaries build clean; UI renders + is interactive (verified in vite
+   preview + by the user manually). <strong>Bug found &amp; fixed during smoke test</strong>: the capture
+   surface cached its <code>getBoundingClientRect</code> right after the phase flip to "running", but the
+   status row grows taller in running mode and shifts the surface down <em>after</em> the cache —
+   so every dot-click mis-tested against a stale vertical offset. Fix: read the rect live per
+   pointer event (<code>liveRect()</code>), never cache. (Note: synthetic <code>PointerEvent</code>s don't drive
+   React's pointer handlers in the headless preview — only <code>.click()</code>/<code>onClick</code> does — so the
+   dot-hit path must be verified with real mouse input, not the preview harness.)</li>
+<li><strong>Runtime loader + MouseController v2 switchover</strong> behind kill-switch; A/B with spoof logs.
+   <strong>[DONE 2026-06-11]</strong> — <code>OSRSClient/Input/MouseProfileStore.{h,cpp}</code> loads
+   <code>%LOCALAPPDATA%\SafeRS\mouse_profile.json</code> via <code>pathmodel::parse</code>, caches + re-stats mtime
+   in <code>resolveFor</code> (picks up trainer re-saves on next frame), applies name-seeded
+   <code>decorrelate</code>, fail-soft on parse error. Runtime kill-switch <code>enabled()</code> (default <strong>off</strong>).
+   <code>MouseController::setProfileV2</code> + <code>moveToV2</code>/<code>updateV2Locked</code>: when the switch is on and a
+   profile is loaded, <code>moveTo</code> synthesizes a full <code>pathmodel::generate</code> polyline and <code>update</code>
+   interpolates it by timestamp — bypassing bezier/overshoot/jitter (all baked into the path).
+   v1 path untouched when off. <code>InputManager::clickAt</code> pushes the v2 profile+predicate;
+   <code>dllmain</code> resolves the store each frame after <code>MovementProfiles::resolveFor</code>. DebugPanel
+   Input tab has the toggle + load/quality/seed status (the A/B control). <strong>Thread-safety:</strong>
+   <code>clickAt</code>→<code>moveTo</code> runs on the Lua worker thread, <code>update</code> on the render thread; the v1 POD
+   control points tolerate that race but the polyline <code>std::vector</code> can't, so all v2-playback
+   fields are serialized by <code>m_v2Mtx</code> (publish under lock, flip <code>m_moving</code> after). Click
+   delay/hold still come from v1 — wiring v2 dwell/hold is a phase-4 follow-up, as is per-target
+   width (currently a fixed 8px radius) and the per-account override file.</li>
+<li><strong>InputSpoofer switchover, per-account overrides UX, decorrelation polish.</strong>
+   <strong>[DONE 2026-06-11]</strong> — (a) <code>InputSpoofer::inject</code> samples ring positions from the v2
+   polyline (<code>MouseProfileStore</code>) instead of bezier+decelEase when the kill-switch is on, and
+   takes duration from the polyline (clamped to the ring's [60,320] window); the ring budget,
+   bimodal dt timeline, secondary-ring mirror and click-staging are unchanged, and it fail-softs
+   to v1 on an empty path. With the switch OFF (default) both paths are byte-for-byte the old v1
+   behavior. (b) v2 click dwell/hold: <code>MouseController::v2ClickTiming</code> hands <code>InputManager</code> the
+   fitted dwell (arrival→down) and hold (down→up) for the click states; v1 bands otherwise. (c)
+   per-target width: optional <code>targetRadiusPx</code> threaded through <code>clickAt</code>→<code>moveTo</code>→<code>moveToV2</code>
+   and <code>SpoofRequest</code>, and <strong>derived from the target's real on-screen bounds</strong> —
+   <code>Camera::footprintRadiusPx</code> projects 1-tile neighbours → screen px-per-tile, scales by the
+   footprint, takes the tighter dimension, clamps [4,60]; object/NPC/player (<code>perform</code>) and
+   widget WndProc (<code>clickReal*</code>, from the rect) pass real radii, so near/large targets read as
+   easier and far/small as precise. 8px default only where bounds are unknown (bare
+   <code>clickScreen</code>, short widget-button DoActions where Fitts sits near the floor anyway).
+   (d) per-account override: <code>MouseProfileStore</code> prefers
+   <code>mouse_profile.&lt;charslug&gt;.json</code> (used as-is — already account-specific) over the shared
+   <code>mouse_profile.json</code> (decorrelated by name); DebugPanel flags which is active. Launcher
+   "save for this account" UX is the remaining bit (the load/precedence side is live). DLL
+   builds clean, 42 lib tests green.</li>
+</ol>
+<p><strong>Status: all four phases shipped.</strong> The trainer captures→fits→saves a profile, and both
+   in-game movement paths (WndProc curve + ring-writer) consume it behind the <code>pathModelV2</code>
+   kill-switch. Remaining polish: launcher "save override for account" UX and persisting the
+   kill-switch in Config.</p>
+<h2 id="11-risks-open-questions">11. Risks / open questions<a class="headerlink" href="#11-risks-open-questions" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>WebView2 effective sample rate</strong> on low-end mice/VMs — preflight measures it; WM_INPUT
+  native capture is the fallback. Pointer coords must be DPR-corrected or tremor σ is ~25 % off.</li>
+<li><strong>Trackpad/pen users</strong> produce non-mouse signatures (no 8–12 Hz tremor, speed caps) — detect
+  via tremor spectrum and warn; clamps prevent degenerate profiles either way.</li>
+<li><strong>Profile sharing</strong> between users would clone fingerprints — discourage (per-account
+  decorrelation already softens it; could salt exports later).</li>
+<li><strong>Staleness</strong>: human signatures drift; nudge re-capture after ~60 days (metadata has the date).</li>
+<li>Open: should the trainer also fit <strong>wheel/scroll and key-timing</strong> profiles later? Same
+  capture-fit-band machinery applies.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "toc.follow", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

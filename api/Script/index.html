@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Food/">
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Script/">
       
       
-        <link rel="prev" href="../Equipment/">
+        <link rel="prev" href="../RunePouch/">
       
       
-        <link rel="next" href="../Game/">
+        <link rel="next" href="../Settings/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Food - SafeRS Native API</title>
+        <title>Script lifecycle - SafeRS Native API</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#food" class="md-skip">
+        <a href="#script-lifecycle" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Food
+              Script lifecycle
             
           </span>
         </div>
@@ -839,37 +839,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Food
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../Food/" class="md-nav__link">
         
   
   
@@ -885,70 +858,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Methods
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#constants" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Constants
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1490,10 +1399,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Script/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1509,6 +1445,103 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle callbacks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metadata-and-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata and settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#waits-tick-suspension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Waits (tick suspension)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-loading-require" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module loading (require)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-lua-stdlib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Available Lua stdlib
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1772,10 +1805,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
+  <a href="#lifecycle-callbacks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Methods
+        Lifecycle callbacks
       
     </span>
   </a>
@@ -1783,10 +1816,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#constants" class="md-nav__link">
+  <a href="#metadata-and-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Constants
+        Metadata and settings
       
     </span>
   </a>
@@ -1794,10 +1827,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#types" class="md-nav__link">
+  <a href="#logging" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Types
+        Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#waits-tick-suspension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Waits (tick suspension)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-loading-require" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module loading (require)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-lua-stdlib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Available Lua stdlib
       
     </span>
   </a>
@@ -1832,108 +1898,186 @@
 
 
 
-<h1 id="food">Food<a class="headerlink" href="#food" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Food</code> / <code>srs.food</code></p>
-<p>Static metadata table for edible items + <code>eatBest()</code> helper that
-picks the highest-heal food currently in the backpack.</p>
-<p>The table is a representative subset — shrimp through anglerfish plus
-a few special-case heals. Items not in the table won't be
-auto-picked by <code>eatBest</code>, but any item id can still be fed to
-<a href="../Inventory/">Inventory::interact</a> directly.</p>
-<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<h1 id="script-lifecycle">Script lifecycle<a class="headerlink" href="#script-lifecycle" title="Permanent link">&para;</a></h1>
+<p><code>script.*</code> / <code>log.*</code> / <code>srs.wait</code> (Lua — global tables)</p>
+<p>Everything a Lua script uses to hook into the engine: lifecycle
+callbacks, script metadata + settings, logging, tick suspension, and
+the sandboxed module loader. There is no <code>srs::api</code> facade for this
+surface — C++ plugins implement the <code>IScript</code> virtuals
+(<code>onLoad</code> / <code>onTick</code> / <code>pulse</code> / <code>onDraw</code>) directly instead.</p>
+<h2 id="lifecycle-callbacks">Lifecycle callbacks<a class="headerlink" href="#lifecycle-callbacks" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Lookup by kind</td>
-<td><code>Food::info(kind) → FoodInfo</code></td>
-<td><code>srs.food.info(kind) → FoodInfo</code></td>
-</tr>
-<tr>
-<td>Lookup by item id</td>
-<td><code>Food::byId(id) → optional&lt;FoodInfo&gt;</code></td>
-<td><code>srs.food.byId(id) → FoodInfo \| nil</code></td>
-</tr>
-<tr>
-<td>All food in inventory</td>
-<td><code>Food::inInventory(ctx) → vector&lt;FoodInfo&gt;</code></td>
-<td><code>srs.food.inInventory() → table</code></td>
-</tr>
-<tr>
-<td>Eat highest-heal</td>
-<td><code>Food::eatBest(ctx) → bool</code></td>
-<td><code>srs.food.eatBest() → bool</code></td>
-</tr>
-<tr>
-<td>Eat lowest-heal</td>
-<td><code>Food::eatWeakest(ctx) → bool</code></td>
-<td><code>srs.food.eatWeakest() → bool</code></td>
-</tr>
-</tbody>
-</table>
-<p><code>inInventory</code> returns the food list sorted highest-heal first.</p>
-<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
-<p><strong>FoodKind constants</strong> (<code>FoodKind</code> / <code>srs.food.*</code>):</p>
-<p><code>SHRIMPS</code>, <code>ANCHOVIES</code>, <code>SARDINE</code>, <code>HERRING</code>, <code>MACKEREL</code>, <code>TROUT</code>,
-<code>COD</code>, <code>PIKE</code>, <code>SALMON</code>, <code>TUNA</code>, <code>LOBSTER</code>, <code>BASS</code>, <code>SWORDFISH</code>,
-<code>MONKFISH</code>, <code>KARAMBWAN</code>, <code>SHARK</code>, <code>SEA_TURTLE</code>, <code>MANTA</code>, <code>DARK_CRAB</code>,
-<code>ANGLERFISH</code>.</p>
-<h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
-<p><strong><code>FoodInfo</code></strong> (read-only):</p>
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>itemId</code></td>
-<td>int32</td>
-<td>OSRS item id</td>
+<td>Per-frame callback (~60 Hz)</td>
+<td><code>script.pulse(fn)</code></td>
+<td>Runs every render frame</td>
 </tr>
 <tr>
-<td><code>heal</code></td>
-<td>int32</td>
-<td>Hitpoints restored</td>
+<td>Per-game-tick callback (~600 ms)</td>
+<td><code>script.onTick(fn)</code></td>
+<td>Runs once per server tick</td>
 </tr>
 <tr>
-<td><code>name</code></td>
-<td>string</td>
-<td>Canonical name</td>
+<td>One-shot next-tick callback</td>
+<td><code>script.nextTick(fn)</code></td>
+<td>Fires once on the next tick rollover</td>
+</tr>
+<tr>
+<td>Overlay draw callback</td>
+<td><code>script.draw(fn)</code></td>
+<td>Per-frame, inside a live ImGui frame — <code>srs.draw</code> / <code>srs.overlay</code> are only valid here</td>
 </tr>
 </tbody>
 </table>
+<p><code>pulse</code> and <code>onTick</code> are both optional — register whichever cadence
+fits. Use <code>onTick</code> for game logic (actions, state machines) and
+<code>pulse</code> only when you genuinely need frame-rate polling.</p>
+<h2 id="metadata-and-settings">Metadata and settings<a class="headerlink" href="#metadata-and-settings" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Declare settings schema</td>
+<td><code>script.declareSettings(schemaTable)</code></td>
+<td>Top-level only — silently no-ops outside script load</td>
+</tr>
+<tr>
+<td>Declare script info</td>
+<td><code>script.declareInfo({name=, author=, version=, description=})</code></td>
+<td>Top-level only</td>
+</tr>
+<tr>
+<td>Read current settings</td>
+<td><code>script.settings() → table</code></td>
+<td>Empty table if the calling script can't be attributed</td>
+</tr>
+<tr>
+<td>Settings-changed callback</td>
+<td><code>script.onSettingsChanged(fn(settingsTable))</code></td>
+<td>Fires when the user edits settings in the client UI</td>
+</tr>
+</tbody>
+</table>
+<h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Info line</td>
+<td><code>log.info(msg)</code></td>
+<td>Appends <code>[INFO] msg</code> to the engine output buffer</td>
+</tr>
+<tr>
+<td>Warning line</td>
+<td><code>log.warn(msg)</code></td>
+<td><code>[WARN]</code> prefix</td>
+</tr>
+<tr>
+<td>Error line</td>
+<td><code>log.error(msg)</code></td>
+<td><code>[ERROR]</code> prefix</td>
+</tr>
+<tr>
+<td>Print</td>
+<td><code>print(...)</code></td>
+<td><strong>Overridden</strong>: tab-concatenated <code>tostring()</code> of each arg, to the engine output buffer — not stdout</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">The only logging APIs</p>
+<p><code>log.info/warn/error</code> and the overridden <code>print</code> are the whole
+surface. There is no <code>srs.log.*</code> and no <code>osrs.print</code> — code using
+those names errors at call time.</p>
+</div>
+<h2 id="waits-tick-suspension">Waits (tick suspension)<a class="headerlink" href="#waits-tick-suspension" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wait N ticks</td>
+<td><code>srs.wait([ticks=1])</code></td>
+<td>Mutes this script for N ticks</td>
+</tr>
+<tr>
+<td>Wait for condition</td>
+<td><code>srs.waitUntil(predicateFn[, timeoutTicks=0])</code></td>
+<td><code>timeoutTicks=0</code> = no timeout</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">wait is a suspension gate, not a coroutine sleep</p>
+<p><code>srs.wait(n)</code> mutes <strong>this script's</strong> <code>pulse</code> / <code>onTick</code> /
+<code>nextTick</code> callbacks for <code>n</code> ticks — <code>draw</code> keeps firing. It does
+<strong>not</strong> interrupt the currently running callback: code after the
+call still executes. The idiom is <code>srs.wait(n); return</code>. Both
+<code>wait</code> and <code>waitUntil</code> are silent no-ops outside a firing
+callback.</p>
+</div>
+<ul>
+<li><code>srs.waitUntil(fn)</code> releases when the predicate returns truthy; if
+  the predicate throws, the wait releases (fail-open) rather than
+  hanging the script.</li>
+<li>There is <strong>no</strong> global <code>sleep</code> or <code>scriptSleep</code>.</li>
+</ul>
+<h2 id="module-loading-require">Module loading (<code>require</code>)<a class="headerlink" href="#module-loading-require" title="Permanent link">&para;</a></h2>
+<p><code>require(mod)</code> is replaced with a sandboxed bundle loader:</p>
+<ul>
+<li><code>require("a.b")</code> resolves <code>a/b.lua</code>, then <code>a/b/init.lua</code>, from the
+  <strong>current bundle's in-memory files only</strong> — no filesystem access, no
+  <code>loadlib</code>.</li>
+<li>Results are cached per bundle; requiring the same module twice
+  returns the cached value.</li>
+<li>Calling <code>require</code> outside a bundle context (e.g. from a single-file
+  script) or for a missing module throws an error.</li>
+</ul>
+<h2 id="available-lua-stdlib">Available Lua stdlib<a class="headerlink" href="#available-lua-stdlib" title="Permanent link">&para;</a></h2>
+<p>Open libraries: <code>base</code>, <code>string</code>, <code>math</code>, <code>table</code>, <code>os</code>.
+Not available: <code>io</code>, <code>package</code> (<code>require</code> is replaced — see above).</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Player</span><span class="o">::</span><span class="n">hitpoints</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">maxHitpoints</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">Food</span><span class="o">::</span><span class="n">eatBest</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">script</span><span class="p">.</span><span class="py">declareInfo</span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Miner&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">author</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;me&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">                    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Powermines iron&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">isFull</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Iron ore&quot;</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="nf">wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">  </span><span class="c1">-- mute onTick for 2 ticks; code below still runs</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="kr">return</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;Ticking, slots free: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">emptySlots</span><span class="p">())</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kr">end</span><span class="p">)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="c1">-- srs.draw / srs.overlay calls are valid only here</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">hitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">maxHitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">food</span><span class="p">.</span><span class="nf">eatBest</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">            </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;out of food — banking&quot;</span><span class="p">)</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="kr">end</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kr">end</span><span class="p">)</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

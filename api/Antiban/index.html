@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -959,6 +967,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -995,6 +1031,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1267,6 +1331,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1359,6 +1451,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1750,17 +1870,17 @@
 <tr>
 <td>Total delays skipped</td>
 <td><code>Antiban::totalDelaysSkipped() → uint64</code></td>
-<td>—</td>
+<td><code>srs.antiban.totalDelaysSkipped() → int</code></td>
 </tr>
 <tr>
 <td>Total micro-breaks</td>
 <td><code>Antiban::totalMicroBreaks() → uint64</code></td>
-<td>—</td>
+<td><code>srs.antiban.totalMicroBreaks() → int</code></td>
 </tr>
 <tr>
 <td>Total random moves</td>
 <td><code>Antiban::totalRandomMoves() → uint64</code></td>
-<td>—</td>
+<td><code>srs.antiban.totalRandomMoves() → int</code></td>
 </tr>
 </tbody>
 </table>
@@ -1774,8 +1894,8 @@
 <li><code>moveMouseRandomly</code> reads the live viewport size from
   <code>Camera::state()</code>; falls back to (1024, 768) if the camera hasn't
   initialized.</li>
-<li>The three <code>total*</code> counters feed the debug panel readout. They are
-  C++-facade only — there are no <code>srs.antiban.total*</code> Lua bindings.</li>
+<li>The three <code>total*</code> counters are diagnostic — they feed the debug
+  panel readout and are handy for script HUDs / logging.</li>
 </ul>
 
 

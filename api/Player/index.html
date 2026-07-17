@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Player/">
       
       
-        <link rel="prev" href="../Object/">
+        <link rel="prev" href="../Overlay/">
       
       
         <link rel="next" href="../Prayer/">
@@ -328,6 +328,14 @@
       
         
           
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -890,6 +898,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -926,6 +962,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1195,6 +1259,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1296,6 +1388,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1376,6 +1479,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1685,6 +1816,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1725,7 +1867,7 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <tr>
 <td>Template-space position</td>
 <td><code>Player::templatePosition(ctx) → WorldTile</code></td>
-<td>—</td>
+<td><code>srs.player.templatePosition() → WorldTile</code></td>
 </tr>
 <tr>
 <td>Display name</td>
@@ -1793,6 +1935,11 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td><code>srs.player.maxPrayer() → int</code></td>
 </tr>
 <tr>
+<td>Overhead prayer headicon</td>
+<td><code>Player::overheadPrayer(ctx) → OverheadPrayer</code></td>
+<td><code>srs.player.overheadPrayer() → OverheadPrayer</code></td>
+</tr>
+<tr>
 <td>Quest completion state</td>
 <td><code>Player::questState(ctx, Quest) → QuestState</code></td>
 <td><code>srs.player.questState(Quest) → QuestState</code></td>
@@ -1814,7 +1961,8 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   an instance it maps the raw instance-local tile back through the engine's
   chunk layout to the <strong>template</strong> world tile (the wiki / RuneLite /
   Microbot coordinate), falling back to <code>position</code> when the conversion
-  can't be made. C++-facade only — no Lua binding.</li>
+  can't be made. Pairs with <a href="../Area/"><code>srs.area.isInInstance()</code></a> to
+  decide raw-vs-template coordinates in instanced content.</li>
 <li><strong><code>displayName</code></strong> — empty string pre-login. Resolved via WI-map
   (GS+0xCA40 → WorldInstance → PlayerSubMap.find(LocalPlayerIndex))
   in patch 238+.</li>
@@ -1834,6 +1982,11 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <li><strong><code>prayer</code> / <code>maxPrayer</code></strong> — current prayer points (live, drains with
   use) + base prayer level. Mirrors <code>srs::api::Prayer::points</code> /
   <code>Prayer::level</code>.</li>
+<li><strong><code>overheadPrayer</code></strong> — the <strong>local</strong> player's active Protect-from
+  headicon. <code>OverheadPrayer.None</code> when no overhead prayer is active or
+  pre-login. See <a href="../Prayer/">Prayer</a> for the <code>OverheadPrayer</code> enum
+  (a Lua <strong>global</strong> enum — same values for players and NPCs; NPCs read
+  it via <a href="../Npc/"><code>Npc::overheadPrayer</code></a>).</li>
 <li><strong><code>questState</code></strong> — completion bucket for a quest (<code>NotStarted</code> /
   <code>InProgress</code> / <code>Finished</code>). Backed by the engine's <code>QUEST_STATUS_GET</code>
   clientscript (CS2 4029) — the same source RuneLite/Microbot use — so it is
@@ -1877,13 +2030,22 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">No Lua constructor</p>
+<p><code>WorldTile</code> is a read-only usertype with <strong>no</strong> Lua constructor —
+scripts obtain one from <code>srs.player.position()</code> (or another API that
+returns tiles). Every Lua API that takes a tile also offers
+<code>(x, y[, plane])</code> overloads (e.g. <code>srs.camera.rotateToTile(x, y)</code>),
+so you never need to build one.</p>
+</div>
 <p><strong><code>Skill</code></strong> enum — values match the engine's skill table:</p>
 <p><code>Attack</code>, <code>Defence</code>, <code>Strength</code>, <code>Hitpoints</code>, <code>Ranged</code>, <code>Prayer</code>,
 <code>Magic</code>, <code>Cooking</code>, <code>Woodcutting</code>, <code>Fletching</code>, <code>Fishing</code>, <code>Firemaking</code>,
 <code>Crafting</code>, <code>Smithing</code>, <code>Mining</code>, <code>Herblore</code>, <code>Agility</code>, <code>Thieving</code>,
 <code>Slayer</code>, <code>Farming</code>, <code>Runecraft</code>, <code>Hunter</code>, <code>Construction</code>, <code>Sailing</code>.</p>
 <p>In Lua: <code>Skill.Hitpoints</code>, etc. (registered at Lua global scope, same as <code>CameraMode</code>).</p>
-<p><strong><code>Quest</code></strong> enum — every quest the engine tracks (currently 209), value
+<p><strong><code>Quest</code></strong> enum — every quest the engine tracks (209 generated
+enumerators, identical in C++ and Lua), value
 = stable index. Names + the underlying quest-config struct ids are ported
 from RuneLite's <code>Quest</code> enum (via Microbot's bundled Quest Helper). Examples:
 <code>Quest.CooksAssistant</code>, <code>Quest.DragonSlayerI</code>, <code>Quest.MonkeyMadnessIi</code>,
@@ -1918,6 +2080,34 @@ at Lua global scope (same as <code>Skill</code>). Regenerate after a game update
 </tbody>
 </table>
 <p>In Lua: <code>QuestState.Finished</code>, etc. (registered at Lua global scope).</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">auto</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">position</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Player</span><span class="o">::</span><span class="n">hitpoints</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">maxHitpoints</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">Food</span><span class="o">::</span><span class="n">eatBest</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Player</span><span class="o">::</span><span class="n">idleTicks</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n">Player</span><span class="o">::</span><span class="n">overheadPrayer</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OverheadPrayer</span><span class="o">::</span><span class="n">None</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="c1">// idle and no protection up — do something</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;at %d, %d (plane %d)&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">pos</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">pos</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">pos</span><span class="p">.</span><span class="py">plane</span><span class="p">))</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">hitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">maxHitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">food</span><span class="p">.</span><span class="nf">eatBest</span><span class="p">()</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kr">end</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">questState</span><span class="p">(</span><span class="nv">Quest</span><span class="p">.</span><span class="py">CooksAssistant</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">QuestState</span><span class="p">.</span><span class="py">Finished</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;Cook&#39;s Assistant done&quot;</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kr">end</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
 
 
 

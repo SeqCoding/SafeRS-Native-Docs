@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -890,6 +898,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -926,6 +962,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1151,6 +1215,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1300,6 +1375,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1392,6 +1495,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1696,6 +1827,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1835,7 +1977,7 @@ DoAction).</p>
 <tr>
 <td>Click lowest dose of a potion family</td>
 <td><code>Inventory::interactByLowestDose(ctx, baseName, action) → bool</code></td>
-<td>—</td>
+<td><code>srs.inventory.interactByLowestDose(baseName, action) → bool</code></td>
 </tr>
 <tr>
 <td>Examine slot's item</td>
@@ -1857,6 +1999,11 @@ DoAction).</p>
 <td><code>Inventory::pendingDropCount(ctx) → int32</code></td>
 <td><code>srs.inventory.pendingDropCount() → int</code></td>
 </tr>
+<tr>
+<td>Empty coal bag</td>
+<td><code>Inventory::emptyCoalBag(ctx) → bool</code></td>
+<td><code>srs.inventory.emptyCoalBag() → bool</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>action</code> is the exact menu-option string (e.g. <code>"Eat"</code>, <code>"Drop"</code>,
@@ -1866,9 +2013,13 @@ widget not currently rendered, or spoofer failure.</p>
 <p><code>interactByLowestDose</code> targets the <strong>lowest</strong> dose of a potion family —
 <code>interactByLowestDose(ctx, "Prayer potion", "Drink")</code> drinks a <code>(1)</code>
 before a fresh <code>(4)</code> to free inventory slots sooner (the trailing <code>(N)</code>
-is stripped from <code>baseName</code>). C++-facade only; no Lua binding.</p>
+is stripped from <code>baseName</code>).</p>
 <p><code>examine</code> fires the item's right-click <strong>Examine</strong> and the engine prints
 the description to chat (info-only, no server cost).</p>
+<p><code>emptyCoalBag</code> empties a coal bag via the captured <code>CC_OP_LOW_PRIORITY</code>
+op on the main inventory (149, 0). Returns <code>false</code> if no coal bag is
+held. The fill half lives on the bank facade —
+<a href="../Bank/"><code>Bank::fillCoalBag</code></a> (bank must be open).</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>dropAll</code> is asynchronous — poll <code>pendingDropCount</code></p>
 <p><code>dropAll</code> returns the number of drops it <strong>queued</strong> and schedules them
@@ -1918,9 +2069,19 @@ matching module.</p>
 <td><code>srs.inventory.useItemOnNpc(itemId, npcId) → bool</code></td>
 </tr>
 <tr>
+<td>…on NPC (slot + target)</td>
+<td><code>Inventory::useItemOnNpc(ctx, srcSlot, ActionTarget) → bool</code></td>
+<td><code>srs.inventory.useItemOnNpc(srcSlot, target) → bool</code></td>
+</tr>
+<tr>
 <td>…on ground item</td>
 <td><code>Inventory::useItemOnGroundItem(ctx, itemId, groundItemId) → bool</code></td>
 <td><code>srs.inventory.useItemOnGroundItem(itemId, groundItemId) → bool</code></td>
+</tr>
+<tr>
+<td>…on ground item (slot + entry)</td>
+<td><code>Inventory::useItemOnGroundItem(ctx, srcSlot, GroundItemEntry) → bool</code></td>
+<td><code>srs.inventory.useItemOnGroundItem(srcSlot, entry) → bool</code></td>
 </tr>
 </tbody>
 </table>
@@ -1928,11 +2089,16 @@ matching module.</p>
 <code>false</code> if both resolve to the same slot). <code>useItemOnItemBatch</code> repeats the
 item-on-item up to <code>count</code> ∈ [1, 8] times for fast-fletching-style bursts.</p>
 <div class="admonition warning">
-<p class="admonition-title">Not yet wired</p>
-<p><code>useItemOnNpc</code> and <code>useItemOnGroundItem</code> are skeletons — they log and
-return <code>false</code> pending a captured wire format. <code>useItemOnObject</code> and
-<code>useItemOnItem</code> are live.</p>
+<p class="admonition-title">Not yet wired — <code>useItemOnNpc</code> / <code>useItemOnGroundItem</code> are skeletons</p>
+<p>All <strong>four</strong> overloads (id-pair and slot+target forms, C++ and Lua
+alike) are skeletons — they log and return <code>false</code> pending a captured
+wire format. <code>useItemOnObject</code> and <code>useItemOnItem</code> are live.</p>
 </div>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>Inventory::kCapacity = 28</code> — backpack slot count (C++; Lua scripts can
+  hardcode 28).</li>
+</ul>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>InventoryItem</code></strong> (read-only):</p>
 <table>

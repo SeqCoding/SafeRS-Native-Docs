@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -890,6 +898,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -926,6 +962,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1198,6 +1262,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1290,6 +1382,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1492,6 +1612,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#isreachable-same-floor-can-i-path-there-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        isReachable — same-floor / can-I-path-there test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#height-render-height-for-floor-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        height — render height for floor detection
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1629,6 +1771,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#isreachable-same-floor-can-i-path-there-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        isReachable — same-floor / can-I-path-there test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#height-render-height-for-floor-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        height — render height for floor detection
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1676,6 +1840,16 @@ Coordinates are world tile coords. Plane defaults to 0 (ground).</p>
 <td><code>srs.tile.canTraverse(fx, fy, tx, ty, plane?) → bool</code></td>
 </tr>
 <tr>
+<td><strong>Reachable on foot</strong></td>
+<td><code>Tile::isReachable(ctx, x, y, plane=0) → bool</code></td>
+<td><code>srs.tile.isReachable(x, y, plane?) → bool</code></td>
+</tr>
+<tr>
+<td><strong>Tile render height</strong></td>
+<td><code>Tile::height(ctx, x, y, plane=0) → optional&lt;int&gt;</code></td>
+<td><code>srs.tile.height(x, y, plane?) → int \| nil</code></td>
+</tr>
+<tr>
 <td>Raw flag bits</td>
 <td><code>Tile::flags(ctx, x, y, plane=0) → uint32</code></td>
 <td><code>srs.tile.flags(x, y, plane?) → int</code></td>
@@ -1684,6 +1858,35 @@ Coordinates are world tile coords. Plane defaults to 0 (ground).</p>
 </table>
 <p><code>flags</code> returns the raw collision bitfield. Decode against
 <code>CollisionMap</code> flag constants for blocked-N/E/S/W and similar.</p>
+<h2 id="isreachable-same-floor-can-i-path-there-test"><code>isReachable</code> — same-floor / can-I-path-there test<a class="headerlink" href="#isreachable-same-floor-can-i-path-there-test" title="Permanent link">&para;</a></h2>
+<p>Breadth-first flood-fill from the player's current tile over the live
+collision map (<code>canTraverse</code> edges); the tile is reachable iff the fill
+reaches it. The fill is cached per <code>(player tile, scene)</code>, so many
+queries in one tick share one computation.</p>
+<p>This is the correct test where <strong>plane can't help</strong>. The classic case
+is the <strong>Motherlode Mine</strong>: its upper level is <code>plane 0</code> exactly like
+the ground floor, but the two are only joined by a ladder — so an
+upper-floor ore vein / hopper is <em>not</em> walk-reachable from the lower
+floor and <code>isReachable</code> returns <code>false</code> for it. This mirrors
+RuneLite/Microbot <code>nearestReachable()</code>; filter object candidates through
+it instead of trusting <code>plane</code>.</p>
+<p>Returns <code>false</code> pre-scene, off-scene, or when <code>plane</code> differs from the
+player's current plane (a different plane needs a transport, not a walk).</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Only mine veins we can actually path to (skips the floor above us).</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">reachable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">gameobject</span><span class="p">.</span><span class="nf">byId</span><span class="p">(</span><span class="mi">26661</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tile</span><span class="p">.</span><span class="nf">isReachable</span><span class="p">(</span><span class="nv">v</span><span class="p">.</span><span class="py">tileX</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">.</span><span class="py">tileY</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">.</span><span class="py">plane</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="nv">reachable</span><span class="p">[</span><span class="o">#</span><span class="nv">reachable</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">v</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kr">end</span>
+</span></code></pre></div>
+<h2 id="height-render-height-for-floor-detection"><code>height</code> — render height for floor detection<a class="headerlink" href="#height-render-height-for-floor-detection" title="Permanent link">&para;</a></h2>
+<p>Engine render height at the tile's SW corner (RuneLite
+<code>getTileHeights[plane][x][y]</code>), in world units. Where <code>plane</code> is
+ambiguous (MLM again — both floors are plane 0), the height differs by
+hundreds of units, so comparing the player's tile height against a
+threshold tells the floors apart (Microbot's <code>isUpperFloor()</code> uses
+exactly this with a <code>-490</code> cutoff). <code>nil</code> pre-scene / off-scene.</p>
 <p>For higher-level pathing (multi-tile A*, transports, stall recovery)
 use <a href="../Walk/">Walk</a> instead — <code>Tile</code> is for spot collision checks.</p>
 

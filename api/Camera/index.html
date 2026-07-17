@@ -406,6 +406,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -686,10 +694,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ensure-visible-c" class="md-nav__link">
+  <a href="#ensure-visible" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ensure visible (C++)
+        Ensure visible
       
     </span>
   </a>
@@ -1069,6 +1077,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -1105,6 +1141,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1377,6 +1441,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1469,6 +1561,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1784,10 +1904,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ensure-visible-c" class="md-nav__link">
+  <a href="#ensure-visible" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ensure visible (C++)
+        Ensure visible
       
     </span>
   </a>
@@ -1890,6 +2010,11 @@
 
 <h1 id="camera">Camera<a class="headerlink" href="#camera" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Camera</code> / <code>srs.camera</code></p>
+<p>DreamBot-style camera facade: read pitch / yaw / zoom and rotate or
+zoom the view. <code>rotateTo*</code> snaps instantly via a direct memory write to
+the engine's target angles, <code>keyboardRotateTo*</code> drives human-looking
+arrow-key holds, and <code>setZoom</code> converges by injecting <code>WM_MOUSEWHEEL</code>
+events.</p>
 <div class="admonition note">
 <p class="admonition-title">Plugin facade vs. GameSDK Camera</p>
 <p>This is the plugin-API facade for camera control. Internal engine
@@ -2093,7 +2218,7 @@ tolerance.</p>
 <tr>
 <td>Face a tile</td>
 <td><code>Camera::rotateToTile(ctx, tile) → bool</code></td>
-<td><code>srs.camera.rotateToTile(tile) → bool</code></td>
+<td><code>srs.camera.rotateToTile(tile \| x, y[, plane]) → bool</code></td>
 </tr>
 <tr>
 <td>Face an entity</td>
@@ -2105,7 +2230,18 @@ tolerance.</p>
 <p>Interrupt-condition overloads (C++): <code>rotateToTile</code> and
 <code>rotateToEntity</code> accept a <code>Predicate interrupt</code> polled between
 micro-steps. Return <code>true</code> from it to abort early.</p>
-<h2 id="ensure-visible-c">Ensure visible (C++)<a class="headerlink" href="#ensure-visible-c" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Lua <code>(x, y[, plane])</code> overloads</p>
+<p>Every tile-taking camera function accepts raw coordinates in Lua —
+<code>rotateToTile(tile)</code>, <code>rotateToTile(x, y)</code>, or
+<code>rotateToTile(x, y, plane)</code> — and the same applies to
+<code>mouseRotateToTile</code>, <code>keyboardRotateToTile</code>, <code>getYawForTile</code>,
+<code>getPitchForTile</code>, and <code>rotateToTileEvent</code>. This matters because
+<strong><code>WorldTile</code> has no Lua constructor</strong>: a script that didn't get a
+tile from an API like <code>srs.player.position()</code> must use the
+coordinate form.</p>
+</div>
+<h2 id="ensure-visible">Ensure visible<a class="headerlink" href="#ensure-visible" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -2118,12 +2254,12 @@ micro-steps. Return <code>true</code> from it to abort early.</p>
 <tr>
 <td>Ensure a tile is on-screen</td>
 <td><code>Camera::ensureVisible(ctx, tile) → bool</code></td>
-<td>—</td>
+<td><code>srs.camera.ensureVisible(tile \| x, y[, plane]) → bool</code></td>
 </tr>
 <tr>
 <td>Ensure an entity is on-screen</td>
 <td><code>Camera::ensureVisible(ctx, target) → bool</code></td>
-<td>—</td>
+<td><code>srs.camera.ensureVisible(target) → bool</code></td>
 </tr>
 </tbody>
 </table>
@@ -2132,7 +2268,10 @@ when the target already projects to visible pixels, otherwise it rotates
 via <code>rotateToTile</code> / <code>rotateToEntity</code>. Returns <code>false</code> only when camera
 state can't be read or the rotation faults. A <code>true</code> does <strong>not</strong>
 guarantee same-frame projection — the engine renders one frame after the
-angle write, so the pixel lands on-screen next frame. C++-facade only.</p>
+angle write, so the pixel lands on-screen next frame.</p>
+<p>The Lua binding follows the same overload family as <code>rotateToTile</code>:
+<code>ensureVisible(tile)</code>, <code>ensureVisible(target)</code>, <code>ensureVisible(x, y)</code>
+(plane 0), or <code>ensureVisible(x, y, plane)</code>.</p>
 <h2 id="mouse-rotation-family">Mouse-rotation family<a class="headerlink" href="#mouse-rotation-family" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mouseRotateTo, mouseRotateToYaw, mouseRotateToPitch,
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mouseRotateToTile, mouseRotateToEntity
@@ -2162,13 +2301,10 @@ middle-mouse-drag support (TODO).</p>
 <td><code>Camera::setZoom(ctx, zoom) → bool</code></td>
 <td><code>srs.camera.setZoom(zoom) → bool</code></td>
 </tr>
-<tr>
-<td>Fire raw zoom event</td>
-<td><code>Camera::fireZoomEvent(ctx, zoom)</code></td>
-<td><code>srs.camera.fireZoomEvent(zoom)</code></td>
-</tr>
 </tbody>
 </table>
+<p>For the raw zoom write, see <code>fireZoomEvent</code> under
+<a href="#low-level-event-firing">Low-level event firing</a>.</p>
 <p><code>setZoom</code> injects <code>WM_MOUSEWHEEL</code> events into the game's WndProc
 until live zoom matches <code>zoomLevel</code> within tolerance. Returns
 <code>false</code> if the wheel injector or camera state isn't ready, or if zoom
@@ -2186,7 +2322,7 @@ didn't converge after ~30 wheel ticks.</p>
 <tr>
 <td>Yaw needed to face a tile</td>
 <td><code>Camera::getYawForTile(ctx, tile) → int32</code></td>
-<td><code>srs.camera.getYawForTile(tile) → int</code></td>
+<td><code>srs.camera.getYawForTile(tile \| x, y[, plane]) → int</code></td>
 </tr>
 <tr>
 <td>Yaw needed to face an entity</td>
@@ -2196,7 +2332,7 @@ didn't converge after ~30 wheel ticks.</p>
 <tr>
 <td>Pitch needed for a tile</td>
 <td><code>Camera::getPitchForTile(ctx, tile) → int32</code></td>
-<td><code>srs.camera.getPitchForTile(tile) → int</code></td>
+<td><code>srs.camera.getPitchForTile(tile \| x, y[, plane]) → int</code></td>
 </tr>
 <tr>
 <td>Pitch needed for an entity</td>
@@ -2258,12 +2394,12 @@ executes later. Stash one and run it on a different tick.</p>
 <tr>
 <td>Face a tile</td>
 <td><code>Camera::rotateToTileEvent(ctx, tile) → Event</code></td>
-<td><code>srs.camera.rotateToTileEvent(tile) → Event</code></td>
+<td><code>srs.camera.rotateToTileEvent(tile \| x, y[, plane]) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Face an entity</td>
 <td><code>Camera::rotateToEntityEvent(ctx, target) → Event</code></td>
-<td><code>srs.camera.rotateToEntityEvent(target) → Event</code></td>
+<td><code>srs.camera.rotateToEntityEvent(target) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Execute a stored event</td>
@@ -2306,27 +2442,36 @@ executes later. Stash one and run it on a different tick.</p>
 </table>
 <p><code>execute</code> returns <code>true</code> if every set component succeeded; no-op if
 all axes are <code>-1</code>.</p>
+<p>In Lua the usertype is <code>CameraEvent</code> and it is <strong>constructible</strong>:
+<code>CameraEvent.new()</code> gives an empty event (all axes <code>-1</code>) whose <code>yaw</code>,
+<code>pitch</code>, <code>zoom</code>, and <code>mode</code> fields are read/write — build one by hand
+instead of going through the factory functions:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">ev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">CameraEvent</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">ev</span><span class="p">.</span><span class="py">yaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nv">ev</span><span class="p">.</span><span class="py">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1500</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">ev</span><span class="p">:</span><span class="nf">execute</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">entityQuery</span><span class="o">-&gt;</span><span class="n">nearestNpc</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">Camera</span><span class="o">::</span><span class="n">rotateToEntity</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">npc</span><span class="p">);</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="n">Camera</span><span class="o">::</span><span class="n">setZoom</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">1500</span><span class="p">);</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">}</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">entityQuery</span><span class="o">-&gt;</span><span class="n">nearestNpc</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">Camera</span><span class="o">::</span><span class="n">rotateToEntity</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">npc</span><span class="p">);</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="n">Camera</span><span class="o">::</span><span class="n">setZoom</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">1500</span><span class="p">);</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToEntity</span><span class="p">(</span><span class="nv">npc</span><span class="p">)</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">setZoom</span><span class="p">(</span><span class="mi">1500</span><span class="p">)</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kr">end</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1">-- Or build a deferred event and execute next tick:</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToYawEvent</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">pending</span><span class="p">:</span><span class="nf">execute</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToEntity</span><span class="p">(</span><span class="nv">npc</span><span class="p">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">setZoom</span><span class="p">(</span><span class="mi">1500</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kr">end</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">-- Or build a deferred event and execute next tick:</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToYawEvent</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">pending</span><span class="p">:</span><span class="nf">execute</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>

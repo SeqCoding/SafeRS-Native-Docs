@@ -1,0 +1,2372 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+      
+      
+      
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/AltPathfinder-DeviousPort-2026-07-02/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Alternative Pathfinder — Devious-Client Port: Audit + Design Spec - SafeRS Native API</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#alternative-pathfinder-devious-client-port-audit-design-spec" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SafeRS Native API" class="md-header__button md-logo" aria-label="SafeRS Native API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SafeRS Native API
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Alternative Pathfinder — Devious-Client Port: Audit + Design Spec
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SafeRS Native API" class="md-nav__button md-logo" aria-label="SafeRS Native API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SafeRS Native API
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../api/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Antiban/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Area/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Area
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Breaks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Breaks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Camera/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Camera
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Cannon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cannon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Combat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/DepositBox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DepositBox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Dialogue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dialogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Drawing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Entity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Equipment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Equipment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Food/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Food
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GameObject/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GraphicsObjects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphicsObjects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/GroundItem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GroundItem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Input/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Magic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Magic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/MenuEntry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MenuEntry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Npc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Object
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Player/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Player
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Prayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Projectiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/RunePouch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Shop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Spells/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Tile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Walk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Walk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/Widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Widget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/World/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    World
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-audit-of-the-devious-client-pathfinder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1 — Audit of the devious-client pathfinder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1 — Audit of the devious-client pathfinder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-search-core-pathfinderjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Search core (Pathfinder.java)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-what-devious-does-differently-differentiators-vs-roadmap-accelerants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 What devious does differently — differentiators vs roadmap accelerants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-collision-data-compatibility-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Collision data compatibility (important)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-flaws-found-in-the-devious-source-do-not-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Flaws found in the devious source (do NOT port)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-licensing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Licensing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-external-dependencies-of-the-ported-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 External dependencies of the ported code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-design-spec-dual-engine-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2 — Design spec: dual-engine architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2 — Design spec: dual-engine architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-constraints-verified-2026-07-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Constraints (verified 2026-07-02)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-architecture-engine-seam-behind-the-existing-executor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Architecture: engine seam behind the existing executor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-new-public-api-additive-nothing-existing-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 New public API (additive — nothing existing changes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-deviouspathengine-internals-the-port-c-idiomatic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 DeviousPathEngine internals (the port, C++-idiomatic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-data-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Data pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-executor-verb-gaps-shared-by-both-engines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Executor verb gaps shared by both engines
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-head-to-head-test-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Head-to-head test harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-phasing-effort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Phasing &amp; effort
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-risks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 Risks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-devious-file-design-element-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix — devious file → design element map
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="alternative-pathfinder-devious-client-port-audit-design-spec">Alternative Pathfinder — Devious-Client Port: Audit + Design Spec<a class="headerlink" href="#alternative-pathfinder-devious-client-port-audit-design-spec" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2026-07-02
+<strong>Source audited:</strong> <code>C:\Users\Mekkon\Downloads\devious-client-master</code> — <code>net.unethicalite.api.movement</code> (RuneLite fork, "unethicalite"/devious-client)
+<strong>Goal:</strong> Add the devious pathfinder as a <em>second, selectable</em> path engine. Both engines stay available behind the existing executor until head-to-head testing picks a winner. <strong>Zero changes to any existing <code>srs::api::Walk</code> exported symbol or Lua binding.</strong></p>
+<hr />
+<h2 id="part-1-audit-of-the-devious-client-pathfinder">Part 1 — Audit of the devious-client pathfinder<a class="headerlink" href="#part-1-audit-of-the-devious-client-pathfinder" title="Permanent link">&para;</a></h2>
+<h3 id="11-search-core-pathfinderjava">1.1 Search core (<code>Pathfinder.java</code>)<a class="headerlink" href="#11-search-core-pathfinderjava" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Devious</th>
+<th>SafeRS StaticPathfinder (current)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Algorithm</td>
+<td><strong>Unweighted BFS</strong> (FIFO, no heuristic)</td>
+<td>Dual-queue A* (boundary + pending transport queue), Chebyshev heuristic w/ underground y-wrap</td>
+</tr>
+<tr>
+<td>Cost model</td>
+<td>Uniform 1/tile; transports free; gold tracked ad-hoc for charter ships</td>
+<td>1/tile walk, <code>duration</code> ticks per transport, teleport seeding penalty</td>
+</tr>
+<tr>
+<td>Queue</td>
+<td><code>LinkedList.remove(0)</code> — <strong>O(V²) worst case</strong></td>
+<td>Proper priority queues</td>
+</tr>
+<tr>
+<td>Visited set</td>
+<td><code>HashSet&lt;WorldPoint&gt;</code> (boxed objects, GC-heavy)</td>
+<td>Packed-int arena</td>
+</tr>
+<tr>
+<td>Cap</td>
+<td>5,000,000 visited</td>
+<td>Progress-reset time budget (5000 ms)</td>
+</tr>
+<tr>
+<td>Failed-edge memory</td>
+<td>None</td>
+<td>Session blacklist (<code>excludedEdges</code>)</td>
+</tr>
+<tr>
+<td>Cross-plane goal</td>
+<td>Implicit (transports carry plane)</td>
+<td>Explicit <code>goalPlane</code> plumbing (WS-I1)</td>
+</tr>
+<tr>
+<td>Partial-path result</td>
+<td>None (null on failure)</td>
+<td>Best-progress partial + <code>found=false</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verdict on the core:</strong> the devious search core is <em>older and weaker</em> than what we already ship. Our StaticPathfinder is a newer Skretzo/Microbot lineage port with a cost model, budget discipline, failure memory, and plane plumbing that devious lacks. <strong>Porting the BFS verbatim would be a downgrade.</strong> What devious does differently is everything <em>around</em> the search — but note the scoping below: several of those items are already on our own roadmap, so they are reference material for planned work, not engine differentiators.</p>
+<h3 id="12-what-devious-does-differently-differentiators-vs-roadmap-accelerants">1.2 What devious does differently — differentiators vs roadmap accelerants<a class="headerlink" href="#12-what-devious-does-differently-differentiators-vs-roadmap-accelerants" title="Permanent link">&para;</a></h3>
+<p><strong>True engine differentiators (what the A/B test actually decides):</strong></p>
+<ol>
+<li>
+<p><strong>Live-overlay collision with doors-as-open</strong> (<code>GlobalCollisionMap.withLocalCollisions()</code> + <code>RegionManager.getTileFlags()</code>, RegionManager.java:313-412).
+   Before searching, devious copies the global static map and overlays the <em>live scene</em>: spawned/despawned objects, wall flags, and — critically — any edge carrying a door with an "Open" action that is <strong>not</strong> a catalog transport gets its block flag <em>subtracted</em> (RegionManager.java:393-402). The planner paths straight through closed doors; the walker opens them on contact (<code>Walker.handleTransports()</code> diagonal + cardinal door checks, Walker.java:329-379). This is the inverse of our philosophy (static map + execution-time door probe, WS-D1) and directly attacks our known static-vs-live divergence class (<code>project_collision_static_vs_live</code>): cache-vs-live spawned locs and open door-edges without a transports.tsv row.</p>
+</li>
+<li>
+<p><strong>Event-driven path invalidation</strong> (<code>RegionManager</code> subscriptions).
+   Varbit/item-container/widget events set a <code>REFRESH_PATH</code> flag; <code>transportsChanged()</code>/<code>teleportsChanged()</code> diff the transport/teleport sets <em>restricted to the current path</em> and only recalc when something on the route actually changed. Cheaper and more precise than timer-based recalc.</p>
+</li>
+<li>
+<p><strong>An independent transport dataset</strong> (<code>transports.json</code>, 5056 rows verified on disk: <code>source, destination, action, objectId, requirements{quest/item/skill/var/world}</code>; 71 quest, 86 item, 180 skill, 167 world, 243 var requirement uses). Clean JSON schema; maps 1:1 onto our <code>PathfinderConfig</code> account-snapshot evaluation. Running each engine on its own dataset lets the A/B surface data-quality gaps in either catalog.</p>
+</li>
+</ol>
+<p><strong>Roadmap accelerants — NOT engine differentiators.</strong> These looked like devious advantages on first read, but they are already planned for our current implementation (June audit roadmap) and live in the <em>shared executor</em>, so whichever engine wins gets them; they must be excluded from the A/B comparison:</p>
+<ol>
+<li>
+<p><strong>Transport verb coverage via a handler model</strong> (<code>TransportLoader.java</code>, 921 lines).
+   Every transport is <code>{source, destination, radii, Runnable handler, Requirements}</code>: object click, NPC interact, NPC-dialog chains, item-use-on-object, fairy-ring dialing, glider/spirit-tree/charter widgets. This is exactly our planned <strong>WS-H2</strong> (per-type handler table, fairy rings → NPC boats → spirit trees). Devious's per-category interaction recipes are <em>reference material</em> for that work — executed our way (packets, not widget clicks) — not something the devious engine uniquely provides.</p>
+</li>
+<li>
+<p><strong>POH teleport layer</strong> (<code>TeleportLoader.java</code> POH sections + <code>poh/*.java</code>).
+   Mounted glory/digsite/xeric/mythical cape, jewellery box tiers, portal nexus (varbit-scanned 6672-10103 → <code>HousePortal</code> enum, 30 destinations), house portals. Already planned as <strong>Phase 4 POH integration</strong> in the June audit roadmap. Devious's varbit maps and destination tables shortcut the data-collection part of that phase; the seeding/execution lands in shared infrastructure both engines consume.</p>
+</li>
+</ol>
+<h3 id="13-collision-data-compatibility-important">1.3 Collision data compatibility (important)<a class="headerlink" href="#13-collision-data-compatibility-important" title="Permanent link">&para;</a></h3>
+<p>Devious's <code>/regions</code> resource (657 KB gzip) is a sparse region map of <code>BitSet4D[64][64][4][2]</code> — <strong>2 bits per tile: walk-north, walk-east</strong>, south/west derived from neighbors. This is <em>the same encoding family as our <code>FlagMap</code>/SCM1 collision-map.bin</em> (both descend from Skretzo's data). Consequence: <strong>the new engine can consume our existing <code>StaticCollisionMap</code> unchanged</strong> — no second collision dataset needed. Optionally, a one-off converter (devious <code>/regions</code> → SCM1) gives us a second dataset for divergence testing, but it is not on the critical path.</p>
+<h3 id="14-flaws-found-in-the-devious-source-do-not-port">1.4 Flaws found in the devious source (do NOT port)<a class="headerlink" href="#14-flaws-found-in-the-devious-source-do-not-port" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>LinkedList.remove(0)</code> BFS queue — O(V²); replace with ring buffer.</li>
+<li><code>HashSet&lt;WorldPoint&gt;</code> visited — replace with packed-key bitset/arena.</li>
+<li>Hardcoded NPC/item/widget IDs sprinkled through 900-line <code>TransportLoader</code> switch — brittle across game updates; we keep transports <em>data-driven</em> (TSV/JSON) instead.</li>
+<li>Gold-cost tracking bolted onto the node struct just for charter ships — model as a currency requirement instead.</li>
+<li><code>Reachable.isWalkable()</code> re-floods per call (we already fixed this class with the per-tick cached flood, WS-B3).</li>
+<li>Wilderness areas hardcoded as <code>WorldArea</code>s in <code>MovementConstants</code>.</li>
+<li><code>LocalCollisionMap.blockDoors</code> dead parameter; <code>writeToFile()</code> dead code.</li>
+<li>Sleeps, widget click chains, camera fiddling in <code>Walker</code>/<code>Movement</code> — superseded by our packet verbs (<code>feedback_packet_path_default</code>, <code>feedback_input_method_priority</code>).</li>
+<li><strong>Threading trap:</strong> devious queries <em>live</em> client state mid-search (<code>LocalCollisionMap</code> → <code>Reachable.getCollisionFlag</code>). Our searches run on a detached worker thread that must never touch engine memory → the live overlay must be <strong>snapshotted on the render thread before dispatch</strong> (same pattern as <code>refreshUsableTeleports</code> / account snapshot, PathfinderConfig.h threading note).</li>
+</ul>
+<h3 id="15-licensing">1.5 Licensing<a class="headerlink" href="#15-licensing" title="Permanent link">&para;</a></h3>
+<p>BSD 2-Clause (RuneLite base license, inherited by the fork; no per-file headers in the movement package). Compatible with our closed-source distribution: retain the copyright notice + license text in a <code>THIRD_PARTY_NOTICES</code> entry (same treatment as the Skretzo/Microbot-derived collision code). No copyleft obligations.</p>
+<h3 id="16-external-dependencies-of-the-ported-code">1.6 External dependencies of the ported code<a class="headerlink" href="#16-external-dependencies-of-the-ported-code" title="Permanent link">&para;</a></h3>
+<p>All local — <strong>no remote/unethicalite server calls anywhere in the movement package</strong> (verified: <code>RegionManager</code> is config + event glue only). Client-state needs, with our equivalents:</p>
+<table>
+<thead>
+<tr>
+<th>Devious dependency</th>
+<th>SafeRS equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>client.getCollisionMaps()</code></td>
+<td><code>GameSDK/CollisionMap</code> (live snapshot)</td>
+</tr>
+<tr>
+<td><code>Vars.getBit/getVarp</code></td>
+<td><code>VarpSystem</code></td>
+</tr>
+<tr>
+<td><code>Quests.getState</code></td>
+<td>Quest varbit tables → CS2 <code>QUEST_STATUS_GET=4029</code> (TTL-cached)</td>
+</tr>
+<tr>
+<td><code>Inventory/Equipment</code></td>
+<td>Account snapshot + <code>BankCache</code></td>
+</tr>
+<tr>
+<td><code>Skills.getBoostedLevel</code></td>
+<td>Account snapshot</td>
+</tr>
+<tr>
+<td><code>TileObjects.*</code></td>
+<td><code>ObjectQuery</code></td>
+</tr>
+<tr>
+<td><code>Dialog.*</code></td>
+<td>Resume*Dialog wire packets (P2GR catalog)</td>
+</tr>
+<tr>
+<td><code>Widgets.*</code></td>
+<td>IfButton/IfSubOp packets</td>
+</tr>
+<tr>
+<td><code>Worlds.inMembersWorld</code></td>
+<td>GS+0x21A8 members byte</td>
+</tr>
+<tr>
+<td><code>Game.getWildyLevel</code></td>
+<td>coord-derived wilderness level (WS-E5)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="part-2-design-spec-dual-engine-architecture">Part 2 — Design spec: dual-engine architecture<a class="headerlink" href="#part-2-design-spec-dual-engine-architecture" title="Permanent link">&para;</a></h2>
+<h3 id="21-constraints-verified-2026-07-02">2.1 Constraints (verified 2026-07-02)<a class="headerlink" href="#21-constraints-verified-2026-07-02" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Frozen surface:</strong> <code>srs::api::Walk</code> exported symbols (Walk.h — <code>to</code> 4-arg + 5-arg overloads, <code>state</code>, <code>arrivalDistance</code>, <code>findSafeTile</code>, <code>walkSmart</code>, <code>fastCanvas</code>, <code>cancel</code>, <code>isMoving</code>, <code>hasArrived</code>) and Lua names (<code>game.moveTo/minimapWalkTo/walkTo/walkFastCanvas/walkSmart/cancelWalk/isWalking/hasArrived/walkState</code>). Evolution rule: <strong>add overloads / new symbols only</strong> (<code>feedback_api_abi_overload_not_default</code>).</li>
+<li><strong>PathExecutor internals are NOT ABI:</strong> <code>ExternalPlugins/include/PluginAPI/IScript.h:31</code> holds <code>PathExecutor*</code> as an opaque forward declaration; <code>PathExecutor.h</code> does not ship in the SDK. Internal members/methods may be added freely.</li>
+<li><strong>The producer contract is <code>PathResult</code></strong> (Pathfinder.h:60): <code>path</code>, <code>rawPath</code>, <code>found</code>, <code>cost</code>, <code>nodesExplored</code>, <code>transports[]</code> (<code>PathTransportEdge</code>). Any engine that emits a correct <code>PathResult</code> gets the <em>entire</em> existing executor for free: click dispatch, transport firing, stall recovery, failed-edge memory, run management, telemetry.</li>
+<li><strong>Worker-thread searches must not read engine memory.</strong> All live state is snapshotted on the render thread pre-dispatch.</li>
+</ul>
+<h3 id="22-architecture-engine-seam-behind-the-existing-executor">2.2 Architecture: engine seam behind the existing executor<a class="headerlink" href="#22-architecture-engine-seam-behind-the-existing-executor" title="Permanent link">&para;</a></h3>
+<p><strong>One executor, two path producers.</strong> We do <em>not</em> build a second walker — the 2,926-line PathExecutor state machine (stall recovery, transport firing, run energy, telemetry) is engine-agnostic already; only path <em>production</em> differs.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>                       ┌─ PathEngine::Static (adapter → existing StaticPathfinder, UNTOUCHED)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>walkTo(goal, opts) ────┤
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                       └─ PathEngine::Devious (new: overlay snapshot + BFS + devious graph)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                                  │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                    both emit PathResult{path, transports[]}
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                                  │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                       PathExecutor (existing tick loop, unchanged behavior)
+</span></code></pre></div>
+<h4 id="new-interface-new-file-pathfindingipathengineh">New interface (new file <code>Pathfinding/IPathEngine.h</code>)<a class="headerlink" href="#new-interface-new-file-pathfindingipathengineh" title="Permanent link">&para;</a></h4>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">PathRequest</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">startX</span><span class="p">,</span><span class="w"> </span><span class="n">startY</span><span class="p">,</span><span class="w"> </span><span class="n">startPlane</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">goalX</span><span class="p">,</span><span class="w"> </span><span class="n">goalY</span><span class="p">,</span><span class="w"> </span><span class="n">goalPlane</span><span class="p">;</span><span class="w">          </span><span class="c1">// goalPlane -1 = start plane</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">useTransports</span><span class="p">;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">budgetMs</span><span class="p">;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">cancelFlag</span><span class="p">;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_set</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">excludedEdges</span><span class="p">;</span><span class="w">    </span><span class="c1">// failed-edge memory</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_set</span><span class="o">&lt;</span><span class="kt">int64_t</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">blockedWalkEdges</span><span class="p">;</span><span class="w"> </span><span class="c1">// quest-locked steps</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">};</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">IPathEngine</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="k">public</span><span class="o">:</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">IPathEngine</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">PathResult</span><span class="w"> </span><span class="nf">findPath</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">PathRequest</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="nf">name</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">    </span><span class="c1">// &quot;static&quot; / &quot;devious&quot; — telemetry key</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="c1">// Render-thread hook, called by dllmain&#39;s onGameTick BEFORE any dispatch</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="c1">// this tick. Engines snapshot live state here (scene overlay, teleport</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="c1">// usability). Static engine: no-op (uses existing refreshUsableTeleports).</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">refreshSnapshot</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">};</span>
+</span></code></pre></div>
+<ul>
+<li><code>StaticPathEngine</code> — ~30-line <strong>adapter</strong> that forwards <code>PathRequest</code> to the existing <code>StaticPathfinder::findPath(...)</code> signature. <code>StaticPathfinder.h/.cpp</code> are not modified.</li>
+<li><code>DeviousPathEngine</code> — the port (see 2.4).</li>
+</ul>
+<h4 id="pathexecutor-changes-internal-additive-only">PathExecutor changes (internal, additive only)<a class="headerlink" href="#pathexecutor-changes-internal-additive-only" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>dispatchStaticPathfinder(...)</code> (PathExecutor.cpp:383) generalizes to <code>dispatchPathfinder(const IPathEngine&amp; engine, ...)</code> — same worker-thread + promise/future + cancel-flag + snapshot pattern, engine call swapped in at PathExecutor.cpp:414. Existing call sites (initial dispatch :255, recalc :373, lookahead :1381) route through the executor's <em>current engine</em> pointer.</li>
+<li>New appended members: <code>const IPathEngine* m_engineStatic; const IPathEngine* m_engineDevious; const IPathEngine* m_activeEngine;</code> + <code>setEngines(...)</code> late-bind (same pattern as <code>setObjectQuery</code>).</li>
+<li>New <code>walkTo</code> <strong>overload</strong> (internal class — overload only for symmetry, not ABI): <code>walkTo(goalX, goalY, useTransports, mode, goalPlane, EngineSelect engine)</code> where <code>EngineSelect { Default, Static, Devious }</code>. <code>Default</code> = the session-level engine set by config/debug panel. Existing 5-param <code>walkTo</code> keeps its exact signature and forwards with <code>Default</code> — <strong>all current callers compile and behave identically</strong>.</li>
+<li>Recalc/stall/lookahead re-dispatches use the engine that produced the current path (stored per-walk), so a walk never silently switches engines mid-route.</li>
+</ul>
+<p><strong>Everything downstream is untouched:</strong> the transport-fire branch keys off <code>PathTransportEdge.type</code> exactly as today, failed-edge blacklist and telemetry work identically (the blacklist is keyed on packed tiles, engine-independent — a door that times out under one engine is correctly avoided by both).</p>
+<h3 id="23-new-public-api-additive-nothing-existing-changes">2.3 New public API (additive — nothing existing changes)<a class="headerlink" href="#23-new-public-api-additive-nothing-existing-changes" title="Permanent link">&para;</a></h3>
+<p><strong>C++ facade (new exported symbols on <code>srs::api::Walk</code>; existing symbols byte-identical):</strong></p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Walk.h additions</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">PathEngine</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">Static</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">Devious</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1">// Same contracts as to(), but pins the path engine for this walk.</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">toWith</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">PathEngine</span><span class="w"> </span><span class="n">engine</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">                   </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">worldX</span><span class="p">,</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">worldY</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">useTransports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">toWith</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">PathEngine</span><span class="w"> </span><span class="n">engine</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">                   </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">worldX</span><span class="p">,</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">worldY</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">useTransports</span><span class="p">,</span><span class="w"> </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">plane</span><span class="p">);</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1">// Session default used by to()/walkSmart() when script doesn&#39;t pin one.</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="c1">// Default on startup = Static (current behavior). Sticky until changed.</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w">       </span><span class="nf">setEngine</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">PathEngine</span><span class="w"> </span><span class="n">engine</span><span class="p">);</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="k">static</span><span class="w"> </span><span class="n">PathEngine</span><span class="w"> </span><span class="nf">engine</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="c1">// Which engine produced the CURRENT/most recent path (for A/B logging).</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="k">static</span><span class="w"> </span><span class="n">PathEngine</span><span class="w"> </span><span class="nf">activePathEngine</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">);</span>
+</span></code></pre></div>
+<p><code>state()</code>, <code>hasArrived()</code>, <code>arrivalDistance()</code>, <code>cancel()</code>, <code>isMoving()</code> are shared — one executor, one walk at a time — so scripts poll exactly as before regardless of engine.</p>
+<p><strong>Lua (new names only):</strong></p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">game</span><span class="p">.</span><span class="nf">walkToAlt</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">[,</span><span class="w"> </span><span class="nv">useTransports</span><span class="p">[,</span><span class="w"> </span><span class="nv">plane</span><span class="p">]])</span><span class="w">   </span><span class="c1">-- pin Devious engine for this walk</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">game</span><span class="p">.</span><span class="nf">setPathEngine</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="o">|</span><span class="s2">&quot;devious&quot;</span><span class="p">)</span><span class="w">            </span><span class="c1">-- session default for game.moveTo/walkTo/…</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nv">game</span><span class="p">.</span><span class="nf">pathEngine</span><span class="p">()</span><span class="w">                                  </span><span class="c1">-- current session default</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nv">game</span><span class="p">.</span><span class="nf">activePathEngine</span><span class="p">()</span><span class="w">                            </span><span class="c1">-- engine of current path (&quot;static&quot;/&quot;devious&quot;/&quot;none&quot;)</span>
+</span></code></pre></div>
+<p><strong>Host config:</strong> <code>PathfinderConfig</code> gains <code>defaultEngine</code> (init from launcher config / <code>CFG_SAFERS_PATH_ENGINE</code>, default <code>Static</code>), DebugPanel gets an engine dropdown + per-engine telemetry columns. Fail-safe: if <code>DeviousPathEngine</code> failed to init (bad data files), selection silently pins <code>Static</code> and logs once — scripts never break because the alt engine is missing.</p>
+<h3 id="24-deviouspathengine-internals-the-port-c-idiomatic">2.4 <code>DeviousPathEngine</code> internals (the port, C++-idiomatic)<a class="headerlink" href="#24-deviouspathengine-internals-the-port-c-idiomatic" title="Permanent link">&para;</a></h3>
+<p>New directory <code>OSRSClient/Pathfinding/Devious/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Ports</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DeviousPathEngine.h/.cpp</code></td>
+<td><code>Pathfinder.java</code></td>
+<td>BFS with <strong>ring-buffer queue</strong> (not LinkedList) + packed-int visited arena; termination on goal-area contains; 5M-node cap replaced by the same progress-reset budget our static engine uses (so head-to-head timing is apples-to-apples). Emits <code>PathResult</code> incl. best-effort partial (parity with executor expectations).</td>
+</tr>
+<tr>
+<td><code>SceneOverlay.h/.cpp</code></td>
+<td><code>withLocalCollisions</code> + <code>RegionManager.getTileFlags</code></td>
+<td>Render-thread snapshot (in <code>refreshSnapshot()</code>): copy live 4×104×104 flags from <code>GameSDK/CollisionMap</code>, compute the <strong>doors-as-open</strong> subtraction (door-action wall/objects not in the transport catalog → clear directional block), diff vs static map, store as a compact override list <code>{packedTile → flagDelta}</code>. Worker thread reads static map + override list only. Cheap: same order of work as the existing per-tick collision copy (WS-B1).</td>
+</tr>
+<tr>
+<td><code>DeviousTransportGraph.h/.cpp</code></td>
+<td><code>TransportLoader</code> (data part)</td>
+<td>Loads <code>devious_transports.tsv</code> (converted from transports.json, see 2.5). Indexed by packed origin, same shape as <code>TransportRegistry</code>. Requirements evaluated via the <strong>existing</strong> <code>PathfinderConfig::isAllowed</code> + account snapshot — no second evaluator.</td>
+</tr>
+<tr>
+<td><code>DeviousTeleportSeeder.h/.cpp</code></td>
+<td><code>TeleportLoader</code> (data part)</td>
+<td>Builds the usable-teleport set on the render thread (jewellery, tabs, spells — categories the executor can fire today). Seeds them as start-adjacent edges exactly like our current spell seeding — reuses <code>PathTransportEdge</code> with <code>type</code> discriminant.</td>
+</tr>
+<tr>
+<td><code>PohModel.h/.cpp</code> (<strong>shared</strong>, lives in <code>Pathfinding/</code>, not <code>Devious/</code>)</td>
+<td><code>poh/*.java</code></td>
+<td><code>HousePortal</code> (30 dests), <code>JewelryBox</code> tiers, nexus varbit map — pure data + varbit reads. This is Phase-4-roadmap data both engines' teleport seeding consumes once POH verbs land; the port merely front-loads the data collection.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Explicitly not ported:</strong> <code>Walker.java</code> / <code>Movement.java</code> execution logic (our PathExecutor supersedes it), <code>Reachable.java</code> floods (WS-B3 flood already better), dialog/widget click chains (packet verbs instead), sleeps/randomized step-size (MovementProfile owns behavioral variance).</p>
+<h3 id="25-data-pipeline">2.5 Data pipeline<a class="headerlink" href="#25-data-pipeline" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>tools/devious_import/convert_transports.py</code> — one-off + re-runnable converter: <code>transports.json</code> (5056 rows) → <code>transports/devious_transports.tsv</code> matching our existing TSV grammar (Origin/Destination/Duration/menuOption/Requirements columns), so <code>Transport::fromTsvRow</code> parses it with zero new parse code. Requirement mapping: <code>questRequirements→Quests</code>, <code>skillRequirements→Skills</code>, <code>itemRequirements→Item IDs</code>, <code>varRequirements→Varbits/Varplayers</code>, <code>worldRequirements→isMembers</code>.</li>
+<li>Rows that duplicate existing transports.tsv entries are fine — the devious graph is loaded into its <strong>own</strong> <code>DeviousTransportGraph</code>, so the two engines' datasets stay independent (that independence is part of what we're A/B testing).</li>
+<li>Optional (deferred): <code>convert_regions.py</code> — devious <code>/regions</code> GZIP → SCM1 for collision-dataset diffing. Not on critical path (encodings are equivalent; we reuse our bin).</li>
+<li><code>THIRD_PARTY_NOTICES.md</code> entry: BSD-2-Clause text + devious-client/RuneLite attribution.</li>
+</ul>
+<h3 id="26-executor-verb-gaps-shared-by-both-engines">2.6 Executor verb gaps shared by both engines<a class="headerlink" href="#26-executor-verb-gaps-shared-by-both-engines" title="Permanent link">&para;</a></h3>
+<p>The devious graph will emit edge types our executor can't fire yet (fairy rings, NPC boats, gliders, spirit trees, POH objects). Two-stage policy, mirroring WS-G2:</p>
+<ol>
+<li><strong>Capability gate at graph load</strong> (v1): <code>DeviousTransportGraph</code> only admits edge types with a registered executor handler — identical rule to today's static graph. Day one, the devious engine is at <em>verb parity</em> with static; the head-to-head measures search/overlay/data quality, not verb coverage.</li>
+<li><strong>Handler table lands verbs for both engines at once</strong> (v2, = existing WS-H2 roadmap): per-<code>TransportType</code> handler registry in PathExecutor (fairy rings via IfButton dial packets, NPC boats via OPNPC1 + Resume*Dialog, POH via object clicks in the house instance). Each verb that lands widens <em>both</em> graphs' capability gates simultaneously — the port accelerates WS-H2 by providing devious's per-category interaction recipes as reference, executed our way (packets, not widget clicks).</li>
+</ol>
+<h3 id="27-head-to-head-test-harness">2.7 Head-to-head test harness<a class="headerlink" href="#27-head-to-head-test-harness" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Telemetry split by engine:</strong> <code>PathTelemetry</code> counters gain an engine dimension (two instances keyed by <code>IPathEngine::name()</code>; DebugPanel shows side-by-side). Compare: time-to-path, nodes explored, path cost vs actual ticks-to-arrive, recalcs per walk, transport timeouts, unreachables, arrival distance.</li>
+<li><strong>Shadow mode</strong> (<code>CFG_SAFERS_PATH_SHADOW=1</code>): every dispatch runs <strong>both</strong> engines on identical <code>PathRequest</code> snapshots (two worker threads — cheap, searches are ms-class). The <em>selected</em> engine's result drives the walk; the shadow result is compared and logged (<code>path cost Δ, length Δ, transports Δ, wall-time Δ, found/partial disagreement</code>) to a CSV under <code>logs/path_ab/</code>. Zero behavioral risk — shadow output never steers.</li>
+<li><strong>Route regression suite:</strong> Lua script <code>scripts/tests/path_ab_routes.lua</code> walking a fixed route book (bank-to-bank circuits, door-heavy interiors like POH/farmhouses, cross-plane dungeons, teleport-favored long hauls, instance areas) alternating engines, dumping per-route rows. Known weak classes from the June audit (door stalls, plane changes, teleport seeding) get dedicated routes.</li>
+<li><strong>Decision gate:</strong> after N sessions of shadow CSVs + route-book runs, compare and either (a) promote devious ideas into static (most likely: SceneOverlay + event-driven invalidation are engine-independent modules and can be re-pointed at StaticPathfinder), (b) flip <code>defaultEngine</code>, or (c) delete the loser. The seam makes all three outcomes one-line config changes. Shared-infrastructure work (WS-H2 verbs, POH data) survives the decision either way — it is deliberately kept out of the engines so the A/B verdict never strands it.</li>
+</ol>
+<h3 id="28-phasing-effort">2.8 Phasing &amp; effort<a class="headerlink" href="#28-phasing-effort" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Work</th>
+<th>Effort</th>
+<th>Exit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P0 — Seam</strong></td>
+<td><code>IPathEngine</code>, <code>StaticPathEngine</code> adapter, <code>dispatchPathfinder</code> generalization, engine members + <code>EngineSelect</code>, config default</td>
+<td>S (2-3 d)</td>
+<td>All existing walks byte-identical via adapter; zero API diff (dumpbin exports compare clean)</td>
+</tr>
+<tr>
+<td><strong>P1 — Data</strong></td>
+<td>transports.json converter, <code>DeviousTransportGraph</code>, license notice</td>
+<td>S-M (2-3 d)</td>
+<td>5056 rows load; requirement parse coverage report</td>
+</tr>
+<tr>
+<td><strong>P2 — Engine core</strong></td>
+<td>BFS + visited arena + budget, <code>SceneOverlay</code> snapshot, teleport seeder (spells/items parity first)</td>
+<td>M (1-1.5 wk)</td>
+<td>Devious engine produces valid <code>PathResult</code> on route book; executor walks them</td>
+</tr>
+<tr>
+<td><strong>P3 — API + harness</strong></td>
+<td><code>Walk::toWith/setEngine</code> exports, Lua bindings, per-engine telemetry, shadow mode, route suite</td>
+<td>M (3-5 d)</td>
+<td>Shadow CSVs flowing; A/B dashboard in DebugPanel</td>
+</tr>
+<tr>
+<td><strong>P4 — Engine differentiators</strong></td>
+<td>Doors-as-open overlay tuning, event-driven invalidation</td>
+<td>M (3-5 d)</td>
+<td>Devious engine wins/loses measurably on targeted route classes (door-heavy interiors)</td>
+</tr>
+<tr>
+<td><strong>P5 — Shared roadmap (independent of A/B)</strong></td>
+<td>WS-H2 handler table (fairy ring → NPC boats → spirit trees) + Phase-4 POH (<code>PohModel</code> data from the port) — widens both engines equally</td>
+<td>L (amortized)</td>
+<td>Per-verb live verification; excluded from A/B scoring</td>
+</tr>
+</tbody>
+</table>
+<h3 id="29-risks">2.9 Risks<a class="headerlink" href="#29-risks" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Doors-as-open can strand walks</strong> if the walker meets a door it cannot open (quest-locked): mitigated by the existing failed-edge blacklist + <code>blockedWalkEdges</code> (the overlay consults the same session sets before clearing a door edge).</li>
+<li><strong>Two transport datasets drift</strong> — accepted for the A/B period; the decision gate ends it.</li>
+<li><strong>Shadow-mode thread pressure</strong>: two detached search threads per dispatch; bounded by existing cancel-flag discipline; disable shadow by default.</li>
+<li><strong>Game-update coupling</strong>: the port adds no new memory offsets (reuses CollisionMap/VarpSystem/ObjectQuery); update risk is unchanged.</li>
+<li><strong>PathExecutor churn</strong>: all changes additive/appended; header not shipped, so no plugin ABI exposure (verified <code>IScript.h:31</code> opaque pointer).</li>
+</ul>
+<hr />
+<h2 id="appendix-devious-file-design-element-map">Appendix — devious file → design element map<a class="headerlink" href="#appendix-devious-file-design-element-map" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Devious source</th>
+<th>Disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pathfinder/Pathfinder.java</code></td>
+<td>Port, re-implemented (ring buffer + arena) → <code>DeviousPathEngine</code></td>
+</tr>
+<tr>
+<td><code>pathfinder/GlobalCollisionMap.java</code>, <code>BitSet4D.java</code></td>
+<td><strong>Not ported</strong> — encoding equivalent to our SCM1; reuse <code>StaticCollisionMap</code></td>
+</tr>
+<tr>
+<td><code>pathfinder/LocalCollisionMap.java</code>, <code>RegionManager.getTileFlags</code></td>
+<td>Port concept → <code>SceneOverlay</code> (render-thread snapshot)</td>
+</tr>
+<tr>
+<td><code>pathfinder/CollisionMap.java</code></td>
+<td>Interface only; superseded by <code>StaticCollisionMap</code> queries</td>
+</tr>
+<tr>
+<td><code>pathfinder/TransportLoader.java</code></td>
+<td>Data → converter + <code>DeviousTransportGraph</code>; handlers → WS-H2 reference recipes</td>
+</tr>
+<tr>
+<td><code>pathfinder/TeleportLoader.java</code></td>
+<td>Port (data+seeding) → <code>DeviousTeleportSeeder</code></td>
+</tr>
+<tr>
+<td><code>pathfinder/model/Transport/Teleport/TransportDto</code></td>
+<td>Mapped onto existing <code>Transport</code> / <code>PathTransportEdge</code></td>
+</tr>
+<tr>
+<td><code>pathfinder/model/requirement/*</code></td>
+<td>Mapped onto existing <code>PathfinderConfig</code> evaluation</td>
+</tr>
+<tr>
+<td><code>pathfinder/model/poh/*</code> (HousePortal, JewelryBox, PortalNexus)</td>
+<td>Port → <code>PohModel</code> (<strong>shared</strong> — Phase-4 POH roadmap data, feeds both engines)</td>
+</tr>
+<tr>
+<td><code>pathfinder/model/{Fairy,Glider,Charter}*Location</code></td>
+<td>Data tables → TSV rows</td>
+</tr>
+<tr>
+<td><code>Walker.java</code>, <code>Movement.java</code>, <code>Reachable.java</code></td>
+<td><strong>Not ported</strong> — PathExecutor/flood supersede; door-check logic informs <code>SceneOverlay</code></td>
+</tr>
+<tr>
+<td><code>MovementConstants.java</code></td>
+<td>Wilderness areas → reuse WS-E5 coord-derived model</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "toc.follow", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

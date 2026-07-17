@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/GrandExchange/">
       
       
-        <link rel="prev" href="../GePrices/">
+        <link rel="prev" href="../Globals/">
       
       
         <link rel="next" href="../GraphicsObjects/">
@@ -328,6 +328,14 @@
       
         
           
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -890,6 +898,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../GameObject/" class="md-nav__link">
         
   
@@ -926,6 +962,34 @@
     
   
     GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
   
 
     
@@ -1065,6 +1129,17 @@
     <span class="md-ellipsis">
       
         One-call offers (blocking)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constants-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants (C++)
       
     </span>
   </a>
@@ -1333,6 +1408,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Player/" class="md-nav__link">
         
   
@@ -1425,6 +1528,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
   
 
     
@@ -1762,6 +1893,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#constants-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants (C++)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1972,6 +2114,11 @@ always returns <code>false</code>; use <code>close()</code> to leave.</p>
 <td><code>srs.ge.createBuyOffer(slot) → bool</code></td>
 </tr>
 <tr>
+<td>Start a SELL on an empty box — [UNVERIFIED]</td>
+<td><code>GrandExchange::createSellOffer(ctx, slot) → bool</code></td>
+<td><code>srs.ge.createSellOffer(slot) → bool</code></td>
+</tr>
+<tr>
 <td>Pick a SELL item from the side inventory</td>
 <td><code>GrandExchange::setOfferItem(ctx, invSlot, itemId) → bool</code></td>
 <td><code>srs.ge.setOfferItem(invSlot, itemId) → bool</code></td>
@@ -2003,12 +2150,14 @@ always returns <code>false</code>; use <code>close()</code> to leave.</p>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="admonition-title">Selling starts from the side inventory</p>
+<div class="admonition warning">
+<p class="admonition-title">createSellOffer is [UNVERIFIED]</p>
 <p>A SELL offer is begun by clicking the item in the GE side inventory
-(<code>setOfferItem</code>), not by an empty-box action. <code>createSellOffer(ctx, slot)</code>
-exists for API symmetry but has no verified box click and may be a no-op —
-<code>sellItem</code> does not use it.</p>
+(<code>setOfferItem</code>, group 467), not by an empty-box action.
+<code>createSellOffer(ctx, slot)</code> exists for API symmetry but fires the
+unverified op-4 box action (<code>kOp_CreateSell</code>), which may be a no-op —
+<code>sellItem</code> does <strong>not</strong> use this path. Prefer <code>sellItem</code> /
+<code>setOfferItem</code>.</p>
 </div>
 <h2 id="exact-entry-search-blocking">Exact entry &amp; search (blocking)<a class="headerlink" href="#exact-entry-search-blocking" title="Permanent link">&para;</a></h2>
 <table>
@@ -2074,6 +2223,102 @@ picks its slot automatically. Returns <code>true</code> only if the flow ran thr
 Confirm.</p>
 <p>For sensible prices, pair these with the <a href="../GePrices/">market-price helpers</a> on
 the same <code>srs.ge</code> table — e.g. <code>srs.ge.buyItem(id, qty, srs.ge.buyPrice(id))</code>.</p>
+<h2 id="constants-c">Constants (C++)<a class="headerlink" href="#constants-c" title="Permanent link">&para;</a></h2>
+<p>Widget topology of the GE interface, exposed for scripts that drive
+components directly. All <code>static constexpr int</code> on <code>GrandExchange</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kSlotCount</code></td>
+<td>8</td>
+<td>Offer slots</td>
+</tr>
+<tr>
+<td><code>kOffersGroup</code></td>
+<td>465</td>
+<td>GE_OFFERS (overview + setup)</td>
+</tr>
+<tr>
+<td><code>kOffersSideGroup</code></td>
+<td>467</td>
+<td>GE_OFFERS_SIDE (side inventory)</td>
+</tr>
+<tr>
+<td><code>kCollectGroup</code></td>
+<td>402</td>
+<td>GE_COLLECT (standalone collection box)</td>
+</tr>
+<tr>
+<td><code>kCollect_Inv</code> / <code>kCollect_Bank</code></td>
+<td>3 / 4</td>
+<td>Collection-box "to inventory" / "to bank"</td>
+</tr>
+<tr>
+<td><code>kCollect_Slot0</code></td>
+<td>5</td>
+<td>Collection-box slot children (slot <em>i</em> → <code>5 + i</code>)</td>
+</tr>
+<tr>
+<td><code>kSearchGroup</code></td>
+<td>162</td>
+<td>CHATBOX (buy-offer item search)</td>
+</tr>
+<tr>
+<td><code>kSearch_Input</code> / <code>kSearch_Results</code></td>
+<td>44 / 52</td>
+<td>Search input line / results list</td>
+</tr>
+<tr>
+<td><code>kOffers_Box0</code></td>
+<td>7</td>
+<td>Offer boxes are children 7..14 (slot <em>i</em> → <code>7 + i</code>)</td>
+</tr>
+<tr>
+<td><code>kOffers_Collect</code></td>
+<td>6</td>
+<td>Overview "Collect" button</td>
+</tr>
+<tr>
+<td><code>kOffers_Abort</code></td>
+<td>23</td>
+<td>Detail-screen "Abort offer"</td>
+</tr>
+<tr>
+<td><code>kOffers_SlotColl</code></td>
+<td>24</td>
+<td>Detail-screen collect area</td>
+</tr>
+<tr>
+<td><code>kOffers_Stepper</code></td>
+<td>26</td>
+<td>Setup-screen stepper strip (ops below)</td>
+</tr>
+<tr>
+<td><code>kOffers_Confirm</code></td>
+<td>30</td>
+<td>Setup-screen "Confirm"</td>
+</tr>
+<tr>
+<td><code>kOffers_Close</code></td>
+<td>2</td>
+<td>Window close "X"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Offer-box menu ops</strong> (on a box child): <code>kOp_ViewOffer</code> = 2,
+<code>kOp_CreateBuy</code> = 3, <code>kOp_CreateSell</code> = 4 ([UNVERIFIED] — selling
+starts via the side inventory, not the box).</p>
+<p><strong>Child-26 setup ops</strong>: <code>kOp_ChooseItem</code> = 0, <code>kOp_Qty1</code> = 3,
+<code>kOp_Qty10</code> = 4, <code>kOp_Qty100</code> = 5, <code>kOp_QtyAll</code> = 6, <code>kOp_EnterQty</code> = 7,
+<code>kOp_Price_m5</code> = 10, <code>kOp_EnterPrice</code> = 12, <code>kOp_Price_p5</code> = 13,
+<code>kOp_Price_m1</code> = 14, <code>kOp_Price_p1</code> = 15.</p>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>GeOfferInfo</code></strong> — one offer slot. Fields are read-only; the <code>is*</code> helpers are
 callable in both C++ and Lua (<code>offer:isFinished()</code>).</p>
