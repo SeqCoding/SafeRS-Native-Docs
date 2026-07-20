@@ -10,13 +10,9 @@
       
       
       
-        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Area/">
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/PluginSettings/">
       
       
-        <link rel="prev" href="../Antiban/">
-      
-      
-        <link rel="next" href="../Bank/">
       
       
         
@@ -27,7 +23,7 @@
     
     
       
-        <title>Area - SafeRS Native API</title>
+        <title>PluginSettings - SafeRS Native API</title>
       
     
     
@@ -78,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#area" class="md-skip">
+        <a href="#pluginsettings" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Area
+              PluginSettings
             
           </span>
         </div>
@@ -235,12 +231,10 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../" class="md-tabs__link">
           
   
@@ -319,8 +313,6 @@
       
   
   
-    
-  
   
   
     
@@ -420,19 +412,16 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -454,13 +443,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -505,37 +494,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Area
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../Area/" class="md-nav__link">
         
   
   
@@ -551,48 +513,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#methods" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Methods
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1791,13 +1711,52 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
+  <a href="#example-gear-setup-capture-button" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example
+        Example — gear-setup capture button
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#threading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Threading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Related
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Related">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exact-c-signature-srsapipluginsettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exact C++ signature (srs::api::PluginSettings)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1818,74 +1777,136 @@
 
 
 
-<h1 id="area">Area<a class="headerlink" href="#area" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Area</code> / <code>srs.area</code></p>
-<p>Player-position area-containment checks. <strong>2D only</strong> — plane is
-ignored. Add a plane-aware overload when an actual use case appears.</p>
+<h1 id="pluginsettings">PluginSettings<a class="headerlink" href="#pluginsettings" title="Permanent link">&para;</a></h1>
+<p><code>srs::api::PluginSettings</code></p>
+<p>Write back to your plugin (or Lua script's) <strong>own</strong> schema-driven settings —
+the flat <code>"&lt;groupId&gt;.&lt;rowId&gt;"</code> values that back the schema returned by
+<code>IScript::schema()</code> / declared by <code>script.declareSettings</code>.</p>
+<p>Different from <a href="../Settings/"><code>srs::api::Settings</code></a>, which reads GAME settings
+(varbits / varps). This module is about the plugin/script's own UI values.</p>
+<p>Ctx-less by design — mirrors Lua's <code>script.setSetting</code>, which also takes no
+<code>ctx</code>. The write is attributed to the <strong>currently firing plugin</strong> (the one
+whose method is running on the calling thread). Meaningful during
+<code>onSettingsButton</code> / <code>onSettingsChanged</code> / <code>pulse</code> / <code>onTick</code> / <code>onDraw</code>; a
+call from outside a callback context is silently dropped.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Form</th>
+<th>Method</th>
 <th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Inside inclusive rect</td>
-<td><code>Area::isWithin(ctx, x1, y1, x2, y2) → bool</code></td>
-<td><code>srs.area.isWithin(x1, y1, x2, y2) → bool</code></td>
+<td>Register a button handler</td>
+<td><code>PluginSettings::onButton(action, fn) → void</code></td>
+<td><code>script.onSettingsButton(name, fn)</code></td>
 </tr>
 <tr>
-<td>Within Chebyshev radius</td>
-<td><code>Area::isWithin(ctx, cx, cy, tilesAway) → bool</code></td>
-<td><code>srs.area.isWithin(cx, cy, tilesAway) → bool</code></td>
-</tr>
-<tr>
-<td>In an instance</td>
-<td><code>Area::isInInstance(ctx) → bool</code></td>
-<td><code>srs.area.isInInstance() → bool</code></td>
+<td>Write one flat setting</td>
+<td><code>PluginSettings::setValue(key, value) → void</code></td>
+<td><code>script.setSetting(key, value)</code></td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li><strong>Rect form</strong> — <code>(x1, y1)</code> and <code>(x2, y2)</code> are opposing corners.
-  Either pair works (upper-left + lower-right, upper-right +
-  lower-left, etc.) — internally <code>min</code>/<code>max</code>-ed against each axis.</li>
-<li><strong>Radius form</strong> — <code>tilesAway</code> is inclusive (player on the boundary
-  counts as inside). <code>tilesAway = 0</code> means "exactly on the tile".</li>
-</ul>
-<p>Lua dispatches by arity: 4 args = rect, 3 args = radius.</p>
-<p><code>isInInstance</code> returns <code>true</code> when the current scene is a real instance
-(a private boss arena, raid, minigame lobby, …), read from the engine's
-in-instance flag; <code>false</code> when that flag can't be resolved. Pairs with
-<a href="../Player/"><code>srs.player.templatePosition()</code></a> for instance-aware
-coordinate handling.</p>
-<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p>The Lua bindings live in the <a href="../Script/"><code>script.*</code></a> namespace since scripts
+already have a <code>script</code> global; C++ plugins reach the same behavior via the
+free functions above.</p>
+<p><strong>Register from <code>onLoad</code>.</strong> <code>onButton</code> uses the same thread_local
+attribution as <code>setValue</code>, and <code>onLoad</code> runs with the plugin attributed.
+Registering elsewhere works too (any callback), but <code>onLoad</code> is the natural
+one-time home. <code>fn</code> is <code>std::function&lt;void(const std::string&amp; action, const ScriptContext&amp; ctx)&gt;</code>.</p>
+<p><strong>ABI note.</strong> This is a registered-callback API (not an IScript virtual)
+specifically so adding it never shifted the IScript vtable. Plugins built
+against an older SDK header keep loading — they simply don't register any
+buttons. Extend IScript itself only by appending at the end.</p>
+<p><code>key</code> is <code>"&lt;groupId&gt;.&lt;rowId&gt;"</code> — the same flat encoding <code>onSettingsChanged</code>
+receives. <code>value</code> may be any JSON-representable value that matches the row's
+kind: <code>bool</code> for <code>check</code>, <code>number</code> for <code>number</code> / <code>slider</code>, <code>string</code> for
+<code>text</code> / <code>select</code>. Written values persist per <strong>in-game character</strong>.</p>
+<h2 id="example-gear-setup-capture-button">Example — gear-setup capture button<a class="headerlink" href="#example-gear-setup-capture-button" title="Permanent link">&para;</a></h2>
+<p>A <code>button</code> row + a <code>text</code> row let a plugin snapshot the currently worn gear
+into a textbox:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Area</span><span class="o">::</span><span class="n">isWithin</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="c1">// Player inside Varrock square-ish region</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Area</span><span class="o">::</span><span class="n">isWithin</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1">// Player within 5 tiles of (3210, 3210)</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;PluginAPI/API/PluginSettings.h&quot;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;PluginAPI/API/Equipment.h&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">GearCapture</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IScript</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">public</span><span class="o">:</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Gear Capture&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">onUnload</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">onLoad</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="c1">// Register the button handler once. Attribution is automatic —</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="c1">// onLoad runs with this plugin as the currently-firing one.</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="n">srs</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">PluginSettings</span><span class="o">::</span><span class="n">onButton</span><span class="p">(</span><span class="s">&quot;pull_gear&quot;</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">            </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="cm">/*action*/</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ids</span><span class="p">;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">srs</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">Equipment</span><span class="o">::</span><span class="n">all</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ids</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="n">ids</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="p">;</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">                    </span><span class="n">ids</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">id</span><span class="p">);</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">                </span><span class="n">srs</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">PluginSettings</span><span class="o">::</span><span class="n">setValue</span><span class="p">(</span><span class="s">&quot;gear.ids&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ids</span><span class="p">);</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">            </span><span class="p">});</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="n">nlohmann</span><span class="o">::</span><span class="n">json</span><span class="w"> </span><span class="n">schema</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{{</span><span class="s">&quot;groups&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{{</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">            </span><span class="p">{</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gear&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;title&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gear setup&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;open&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">},</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">            </span><span class="p">{</span><span class="s">&quot;rows&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">                </span><span class="p">{{</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="s">&quot;ids&quot;</span><span class="p">},</span><span class="w">  </span><span class="p">{</span><span class="s">&quot;label&quot;</span><span class="p">,</span><span class="s">&quot;Equipped item ids&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;kind&quot;</span><span class="p">,</span><span class="s">&quot;text&quot;</span><span class="p">},</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">                 </span><span class="p">{</span><span class="s">&quot;value&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">},</span><span class="w">  </span><span class="p">{</span><span class="s">&quot;placeholder&quot;</span><span class="p">,</span><span class="s">&quot;click Pull to fill&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;mono&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">}},</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">                </span><span class="p">{{</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="s">&quot;pull&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;label&quot;</span><span class="p">,</span><span class="s">&quot;Fill from worn gear&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;kind&quot;</span><span class="p">,</span><span class="s">&quot;button&quot;</span><span class="p">},</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">                 </span><span class="p">{</span><span class="s">&quot;value&quot;</span><span class="p">,</span><span class="s">&quot;Pull equipped&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="s">&quot;pull_gear&quot;</span><span class="p">}},</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">            </span><span class="p">}}</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">        </span><span class="p">}}}};</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="p">};</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">area</span><span class="p">.</span><span class="nf">isWithin</span><span class="p">(</span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="c1">-- Player inside Varrock square-ish region</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">end</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">area</span><span class="p">.</span><span class="nf">isWithin</span><span class="p">(</span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="c1">-- Player within 5 tiles of (3210, 3210)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kr">end</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="py">declareSettings</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gear setup&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nv">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ids&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Equipped item ids&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">placeholder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;click Pull to fill&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">mono</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pull&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Fill from worn gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Pull equipped&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pull_gear&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">}},</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">}</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onSettingsButton</span><span class="p">(</span><span class="s2">&quot;pull_gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">equipment</span><span class="p">.</span><span class="nf">all</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span><span class="w"> </span><span class="nv">ids</span><span class="p">[</span><span class="o">#</span><span class="nv">ids</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">id</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="nv">script</span><span class="p">.</span><span class="nf">setSetting</span><span class="p">(</span><span class="s2">&quot;gear.ids&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">table.concat</span><span class="p">(</span><span class="nv">ids</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
+<h2 id="threading">Threading<a class="headerlink" href="#threading" title="Permanent link">&para;</a></h2>
+<p>Button clicks (and therefore <code>PluginSettings::setValue</code> calls made from
+inside <code>onSettingsButton</code>) run on the <strong>ScriptScheduler worker</strong>, never the
+render thread. A slow handler (item-name load, GE / bank calls) cannot
+freeze the game. Blocking primitives inside the handler release the GIL via
+the usual helpers so the render thread's <code>onDraw</code> / Lua <code>script.draw</code> keeps
+running smoothly.</p>
+<h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../Script/">Script.md</a> — the Lua-side <code>script.setSetting</code> / <code>onSettingsButton</code>
+  and the schema shape reference (row kinds, per-character storage).</li>
+<li><a href="../Settings/">Settings.md</a> — GAME settings (varbit / varp) — read-only.</li>
+</ul>
+<hr />
+<h3 id="exact-c-signature-srsapipluginsettings">Exact C++ signature (<code>srs::api::PluginSettings</code>)<a class="headerlink" href="#exact-c-signature-srsapipluginsettings" title="Permanent link">&para;</a></h3>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">nlohmann</span><span class="o">::</span><span class="n">json</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</span></code></pre></div>
 
 
 
