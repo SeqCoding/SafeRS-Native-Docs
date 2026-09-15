@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1450,6 +1548,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1478,6 +1604,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1486,6 +1640,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1626,6 +1808,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -2037,6 +2247,11 @@ them for "different" results:</p>
 <td><code>Npc::overheadPrayer(ctx, target) → OverheadPrayer</code></td>
 <td><code>srs.npc.overheadPrayer(target) → OverheadPrayer</code></td>
 </tr>
+<tr>
+<td>Overhead chat text</td>
+<td><code>Npc::overheadText(ctx, target) → std::string</code></td>
+<td><code>srs.npc.overheadText(target) → string</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>action</code> is the exact menu-option string the game shows (<code>"Attack"</code>,
@@ -2050,6 +2265,16 @@ despawned; only prayer-archive (440) icons are reported. The C++ side
 takes an <code>NpcEntry</code> (a legacy <code>ActionTarget</code> overload also exists). See
 <a href="../Prayer/">Prayer</a> for the <code>OverheadPrayer</code> enum values —
 it's a Lua <strong>global</strong> enum, not under <code>srs.npc</code>.</p>
+<p><code>overheadText</code> is the chat text drawn above the actor right now —
+NPC forced chat (an entling's <code>"Short on top!"</code>, a Forester's shout) or
+a player's public chat — the equivalent of RuneLite's
+<code>Actor.getOverheadText()</code>. Returns <code>""</code> when nothing is shown, when the
+NPC has despawned, or when the text has expired (the engine clears it
+the tick its countdown reaches zero). Every finder result also carries
+an <code>overheadText</code> <strong>snapshot</strong> field plus <code>overheadCycles</code> (client ticks
+left before it clears, RuneLite <code>getOverheadCycle()</code>); the method
+re-reads the live actor and is what to use when you hold an older
+target. Works for NPC and player targets.</p>
 <div class="admonition note">
 <p class="admonition-title">isAlive semantics</p>
 <p><code>isAlive</code> is a host-side check that the NPC's <code>NpcInstance</code> is
@@ -2082,7 +2307,8 @@ return <code>NpcEntry</code> — a plain struct with NPC-specific fields:
 <code>id</code>, <code>spawnIndex</code>, <code>name</code>, <code>tileX</code>, <code>tileY</code>, <code>plane</code>,
 <code>animationId</code> (−1 = idle), <code>orientation</code> (−1 = unknown),
 <code>currentHp</code> / <code>maxHp</code> (−1 = unknown), <code>combatLevel</code> (−1 = unknown),
-<code>modelMagnitude</code> (engine getXYZMag half-extent; 0 = unknown). The
+<code>modelMagnitude</code> (engine getXYZMag half-extent; 0 = unknown),
+<code>overheadText</code> (<code>""</code> = none) and <code>overheadCycles</code> (0 = none). The
 action methods accept either type.</p>
 <p>The <code>ActionTarget</code> usertype (Lua return) — read-only:</p>
 <table>
@@ -2134,8 +2360,16 @@ action methods accept either type.</p>
 <td>Engine getXYZMag half-extent (0 = unknown)</td>
 </tr>
 <tr>
+<td><code>overheadText</code></td>
+<td>Overhead chat text drawn right now (<code>""</code> = none). Snapshot — see <code>srs.npc.overheadText</code></td>
+</tr>
+<tr>
+<td><code>overheadCycles</code></td>
+<td>Client ticks until <code>overheadText</code> clears (0 = none)</td>
+</tr>
+<tr>
 <td><code>orientation</code></td>
-<td>Facing angle 0–2047 (0 = N, 512 = E, 1024 = S, 1536 = W); −1 = unknown</td>
+<td>Facing angle 0–2047, clockwise from south: 0 = S, 512 = W, 1024 = N, 1536 = E (RuneLite <code>Direction</code> values); −1 = unknown</td>
 </tr>
 <tr>
 <td><code>combatLevel</code></td>
@@ -2148,11 +2382,16 @@ action methods accept either type.</p>
 </tbody>
 </table>
 <div class="admonition note">
-<p class="admonition-title"><code>orientation</code> / <code>combatLevel</code> population status</p>
-<p>The two fields exist on every <code>ActionTarget</code>, but today only the
-<strong>player</strong> producer fills them — NPC targets read <code>-1</code> for both
-until the NPC-side producer is wired up. C++ <code>NpcEntry</code> carries the
-real NPC values already.</p>
+<p class="admonition-title"><code>orientation</code> / <code>combatLevel</code> semantics</p>
+<p>Both fields are populated for NPCs and players. <code>orientation</code> is the
+actor's <strong>target</strong> facing (RuneLite <code>Actor.getOrientation()</code>): the
+angle the engine turns toward, so it changes the tick the server sets
+it and the rendered model catches up over the next few ticks. Compare
+against the four cardinals with a tolerance (e.g. north =
+<code>math.abs(o - 1024) &lt;= 256</code>) rather than exact equality if the NPC
+may be mid-turn.
+<code>combatLevel</code> is <code>-1</code> for NPCs that show no level on the right-click
+(bankers, shopkeepers, pets).</p>
 </div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>

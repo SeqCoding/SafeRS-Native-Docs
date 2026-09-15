@@ -603,6 +603,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -672,6 +686,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -888,6 +930,34 @@
   
   
     <li class="md-nav__item">
+      <a href="api/Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api/DepositBox/" class="md-nav__link">
         
   
@@ -1008,6 +1078,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1532,6 +1630,34 @@
   
   
     <li class="md-nav__item">
+      <a href="api/PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api/Prayer/" class="md-nav__link">
         
   
@@ -1560,6 +1686,34 @@
   
   
     <li class="md-nav__item">
+      <a href="api/HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api/Projectiles/" class="md-nav__link">
         
   
@@ -1568,6 +1722,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1708,6 +1890,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -2110,6 +2320,12 @@ DLLs in the <code>plugins/</code> directory.</p>
 <p><code>script.draw</code> is the only callback where <code>srs.draw.*</code> calls are valid
 — the host guarantees a live ImGui frame for it. <code>pulse</code>, <code>onTick</code>,
 and <code>nextTick</code> do not.</p>
+<p>There is no <code>script.onLoad</code>: a Lua script's <strong>top-level chunk</strong> is its load
+hook. Note that the chunk runs when the script is <em>installed</em> (the sidebar's
+<strong>Load</strong>), which may be long before the user starts it with the <strong>Enabled</strong>
+checkbox — see
+<a href="api/Script/#install-vs-start">Install vs start</a> before putting
+start-of-run work at the top of a file.</p>
 <h2 id="metadata-and-settings">Metadata and settings<a class="headerlink" href="#metadata-and-settings" title="Permanent link">&para;</a></h2>
 <p>The launcher's sidebar treats C++ plugins and Lua scripts uniformly
 — both can declare display metadata (name, author, version,

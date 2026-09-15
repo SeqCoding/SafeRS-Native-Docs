@@ -414,6 +414,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -486,6 +500,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -702,6 +744,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -822,6 +892,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1346,6 +1444,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1374,6 +1500,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1382,6 +1536,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1522,6 +1704,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1725,6 +1935,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#world-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        World directory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1782,6 +2003,17 @@
     <span class="md-ellipsis">
       
         Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#world-directory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        World directory
       
     </span>
   </a>
@@ -1855,22 +2087,126 @@ Returns <code>false</code> (nothing scheduled) when not logged in, when <code>wo
 the current world, when <code>world</code> isn't a known world, or when the engine
 isn't resolved. Must be logged in; for a members world the account must be
 a member (the engine silently rejects ineligible targets).</p>
+<h2 id="world-directory">World directory<a class="headerlink" href="#world-directory" title="Permanent link">&para;</a></h2>
+<p>Read the engine's world list (RuneMate <code>Worlds</code> parity) to pick a hop target by
+population / activity / type instead of a hard-coded number.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One world by number</td>
+<td><code>World::get(ctx, world) → optional&lt;WorldInfo&gt;</code></td>
+<td><code>srs.world.get(world) → table\|nil</code></td>
+</tr>
+<tr>
+<td>Whole list</td>
+<td><code>World::all(ctx) → vector&lt;WorldInfo&gt;</code></td>
+<td><code>srs.world.all() → table[]</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>WorldInfo</code> fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>int</td>
+<td>world number</td>
+</tr>
+<tr>
+<td><code>population</code></td>
+<td>int</td>
+<td>live player count; <code>-1</code> if not yet received</td>
+</tr>
+<tr>
+<td><code>region</code></td>
+<td>string</td>
+<td><code>"United States"</code> / <code>"United Kingdom"</code> / <code>"Australia"</code> / <code>"Germany"</code> / <code>"Unknown"</code></td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>int</td>
+<td>raw region code (RuneLite <code>WorldRegion</code>: 0=US, 1=UK, 3=AU, 7=DE)</td>
+</tr>
+<tr>
+<td><code>members</code></td>
+<td>bool</td>
+<td>members world (<code>flags &amp; 0x1</code>)</td>
+</tr>
+<tr>
+<td><code>pvp</code></td>
+<td>bool</td>
+<td>PvP world (<code>flags &amp; 0x4</code>)</td>
+</tr>
+<tr>
+<td><code>highRisk</code></td>
+<td>bool</td>
+<td>high-risk world (<code>flags &amp; 0x400</code>)</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>int</td>
+<td>raw <code>WorldType</code> mask — check other RuneLite bits yourself if needed</td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td>string</td>
+<td>server host / address</td>
+</tr>
+<tr>
+<td><code>activity</code></td>
+<td>string</td>
+<td>activity label (<code>"Trade"</code>, <code>"Wintertodt"</code>, <code>"1500 skill total"</code>, …)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Empty until the world list loads</p>
+<p>The engine only populates the world list once the <strong>world-switcher is opened</strong>
+(or shortly after login). Before that, <code>all()</code> returns an empty table and
+<code>get()</code> returns <code>nil</code>. <code>all()</code> probes the engine resolver across the world-number
+range, so call it <strong>sparingly</strong> (e.g. once when choosing a hop target), never per tick.</p>
+</div>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- pick the least-populated non-PvP, non-high-risk members world in your region</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">best</span><span class="p">,</span><span class="w"> </span><span class="nv">bestPop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="nb">math.huge</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">w</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">world</span><span class="p">.</span><span class="nf">all</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">members</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">pvp</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">highRisk</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">       </span><span class="ow">and</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">region</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;United States&quot;</span><span class="w">          </span><span class="c1">-- your region</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">       </span><span class="ow">and</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">population</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">population</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nv">bestPop</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nv">best</span><span class="p">,</span><span class="w"> </span><span class="nv">bestPop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">population</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="kr">end</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="kr">if</span><span class="w"> </span><span class="nv">best</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">world</span><span class="p">.</span><span class="nf">hopTo</span><span class="p">(</span><span class="nv">best</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span></code></pre></div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">World</span><span class="o">::</span><span class="n">getId</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">302</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">World</span><span class="o">::</span><span class="n">hopTo</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">302</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="c1">// hop accepted — poll Game::state() / World::getId(ctx)</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">World</span><span class="o">::</span><span class="n">getId</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">302</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">World</span><span class="o">::</span><span class="n">hopTo</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">302</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="c1">// hop accepted — poll Game::state() / World::getId(ctx)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">world</span><span class="p">.</span><span class="nf">getId</span><span class="p">()</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">302</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">world</span><span class="p">.</span><span class="nf">hopTo</span><span class="p">(</span><span class="mi">302</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;hop to 302 accepted — waiting for completion&quot;</span><span class="p">)</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kr">end</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">world</span><span class="p">.</span><span class="nf">getId</span><span class="p">()</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">302</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">world</span><span class="p">.</span><span class="nf">hopTo</span><span class="p">(</span><span class="mi">302</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;hop to 302 accepted — waiting for completion&quot;</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="kr">end</span>
 </span></code></pre></div>
 </div>
 </div>

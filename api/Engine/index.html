@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -684,6 +726,34 @@
     
   
     Combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
   
 
     
@@ -932,6 +1002,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1456,6 +1554,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1484,6 +1610,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1492,6 +1646,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1632,6 +1814,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1920,10 +2130,17 @@ To gate on action capacity, check <code>canDispatchAction()</code> and yield via
 cycle</strong> (vanilla). The DLL counts every action-class opcode that
 <code>srs::engine::isAction()</code> recognises — <code>OpLoc*</code>, <code>OpNpc*</code>, <code>OpObj*</code>,
 <code>IfButton*</code>, etc. — but <strong>not</strong> input-bundle traffic (mouse moves,
-clicks, key events, heartbeats). The actual gating happens automatically
-inside <code>EngineDispatch::drainOnMainThread</code>, so scripts can burst-fire
-actions (drop-all, mass-eat, gear-swap) without manually pacing.</p>
-<p>These accessors exist purely for diagnostic UIs / metrics.</p>
+clicks, key events, heartbeats). Note that a sidebar <strong>tab switch counts</strong>:
+a chrome-tab click emits <code>IF_BUTTON</code> like any other widget click.</p>
+<p><code>EngineDispatch::drainOnMainThread</code> has a budget gate, but it <strong>defers</strong>
+an over-cap action rather than dropping it — it fires some unbounded number
+of ticks later, against a world that has moved on. That is fine for a
+drop-all and wrong for anything tick-scoped.</p>
+<p>These accessors are raw observations, not a safety net. If you need several
+actions inside one tick, and need to know which ones the tick could not
+afford, use <a href="../Actions/#same-tick-batching"><code>srs.actions.batch</code></a>: it paces
+the ladder at the engine's one-action-per-frame floor, fails fast on the cap
+instead of deferring, and reports every step per outcome.</p>
 <table>
 <thead>
 <tr>

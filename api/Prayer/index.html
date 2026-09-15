@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Prayer/">
       
       
-        <link rel="prev" href="../Player/">
+        <link rel="prev" href="../PluginSettings/">
       
       
-        <link rel="next" href="../Projectiles/">
+        <link rel="next" href="../HitSplats/">
       
       
         
@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1345,6 +1443,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1467,6 +1593,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1475,6 +1629,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1615,6 +1797,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1887,9 +2097,64 @@
 <td><code>srs.prayer.level() → int</code></td>
 </tr>
 <tr>
+<td>Display name</td>
+<td><code>Prayer::name(kind) → const char*</code></td>
+<td><code>srs.prayer.name(kind) → string</code></td>
+</tr>
+<tr>
+<td>Level requirement</td>
+<td><code>Prayer::levelRequired(kind) → int32</code></td>
+<td><code>srs.prayer.levelRequired(kind) → int</code></td>
+</tr>
+<tr>
+<td>Activation varbit id</td>
+<td><code>Prayer::varbitId(kind) → int32</code></td>
+<td><code>srs.prayer.varbitId(kind) → int</code></td>
+</tr>
+<tr>
+<td>Prayer book child id</td>
+<td><code>Prayer::widgetChild(kind) → int32</code></td>
+<td><code>srs.prayer.widgetChild(kind) → int</code></td>
+</tr>
+<tr>
 <td>Per-prayer active state</td>
 <td><code>Prayer::isActive(ctx, kind) → bool</code></td>
 <td><code>srs.prayer.isActive(kind) → bool</code></td>
+</tr>
+<tr>
+<td>Is the varbit readable</td>
+<td><code>Prayer::isReadable(ctx, kind) → bool</code></td>
+<td><code>srs.prayer.isReadable(kind) → bool</code></td>
+</tr>
+<tr>
+<td>Every active prayer</td>
+<td><code>Prayer::activeList(ctx) → vector&lt;PrayerKind&gt;</code></td>
+<td><code>srs.prayer.activeList() → table</code></td>
+</tr>
+<tr>
+<td>Raw bitfield mirror</td>
+<td><code>Prayer::allActiveRaw(ctx) → int32</code></td>
+<td><code>srs.prayer.allActiveRaw() → int</code></td>
+</tr>
+<tr>
+<td>Unlocked (Rigour etc.)</td>
+<td><code>Prayer::isUnlocked(ctx, kind) → bool</code></td>
+<td><code>srs.prayer.isUnlocked(kind) → bool</code></td>
+</tr>
+<tr>
+<td>Prayer occupying the slot</td>
+<td><code>Prayer::slotOccupant(ctx, kind) → PrayerKind</code></td>
+<td><code>srs.prayer.slotOccupant(kind) → int</code></td>
+</tr>
+<tr>
+<td>Usable right now</td>
+<td><code>Prayer::isAvailable(ctx, kind) → bool</code></td>
+<td><code>srs.prayer.isAvailable(kind) → bool</code></td>
+</tr>
+<tr>
+<td>Best damage prayer</td>
+<td><code>Prayer::bestOffensive(ctx, style) → PrayerKind</code></td>
+<td><code>srs.prayer.bestOffensive(style) → int</code></td>
 </tr>
 <tr>
 <td>Toggle prayer</td>
@@ -1906,59 +2171,305 @@
 <ul>
 <li><code>points</code> and <code>level</code> pass through to existing <code>GameData</code> accessors
   so plugins don't need to import <code>GameData</code>.</li>
-<li><code>isActive</code> returns <code>false</code> for prayers whose varbit isn't yet
-  mapped or when <code>VarpSystem</code> is unavailable.</li>
-<li><code>toggle</code> clicks the prayer button to flip its state. Caller's
-  responsibility to have the prayer tab open and sufficient prayer
-  points — the API doesn't gate.</li>
-<li><code>setActive</code> clicks only if currently mismatched.</li>
+<li><code>isActive</code> reads the prayer's own activation varbit. It returns
+  <code>false</code> both for "off" and for "couldn't read" — use <code>isReadable</code>
+  to tell those apart.</li>
+<li><code>toggle</code> clicks the prayer button to flip its state. It opens the
+  Prayer tab first if needed, returning <code>false</code> that frame (the book
+  doesn't render until the next one). It does <strong>not</strong> check prayer
+  points, and it is unguarded: two calls in a tick flip the prayer
+  twice.</li>
+<li><code>setActive</code> clicks only if currently mismatched, and is the call
+  state-driven code should use — see the rate limit below.</li>
+<li><code>activeList</code> is one varbit read per prayer. That is the cheap
+  "everything at once" read; the client's own bitfield mirror at
+  varbit 4101 (<code>PRAYER_ALLACTIVE</code>) packs the same information, but its
+  bit order isn't published by RuneLite, so it is exposed raw via
+  <code>allActiveRaw</code> rather than decoded on a guess.</li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title"><code>setActive</code> is rate-limited per prayer</p>
+<p>The activation varbit only flips once the <strong>server</strong> answers, up to
+a tick after the click. A caller polling at pulse rate therefore
+reads "still off" immediately after clicking and would click again,
+toggling the prayer straight back off — a live log showed two
+protects alternating every tick before the Gauntlet script added
+its own per-prayer gate. <code>setActive</code> now suppresses repeat clicks
+on the same prayer for 1200 ms (two game ticks) and returns
+<code>false</code> while it is waiting. <code>toggle</code> bypasses the gate.</p>
+<p><code>setActive</code> also refuses — with a throttled log line — to click a
+prayer whose varbit can't be read at all, instead of clicking
+forever waiting for a flip that can never be observed.</p>
+</div>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <p><strong>PrayerKind constants</strong> (<code>PrayerKind</code> / <code>srs.prayer.*</code>):</p>
+<p>The whole standard prayer book, in level order. <code>widgetChild</code> is the
+child id inside prayer book group 541; <code>varbit</code> is the activation
+varbit. <code>NONE</code> (−1) is the "no prayer" value <code>bestOffensive</code> and
+<code>slotOccupant</code> return.</p>
 <table>
 <thead>
 <tr>
 <th>Lua const</th>
 <th>Prayer</th>
+<th>Level</th>
+<th>Child</th>
+<th>Varbit</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>PROTECT_MAGIC</code></td>
-<td>Protect from Magic</td>
+<td><code>THICK_SKIN</code></td>
+<td>Thick Skin</td>
+<td>1</td>
+<td>9</td>
+<td>4104</td>
 </tr>
 <tr>
-<td><code>PROTECT_MISSILE</code></td>
-<td>Protect from Missiles</td>
+<td><code>BURST_OF_STRENGTH</code></td>
+<td>Burst of Strength</td>
+<td>4</td>
+<td>10</td>
+<td>4105</td>
 </tr>
 <tr>
-<td><code>PROTECT_MELEE</code></td>
-<td>Protect from Melee</td>
+<td><code>CLARITY_OF_THOUGHT</code></td>
+<td>Clarity of Thought</td>
+<td>7</td>
+<td>11</td>
+<td>4106</td>
+</tr>
+<tr>
+<td><code>SHARP_EYE</code></td>
+<td>Sharp Eye</td>
+<td>8</td>
+<td>27</td>
+<td>4122</td>
+</tr>
+<tr>
+<td><code>MYSTIC_WILL</code></td>
+<td>Mystic Will</td>
+<td>9</td>
+<td>30</td>
+<td>4123</td>
+</tr>
+<tr>
+<td><code>ROCK_SKIN</code></td>
+<td>Rock Skin</td>
+<td>10</td>
+<td>12</td>
+<td>4107</td>
+</tr>
+<tr>
+<td><code>SUPERHUMAN_STRENGTH</code></td>
+<td>Superhuman Strength</td>
+<td>13</td>
+<td>13</td>
+<td>4108</td>
+</tr>
+<tr>
+<td><code>IMPROVED_REFLEXES</code></td>
+<td>Improved Reflexes</td>
+<td>16</td>
+<td>14</td>
+<td>4109</td>
+</tr>
+<tr>
+<td><code>RAPID_RESTORE</code></td>
+<td>Rapid Restore</td>
+<td>19</td>
+<td>15</td>
+<td>4110</td>
+</tr>
+<tr>
+<td><code>RAPID_HEAL</code></td>
+<td>Rapid Heal</td>
+<td>22</td>
+<td>16</td>
+<td>4111</td>
 </tr>
 <tr>
 <td><code>PROTECT_ITEM</code></td>
 <td>Protect Item</td>
+<td>25</td>
+<td>17</td>
+<td>4112</td>
+</tr>
+<tr>
+<td><code>HAWK_EYE</code></td>
+<td>Hawk Eye</td>
+<td>26</td>
+<td>28</td>
+<td>4124</td>
+</tr>
+<tr>
+<td><code>MYSTIC_LORE</code></td>
+<td>Mystic Lore</td>
+<td>27</td>
+<td>31</td>
+<td>4125</td>
+</tr>
+<tr>
+<td><code>STEEL_SKIN</code></td>
+<td>Steel Skin</td>
+<td>28</td>
+<td>18</td>
+<td>4113</td>
+</tr>
+<tr>
+<td><code>ULTIMATE_STRENGTH</code></td>
+<td>Ultimate Strength</td>
+<td>31</td>
+<td>19</td>
+<td>4114</td>
+</tr>
+<tr>
+<td><code>INCREDIBLE_REFLEXES</code></td>
+<td>Incredible Reflexes</td>
+<td>34</td>
+<td>20</td>
+<td>4115</td>
+</tr>
+<tr>
+<td><code>PROTECT_MAGIC</code></td>
+<td>Protect from Magic</td>
+<td>37</td>
+<td>21</td>
+<td>4116</td>
+</tr>
+<tr>
+<td><code>PROTECT_MISSILE</code></td>
+<td>Protect from Missiles</td>
+<td>40</td>
+<td>22</td>
+<td>4117</td>
+</tr>
+<tr>
+<td><code>PROTECT_MELEE</code></td>
+<td>Protect from Melee</td>
+<td>43</td>
+<td>23</td>
+<td>4118</td>
+</tr>
+<tr>
+<td><code>EAGLE_EYE</code></td>
+<td>Eagle Eye</td>
+<td>44</td>
+<td>29</td>
+<td>4126</td>
+</tr>
+<tr>
+<td><code>MYSTIC_MIGHT</code></td>
+<td>Mystic Might</td>
+<td>45</td>
+<td>32</td>
+<td>4127</td>
 </tr>
 <tr>
 <td><code>RETRIBUTION</code></td>
 <td>Retribution</td>
+<td>46</td>
+<td>24</td>
+<td>4119</td>
 </tr>
 <tr>
 <td><code>REDEMPTION</code></td>
 <td>Redemption</td>
+<td>49</td>
+<td>25</td>
+<td>4120</td>
 </tr>
 <tr>
 <td><code>SMITE</code></td>
 <td>Smite</td>
+<td>52</td>
+<td>26</td>
+<td>4121</td>
+</tr>
+<tr>
+<td><code>PRESERVE</code></td>
+<td>Preserve</td>
+<td>55</td>
+<td>37</td>
+<td>5466</td>
+</tr>
+<tr>
+<td><code>CHIVALRY</code></td>
+<td>Chivalry</td>
+<td>60</td>
+<td>34</td>
+<td>4128</td>
+</tr>
+<tr>
+<td><code>DEADEYE</code></td>
+<td>Deadeye</td>
+<td>62</td>
+<td>29</td>
+<td>16090</td>
+</tr>
+<tr>
+<td><code>MYSTIC_VIGOUR</code></td>
+<td>Mystic Vigour</td>
+<td>63</td>
+<td>32</td>
+<td>16091</td>
+</tr>
+<tr>
+<td><code>PIETY</code></td>
+<td>Piety</td>
+<td>70</td>
+<td>35</td>
+<td>4129</td>
+</tr>
+<tr>
+<td><code>RIGOUR</code></td>
+<td>Rigour</td>
+<td>74</td>
+<td>33</td>
+<td>5464</td>
+</tr>
+<tr>
+<td><code>AUGURY</code></td>
+<td>Augury</td>
+<td>77</td>
+<td>36</td>
+<td>5465</td>
 </tr>
 </tbody>
 </table>
+<p><strong>PrayerStyle constants</strong> — which line <code>bestOffensive</code> picks from:
+<code>STYLE_MELEE</code>, <code>STYLE_RANGED</code>, <code>STYLE_MAGIC</code>. They are prefixed
+because <code>PrayerStyle::Melee</code> is <code>0</code>, the same int as
+<code>PrayerKind::ProtectMagic</code>.</p>
 <div class="admonition note">
-<p class="admonition-title">Subset of full prayer book</p>
-<p>Only prayers with confirmed RuneLite varbit IDs are exposed by
-name. The other ~25 prayers exist server-side and are tracked by
-the bitfield mirror at varbit 4101 (not decoded here). Add named
-entries as per-prayer varbits get verified.</p>
+<p class="admonition-title">The book is not numbered in display order</p>
+<p>Children come from <code>InterfaceID.Prayerbook.PRAYER1..PRAYER30</code>
+(child = 8 + N), and the ranged/magic prayers plus the later
+additions were appended as <code>PRAYER19..PRAYER29</code>. So Retribution
+(child 24) sits <em>below</em> Sharp Eye (child 27) in the numbering even
+though it is far below it in the book. Anything that guesses a
+child by counting rows will be wrong; the pairing comes from
+Microbot's <code>Rs2PrayerEnum</code>, and the three protects are
+live-verified against real <code>DoAction</code> captures.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Eagle Eye / Deadeye and Mystic Might / Mystic Vigour share a button</p>
+<p>Deadeye replaces Eagle Eye in the book once unlocked, and Mystic
+Vigour replaces Mystic Might — one child, two prayers, two
+varbits. <code>isActive</code> is literal (it reads the prayer you asked
+about), <code>slotOccupant</code> tells you which of the pair the button
+currently activates, and <code>isAvailable</code> is false for the one that
+is currently shadowed. <code>setActive(EAGLE_EYE, true)</code> on an account
+with Deadeye unlocked refuses and logs, rather than clicking a
+button whose effect it can't observe.</p>
+<p><code>bestOffensive</code> handles all of this — prefer it over naming a
+prayer directly when any account might run the script.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Ruinous Powers</p>
+<p>The Ruinous Powers book (Varlamore) is a separate interface with
+its own prayers and its own bitfield mirror (varbit 14827). It is
+not covered by this module.</p>
 </div>
 <h2 id="overhead-prayers-headicons">Overhead prayers (headicons)<a class="headerlink" href="#overhead-prayers-headicons" title="Permanent link">&para;</a></h2>
 <p><code>srs::api::OverheadPrayer</code> / Lua global <code>OverheadPrayer</code></p>
@@ -2050,6 +2561,31 @@ what's actually displayed over a head (yours or an NPC's).</p>
 </div>
 </div>
 </div>
+<p>Picking a damage prayer without hard-coding one (Rigour on an account
+that has it, Eagle Eye on one that doesn't, nothing at all below
+level 8):</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">C++</label><label for="__tabbed_2_2">Lua</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">const</span><span class="w"> </span><span class="n">PrayerKind</span><span class="w"> </span><span class="n">boost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Prayer</span><span class="o">::</span><span class="n">bestOffensive</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">PrayerStyle</span><span class="o">::</span><span class="n">Ranged</span><span class="p">);</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">boost</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">PrayerKind</span><span class="o">::</span><span class="n">None</span><span class="p">)</span><span class="w"> </span><span class="n">Prayer</span><span class="o">::</span><span class="n">setActive</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">boost</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">boost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="nf">bestOffensive</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="py">STYLE_RANGED</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">boost</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="py">NONE</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="nf">setActive</span><span class="p">(</span><span class="nv">boost</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kr">end</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<p><code>devscripts/verify_prayer_book.lua</code> checks every entry in the table
+above against the live client: it dumps group 541, compares each
+child against the label the engine has there, then toggles every
+prayer the account can use and confirms the varbit follows the click
+both ways. Run it after any game update that moves interfaces.</p>
 
 
 

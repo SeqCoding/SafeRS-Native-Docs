@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1348,6 +1446,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1376,6 +1502,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1384,6 +1538,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1503,6 +1685,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#install-vs-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install vs start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#metadata-and-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1549,6 +1742,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logfile-durable-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        log.file — durable output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1676,6 +1886,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1874,6 +2112,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#install-vs-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install vs start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#metadata-and-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1920,6 +2169,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logfile-durable-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        log.file — durable output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2026,6 +2292,70 @@ surface — C++ plugins implement the <code>IScript</code> virtuals
 <p><code>pulse</code> and <code>onTick</code> are both optional — register whichever cadence
 fits. Use <code>onTick</code> for game logic (actions, state machines) and
 <code>pulse</code> only when you genuinely need frame-rate polling.</p>
+<p>There is <strong>no <code>script.onLoad</code></strong>. The top-level chunk <em>is</em> the load hook:
+statements outside any callback run once when the script is installed.
+See <a href="#install-vs-start">Install vs start</a> for what that means in practice.</p>
+<h2 id="install-vs-start">Install vs start<a class="headerlink" href="#install-vs-start" title="Permanent link">&para;</a></h2>
+<p>Since <strong>2026-09-13</strong> a script has three states, not two. The sidebar's
+<strong>Load</strong> button installs a script; the <strong>Enabled</strong> checkbox in its
+settings panel is the only start / stop control.</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Set by</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prepared</code></td>
+<td>sidebar <strong>Load</strong></td>
+<td>Source is in the client and the <strong>top chunk has run at least once</strong>, so <code>declareInfo</code> / <code>declareSettings</code> have landed and the settings form renders. Sticky across enable/disable and across a Lua VM rebuild.</td>
+</tr>
+<tr>
+<td><code>loaded</code></td>
+<td>install, or the VM rebuild</td>
+<td>The chunk is live in the <em>current</em> <code>lua_State</code>. Cleared on disable, restored by the rebuild.</td>
+</tr>
+<tr>
+<td><code>enabled</code></td>
+<td>the <strong>Enabled</strong> checkbox</td>
+<td>The only state that lets callbacks fire. A script that is loaded but not enabled runs nothing.</td>
+</tr>
+</tbody>
+</table>
+<p>The sidebar row shows <strong>Configure</strong> once a script is <code>loaded || prepared</code>,
+and its badge reads <em>loaded</em> vs <em>running</em>. Streamed SDN scripts install on
+load like every other script — they no longer auto-start.</p>
+<div class="admonition warning">
+<p class="admonition-title">Your top chunk runs at install time, not at start</p>
+<p>The gap between <em>Load</em> and <em>Enabled</em> can be minutes. Anything the top
+chunk does — capturing a timestamp, baselining
+<a href="../Stats/"><code>srs.stats</code></a>, snapshotting inventory, reading the player's
+position — happens at <strong>install</strong>, against whatever the game state was
+back then, and is <em>not</em> redone when the user finally starts the script.</p>
+<p>Keep the top chunk to declarations (<code>declareInfo</code>, <code>declareSettings</code>,
+<code>require</code>, callback registration, constant tables). Put
+"start of run" work in a first-tick guard:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">started</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">started</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="nv">started</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">stats</span><span class="p">.</span><span class="nf">reset</span><span class="p">()</span><span class="w">       </span><span class="c1">-- real start of the run</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="c1">-- ... per-tick logic</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Callback registration appends — never register conditionally</p>
+<p><code>script.pulse</code> / <code>onTick</code> / <code>draw</code> <strong>append</strong> to the callback list. The
+host does not re-run an already-live chunk when you enable a prepared
+script, precisely so registrations aren't duplicated. Registering from
+inside a callback (rather than at the top level) defeats that and your
+handler fires twice per tick. Register once, at the top level.</p>
+</div>
 <h2 id="metadata-and-settings">Metadata and settings<a class="headerlink" href="#metadata-and-settings" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2127,22 +2457,22 @@ dispatch) is identical.</p>
 <h3 id="gear-setup-example">Gear-setup example<a class="headerlink" href="#gear-setup-example" title="Permanent link">&para;</a></h3>
 <p>A <code>button</code> row + a <code>text</code> row let a script pull the currently worn gear
 into a textbox:</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">declareSettings</span><span class="p">({</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gear setup&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nv">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ids&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Equipped item ids&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="nv">placeholder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;click Pull to fill&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">mono</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pull&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Fill from worn gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Pull equipped&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pull_gear&quot;</span><span class="w"> </span><span class="p">},</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="p">}},</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="p">},</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">})</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onSettingsButton</span><span class="p">(</span><span class="s2">&quot;pull_gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">equipment</span><span class="p">.</span><span class="nf">all</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span><span class="w"> </span><span class="nv">ids</span><span class="p">[</span><span class="o">#</span><span class="nv">ids</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">id</span><span class="w"> </span><span class="kr">end</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nv">script</span><span class="p">.</span><span class="nf">setSetting</span><span class="p">(</span><span class="s2">&quot;gear.ids&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">table.concat</span><span class="p">(</span><span class="nv">ids</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="kr">end</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">declareSettings</span><span class="p">({</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gear setup&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">open</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nv">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ids&quot;</span><span class="p">,</span><span class="w">  </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Equipped item ids&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="nv">placeholder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;click Pull to fill&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">mono</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pull&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Fill from worn gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Pull equipped&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pull_gear&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">}},</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">})</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onSettingsButton</span><span class="p">(</span><span class="s2">&quot;pull_gear&quot;</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">equipment</span><span class="p">.</span><span class="nf">all</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span><span class="w"> </span><span class="nv">ids</span><span class="p">[</span><span class="o">#</span><span class="nv">ids</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">id</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="nv">script</span><span class="p">.</span><span class="nf">setSetting</span><span class="p">(</span><span class="s2">&quot;gear.ids&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">table.concat</span><span class="p">(</span><span class="nv">ids</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
 <table>
@@ -2174,14 +2504,43 @@ into a textbox:</p>
 <td><code>print(...)</code></td>
 <td><strong>Overridden</strong>: tab-concatenated <code>tostring()</code> of each arg, to the engine output buffer — not stdout</td>
 </tr>
+<tr>
+<td>Append to a file</td>
+<td><code>log.file(name, line) → string</code></td>
+<td>Appends <code>line</code> + CRLF to <code>%TEMP%\safers_&lt;name&gt;.log</code>; returns the full path</td>
+</tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="admonition-title">The only logging APIs</p>
-<p><code>log.info/warn/error</code> and the overridden <code>print</code> are the whole
-surface. There is no <code>srs.log.*</code> and no <code>osrs.print</code> — code using
+<p><code>log.info/warn/error</code>, <code>log.file</code>, and the overridden <code>print</code> are the
+whole surface. There is no <code>srs.log.*</code> and no <code>osrs.print</code> — code using
 those names errors at call time.</p>
 </div>
+<h3 id="logfile-durable-output"><code>log.file</code> — durable output<a class="headerlink" href="#logfile-durable-output" title="Permanent link">&para;</a></h3>
+<p>The engine output buffer is a ring the user scrolls. That is right for
+progress messages and useless for a run that emits hundreds of lines and
+has to survive the client closing — a validation sweep, a long harvest,
+an overnight session's error trail.</p>
+<p><code>log.file</code> is the one file-writing primitive scripts get (<code>io</code> is
+deliberately absent from the sandbox). It is deliberately narrow:</p>
+<ul>
+<li><code>name</code> is sanitised to <code>[A-Za-z0-9_-]</code>, truncated to 64 chars, and
+  always lands in <code>%TEMP%</code> — a script cannot choose an arbitrary path or
+  escape the directory.</li>
+<li>Every call opens, appends, <strong>flushes</strong>, and closes. A run that crashes
+  still leaves its evidence on disk.</li>
+<li>Returns the resolved path (empty string if the file could not be
+  opened) so a script can tell the user where its output went.</li>
+</ul>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">path</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">entity</span><span class="p">.</span><span class="nf">npcs</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nv">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">log</span><span class="p">.</span><span class="nf">file</span><span class="p">(</span><span class="s2">&quot;npc_survey&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="s2">&quot;%s</span><span class="se">\t</span><span class="s2">%d,%d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">e</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">tileX</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">tileY</span><span class="p">))</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kr">end</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;survey written to &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nv">path</span><span class="p">))</span>
+</span></code></pre></div>
+<p>Open-append-close per line is not free — it is fine for a few thousand
+lines over a session, not for per-frame logging from <code>pulse</code>.</p>
 <h2 id="waits-tick-suspension">Waits (tick suspension)<a class="headerlink" href="#waits-tick-suspension" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2234,21 +2593,21 @@ callback.</p>
 <p>Open libraries: <code>base</code>, <code>string</code>, <code>math</code>, <code>table</code>, <code>os</code>.
 Not available: <code>io</code>, <code>package</code> (<code>require</code> is replaced — see above).</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="py">declareInfo</span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Miner&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">author</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;me&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">                    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Powermines iron&quot;</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">isFull</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Iron ore&quot;</span><span class="p">)</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="nf">wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">  </span><span class="c1">-- mute onTick for 2 ticks; code below still runs</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="kr">return</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;Ticking, slots free: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">emptySlots</span><span class="p">())</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="kr">end</span><span class="p">)</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="c1">-- srs.draw / srs.overlay calls are valid only here</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="kr">end</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">script</span><span class="p">.</span><span class="py">declareInfo</span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Miner&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">author</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;me&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">                    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Powermines iron&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">isFull</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Iron ore&quot;</span><span class="p">)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="nf">wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">  </span><span class="c1">-- mute onTick for 2 ticks; code below still runs</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="kr">return</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;Ticking, slots free: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">emptySlots</span><span class="p">())</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="kr">end</span><span class="p">)</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="c1">-- srs.draw / srs.overlay calls are valid only here</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 
 

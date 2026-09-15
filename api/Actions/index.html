@@ -1,0 +1,3288 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+      
+      
+      
+        <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Actions/">
+      
+      
+        <link rel="prev" href="../Antiban/">
+      
+      
+        <link rel="next" href="../Area/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Actions - SafeRS Native API</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#actions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SafeRS Native API" class="md-header__button md-logo" aria-label="SafeRS Native API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SafeRS Native API
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Actions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SafeRS Native API" class="md-nav__button md-logo" aria-label="SafeRS Native API" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SafeRS Native API
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Antiban/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-engine-can-and-cannot-confirm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the engine can and cannot confirm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#same-tick-batching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Same-tick batching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Same-tick batching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-a-ladder-needs-a-runner-at-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a ladder needs a runner at all
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-per-tick-cap-and-what-a-tab-switch-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The per-tick cap, and what a tab switch costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsbatchsteps-opts-handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.batch(steps, opts) -&gt; handle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The report
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsbudgetremainingreserve-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.budgetRemaining(reserve) -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionspending-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.pending() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionscancelall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.cancelAll()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-facade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C++ facade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dispatch-tickets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatch tickets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dispatch tickets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#srsactionslastticket-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.lastTicket() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsoutcometicket-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.outcome(ticket) -&gt; string
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionssentticket-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.sent(ticket) -&gt; boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsfailedticket-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.failed(ticket) -&gt; boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsinfoticket-table-nil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.info(ticket) -&gt; table | nil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsrecentn-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.recent(n) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsqueued-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.queued() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsoldestpendingticks-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.oldestPendingTicks() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsstats-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.stats() -&gt; table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#server-rejections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server rejections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Server rejections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#srsactionslastrejection-table-nil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.lastRejection() -&gt; table | nil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsrejectionsn-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.rejections(n) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#srsactionsverifyspec-handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.verify(spec) -&gt; handle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="srs.actions.verify(spec) -&gt; handle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsstatehandle-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.state(handle) -&gt; string
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsdonehandle-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.done(handle) -&gt; boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionscheckhandle-table-nil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.check(handle) -&gt; table | nil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionscancelhandle-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.cancel(handle) -&gt; boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsverifying-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.verifying() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-example-a-bowl-craft-that-the-server-refuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: a bowl craft that the server refuses
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Area/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Area
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Breaks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Breaks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Camera/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Camera
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Cannon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cannon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Combat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DepositBox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DepositBox
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Dialogue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dialogue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Drawing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Drawing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Entity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Equipment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Equipment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Food/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Food
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GameTable/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game (legacy table)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GameObject/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GameObject
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GePrices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GE Prices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Globals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Globals & Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GrandExchange/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Grand Exchange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GraphicsObjects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphicsObjects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GroundItem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GroundItem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Input/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Input
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Magic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Magic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MenuEntry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MenuEntry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Npc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Object/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Object
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Overlay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overlay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Player/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Player
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Projectiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RunePouch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Script lifecycle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Spells/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Tile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Walk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Walk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Widget
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../World/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    World
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-engine-can-and-cannot-confirm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the engine can and cannot confirm
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#same-tick-batching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Same-tick batching
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Same-tick batching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-a-ladder-needs-a-runner-at-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why a ladder needs a runner at all
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-per-tick-cap-and-what-a-tab-switch-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The per-tick cap, and what a tab switch costs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsbatchsteps-opts-handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.batch(steps, opts) -&gt; handle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The report
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsbudgetremainingreserve-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.budgetRemaining(reserve) -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionspending-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.pending() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionscancelall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.cancelAll()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-facade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C++ facade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dispatch-tickets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatch tickets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dispatch tickets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#srsactionslastticket-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.lastTicket() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsoutcometicket-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.outcome(ticket) -&gt; string
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionssentticket-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.sent(ticket) -&gt; boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsfailedticket-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.failed(ticket) -&gt; boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsinfoticket-table-nil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.info(ticket) -&gt; table | nil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsrecentn-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.recent(n) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsqueued-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.queued() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsoldestpendingticks-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.oldestPendingTicks() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsstats-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.stats() -&gt; table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#server-rejections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server rejections
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Server rejections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#srsactionslastrejection-table-nil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.lastRejection() -&gt; table | nil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsrejectionsn-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.rejections(n) -&gt; list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#srsactionsverifyspec-handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.verify(spec) -&gt; handle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="srs.actions.verify(spec) -&gt; handle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsstatehandle-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.state(handle) -&gt; string
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsdonehandle-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.done(handle) -&gt; boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionscheckhandle-table-nil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.check(handle) -&gt; table | nil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionscancelhandle-boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.cancel(handle) -&gt; boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#srsactionsverifying-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        srs.actions.verifying() -&gt; integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-example-a-bowl-craft-that-the-server-refuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worked example: a bowl craft that the server refuses
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="actions">Actions<a class="headerlink" href="#actions" title="Permanent link">&para;</a></h1>
+<p><code>srs.actions</code></p>
+<p>Two halves of one problem — <em>did the action I asked for actually happen?</em></p>
+<table>
+<thead>
+<tr>
+<th>Half</th>
+<th>Surface</th>
+<th>Question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pre-dispatch</strong></td>
+<td><code>batch</code> / <code>budgetRemaining</code> / <code>pending</code> / <code>cancelAll</code></td>
+<td>Can this tick still afford the action, and did each step in my ladder get spent?</td>
+</tr>
+<tr>
+<td><strong>Post-dispatch</strong></td>
+<td><code>lastTicket</code> / <code>outcome</code> / <code>info</code> / <code>verify</code> / <code>state</code></td>
+<td>Did the action I already spent reach the server, and did it take effect?</td>
+</tr>
+</tbody>
+</table>
+<p>Both halves live in <code>srs::api::Actions</code> (<code>PluginAPI/API/Actions.h</code> for the
+batch runner, <code>Core/ActionLedger.h</code> for the ledger) and are documented on
+this page.</p>
+<div class="admonition warning">
+<p class="admonition-title">Scripts MUST NOT block</p>
+<p>Verifiers are pumped once per game tick on the script thread, at the top
+of <code>ScriptEngine::tick()</code> — before your <code>script.onTick</code> runs. Nothing here
+waits or spins. You fire an action, register a verifier, and read
+<code>srs.actions.state(handle)</code> whenever you like.</p>
+</div>
+<h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
+<p>Across the API a <code>true</code> return means <strong>"the click was enqueued"</strong>, never
+"the action happened". The Dialogue docs already say this outright; it is
+equally true of interactions, walks and widget clicks. Three failures live
+past that return and used to be indistinguishable from success:</p>
+<ul>
+<li>the per-tick budget gate <strong>holds</strong> the action so it fires several ticks
+  late, against a world that has moved on;</li>
+<li>the action is drained, <code>DoAction</code> no-ops, and <strong>no packet ever reaches the
+  wire</strong> — the "Drop click silently did nothing" bug;</li>
+<li>the queue is cleared on script stop before the action ran.</li>
+</ul>
+<p>Every script therefore grew its own poll-and-retry ladder. <code>srs.actions</code>
+replaces them.</p>
+<h2 id="what-the-engine-can-and-cannot-confirm">What the engine can and cannot confirm<a class="headerlink" href="#what-the-engine-can-and-cannot-confirm" title="Permanent link">&para;</a></h2>
+<p><strong>There is no per-action acknowledgement in the OSRS protocol, and there
+cannot be one.</strong> The outbound action packets carry no request id, sequence
+number or client token for a reply to reference — <code>OpNpc1</code> is 4 bytes
+(index + control), <code>OpLoc1</code> is 8 (id + x + y + control). A server reply has
+nothing to name.</p>
+<p>So:</p>
+<ul>
+<li><strong><code>sent</code> means "reached the wire", never "the server accepted it."</strong></li>
+<li>Acceptance is confirmed by observing game state — which is exactly what
+  <code>verify{confirm = ...}</code> is for.</li>
+<li>The strongest <em>negative</em> signal is the game-message channel, and that is a
+  <strong>correlation, not an acknowledgement</strong>: a rejection is attributed to the
+  most recent action that reached the wire within a 2-tick window.</li>
+</ul>
+<p>Full write-up: <code>notes/action_confirmation_finding.md</code>.</p>
+<h2 id="same-tick-batching">Same-tick batching<a class="headerlink" href="#same-tick-batching" title="Permanent link">&para;</a></h2>
+<p><code>srs.actions.batch</code> is the <strong>pre-dispatch</strong> half: it lands several actions
+inside one game tick, and tells you which ones the tick could not afford.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">actions</span><span class="p">.</span><span class="nf">batch</span><span class="p">({</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;dodge&quot;</span><span class="p">,</span><span class="w">  </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;pray&quot;</span><span class="p">,</span><span class="w">   </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="nf">setActive</span><span class="p">(</span><span class="nv">p</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nv">tab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">PRAYER</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;eat&quot;</span><span class="p">,</span><span class="w">    </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactById</span><span class="p">(</span><span class="nv">food</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Eat&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nv">tab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">INVENTORY</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;attack&quot;</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">attack</span><span class="p">(</span><span class="nv">boss</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nv">onDone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">r</span><span class="p">)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">r</span><span class="p">.</span><span class="py">complete</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">            </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">r</span><span class="p">.</span><span class="py">missed</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">                </span><span class="nb">print</span><span class="p">(</span><span class="nv">e</span><span class="p">.</span><span class="py">label</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; never fired: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">status</span><span class="p">)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">            </span><span class="kr">end</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="kr">end</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="kr">end</span><span class="p">,</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">})</span>
+</span></code></pre></div>
+<h3 id="why-a-ladder-needs-a-runner-at-all">Why a ladder needs a runner at all<a class="headerlink" href="#why-a-ladder-needs-a-runner-at-all" title="Permanent link">&para;</a></h3>
+<p>One action per rendered frame is a <strong>hard engine floor</strong>, not a pacing
+preference:</p>
+<ol>
+<li>Every scripted action primes a click, and <code>InputSpoofer::stagePendingClick</code>
+   is <em>latest-wins</em> — the engine has one click slot pair.</li>
+<li><code>ClickSlotResetHook</code> consumes at most one staged click per dispatcher tick
+   (~50/s, i.e. once per rendered frame), so at most one <code>CLICK_2</code> is emitted
+   per frame.</li>
+<li><code>EngineDispatch::drainOnMainThread</code> fires <strong>at most one</strong> queued action
+   lambda, and only on a <code>CLICK_2</code>.</li>
+</ol>
+<p>So firing two actions in one frame does not get you two actions — the second
+click overwrites the first, one lambda is left in the paired queue with no
+click to drain against, and it leaks into a later tick. A frame is ~16 ms and
+a tick is ~600 ms, so a paced ladder still fits ~30 actions per tick; the real
+limit is the server's cap, below.</p>
+<h3 id="the-per-tick-cap-and-what-a-tab-switch-costs">The per-tick cap, and what a tab switch costs<a class="headerlink" href="#the-per-tick-cap-and-what-a-tab-switch-costs" title="Permanent link">&para;</a></h3>
+<p>The server processes at most <strong>8</strong> action-class packets per game cycle
+(<code>srs.engine.actionLimit()</code>). Over-cap packets are dropped, not queued.</p>
+<p><strong>A sidebar tab switch is one of those 8.</strong> Confirmed from real-player
+captures: <code>captures/2026-05-25_133800</code> step 64 shows a Prayer-tab click
+emitting <code>OUT op=0x5b (IF_BUTTON) 94 00 A1 00 40 FF FF FF FF 01</code> — payload
+<code>0x00A10040</code> = group 161, child 64, the Prayer chrome tab. A ladder that hops
+prayer → inventory → prayer spends 3 of its 8 slots on sidebar management, so
+prefer a resting tab and let the runner coalesce.</p>
+<p><code>EngineDispatch</code>'s own budget gate <strong>defers</strong> an over-cap action to a later
+drain. For a tick-scoped ladder that is the wrong answer — the deferred
+attack lands two ticks late. The batch runner instead <strong>fails fast</strong>: a step
+that does not fit is never dispatched, and comes back as <code>gated</code>.</p>
+<h3 id="srsactionsbatchsteps-opts-handle"><code>srs.actions.batch(steps, opts) -&gt; handle</code><a class="headerlink" href="#srsactionsbatchsteps-opts-handle" title="Permanent link">&para;</a></h3>
+<p><code>steps</code> is an ordered list. Each entry is a function, or a table:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[1]</code> / <code>label</code></td>
+<td>Short name, echoed in the report. Defaults to <code>stepN</code>.</td>
+</tr>
+<tr>
+<td><code>[2]</code> / <code>fn</code></td>
+<td>The action. Return <code>false</code> for "I chose not to act" so the step is not charged a slot; anything else (including no return) counts as dispatched.</td>
+</tr>
+<tr>
+<td><code>tab</code></td>
+<td>Sidebar tab that must be open first, e.g. <code>srs.tab.PRAYER</code>. Omit for "don't care".</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">One step = one action packet</p>
+<p>Two clicks inside one <code>fn</code> means the second overwrites the first's staged
+click and never reaches the server. Split them into two steps.</p>
+</div>
+<p><code>opts</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tickScoped</code></td>
+<td><code>true</code></td>
+<td>Steps still unrun when the tick rolls are dropped and reported <code>expired</code>, rather than fired at a world that has moved on. Set <code>false</code> for ladders that are safe to finish late (bank flows, prep).</td>
+</tr>
+<tr>
+<td><code>reserve</code></td>
+<td><code>0</code></td>
+<td>Keep this many action slots free for whatever runs after the batch.</td>
+</tr>
+<tr>
+<td><code>tabSettleFrames</code></td>
+<td><code>2</code></td>
+<td>Frames to let the engine draw a newly switched panel before clicking into it. The tab varc flips synchronously, but <code>IfRenderHook</code>'s rect snapshot is a frame behind.</td>
+</tr>
+<tr>
+<td><code>onDone</code></td>
+<td>—</td>
+<td>Called once when the batch retires, with the report.</td>
+</tr>
+</tbody>
+</table>
+<p>The handle has <code>:report()</code>, <code>:done()</code>, <code>:cancel()</code> and <code>.id</code>.</p>
+<h3 id="the-report">The report<a class="headerlink" href="#the-report" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="nv">finished</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nv">complete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nv">dispatched</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="nv">noOp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">gated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nv">expired</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">failed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nv">cancelled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nv">tabSwitches</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nv">steps</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dodge&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;dispatched&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">missed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nv">tabCost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nv">missed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;attack&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gated&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">missed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nv">tabCost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>status</code> is one of <code>dispatched</code>, <code>noop</code>, <code>gated</code>, <code>expired</code>, <code>cancelled</code>,
+<code>failed</code>. <code>missed</code> lists exactly the steps that never reached the wire —
+that is the list to reprioritise from on the next tick.</p>
+<h3 id="tabs">Tabs<a class="headerlink" href="#tabs" title="Permanent link">&para;</a></h3>
+<p>If a step names a <code>tab</code>, the runner switches to it, waits for it to read
+open, waits <code>tabSettleFrames</code> for the panel to be drawn, and only then runs
+the step. Consecutive steps naming the same tab share one switch. A step
+already on its tab costs nothing.</p>
+<p>If <code>srs.tab.current()</code> is <strong>unreadable</strong> (<code>Unknown</code> — the VarClient read is
+unavailable), the runner does <em>not</em> refuse to act: it switches once blind,
+settles, and proceeds. Refusing would strand the whole ladder, which is
+strictly worse than clicking after a switch.</p>
+<h3 id="srsactionsbudgetremainingreserve-integer"><code>srs.actions.budgetRemaining(reserve) -&gt; integer</code><a class="headerlink" href="#srsactionsbudgetremainingreserve-integer" title="Permanent link">&para;</a></h3>
+<p>Action slots believed usable this tick. Unlike
+<code>srs.engine.actionsSentThisTick()</code>, this also counts actions the runner has
+dispatched whose packets have not reached the wire yet, so it never
+over-reports capacity.</p>
+<h3 id="srsactionspending-integer"><code>srs.actions.pending() -&gt; integer</code><a class="headerlink" href="#srsactionspending-integer" title="Permanent link">&para;</a></h3>
+<p>Batches in flight.</p>
+<h3 id="srsactionscancelall"><code>srs.actions.cancelAll()</code><a class="headerlink" href="#srsactionscancelall" title="Permanent link">&para;</a></h3>
+<p>Flags every in-flight batch for cancellation. Remaining steps report
+<code>cancelled</code>. Batches are also dropped automatically when the script that
+submitted them is disabled or reloaded.</p>
+<h3 id="c-facade">C++ facade<a class="headerlink" href="#c-facade" title="Permanent link">&para;</a></h3>
+<p>The batch runner is <code>srs::api::Actions</code> in <code>PluginAPI/API/Actions.h</code>. The
+Lua <code>handle</code> is sugar over a batch <strong>id</strong>; in C++ you hold the <code>uint64_t</code>
+yourself.</p>
+<table>
+<thead>
+<tr>
+<th>Lua</th>
+<th>C++</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>srs.actions.batch(steps, opts) → handle</code></td>
+<td><code>Actions::submit(ctx, std::vector&lt;ActionStep&gt;, const BatchOptions&amp;) → uint64_t</code> (<code>0</code> = rejected)</td>
+</tr>
+<tr>
+<td><code>handle:report()</code></td>
+<td><code>Actions::report(uint64_t id) → BatchReport</code></td>
+</tr>
+<tr>
+<td><code>handle:done()</code></td>
+<td><code>!Actions::isRunning(uint64_t id)</code></td>
+</tr>
+<tr>
+<td><code>handle:cancel()</code></td>
+<td><code>Actions::cancel(uint64_t id)</code></td>
+</tr>
+<tr>
+<td><code>srs.actions.cancelAll()</code></td>
+<td><code>Actions::cancelAll()</code></td>
+</tr>
+<tr>
+<td><code>srs.actions.budgetRemaining(reserve)</code></td>
+<td><code>Actions::budgetRemaining(ctx, int32_t reserve = 0) → int32_t</code></td>
+</tr>
+<tr>
+<td><code>srs.actions.pending()</code></td>
+<td><code>Actions::pending() → size_t</code></td>
+</tr>
+<tr>
+<td>—</td>
+<td><code>Actions::cancelOwner(uint64_t owner)</code> — drops every batch carrying <code>BatchOptions::owner</code>; how the host tears down a script's in-flight batches on disable / reload</td>
+</tr>
+</tbody>
+</table>
+<p><code>ActionStep</code> is <code>{ std::string label; std::function&lt;bool()&gt; fn; int32_t tab = -1; }</code>
+(<code>tab</code> takes an <code>InterfaceTab</code> cast to <code>int</code>, <code>-1</code> for "don't care").
+<code>BatchOptions</code> carries <code>tickScoped</code> / <code>reserve</code> / <code>tabSettleFrames</code> plus two
+fields Lua does not expose: <code>owner</code> (the cancellation token above) and
+<code>onDone</code>, which fires once on the worker thread under the GIL.</p>
+<p><code>BatchReport</code> matches the Lua table field-for-field, except that <code>complete</code>
+is a <strong>method</strong> (<code>rep.complete()</code>) rather than a field, and it additionally
+carries <code>tickSubmitted</code> / <code>tickRetired</code>. There is no <code>missed</code> list — filter
+<code>steps</code> on <code>stepMissed(s.status)</code>, which is what the Lua binding does.</p>
+<div class="admonition note">
+<p class="admonition-title"><code>purge</code>, <code>pump</code> and <code>onGameTick</code> are host wiring</p>
+<p>Those three are exported for the client itself (the per-frame pulse
+lane, the tick rollover, and the <code>lua_State</code> teardown). Plugins and
+scripts never call them.</p>
+</div>
+<h3 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h3>
+<p><code>tools/tests/run_action_batch_tests.bat</code> compiles the real
+<code>PluginAPI/API/Actions.cpp</code> against faked <code>Engine</code>/<code>Tab</code> collaborators and
+exercises the pacing, the cap, the tab gate, tick-scoping and the report
+without a game client.</p>
+<h2 id="dispatch-tickets">Dispatch tickets<a class="headerlink" href="#dispatch-tickets" title="Permanent link">&para;</a></h2>
+<p>Every marshaled action gets a ticket. Ask for it straight after the call:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactById</span><span class="p">(</span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Drop&quot;</span><span class="p">)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">actions</span><span class="p">.</span><span class="nf">lastTicket</span><span class="p">()</span>
+</span></code></pre></div>
+<h3 id="srsactionslastticket-integer"><code>srs.actions.lastTicket() -&gt; integer</code><a class="headerlink" href="#srsactionslastticket-integer" title="Permanent link">&para;</a></h3>
+<p>Ticket for the most recent action requested on this thread. <code>0</code> = the call
+marshaled nothing.</p>
+<h3 id="srsactionsoutcometicket-string"><code>srs.actions.outcome(ticket) -&gt; string</code><a class="headerlink" href="#srsactionsoutcometicket-string" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pending</code></td>
+<td>queued, not yet drained — the budget gate may be holding it</td>
+</tr>
+<tr>
+<td><code>sent</code></td>
+<td>drained, and an action-class packet went out</td>
+</tr>
+<tr>
+<td><code>noPacket</code></td>
+<td>drained but produced <strong>no</strong> packet — the silent no-op</td>
+</tr>
+<tr>
+<td><code>noDispatch</code></td>
+<td>the API bailed before anything was queued</td>
+</tr>
+<tr>
+<td><code>discarded</code></td>
+<td>the queue was cleared before it ran (script stop / cancel)</td>
+</tr>
+<tr>
+<td><code>expired</code></td>
+<td>never drained; aged out</td>
+</tr>
+<tr>
+<td><code>unknown</code></td>
+<td>no such ticket, or it fell off the 512-row history</td>
+</tr>
+</tbody>
+</table>
+<h3 id="srsactionssentticket-boolean"><code>srs.actions.sent(ticket) -&gt; boolean</code><a class="headerlink" href="#srsactionssentticket-boolean" title="Permanent link">&para;</a></h3>
+<p><code>outcome == "sent"</code>.</p>
+<h3 id="srsactionsfailedticket-boolean"><code>srs.actions.failed(ticket) -&gt; boolean</code><a class="headerlink" href="#srsactionsfailedticket-boolean" title="Permanent link">&para;</a></h3>
+<p>The action definitively never reached the server. <strong>False while still
+pending</strong>, so it is safe to poll.</p>
+<h3 id="srsactionsinfoticket-table-nil"><code>srs.actions.info(ticket) -&gt; table | nil</code><a class="headerlink" href="#srsactionsinfoticket-table-nil" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">ticket</span><span class="p">,</span><span class="w"> </span><span class="nv">outcome</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="p">,</span><span class="w"> </span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">,</span><span class="w"> </span><span class="nv">packets</span><span class="p">,</span><span class="w"> </span><span class="nv">queuedTicks</span><span class="p">,</span><span class="w"> </span><span class="nv">ageTicks</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>kind</code> — <code>"inventory"</code>, <code>"widget"</code>, <code>"object"</code>, <code>"npc"</code>, <code>"player"</code>,
+  <code>"tile"</code>, <code>"clickFire"</code>.</li>
+<li><code>a</code> / <code>b</code> — kind-specific ids (item id, group/child, npc id + spawn index).</li>
+<li><code>packets</code> — action-class packets observed while it ran; <code>0</code> = <code>noPacket</code>.</li>
+<li><code>queuedTicks</code> — server ticks the budget gate held it before it drained.
+  <strong>Non-zero means you queued more actions in a tick than the server's
+  8-per-tick cap allows and this one landed late.</strong></li>
+</ul>
+<h3 id="srsactionsrecentn-list"><code>srs.actions.recent(n) -&gt; list</code><a class="headerlink" href="#srsactionsrecentn-list" title="Permanent link">&para;</a></h3>
+<p>Last <code>n</code> ledger rows, oldest first. Returns a proper Lua table.</p>
+<h3 id="srsactionsqueued-integer"><code>srs.actions.queued() -&gt; integer</code><a class="headerlink" href="#srsactionsqueued-integer" title="Permanent link">&para;</a></h3>
+<p>Ledger tickets enqueued but not yet drained. (Distinct from
+<code>srs.actions.pending()</code>, which counts batch-runner steps.)</p>
+<h3 id="srsactionsoldestpendingticks-integer"><code>srs.actions.oldestPendingTicks() -&gt; integer</code><a class="headerlink" href="#srsactionsoldestpendingticks-integer" title="Permanent link">&para;</a></h3>
+<p>How long the longest-waiting queued action has been held. A steadily rising
+number means you are out-running the server's action cap — back off rather
+than queue more.</p>
+<h3 id="srsactionsstats-table"><code>srs.actions.stats() -&gt; table</code><a class="headerlink" href="#srsactionsstats-table" title="Permanent link">&para;</a></h3>
+<p><code>{ opened, sent, noPacket, discarded }</code> — lifetime counters, for HUDs.</p>
+<h2 id="server-rejections">Server rejections<a class="headerlink" href="#server-rejections" title="Permanent link">&para;</a></h2>
+<h3 id="srsactionslastrejection-table-nil"><code>srs.actions.lastRejection() -&gt; table | nil</code><a class="headerlink" href="#srsactionslastrejection-table-nil" title="Permanent link">&para;</a></h3>
+<h3 id="srsactionsrejectionsn-list"><code>srs.actions.rejections(n) -&gt; list</code><a class="headerlink" href="#srsactionsrejectionsn-list" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">text</span><span class="p">,</span><span class="w"> </span><span class="nv">reason</span><span class="p">,</span><span class="w"> </span><span class="nv">ticket</span><span class="p">,</span><span class="w"> </span><span class="nv">tick</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p><code>reason</code> is a classifier label: <code>materials</code>, <code>space</code>, <code>reach</code>, <code>level</code>,
+<code>noop</code>, <code>refused</code>. <code>ticket</code> is the correlated action, or <code>0</code> when none could
+own it. Only server/system channels are read — player chat can never be
+mistaken for a rejection.</p>
+<h2 id="srsactionsverifyspec-handle"><code>srs.actions.verify(spec) -&gt; handle</code><a class="headerlink" href="#srsactionsverifyspec-handle" title="Permanent link">&para;</a></h2>
+<p>Non-blocking poll-and-retry.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactById</span><span class="p">(</span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Drop&quot;</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kd">local</span><span class="w"> </span><span class="nv">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">actions</span><span class="p">.</span><span class="py">verify</span><span class="p">{</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nv">kind</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;drop&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nv">ticket</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">actions</span><span class="p">.</span><span class="nf">lastTicket</span><span class="p">(),</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nv">confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="kr">return</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="nv">id</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nv">retry</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="kr">return</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactById</span><span class="p">(</span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Drop&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">}</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1">-- later, from onTick:</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">actions</span><span class="p">.</span><span class="nf">state</span><span class="p">(</span><span class="nv">h</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;failed&quot;</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>confirm</code></td>
+<td><strong>required</strong></td>
+<td>Truthy = the action took effect. Called once per tick — keep it a cheap state read, never an action.</td>
+</tr>
+<tr>
+<td><code>retry</code></td>
+<td>—</td>
+<td>Re-dispatch. Called at most <code>attempts - 1</code> times.</td>
+</tr>
+<tr>
+<td><code>onDone</code></td>
+<td>—</td>
+<td>Called once with <code>(state, detail)</code> when resolved.</td>
+</tr>
+<tr>
+<td><code>ticket</code></td>
+<td><code>0</code></td>
+<td>From <code>lastTicket()</code>. See below — this is what makes the helper better than a hand-rolled timer.</td>
+</tr>
+<tr>
+<td><code>reject</code></td>
+<td>built-in classifier</td>
+<td>List of server-message substrings meaning "give up now".</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td><code>""</code></td>
+<td>Label, surfaced in <code>check(h).kind</code>.</td>
+</tr>
+<tr>
+<td><code>waitTicks</code></td>
+<td><code>3</code></td>
+<td>Ticks to wait for <code>confirm</code> before retrying.</td>
+</tr>
+<tr>
+<td><code>attempts</code></td>
+<td><code>3</code></td>
+<td>Total dispatches allowed, counting the original.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pass the ticket.</strong> When it resolves <code>noPacket</code> / <code>noDispatch</code> /
+<code>discarded</code>, the retry fires <strong>immediately</strong> instead of burning the rest of
+the <code>waitTicks</code> window waiting for a confirmation that was never coming. A
+still-<code>pending</code> ticket is not a failure — that is the budget gate holding it.</p>
+<p>Resolution order each tick: <code>confirm</code> → rejection → dispatch outcome → wait
+window. A confirmed outcome always wins over a rejection guess.</p>
+<h3 id="srsactionsstatehandle-string"><code>srs.actions.state(handle) -&gt; string</code><a class="headerlink" href="#srsactionsstatehandle-string" title="Permanent link">&para;</a></h3>
+<p><code>pending</code> | <code>confirmed</code> | <code>rejected</code> | <code>failed</code> | <code>unknown</code>. Resolved handles
+stay readable for ~20 ticks, then report <code>unknown</code>.</p>
+<h3 id="srsactionsdonehandle-boolean"><code>srs.actions.done(handle) -&gt; boolean</code><a class="headerlink" href="#srsactionsdonehandle-boolean" title="Permanent link">&para;</a></h3>
+<h3 id="srsactionscheckhandle-table-nil"><code>srs.actions.check(handle) -&gt; table | nil</code><a class="headerlink" href="#srsactionscheckhandle-table-nil" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">state</span><span class="p">,</span><span class="w"> </span><span class="nv">detail</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="p">,</span><span class="w"> </span><span class="nv">ticket</span><span class="p">,</span><span class="w"> </span><span class="nv">attempts</span><span class="p">,</span><span class="w"> </span><span class="nv">ageTicks</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p><code>detail</code> says <strong>why</strong> it ended: the rejection text, the dispatch outcome, or
+<code>"not confirmed within the retry budget"</code>.</p>
+<h3 id="srsactionscancelhandle-boolean"><code>srs.actions.cancel(handle) -&gt; boolean</code><a class="headerlink" href="#srsactionscancelhandle-boolean" title="Permanent link">&para;</a></h3>
+<h3 id="srsactionsverifying-integer"><code>srs.actions.verifying() -&gt; integer</code><a class="headerlink" href="#srsactionsverifying-integer" title="Permanent link">&para;</a></h3>
+<h2 id="worked-example-a-bowl-craft-that-the-server-refuses">Worked example: a bowl craft that the server refuses<a class="headerlink" href="#worked-example-a-bowl-craft-that-the-server-refuses" title="Permanent link">&para;</a></h2>
+<p>The spend is the confirmation — the crafted item sometimes never reads as
+owned, but the shards always leave.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="nv">shardId</span><span class="p">)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">click</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span><span class="w"> </span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Make&quot;</span><span class="p">)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nv">srs</span><span class="p">.</span><span class="py">actions</span><span class="p">.</span><span class="py">verify</span><span class="p">{</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nv">kind</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;make:staff&quot;</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nv">ticket</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">actions</span><span class="p">.</span><span class="nf">lastTicket</span><span class="p">(),</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nv">confirm</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="kr">return</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="nv">shardId</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="kr">end</span><span class="p">,</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nv">attempts</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">          </span><span class="c1">-- the ladder re-decides next tick; a retry would double-craft</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="nv">waitTicks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nv">onDone</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">state</span><span class="p">,</span><span class="w"> </span><span class="nv">detail</span><span class="p">)</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;confirmed&quot;</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">made</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="kr">else</span><span class="w"> </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;make &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">state</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">detail</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="kr">end</span><span class="p">,</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>When the server answers <em>"You do not have the materials required to make
+that."</em> the verifier resolves <code>rejected</code> on the tick the line arrives —
+instead of waiting out eight ticks for a spend that was never coming — and
+the ticket still reads <code>sent</code>, so you can tell "the server refused it" from
+"the click never landed". Those are different bugs.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "toc.follow", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

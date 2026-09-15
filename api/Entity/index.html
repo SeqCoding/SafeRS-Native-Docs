@@ -16,7 +16,7 @@
         <link rel="prev" href="../Engine/">
       
       
-        <link rel="next" href="../Equipment/">
+        <link rel="next" href="../Events/">
       
       
         
@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -684,6 +726,34 @@
     
   
     Combat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
   
 
     
@@ -929,6 +999,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1445,6 +1543,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1473,6 +1599,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1481,6 +1635,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1621,6 +1803,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -2045,14 +2255,24 @@ entity list.</p>
 <td>Engine getXYZMag half-extent of the model (<code>0</code> = unknown)</td>
 </tr>
 <tr>
+<td><code>overheadText</code></td>
+<td>string</td>
+<td>Overhead chat text drawn above the actor right now (<code>""</code> = none). NPC forced chat and player public chat alike; the engine clears it when its countdown expires. Snapshot at query time — <code>srs.npc.overheadText(target)</code> re-reads live</td>
+</tr>
+<tr>
+<td><code>overheadCycles</code></td>
+<td>int</td>
+<td>Client ticks left before <code>overheadText</code> clears (<code>0</code> = none); RuneLite <code>getOverheadCycle()</code></td>
+</tr>
+<tr>
 <td><code>orientation</code></td>
 <td>int</td>
-<td>Facing angle, 0–2047 (0 = N, 512 = E, 1024 = S, 1536 = W); <code>-1</code> = unknown. <strong>Populated for players today; the NPC producer doesn't fill it yet, so NPCs read <code>-1</code></strong></td>
+<td>Facing angle, 0–2047, clockwise from south: 0 = S, 512 = W, 1024 = N, 1536 = E (RuneLite <code>Direction</code> values); <code>-1</code> = unknown. NPCs and players. This is the actor's <em>target</em> facing (RuneLite <code>Actor.getOrientation()</code>) — the rendered model catches up within a few ticks</td>
 </tr>
 <tr>
 <td><code>combatLevel</code></td>
 <td>int</td>
-<td>Combat level; <code>-1</code> = unknown. <strong>Players only today — NPCs read <code>-1</code> until the NPC producer fills it</strong></td>
+<td>Combat level; <code>-1</code> = unknown. NPCs and players. NPCs that show no level on the right-click (bankers, pets) read <code>-1</code></td>
 </tr>
 </tbody>
 </table>

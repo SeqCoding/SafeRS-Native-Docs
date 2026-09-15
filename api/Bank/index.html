@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -673,6 +715,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#closed-bank-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closed-bank cache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#scrolling" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -699,6 +752,17 @@
     <span class="md-ellipsis">
       
         Per-item deposit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#withdraw-mode-item-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Withdraw mode (Item / Note)
       
     </span>
   </a>
@@ -916,6 +980,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -1036,6 +1128,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1560,6 +1680,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1588,6 +1736,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1596,6 +1772,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1736,6 +1940,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -2000,6 +2232,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#closed-bank-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closed-bank cache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#scrolling" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2026,6 +2269,17 @@
     <span class="md-ellipsis">
       
         Per-item deposit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#withdraw-mode-item-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Withdraw mode (Item / Note)
       
     </span>
   </a>
@@ -2503,6 +2757,59 @@ end. The "All Items" visual view renders untabbed FIRST with
 partial-row breaks between sections — <code>scrollToSlot</code> does the
 visual-row math for you.</p>
 </div>
+<h2 id="closed-bank-cache">Closed-bank cache<a class="headerlink" href="#closed-bank-cache" title="Permanent link">&para;</a></h2>
+<p>The live <code>all</code>/<code>contains</code>/<code>count</code> reads above only work while the bank UI is
+<strong>open</strong> — the engine drops the container the moment it closes, so <code>count</code>
+returns <code>0</code> from anywhere else. For routing and restock decisions ("do I have
+teleport runes stashed before I walk to a bank?") the host keeps a best-effort
+snapshot, refreshed every tick the bank is open, that persists after it closes
+(RuneMate's <code>useCachedContents</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ever snapshotted?</td>
+<td><code>srs.bank.cachedPopulated() → bool</code></td>
+<td><code>false</code> until the bank has been opened once this session</td>
+</tr>
+<tr>
+<td>Cached count</td>
+<td><code>srs.bank.cachedCount(id) → int</code></td>
+<td>last-known bank quantity of <code>id</code> (<code>0</code> if absent/never seen)</td>
+</tr>
+<tr>
+<td>Cached has</td>
+<td><code>srs.bank.cachedHas(id [, min]) → bool</code></td>
+<td><code>cachedCount(id) &gt;= min</code> (default <code>min = 1</code>)</td>
+</tr>
+<tr>
+<td>Cached contents</td>
+<td><code>srs.bank.cachedContents() → table</code></td>
+<td>full <code>{ [itemId] = quantity }</code> snapshot copy</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Best-effort — may be stale</p>
+<p>The snapshot reflects the <strong>last time the bank was open on this client</strong>.
+Banking on another client, or spending from the bank elsewhere, won't be
+reflected. Treat it as a planning hint, not ground truth — re-open the bank
+(<code>isOpen()</code> + the live reads) before acting on an exact quantity.</p>
+</div>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Decide whether to restock without walking to a bank first.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">cachedPopulated</span><span class="p">()</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">cachedHas</span><span class="p">(</span><span class="mi">561</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span><span class="w">   </span><span class="c1">-- nature runes</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;low on nature runes in the bank — buy more&quot;</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kr">end</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kr">for</span><span class="w"> </span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="nv">qty</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">pairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">cachedContents</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="c1">-- e.g. tally stashed supplies</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kr">end</span>
+</span></code></pre></div>
 <h2 id="scrolling">Scrolling<a class="headerlink" href="#scrolling" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2614,8 +2921,23 @@ the withdraw side — see <code>Bank.cpp</code> <code>fireDepositSlotClick</code
 <td><code>Bank::depositAllExcept(ctx, vector&lt;string&gt;) → bool</code></td>
 <td><code>srs.bank.depositAllExcept({"names"...}) → bool</code></td>
 </tr>
+<tr>
+<td>Deposit item / N</td>
+<td><code>Bank::deposit(ctx, id\|name, amount) → bool</code></td>
+<td><code>srs.bank.deposit(id\|name, amount) → bool</code></td>
+</tr>
+<tr>
+<td>Deposit whole stack</td>
+<td><code>Bank::depositAll(ctx, id\|name) → bool</code></td>
+<td><code>srs.bank.depositAll(id\|name) → bool</code></td>
+</tr>
 </tbody>
 </table>
+<p><code>deposit</code> uses the 1 / 5 / 10 presets for those amounts and <strong>Deposit-X</strong> (the
+server-driven chatbox prompt, via <a href="../Prompt/"><code>srs.prompt</code></a>) for any other amount — so
+it <strong>blocks</strong> while typing a custom amount. <code>depositAll</code> deposits the whole stack
+(identifier 2, capture-confirmed). The deposit-side identifiers 1 / 3 / 4 / 5 are
+inferred (see the note below); verify live if a deposit misfires.</p>
 <p><code>depositAllExcept</code> fires Deposit-All on the FIRST non-kept inventory
 slot per call and returns <code>false</code>; the script polls each tick until
 only kept items remain, at which point it returns <code>true</code>.</p>
@@ -2632,6 +2954,31 @@ Until that's measured, treat a bank quantity preset of All as untested —
 the header comment on <code>fireDepositSlotClick</code> in <code>Bank.cpp</code> lists the
 experiment that settles it.</p>
 </blockquote>
+<h2 id="withdraw-mode-item-note">Withdraw mode (Item / Note)<a class="headerlink" href="#withdraw-mode-item-note" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>C++</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read note mode</td>
+<td><code>Bank::isNoteMode(ctx) → bool</code></td>
+<td><code>srs.bank.isNoteMode() → bool</code></td>
+</tr>
+<tr>
+<td>Set note mode</td>
+<td><code>Bank::setNoteMode(ctx, on) → bool</code></td>
+<td><code>srs.bank.setNoteMode(on) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>isNoteMode</code> reads varbit <code>3958</code> (<code>0</code> = item, <code>1</code> = note). <code>setNoteMode</code> clicks the
+bank's Note/Item toggle (group 12, child 19) <strong>only</strong> when the current mode differs
+from the requested one, so it's safe to call every tick.</p>
 <h2 id="bulk-deposit">Bulk deposit<a class="headerlink" href="#bulk-deposit" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2759,9 +3106,6 @@ pointer probe <code>srs.widget.address(g, c)</code> is documented on
   <code>target - currentInvCount</code> and call <code>withdrawX</code> with the result.</li>
 <li><strong>Predicate-based withdraw / deposit</strong> — <code>withdrawWhere(filter, n)</code>.
   Needs a callable type bound to both C++ and Lua.</li>
-<li><strong>Per-item deposit variants</strong> (<code>depositOne</code>, <code>depositX</code>, <code>depositAll</code>
-  by id) — same widget + identifier mapping as <code>depositAllExcept</code> but
-  targeting one slot. Trivial follow-up.</li>
 <li><strong>Bank data cache</strong> — event-driven mirror so <code>Bank::all</code> /
   <code>contains</code> / <code>count</code> work while the bank is closed.</li>
 <li><strong>Bank search box</strong> — type a query into the bank's search field.</li>

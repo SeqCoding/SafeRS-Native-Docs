@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Area/">
       
       
-        <link rel="prev" href="../Antiban/">
+        <link rel="prev" href="../Actions/">
       
       
         <link rel="next" href="../Bank/">
@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -505,6 +519,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -572,6 +614,28 @@
     <span class="md-ellipsis">
       
         Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worldtile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WorldTile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worldarea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WorldArea
       
     </span>
   </a>
@@ -773,6 +837,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -893,6 +985,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1417,6 +1537,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1445,6 +1593,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1453,6 +1629,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1593,6 +1797,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1791,6 +2023,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#worldtile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WorldTile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worldarea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WorldArea
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1820,8 +2074,9 @@
 
 <h1 id="area">Area<a class="headerlink" href="#area" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Area</code> / <code>srs.area</code></p>
-<p>Player-position area-containment checks. <strong>2D only</strong> — plane is
-ignored. Add a plane-aware overload when an actual use case appears.</p>
+<p>Player-position area-containment checks, plus the <a href="#worldtile"><code>WorldTile</code></a> and
+<a href="#worldarea"><code>WorldArea</code></a> geometry <strong>value types</strong>. The <code>isWithin</code> player checks are
+<strong>2D only</strong> (plane ignored); the <code>WorldArea</code> value type is plane-aware.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1847,6 +2102,16 @@ ignored. Add a plane-aware overload when an actual use case appears.</p>
 <td><code>Area::isInInstance(ctx) → bool</code></td>
 <td><code>srs.area.isInInstance() → bool</code></td>
 </tr>
+<tr>
+<td>Rectangle area</td>
+<td>—</td>
+<td><code>srs.area.rect(x1, y1, x2, y2[, plane])</code> / <code>srs.area.rect(cornerA, cornerB) → WorldArea</code></td>
+</tr>
+<tr>
+<td>Circular area</td>
+<td>—</td>
+<td><code>srs.area.circle(cx, cy, r[, plane])</code> / <code>srs.area.circle(centerTile, r) → WorldArea</code></td>
+</tr>
 </tbody>
 </table>
 <ul>
@@ -1862,26 +2127,125 @@ ignored. Add a plane-aware overload when an actual use case appears.</p>
 in-instance flag; <code>false</code> when that flag can't be resolved. Pairs with
 <a href="../Player/"><code>srs.player.templatePosition()</code></a> for instance-aware
 coordinate handling.</p>
+<h2 id="worldtile">WorldTile<a class="headerlink" href="#worldtile" title="Permanent link">&para;</a></h2>
+<p>A world coordinate value type — now <strong>constructible</strong> with tile-math helpers, so
+scripts stop hand-rolling coordinate arithmetic. Also returned by
+<a href="../Player/"><code>srs.player.position()</code></a> and the entity/tile APIs.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Construct</td>
+<td><code>WorldTile.new(x, y)</code> / <code>WorldTile.new(x, y, plane)</code></td>
+</tr>
+<tr>
+<td>Fields</td>
+<td><code>.x</code>, <code>.y</code>, <code>.plane</code> (read-only)</td>
+</tr>
+<tr>
+<td>Offset</td>
+<td><code>t:derive(dx, dy[, dplane]) → WorldTile</code></td>
+</tr>
+<tr>
+<td>Distance</td>
+<td><code>t:distanceTo(other[, alg]) → number</code> — <code>alg</code>: <code>"chebyshev"</code> (default), <code>"manhattan"</code>, <code>"euclidean"</code></td>
+</tr>
+<tr>
+<td>In range</td>
+<td><code>t:withinRange(other, r) → bool</code> — Chebyshev, plane-aware</td>
+</tr>
+<tr>
+<td>Jitter</td>
+<td><code>t:randomize(rx, ry) → WorldTile</code> — random tile in the ±rx × ±ry box (humanized target)</td>
+</tr>
+<tr>
+<td>Compare</td>
+<td><code>t:equals(other) → bool</code> (also the <code>==</code> operator)</td>
+</tr>
+</tbody>
+</table>
+<p>Chebyshev distance matches OSRS 8-way walk distance.</p>
+<h2 id="worldarea">WorldArea<a class="headerlink" href="#worldarea" title="Permanent link">&para;</a></h2>
+<p>A rectangle or circle on one plane — pure value math (no engine reads), so it's valid
+off-tick and usable as an argument across the API. Construct via <code>srs.area.rect</code> /
+<code>srs.area.circle</code> (above).</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contains</td>
+<td><code>a:contains(tile)</code> / <code>a:contains(x, y) → bool</code></td>
+<td>plane-aware for the tile form</td>
+</tr>
+<tr>
+<td>Center</td>
+<td><code>a:center() → WorldTile</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Random tile</td>
+<td><code>a:randomTile() → WorldTile</code></td>
+<td>uniform inside the shape</td>
+</tr>
+<tr>
+<td>Overlap</td>
+<td><code>a:overlaps(other) → bool</code></td>
+<td>bounding-box: exact rect-rect, conservative for circles</td>
+</tr>
+<tr>
+<td>Size</td>
+<td><code>a:width()</code>, <code>a:height() → int</code></td>
+<td></td>
+</tr>
+<tr>
+<td>Field</td>
+<td><code>a.plane</code> (read-only)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Guard a mining spot and pick a humanized stand tile.</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">rocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">area</span><span class="p">.</span><span class="nf">rect</span><span class="p">(</span><span class="mi">3280</span><span class="p">,</span><span class="w"> </span><span class="mi">3365</span><span class="p">,</span><span class="w"> </span><span class="mi">3288</span><span class="p">,</span><span class="w"> </span><span class="mi">3372</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">rocks</span><span class="p">:</span><span class="nf">contains</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">())</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="nv">rocks</span><span class="p">:</span><span class="nf">randomTile</span><span class="p">())</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kd">local</span><span class="w"> </span><span class="nv">home</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">WorldTile</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">3222</span><span class="p">,</span><span class="w"> </span><span class="mi">3218</span><span class="p">)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">():</span><span class="nf">distanceTo</span><span class="p">(</span><span class="nv">home</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="nv">home</span><span class="p">:</span><span class="nf">randomize</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="w">   </span><span class="c1">-- don&#39;t click the exact same pixel every time</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="kr">end</span>
+</span></code></pre></div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Area</span><span class="o">::</span><span class="n">isWithin</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="c1">// Player inside Varrock square-ish region</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Area</span><span class="o">::</span><span class="n">isWithin</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1">// Player within 5 tiles of (3210, 3210)</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Area</span><span class="o">::</span><span class="n">isWithin</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="c1">// Player inside Varrock square-ish region</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Area</span><span class="o">::</span><span class="n">isWithin</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="c1">// Player within 5 tiles of (3210, 3210)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">area</span><span class="p">.</span><span class="nf">isWithin</span><span class="p">(</span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="c1">-- Player inside Varrock square-ish region</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">end</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">area</span><span class="p">.</span><span class="nf">isWithin</span><span class="p">(</span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="c1">-- Player within 5 tiles of (3210, 3210)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kr">end</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">area</span><span class="p">.</span><span class="nf">isWithin</span><span class="p">(</span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3200</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">,</span><span class="w"> </span><span class="mi">3220</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="c1">-- Player inside Varrock square-ish region</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kr">end</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">area</span><span class="p">.</span><span class="nf">isWithin</span><span class="p">(</span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="c1">-- Player within 5 tiles of (3210, 3210)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="kr">end</span>
 </span></code></pre></div>
 </div>
 </div>

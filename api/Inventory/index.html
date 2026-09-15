@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1461,6 +1559,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1489,6 +1615,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1497,6 +1651,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1637,6 +1819,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -2118,11 +2328,17 @@ matching module.</p>
 <p><code>useItemOnItem</code> picks the first inventory slot holding each id (returns
 <code>false</code> if both resolve to the same slot). <code>useItemOnItemBatch</code> repeats the
 item-on-item up to <code>count</code> ∈ [1, 8] times for fast-fletching-style bursts.</p>
-<div class="admonition warning">
-<p class="admonition-title">Not yet wired — <code>useItemOnNpc</code> / <code>useItemOnGroundItem</code> are skeletons</p>
-<p>All <strong>four</strong> overloads (id-pair and slot+target forms, C++ and Lua
-alike) are skeletons — they log and return <code>false</code> pending a captured
-wire format. <code>useItemOnObject</code> and <code>useItemOnItem</code> are live.</p>
+<div class="admonition note">
+<p class="admonition-title">How the use-on calls behave</p>
+<p>Every <code>useItemOn*</code> call is two clicks: it stages the inventory item
+("Use") immediately and fires the click on the target 150–300 ms
+later. <code>true</code> means the stage click was queued, not that the target
+click landed — the completion bails (logged to the console) if the
+target despawned, moved off-screen, or the staged item changed in the
+meantime. <code>useItemOnNpc</code> takes the target the <code>srs.npc.*</code> finders
+return and re-resolves it live at fire time; <code>useItemOnGroundItem</code>
+checks the pile is still on its tile first. Keep the target on screen
+(see <code>srs.camera.ensureVisible</code>).</p>
 </div>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <ul>

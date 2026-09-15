@@ -16,7 +16,7 @@
         <link rel="prev" href="../Chat/">
       
       
-        <link rel="next" href="../DepositBox/">
+        <link rel="next" href="../Defs/">
       
       
         
@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -747,6 +789,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#interact-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interact target
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#constants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -766,12 +819,57 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#detecting-a-retarget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detecting a retarget
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -904,6 +1002,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1428,6 +1554,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1456,6 +1610,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1464,6 +1646,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1604,6 +1814,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1802,6 +2040,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#interact-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interact target
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#constants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1820,6 +2069,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#detecting-a-retarget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detecting a retarget
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1903,9 +2169,24 @@ no-ops if already in the desired state.</p>
 <td><code>srs.combat.isInCombat() → bool</code></td>
 </tr>
 <tr>
-<td>Engaged with an NPC</td>
+<td>Interacting with anything</td>
+<td><code>Combat::isInteracting(ctx) → bool</code></td>
+<td><code>srs.combat.isInteracting() → bool</code></td>
+</tr>
+<tr>
+<td>Engaged with <strong>this</strong> target</td>
 <td><code>Combat::isInteractingWith(ctx, npc) → bool</code></td>
 <td><code>srs.combat.isInteractingWith(target) → bool</code></td>
+</tr>
+<tr>
+<td>The NPC we're interacting with</td>
+<td><code>Combat::interactingWithNpc(ctx) → optional&lt;NpcEntry&gt;</code></td>
+<td><code>srs.combat.interactingWith() → target \| nil</code></td>
+</tr>
+<tr>
+<td>Raw interact target (kind + index)</td>
+<td><code>Combat::interactRef(ctx) → InteractRef</code></td>
+<td><code>srs.combat.interactTarget() → table \| nil</code></td>
 </tr>
 <tr>
 <td>Auto-retaliate on</td>
@@ -1913,7 +2194,7 @@ no-ops if already in the desired state.</p>
 <td><code>srs.combat.isAutoRetaliate() → bool</code></td>
 </tr>
 <tr>
-<td>Toggle spec button</td>
+<td>Toggle special attack</td>
 <td><code>Combat::toggleSpec(ctx) → bool</code></td>
 <td><code>srs.combat.toggleSpec() → bool</code></td>
 </tr>
@@ -1935,17 +2216,72 @@ no-ops if already in the desired state.</p>
 <code>isAutoRetaliate</code> / <code>setAutoRetaliate</code> expose the natural sense
 (<code>true</code> = retaliate is on).</p>
 </div>
-<p><code>isInCombat</code> checks the <strong>local player's own interact target</strong> —
-<code>interactTarget != -1</code>, i.e. the local player is engaged with
-something. It does not scan other actors.</p>
-<p><code>isInteractingWith</code> is the multi-combat-safe variant that also reads
-only the local player's own interact target. The Lua form takes an
-<code>ActionTarget</code> (from any <a href="../Npc/">entity/npc finder</a>).</p>
+<p><code>toggleSpec</code> clicks the <strong>minimap special-attack orb</strong> (group 160), which is
+rendered whatever sidebar tab is open, and only falls back to the combat-tab
+button when the orb isn't drawn — so scripts never have to switch tabs first.
+Its <code>true</code> return means the click was dispatched, not that the special
+attack was used: confirm on a later tick. Combat weapons set the enabled
+flag (<code>isSpecEnabled</code>) until the next hit; instant specials such as the
+woodcutting axes' <em>Lumber Up</em> never set it, and the proof is the energy
+(<code>specEnergyPct</code>) dropping below 100.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Fire an axe spec and confirm it landed.</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">specEnergyPct</span><span class="p">()</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">toggleSpec</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">script</span><span class="p">.</span><span class="nf">nextTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">specEnergyPct</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nv">before</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;spec used&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kr">end</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kr">end</span>
+</span></code></pre></div>
+<h2 id="interact-target">Interact target<a class="headerlink" href="#interact-target" title="Permanent link">&para;</a></h2>
+<p>The engine stores the local player's target as a <strong>kind byte</strong> plus an
+<strong>index in that kind's own index space</strong> (<code>Actor+0x3A7</code> / <code>+0x3A8</code>). For
+NPCs and players that index <em>is</em> the server spawn index — the same number
+as <code>NpcEntry::spawnIndex</code> / <code>ActionTarget.spawnIndex</code> — so it compares
+directly against a target you already hold. This mirrors RuneLite's
+<code>Actor.getInteracting</code>.</p>
+<div class="admonition danger">
+<p class="admonition-title">Never read the index on its own</p>
+<p>The engine drops a target by zeroing the <strong>kind</strong> and leaves the last
+index behind, so a bare <code>index != -1</code> latches as a permanent "still
+engaged". Every call on this page applies the kind check for you —
+don't re-derive it from a raw memory read.</p>
+</div>
+<ul>
+<li><code>isInteracting()</code> — true while we are interacting with <em>anything</em>.
+  Because it reads only our own action, it stays correct in multi-combat
+  where other players fighting the same NPC would confuse a scan.</li>
+<li><code>isInteractingWith(target)</code> — <strong>exact</strong>: matches the engine's index
+  against that target's <code>spawnIndex</code> under a matching kind. False for the
+  neighbouring NPC of the same id, and false the moment the game retargets
+  us or the target dies. The Lua form takes an <code>ActionTarget</code> from any
+  <a href="../Npc/">entity/npc finder</a>.</li>
+<li><code>interactingWith()</code> — returns the NPC itself, resolved against the live
+  NPC list, or <code>nil</code>. Prefer this over the predicate when the script needs
+  to <em>see</em> a retarget (a boss swapping to a clone, an aggressive mob pulling
+  us off the intended kill) rather than only learning that its own target
+  stopped matching. <code>nil</code> when idle, when the target is a player / world
+  entity, or when it despawned this tick.</li>
+<li><code>interactTarget()</code> / <code>interactRef(ctx)</code> — the raw read, no scene lookup.
+  Survives the target leaving the NPC list, and is the only one that also
+  reports player targets (following / attacking in PvP). Lua returns a
+  fixed-shape table <code>{ kind = "npc"|"player"|"worldEntity", kindId = 1|2|3,
+  index = &lt;spawnIndex&gt; }</code>, or <code>nil</code> when not interacting.</li>
+</ul>
 <div class="admonition warning">
-<p class="admonition-title">isInteractingWith target parameter is advisory</p>
-<p>The target parameter is currently <strong>advisory</strong> — the call reports
-"engaged with <em>any</em> target", not an exact match against that
-specific NPC.</p>
+<p class="admonition-title">Indices are recycled</p>
+<p>An index is unique only <em>per kind</em>, and is reused when an NPC respawns.
+Pass a target from the <strong>current</strong> tick's query, not one cached across a
+despawn.</p>
+</div>
+<p><code>isInCombat</code> is the broader question: true when we are interacting with
+something <strong>or</strong> some NPC is interacting with us. Use it for "am I in a
+fight at all"; use <code>isInteractingWith</code> / <code>interactingWith</code> for "am I on the
+<em>right</em> target".</p>
+<div class="admonition tip">
+<p class="admonition-title">Ground truth for 'am I actually attacking'</p>
+<p>The interact target says what the client <em>intends</em>. For what actually
+landed — damage dealt, damage taken, whether a prayer blocked it — read
+<a href="../HitSplats/"><code>srs.hitsplats</code></a> instead.</p>
 </div>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <p><strong>AttackStyle</strong> (<code>AttackStyle</code> / <code>srs.combat.*</code>):</p>
@@ -1977,34 +2313,90 @@ specific NPC.</p>
 </table>
 <p>Indexes the 4-button style row on the combat tab; meaning varies by
 weapon (e.g. for scimitar: Chop / Slash / Lunge / Block).</p>
+<p><strong>InteractKind</strong> (<code>srs::api::InteractKind</code>; Lua reports it as the <code>kind</code>
+string plus the numeric <code>kindId</code>):</p>
+<table>
+<thead>
+<tr>
+<th>C++</th>
+<th><code>kindId</code></th>
+<th><code>kind</code> string</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>InteractKind::None</code></td>
+<td>0</td>
+<td>— (<code>nil</code> returned)</td>
+<td>Not interacting</td>
+</tr>
+<tr>
+<td><code>InteractKind::Npc</code></td>
+<td>1</td>
+<td><code>"npc"</code></td>
+<td><code>index</code> = NPC spawn index</td>
+</tr>
+<tr>
+<td><code>InteractKind::Player</code></td>
+<td>2</td>
+<td><code>"player"</code></td>
+<td><code>index</code> = player index</td>
+</tr>
+<tr>
+<td><code>InteractKind::WorldEntity</code></td>
+<td>3</td>
+<td><code>"worldEntity"</code></td>
+<td>Boats / player-owned instances; not resolvable via the NPC or player list</td>
+</tr>
+</tbody>
+</table>
+<p><code>InteractRef</code> is <code>{ InteractKind kind; int32_t index; }</code> with a
+<code>valid()</code> helper (<code>kind != None &amp;&amp; index &gt;= 0</code>). Verified static on
+240.5 / 240.6 / 240.7 / 241.1.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onTick</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">Combat</span><span class="o">::</span><span class="n">setAutoRetaliate</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Combat</span><span class="o">::</span><span class="n">specEnergyPct</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">Combat</span><span class="o">::</span><span class="n">isSpecEnabled</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="n">Combat</span><span class="o">::</span><span class="n">toggleSpec</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onTick</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">Combat</span><span class="o">::</span><span class="n">setAutoRetaliate</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Combat</span><span class="o">::</span><span class="n">specEnergyPct</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">Combat</span><span class="o">::</span><span class="n">isSpecEnabled</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="n">Combat</span><span class="o">::</span><span class="n">toggleSpec</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">setAutoRetaliate</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">specEnergyPct</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">            </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">isSpecEnabled</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">toggleSpec</span><span class="p">()</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">isInCombat</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;idle — find a new target&quot;</span><span class="p">)</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kr">end</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">setAutoRetaliate</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">specEnergyPct</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">            </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">isSpecEnabled</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">toggleSpec</span><span class="p">()</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">isInCombat</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;idle — find a new target&quot;</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
+<h3 id="detecting-a-retarget">Detecting a retarget<a class="headerlink" href="#detecting-a-retarget" title="Permanent link">&para;</a></h3>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">myTarget</span><span class="w">   </span><span class="c1">-- the NPC we chose to fight</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">myTarget</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">isInteractingWith</span><span class="p">(</span><span class="nv">myTarget</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">        </span><span class="kd">local</span><span class="w"> </span><span class="nv">actual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">interactingWith</span><span class="p">()</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">actual</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">            </span><span class="nv">log</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="s2">&quot;pulled onto &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">actual</span><span class="p">.</span><span class="py">name</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; — re-attacking ours&quot;</span><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">            </span><span class="nv">myTarget</span><span class="p">:</span><span class="nf">attack</span><span class="p">()</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="kr">elseif</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">combat</span><span class="p">.</span><span class="nf">isInteracting</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">            </span><span class="nv">myTarget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">nil</span><span class="w">          </span><span class="c1">-- target died / we went idle</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="kr">end</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
 
 
 

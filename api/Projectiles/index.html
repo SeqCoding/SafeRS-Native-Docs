@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/Projectiles/">
       
       
-        <link rel="prev" href="../Prayer/">
+        <link rel="prev" href="../HitSplats/">
       
       
-        <link rel="next" href="../RunePouch/">
+        <link rel="next" href="../Prompt/">
       
       
         
@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1348,6 +1446,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1356,6 +1482,34 @@
     
   
     Prayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
   
 
     
@@ -1495,6 +1649,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1615,6 +1797,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1866,6 +2076,15 @@
 <p><code>srs::api::Projectiles</code> / <code>srs.projectiles</code></p>
 <p>Read-only enumeration of in-flight projectiles. The common case is
 "what's about to hit me and when" — use <code>incoming()</code> for that.</p>
+<div class="admonition warning">
+<p class="admonition-title"><code>incoming()</code> is not filtered to you</p>
+<p>The engine keeps <strong>one global projectile list</strong>, not a per-player one,
+so <code>incoming()</code> and <code>all()</code> currently return the <em>same</em> snapshot: every
+projectile in the scene, including ones aimed at other players and at
+tiles. No per-projectile target field is mapped yet — filter by <code>id</code>
+when you need to distinguish (at Hunllef, for instance, the magic and
+ranged attack ids versus everything else).</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Cache ids</p>
 <p><code>id</code> is <strong>this client's spotanim/graphic cache id</strong> (cache group
@@ -1876,8 +2095,17 @@ build a per-build mapping table.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Time units</p>
-<p><code>ticksUntilLanding</code> is in game ticks (600 ms each, rounded up
-from the underlying ~30-frame-per-tick counter at GS+0x2154).</p>
+<p><code>ticksUntilLanding</code> is in game ticks (600 ms each), rounded up from
+the engine's 50 Hz client-cycle counter (30 cycles per tick) and
+floored at <code>0</code>.</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Fixed 2026-09-12 — was returning nothing on 240.x</p>
+<p>The projectile list head had been stale since build 240.1, so every
+call on this page returned empty / <code>nil</code> on 240.x. <code>ticksUntilLanding</code>
+was additionally computed off the <em>start</em> cycle instead of the landing
+cycle, which clamped it to <code>0</code>. Both are corrected. If you shelved a
+projectile-driven script because "projectiles don't work", it works now.</p>
 </div>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
@@ -1918,10 +2146,15 @@ from the underlying ~30-frame-per-tick counter at GS+0x2154).</p>
 </table>
 <ul>
 <li><code>isUnderFire</code> is allocation-free — preferred for tight check-loops.</li>
-<li><code>next</code> is the lowest <code>absoluteEndCycle</code>.</li>
+<li><code>next</code> is the projectile with the lowest <code>absoluteEndCycle</code>, i.e. the
+  next one to <strong>land</strong>.</li>
 <li><code>ticksUntilNext</code> returns <code>-1</code> when nothing is in flight (single int
   compare instead of optional unwrap, for ranged-prayer flick logic).</li>
-<li><code>all</code> is heavier than <code>incoming</code> — walks the WI hashmap.</li>
+<li><code>all</code> is <strong>identical to <code>incoming</code></strong> under the current storage model
+  (one global list). It is kept as a distinct call so it stays correct if
+  a per-target filter is ever added to <code>incoming()</code>. Prefer <code>incoming()</code>
+  for "what's about to hit me" so your script picks up that filter for
+  free; use <code>all()</code> when you explicitly mean scene-wide.</li>
 </ul>
 <h2 id="spawn-events">Spawn events<a class="headerlink" href="#spawn-events" title="Permanent link">&para;</a></h2>
 <table>
@@ -1983,40 +2216,61 @@ needs no explicit cleanup.</p>
 <tr>
 <td><code>animationId</code></td>
 <td>int32</td>
-<td>anim_id resolved from the proj def</td>
+<td>Anim id from the spotanim def; <strong><code>-1</code></strong> when it has none</td>
 </tr>
 <tr>
 <td><code>framesUntilLanding</code></td>
 <td>int32</td>
-<td>Negative if already landed</td>
+<td>Client cycles until it lands (30 per tick)</td>
 </tr>
 <tr>
 <td><code>ticksUntilLanding</code></td>
 <td>int32</td>
-<td><code>ceil(framesUntilLanding / 30)</code></td>
+<td><code>ceil(framesUntilLanding / 30)</code>, floored at <code>0</code></td>
 </tr>
 <tr>
 <td><code>absoluteEndCycle</code></td>
 <td>int32</td>
-<td>Raw <code>absEnd</code> (compare with engine <code>frameStamp</code>)</td>
+<td>Absolute <strong>landing</strong> cycle</td>
+</tr>
+<tr>
+<td><code>startCycle</code></td>
+<td>int32</td>
+<td>Absolute cycle it starts rendering</td>
+</tr>
+<tr>
+<td><code>startCycleDelta</code></td>
+<td>int32</td>
+<td><code>startCycle - now</code>; <code>&gt; 0</code> = spawned early, not yet moving</td>
 </tr>
 <tr>
 <td><code>packedBytes</code></td>
 <td>uint32</td>
-<td>Opaque trajectory metadata (slope/dist)</td>
+<td>Arc slope used by the engine's ballistic solve</td>
 </tr>
 </tbody>
 </table>
+<p><code>startCycleDelta &gt; 0</code> means the engine has constructed the projectile but
+it has not begun travelling — a spawn event can arrive before the thing is
+visibly in the air. Gate on it if you are timing a dodge off the spawn
+rather than off <code>ticksUntilLanding</code>.</p>
 <p><strong><code>ProjectileSpawnedEvent</code></strong> (C++; Lua receives the equivalent table):</p>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">ProjectileSpawnedEvent</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">cycle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">pos0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">pos1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">pos2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">field280</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">field288</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">field290</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">wallClock_ms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">};</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">id</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// spotanim cache id (this client&#39;s, NOT RuneLite&#39;s)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">cycle</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// AnimSlot.animId (-1 when the spotanim has no anim)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">pos0</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// start/end fine pos + heights (raw, being mapped)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">pos1</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">pos2</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">field280</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">field288</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// absolute START cycle</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">field290</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">   </span><span class="c1">// arc slope</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">wallClock_ms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">};</span>
 </span></code></pre></div>
-<p>Fields beyond <code>id</code> are still being mapped — treat them as provisional.</p>
+<p><code>id</code>, <code>cycle</code>, <code>field288</code> and <code>field290</code> are labelled; the <code>pos*</code> fields
+and <code>field280</code> are still being mapped — treat those as provisional. The
+landing cycle is <strong>not</strong> on the spawn event; read it from
+<code>ProjectileEntry.absoluteEndCycle</code> on the next poll.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">

@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1428,6 +1526,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1456,6 +1582,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1464,6 +1618,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1604,6 +1786,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1892,6 +2102,11 @@ reading the live login index.</p>
 <td><code>Game::itemName(ctx, itemId) → string</code></td>
 <td><code>srs.game.itemName(id) → string</code></td>
 </tr>
+<tr>
+<td>Full item definition by id</td>
+<td><code>Game::itemDefinition(ctx, itemId) → ItemDefinition</code></td>
+<td><code>srs.defs.item(id) → table</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>state</code> reads <code>GS+0x2150</code> via <code>GameData</code>.</p>
@@ -1910,6 +2125,21 @@ engine's load-on-demand item loader on the engine thread. It <strong>blocks
 briefly</strong> (up to ~3 s) while the load completes, falling back to the live
 cache on timeout, and returns an empty string for <code>id &lt;= 0</code> or total
 failure.</p>
+<p><code>itemDefinition</code> is the full <code>ItemType</code> metadata behind that name — the
+RuneMate <code>ItemDefinition</code> parity set (name, examine, stackable, tradeable,
+equip slot, value, weight, noted / placeholder links), read straight off
+the engine's decoded <code>ItemType</code> with no hand-maintained tables. It uses
+the <strong>same resolution as <code>itemName</code></strong>, so the same ~3 s blocking caveat
+applies: call it from <code>pulse</code> / <code>onTick</code>, never from <code>draw</code>. <code>.valid</code> is
+<code>false</code> only when the id can't be resolved at all — <code>name</code> may still be
+non-empty from the cache even then.</p>
+<div class="admonition note">
+<p class="admonition-title">Lua lives on <code>srs.defs</code></p>
+<p>The Lua binding is <a href="../Defs/#srsdefsitemid"><code>srs.defs.item(id)</code></a>,
+alongside <code>srs.defs.npc</code> — not <code>srs.game.item*</code>. The C++ entry point
+is <code>Game::itemDefinition</code>. See <a href="../Defs/">Defs</a> for the full field
+table.</p>
+</div>
 <h2 id="state-enum">State enum<a class="headerlink" href="#state-enum" title="Permanent link">&para;</a></h2>
 <p><strong><code>State</code></strong> (<code>State</code> / <code>srs.game.state()</code> returns int):</p>
 <table>

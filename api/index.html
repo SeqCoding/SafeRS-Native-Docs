@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1348,6 +1446,34 @@
   
   
     <li class="md-nav__item">
+      <a href="PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="Prayer/" class="md-nav__link">
         
   
@@ -1376,6 +1502,34 @@
   
   
     <li class="md-nav__item">
+      <a href="HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="Projectiles/" class="md-nav__link">
         
   
@@ -1384,6 +1538,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1524,6 +1706,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1734,6 +1944,12 @@ public contract.</p>
 </thead>
 <tbody>
 <tr>
+<td><a href="Actions/">Actions</a></td>
+<td><code>srs::api::Actions</code></td>
+<td><code>srs.actions</code></td>
+<td>Same-tick action batching + dispatch tickets — did the action actually reach the server?</td>
+</tr>
+<tr>
 <td><a href="Antiban/">Antiban</a></td>
 <td><code>srs::api::Antiban</code></td>
 <td><code>srs.antiban</code></td>
@@ -1779,7 +1995,13 @@ public contract.</p>
 <td><a href="Combat/">Combat</a></td>
 <td><code>srs::api::Combat</code></td>
 <td><code>srs.combat</code></td>
-<td>Combat-tab queries + spec / attack-style toggles</td>
+<td>Combat-tab queries, spec / attack-style toggles, exact interact target</td>
+</tr>
+<tr>
+<td><a href="Defs/">Defs</a></td>
+<td>— (see <a href="Game/">Game</a> / <a href="Npc/">NPC</a>)</td>
+<td><code>srs.defs</code></td>
+<td>Definition / cache metadata by id — "what <em>is</em> this thing"</td>
 </tr>
 <tr>
 <td><a href="DepositBox/">DepositBox</a></td>
@@ -1791,7 +2013,7 @@ public contract.</p>
 <td><a href="Dialogue/">Dialogue</a></td>
 <td><code>srs::api::Dialogue</code></td>
 <td><code>srs.dialogue</code></td>
-<td>Detect + advance dialogue (continue / options)</td>
+<td>Detect + advance dialogue (continue / options) + answer the chatbox text/amount prompt</td>
 </tr>
 <tr>
 <td><a href="Drawing/">Drawing</a></td>
@@ -1816,6 +2038,12 @@ public contract.</p>
 <td><code>srs::api::Equipment</code></td>
 <td><code>srs.equipment</code></td>
 <td>Worn-items view</td>
+</tr>
+<tr>
+<td><a href="Events/">Events</a></td>
+<td>—</td>
+<td><code>srs.events</code></td>
+<td>Central named-event registry (inventory, chat, XP, …)</td>
 </tr>
 <tr>
 <td><a href="Food/">Food</a></td>
@@ -1873,9 +2101,9 @@ public contract.</p>
 </tr>
 <tr>
 <td><a href="Input/">Input</a></td>
-<td>—</td>
+<td><code>srs::api::Input</code></td>
 <td><code>srs.input</code></td>
-<td>Low-level keyboard primitives (<code>keyTap</code> / <code>osKeyTap</code> + VK constants)</td>
+<td>Typed text entry (<code>typeString</code>, human-paced, background-safe) + key taps + VK constants</td>
 </tr>
 <tr>
 <td><a href="Inventory/">Inventory</a></td>
@@ -1888,6 +2116,12 @@ public contract.</p>
 <td><code>srs::api::Magic</code></td>
 <td><code>srs.magic</code></td>
 <td>Spell casting</td>
+</tr>
+<tr>
+<td><a href="HitSplats/">Hit splats</a></td>
+<td><code>srs::api::HitSplats</code></td>
+<td><code>srs.hitsplats</code></td>
+<td>Combat ground truth — every damage number, with the victim resolved</td>
 </tr>
 <tr>
 <td><a href="MenuEntry/">MenuEntry</a></td>
@@ -1926,10 +2160,16 @@ public contract.</p>
 <td>Prayer book state + clicks + overhead-prayer (headicon) enum</td>
 </tr>
 <tr>
+<td><a href="Prompt/">Prompt</a></td>
+<td><code>srs::api::Prompt</code></td>
+<td><code>srs.prompt</code></td>
+<td>The chatbox "Enter amount / name" input prompt</td>
+</tr>
+<tr>
 <td><a href="Projectiles/">Projectiles</a></td>
 <td><code>srs::api::Projectiles</code></td>
 <td><code>srs.projectiles</code></td>
-<td>In-flight projectile enumeration</td>
+<td>In-flight projectile enumeration + spawn events</td>
 </tr>
 <tr>
 <td><a href="RunePouch/">RunePouch</a></td>
@@ -1966,6 +2206,12 @@ public contract.</p>
 <td><code>srs::api::Spells</code></td>
 <td><code>srs.spells</code></td>
 <td>Static spell metadata</td>
+</tr>
+<tr>
+<td><a href="Stats/">Stats</a></td>
+<td><code>srs::api::Stats</code></td>
+<td><code>srs.stats</code></td>
+<td>Session XP / runtime tracker (gained + per-hour rates)</td>
 </tr>
 <tr>
 <td><a href="Tab/">Tab</a></td>

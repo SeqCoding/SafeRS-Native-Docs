@@ -16,7 +16,7 @@
         <link rel="prev" href="../Overlay/">
       
       
-        <link rel="next" href="../Prayer/">
+        <link rel="next" href="../PluginSettings/">
       
       
         
@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1445,6 +1543,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1473,6 +1599,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1481,6 +1635,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1621,6 +1803,34 @@
     
   
     Spells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
   
 
     
@@ -1910,6 +2120,11 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td><code>srs.player.animation() → int</code></td>
 </tr>
 <tr>
+<td>Facing angle</td>
+<td><code>Player::orientation(ctx) → int32</code></td>
+<td><code>srs.player.orientation() → int</code></td>
+</tr>
+<tr>
 <td>Carried weight (kg)</td>
 <td><code>Player::weight(ctx) → int32</code></td>
 <td><code>srs.player.weight() → int</code></td>
@@ -1923,6 +2138,21 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td>Toggle run</td>
 <td><code>Player::toggleRunEnergy(ctx, on) → bool</code></td>
 <td><code>srs.player.toggleRunEnergy(on) → bool</code></td>
+</tr>
+<tr>
+<td>Poison counter (raw)</td>
+<td><code>Player::poison(ctx) → int32</code></td>
+<td><code>srs.player.poison() → int</code></td>
+</tr>
+<tr>
+<td>Is poisoned</td>
+<td><code>Player::isPoisoned(ctx) → bool</code></td>
+<td><code>srs.player.isPoisoned() → bool</code></td>
+</tr>
+<tr>
+<td>Is venomed</td>
+<td><code>Player::isVenomed(ctx) → bool</code></td>
+<td><code>srs.player.isVenomed() → bool</code></td>
 </tr>
 <tr>
 <td>Idle ticks counter</td>
@@ -1943,6 +2173,26 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td>Skill XP</td>
 <td><code>Player::skillXp(ctx, Skill) → int32</code></td>
 <td><code>srs.player.skillXp(Skill) → int</code></td>
+</tr>
+<tr>
+<td>XP for a level <em>(static)</em></td>
+<td><code>Player::xpForLevel(level) → int32</code></td>
+<td><code>srs.player.xpForLevel(level) → int</code></td>
+</tr>
+<tr>
+<td>Level for total XP <em>(static)</em></td>
+<td><code>Player::levelForXp(xp) → int32</code></td>
+<td><code>srs.player.levelForXp(xp) → int</code></td>
+</tr>
+<tr>
+<td>XP remaining to next level</td>
+<td><code>Player::xpToNextLevel(ctx, Skill) → int32</code></td>
+<td><code>srs.player.xpToNextLevel(Skill) → int</code></td>
+</tr>
+<tr>
+<td>Progress into current level (0..1)</td>
+<td><code>Player::levelProgress(ctx, Skill) → double</code></td>
+<td><code>srs.player.levelProgress(Skill) → number</code></td>
 </tr>
 <tr>
 <td>Current hitpoints</td>
@@ -1998,9 +2248,22 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   in patch 238+.</li>
 <li><strong><code>animation</code></strong> — current animation id from the active AnimSlot.
   <code>-1</code> = idle.</li>
+<li><strong><code>orientation</code></strong> — the local player's facing angle, 0–2047, same
+  units and convention as <code>ActionTarget.orientation</code> (see
+  <a href="../Entity/">Entity</a>): 0 = S, 512 = W, 1024 = N, 1536 = E. This is the <em>target</em> angle the engine turns
+  toward (RuneLite <code>Actor.getOrientation()</code>); the rendered model catches
+  up within a few ticks. <code>-1</code> pre-login. Compare against a cardinal with
+  a tolerance (<code>math.abs(o - 1024) &lt;= 256</code> for north).</li>
 <li><strong><code>weight</code></strong> — reads VarPlayer 169.</li>
 <li><strong><code>runEnergy</code></strong> — in 0..10000 range (raw network units; divide by
   100 for the displayed percentage). <code>-1</code> if GS isn't resolved.</li>
+<li><strong><code>poison</code> / <code>isPoisoned</code> / <code>isVenomed</code></strong> — read VarPlayer 102, the
+  poison damage counter (the same var RuneLite/Microbot use). <code>poison()</code>
+  returns the raw value: <code>0</code> = clean, <code>1..999999</code> = poisoned, <code>&gt;= 1000000</code>
+  = venomed, <code>&lt; 0</code> = temporary immunity that counts back up toward 0 after
+  an antidote/cure. <code>isPoisoned()</code> is <code>1..999999</code>; <code>isVenomed()</code> is
+  <code>&gt;= 1000000</code> (venom is not "poisoned" — check it first). Returns
+  <code>0</code> / <code>false</code> when VarpSystem isn't ready.</li>
 <li><strong><code>idleTicks</code></strong> — number of consecutive game ticks the player's
   active animation has been -1. Reset to 0 the moment any non-idle
   animation plays. Maintained by <code>GameData::onTick</code>.</li>

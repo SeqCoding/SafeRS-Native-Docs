@@ -16,7 +16,7 @@
         <link rel="prev" href="../Shop/">
       
       
-        <link rel="next" href="../Tab/">
+        <link rel="next" href="../Stats/">
       
       
         
@@ -416,6 +416,20 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -488,6 +502,34 @@
     
   
     Antiban
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Actions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actions
   
 
     
@@ -704,6 +746,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Defs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../DepositBox/" class="md-nav__link">
         
   
@@ -824,6 +894,34 @@
     
   
     Entity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
   
 
     
@@ -1348,6 +1446,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../PluginSettings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PluginSettings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Prayer/" class="md-nav__link">
         
   
@@ -1376,6 +1502,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../HitSplats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hit splats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Projectiles/" class="md-nav__link">
         
   
@@ -1384,6 +1538,34 @@
     
   
     Projectiles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Prompt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prompt
   
 
     
@@ -1651,6 +1833,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -2014,6 +2224,18 @@ take, or <code>nil</code> if nothing matches.</p>
 <p><code>HOME_TELEPORT</code>, <code>VARROCK_TELEPORT</code>, <code>LUMBRIDGE_TELEPORT</code>,
 <code>FALADOR_TELEPORT</code>, <code>CAMELOT_TELEPORT</code>, <code>ARDOUGNE_TELEPORT</code>,
 <code>WATCHTOWER_TELEPORT</code>, <code>TROLLHEIM_TELEPORT</code>.</p>
+<p><strong>NPC / ground-item targets</strong> (for <code>srs.magic.castOnNpc</code> /
+<code>castOnGroundItem</code>, added 2026-09-12 — appended after the teleports so
+existing enum values are unchanged):</p>
+<p><code>TELEKINETIC_GRAB</code> (ground item), <code>CONFUSE</code>, <code>WEAKEN</code>, <code>CURSE</code>, <code>BIND</code>,
+<code>SNARE</code>, <code>ENTANGLE</code>, <code>STUN</code>, <code>VULNERABILITY</code>, <code>ENFEEBLE</code>,
+<code>CRUMBLE_UNDEAD</code>, <code>IBAN_BLAST</code>, <code>MAGIC_DART</code>, <code>SARADOMIN_STRIKE</code>,
+<code>CLAWS_OF_GUTHIX</code>, <code>FLAMES_OF_ZAMORAK</code>, <code>TELEPORT_BLOCK</code> (player
+target — no cast helper yet).</p>
+<p>Rune costs are the plain wiki costs; staff substitution (Iban's staff,
+slayer staff, god staves) is not modelled, so <code>canCast</code> reports <code>false</code>
+for Iban Blast / Magic Dart / the god spells unless the base runes are
+carried.</p>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>SpellInfo</code></strong> (read-only):</p>
 <table>
