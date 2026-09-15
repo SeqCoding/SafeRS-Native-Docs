@@ -714,17 +714,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tests
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -2487,17 +2476,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tests
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -2782,9 +2760,8 @@
 </tr>
 </tbody>
 </table>
-<p>Both halves live in <code>srs::api::Actions</code> (<code>PluginAPI/API/Actions.h</code> for the
-batch runner, <code>Core/ActionLedger.h</code> for the ledger) and are documented on
-this page.</p>
+<p>Both halves live in <code>srs::api::Actions</code> (<code>PluginAPI/API/Actions.h</code> in the
+SDK) and are documented on this page.</p>
 <div class="admonition warning">
 <p class="admonition-title">Scripts MUST NOT block</p>
 <p>Verifiers are pumped once per game tick on the script thread, at the top
@@ -2862,12 +2839,11 @@ limit is the server's cap, below.</p>
 <h3 id="the-per-tick-cap-and-what-a-tab-switch-costs">The per-tick cap, and what a tab switch costs<a class="headerlink" href="#the-per-tick-cap-and-what-a-tab-switch-costs" title="Permanent link">&para;</a></h3>
 <p>The server processes at most <strong>8</strong> action-class packets per game cycle
 (<code>srs.engine.actionLimit()</code>). Over-cap packets are dropped, not queued.</p>
-<p><strong>A sidebar tab switch is one of those 8.</strong> Confirmed from real-player
-captures: <code>captures/2026-05-25_133800</code> step 64 shows a Prayer-tab click
-emitting <code>OUT op=0x5b (IF_BUTTON) 94 00 A1 00 40 FF FF FF FF 01</code> — payload
-<code>0x00A10040</code> = group 161, child 64, the Prayer chrome tab. A ladder that hops
-prayer → inventory → prayer spends 3 of its 8 slots on sidebar management, so
-prefer a resting tab and let the runner coalesce.</p>
+<p><strong>A sidebar tab switch is one of those 8.</strong> Clicking a chrome tab is an
+ordinary action packet, no different from clicking an item. A ladder that hops
+prayer → inventory → prayer therefore spends 3 of its 8 slots on sidebar
+management alone — prefer a resting tab and let the runner coalesce
+consecutive steps that share one.</p>
 <p><code>EngineDispatch</code>'s own budget gate <strong>defers</strong> an over-cap action to a later
 drain. For a tick-scoped ladder that is the wrong answer — the deferred
 attack lands two ticks late. The batch runner instead <strong>fails fast</strong>: a step
@@ -3027,11 +3003,6 @@ carries <code>tickSubmitted</code> / <code>tickRetired</code>. There is no <code
 lane, the tick rollover, and the <code>lua_State</code> teardown). Plugins and
 scripts never call them.</p>
 </div>
-<h3 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h3>
-<p><code>tools/tests/run_action_batch_tests.bat</code> compiles the real
-<code>PluginAPI/API/Actions.cpp</code> against faked <code>Engine</code>/<code>Tab</code> collaborators and
-exercises the pacing, the cap, the tab gate, tick-scoping and the report
-without a game client.</p>
 <h2 id="dispatch-tickets">Dispatch tickets<a class="headerlink" href="#dispatch-tickets" title="Permanent link">&para;</a></h2>
 <p>Every marshaled action gets a ticket. Ask for it straight after the call:</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactById</span><span class="p">(</span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Drop&quot;</span><span class="p">)</span>

@@ -2206,14 +2206,14 @@ engine thread and keystrokes post asynchronously — but never call them from
 <p><code>collectToInventory</code> prefers the GE-screen "Collect to inventory" button and
 falls back to the standalone collection box. <code>abort</code> requires the offer's
 detail screen open first (<code>openSlot(slot)</code>, wait a tick) — the "Abort offer"
-button lives on the detail screen, not the overview. It dispatches the
-capture-verified CC_OP (widget 465:23, sub-op 0, action index 1); a real-input
-click on that button silently no-ops.</p>
+button lives on the detail screen, not the overview. It is dispatched
+directly against that button; a synthesized mouse click on it silently
+no-ops.</p>
 <p><code>collectSlot</code> collects <strong>one</strong> box of the open detail screen per call — the
 items box or the coins box (refund after an abort, or sale proceeds). It reads
 the box's own op list and prefers <code>Collect-notes</code> for unstackables when
 <code>asNotes</code> is true (default), so bought items land in the backpack as a single
-noted stack; the coins box uses its captured op 2. Call it every tick until
+noted stack; the coins box uses its own collect op. Call it every tick until
 <code>offer(slot)</code> reads <code>Empty</code> — the engine drops back to the overview by itself
 once the slot is drained. Returns <code>false</code> when nothing collectable is shown
 (detail screen not open, or already empty).</p>

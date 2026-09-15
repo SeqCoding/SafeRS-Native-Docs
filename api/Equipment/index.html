@@ -2126,8 +2126,9 @@ Wield / Wear / Equip / Hold applies. <code>unequip</code> fires <code>"Remove"</
 interface, opening the equipment tab if needed.</p>
 <div class="admonition note">
 <p class="admonition-title">Runtime-verify</p>
-<p><code>unequip</code>'s CC_OP op/actionIndex are the standard primary but pending a live
-"Remove" capture; if it no-ops in-game it needs a capture-verify.</p>
+<p><code>unequip</code> uses the slot's standard primary op. If it no-ops in-game for a
+particular slot, fall back to clicking the item through
+<a href="../Widget/"><code>Widget::click</code></a>.</p>
 </div>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <p><strong>Slot constants</strong> (<code>EquipmentSlot</code> / <code>srs.equipment.*</code>):</p>

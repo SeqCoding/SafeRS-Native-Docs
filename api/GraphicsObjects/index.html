@@ -1237,10 +1237,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#offset-discovery" class="md-nav__link">
+  <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Offset discovery
+        Setup
       
     </span>
   </a>
@@ -2073,10 +2073,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#offset-discovery" class="md-nav__link">
+  <a href="#setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Offset discovery
+        Setup
       
     </span>
   </a>
@@ -2178,12 +2178,12 @@
 boss fights, acid pools (Vasa, Tekton), blood splatters, spell-impact
 tile effects, teleport sparkles, run-energy regen sparkles, and so on.</p>
 <div class="admonition warning">
-<p class="admonition-title">Experimental — offset still being verified</p>
-<p>The container offset on <code>WorldInstance</code> isn't fully live-verified yet.
-The query methods return empty / <code>nil</code> until the offset is pinned for
-your client build — discover it at runtime with <code>scan()</code> and lock it in
-with <code>setContainerOffset()</code> (see <a href="#offset-discovery">Offset discovery</a>).
-Treat every field <strong>except <code>id</code></strong> as provisional.</p>
+<p class="admonition-title">Experimental — must be enabled for your client build</p>
+<p>The query methods return empty / <code>nil</code> until this module is pointed at
+the right container for the build you are on: find it at runtime with
+<code>scan()</code> and lock it in with <code>setContainerOffset()</code> (see
+<a href="#setup">Setup</a>). Only <code>id</code> is supported; the remaining fields are
+unsupported and may read as placeholder values.</p>
 </div>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
@@ -2216,7 +2216,7 @@ Treat every field <strong>except <code>id</code></strong> as provisional.</p>
 within Chebyshev distance <code>radius</code> of <code>(cx, cz)</code> on the given plane.</p>
 <p><code>next()</code> returns the graphics object that will finish (disappear) soonest,
 or <code>nil</code> when none are active.</p>
-<h2 id="offset-discovery">Offset discovery<a class="headerlink" href="#offset-discovery" title="Permanent link">&para;</a></h2>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <p>Helpers for pinning the container offset on a new client build (see the
 warning above). Most scripts never need these.</p>
 <table>

@@ -2270,13 +2270,12 @@
 mirror forms:</p>
 <ul>
 <li><strong>C++</strong> — <code>srs::api::*</code>, for plugins compiled against
-  <code>OSRSClient.lib</code>. Headers live in <code>OSRSClient/PluginAPI/API/</code>.
+  <code>OSRSClient.lib</code>. Headers ship in the SDK under <code>include/PluginAPI/API/</code>.
   Plugins implement <code>IScript</code> (<code>OSRSClient/PluginAPI/IScript.h</code>) and
   call API methods, passing the <code>ScriptContext&amp;</code> they receive in
   <code>onLoad</code> / <code>pulse</code> / <code>onTick</code> / <code>onDraw</code>.</li>
 <li><strong>Lua</strong> — <code>srs.*</code>, for <code>.lua</code> scripts loaded by the in-process Lua
-  VM. Bindings live in <code>OSRSClient/ScriptEngine/ScriptAPI.cpp</code>. The
-  host builds the <code>ScriptContext</code> internally; scripts just call
+  VM. The host builds the <code>ScriptContext</code> internally; scripts just call
   <code>srs.&lt;module&gt;.&lt;method&gt;(args)</code>.</li>
 </ul>
 <p>The two forms are at <strong>feature parity</strong> — every method documented

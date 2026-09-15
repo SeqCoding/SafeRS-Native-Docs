@@ -2291,8 +2291,8 @@ MenuActions / packets and <strong>never build a menu</strong>, so this reader do
 show what the bot is about to click. You see entries when a real right-click
 context menu is open or the mouse is hovering an entity — making this a
 diagnostic / human-in-the-loop tool (e.g. confirming what options an entity
-exposes). The pointer chain to the buffer is RE-derived and not yet
-live-verified.</p>
+exposes). Treat it as a diagnostic aid rather than a load-bearing input
+to your script's logic.</p>
 </div>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- log the menu whenever you right-click something</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>

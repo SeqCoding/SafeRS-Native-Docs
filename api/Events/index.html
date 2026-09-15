@@ -2297,7 +2297,7 @@ index (see <a href="../Globals/"><code>Skill</code></a>).</p>
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td><code>GetTickCount64()</code> at capture</td>
+<td><code>GetTickCount64()</code> when the event was observed</td>
 </tr>
 </tbody>
 </table>
@@ -2336,7 +2336,7 @@ optional <code>id</code> filter is the skill index.</p>
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td><code>GetTickCount64()</code> at capture</td>
+<td><code>GetTickCount64()</code> when the event was observed</td>
 </tr>
 </tbody>
 </table>
@@ -2389,7 +2389,7 @@ one event per changed item id per tick, not per slot). Optional <code>id</code> 
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td><code>GetTickCount64()</code> at capture</td>
+<td><code>GetTickCount64()</code> when the event was observed</td>
 </tr>
 </tbody>
 </table>
@@ -2430,7 +2430,7 @@ are polled, on the script thread.</p>
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td>Capture time</td>
+<td>Milliseconds when the event was observed</td>
 </tr>
 </tbody>
 </table>
@@ -2469,7 +2469,7 @@ definition id (only that NPC type).</p>
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td>Capture time</td>
+<td>Milliseconds when the event was observed</td>
 </tr>
 </tbody>
 </table>
@@ -2518,7 +2518,7 @@ filter = <code>hitType</code>.</p>
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td>Capture time</td>
+<td>Milliseconds when the event was observed</td>
 </tr>
 </tbody>
 </table>
@@ -2531,9 +2531,11 @@ and a live <code>ActionTarget</code>), the game tick, and polling reads
 handler.</p>
 </div>
 <div class="admonition warning">
-<p class="admonition-title">hitType names are provisional</p>
-<p>The type ids above have not been confirmed against a live capture — branch
-on the raw number and log it. <code>amount</code> is unaffected and reliable.</p>
+<p class="admonition-title">Branch on the numeric <code>hitType</code></p>
+<p>Only <code>12</code> (block) and <code>16</code> (damage) are supported names; other ids are
+passed through raw. Branch on the number, not on a name. <code>amount</code> is
+unaffected and reliable. See <a href="../HitSplats/">Hit splats</a> for the full
+contract.</p>
 </div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Track XP/hr for Woodcutting and shout on a level-up.</span>

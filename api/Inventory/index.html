@@ -2256,8 +2256,8 @@ before a fresh <code>(4)</code> to free inventory slots sooner (the trailing <co
 is stripped from <code>baseName</code>).</p>
 <p><code>examine</code> fires the item's right-click <strong>Examine</strong> and the engine prints
 the description to chat (info-only, no server cost).</p>
-<p><code>emptyCoalBag</code> empties a coal bag via the captured <code>CC_OP_LOW_PRIORITY</code>
-op on the main inventory (149, 0). Returns <code>false</code> if no coal bag is
+<p><code>emptyCoalBag</code> empties a coal bag via its contextual "Empty" op on the
+main inventory. Returns <code>false</code> if no coal bag is
 held. The fill half lives on the bank facade —
 <a href="../Bank/"><code>Bank::fillCoalBag</code></a> (bank must be open).</p>
 <div class="admonition warning">

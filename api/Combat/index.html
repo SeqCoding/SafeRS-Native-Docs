@@ -2233,18 +2233,17 @@ woodcutting axes' <em>Lumber Up</em> never set it, and the proof is the energy
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="interact-target">Interact target<a class="headerlink" href="#interact-target" title="Permanent link">&para;</a></h2>
-<p>The engine stores the local player's target as a <strong>kind byte</strong> plus an
-<strong>index in that kind's own index space</strong> (<code>Actor+0x3A7</code> / <code>+0x3A8</code>). For
-NPCs and players that index <em>is</em> the server spawn index — the same number
-as <code>NpcEntry::spawnIndex</code> / <code>ActionTarget.spawnIndex</code> — so it compares
-directly against a target you already hold. This mirrors RuneLite's
-<code>Actor.getInteracting</code>.</p>
+<p>The local player's target is stored as a <strong>kind</strong> (NPC / player / world
+entity) plus an <strong>index within that kind</strong>. For NPCs and players that index
+<em>is</em> the server spawn index — the same number as <code>NpcEntry::spawnIndex</code> /
+<code>ActionTarget.spawnIndex</code> — so it compares directly against a target you
+already hold. This mirrors RuneLite's <code>Actor.getInteracting</code>.</p>
 <div class="admonition danger">
 <p class="admonition-title">Never read the index on its own</p>
-<p>The engine drops a target by zeroing the <strong>kind</strong> and leaves the last
-index behind, so a bare <code>index != -1</code> latches as a permanent "still
-engaged". Every call on this page applies the kind check for you —
-don't re-derive it from a raw memory read.</p>
+<p>Dropping a target clears the <strong>kind</strong> but leaves the last index behind, so
+a bare <code>index != -1</code> latches as a permanent "still engaged". Every call on
+this page applies the kind check for you — always go through them rather
+than testing <code>interactTarget().index</code> yourself.</p>
 </div>
 <ul>
 <li><code>isInteracting()</code> — true while we are interacting with <em>anything</em>.
@@ -2352,8 +2351,7 @@ string plus the numeric <code>kindId</code>):</p>
 </tbody>
 </table>
 <p><code>InteractRef</code> is <code>{ InteractKind kind; int32_t index; }</code> with a
-<code>valid()</code> helper (<code>kind != None &amp;&amp; index &gt;= 0</code>). Verified static on
-240.5 / 240.6 / 240.7 / 241.1.</p>
+<code>valid()</code> helper (<code>kind != None &amp;&amp; index &gt;= 0</code>).</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">

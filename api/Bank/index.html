@@ -2474,14 +2474,11 @@ the same thread the script's <code>pulse</code> callback runs on. Blocking insid
 it needs to populate those labels, so the wait would time out even
 though the keypad is visible. Each call now returns in &lt;1 ms with no
 blocking; the script re-polls every tick until the widget closes.</p>
-<p><strong>Why <code>WndProc</code> synth instead of the packet path</strong>: real-player keypad
-clicks route through the <strong>dyn child's wrapper pointer</strong> (verified via
-live packet capture 2026-05-23), but <code>Interact::resolveWidget(group,
-child)</code> returns the static parent's wrapper. The packet path produced
-silently-dropped packets. Letting the engine's own input pipeline turn a
-<code>WndProc</code> click into the wire packet bypasses that mismatch and matches
-real-player wire bytes — same mechanism <code>Tab::switchTo</code> and
-<code>Interact::walkToMinimapPoint</code> use.</p>
+<p><strong>Why a synthesized click instead of the direct path</strong>: the keypad's buttons
+are dynamic children, and the direct path resolves them against the wrong
+parent, which silently drops the click. Routing through the engine's own
+input pipeline sidesteps that — the same mechanism <code>Tab::switchTo</code> and the
+minimap walker use.</p>
 <p><strong>Return values:</strong></p>
 <ul>
 <li><code>true</code> — PIN widget isn't open (no-op) <strong>or</strong> a click was dispatched
@@ -2706,9 +2703,8 @@ auto-switches to it if you're on another tab.</p>
 </tr>
 </tbody>
 </table>
-<p>Tab clicks route as CC_OP (slot 57) packets at widget <code>(12, 10)</code> with
-subSlot = <code>10 + tabIndex*4</code>, identifier = 1, itemId = 0xFFFF — matches
-real-player wire bytes captured 2026-05-19.</p>
+<p>Tab clicks are dispatched against the tab row of the bank interface. The
+call returns <code>false</code> if the bank isn't open or the index is out of range.</p>
 <h2 id="container-reads">Container reads<a class="headerlink" href="#container-reads" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2844,9 +2840,9 @@ reflected. Treat it as a planning hint, not ground truth — re-open the bank
 </table>
 <p><code>scrollToSlot</code> is the high-level helper: it auto-switches to the All
 Items tab if needed, computes the visual row accounting for tab
-partial-row breaks, and fires Microbot's trio (<code>setVarcInt(BANK_SCROLL,
-y)</code> + <code>runScript(UPDATE_SCROLLBAR, ...)</code> + direct <code>IfType+0x88</code>
-write). Returns <code>true</code> if the row is already in view (no-op).</p>
+partial-row breaks, and drives both the scroll value and the scrollbar
+redraw so the list actually moves. Returns <code>true</code> if the row is already
+in view (no-op).</p>
 <p><code>scrollWheel</code> synthesizes WM_MOUSEWHEEL events over the bank center —
 positive notches scroll DOWN, negative UP. Blocks ~16 ms per notch.</p>
 <h2 id="per-item-withdraw">Per-item withdraw<a class="headerlink" href="#per-item-withdraw" title="Permanent link">&para;</a></h2>
@@ -2936,8 +2932,8 @@ the withdraw side — see <code>Bank.cpp</code> <code>fireDepositSlotClick</code
 <p><code>deposit</code> uses the 1 / 5 / 10 presets for those amounts and <strong>Deposit-X</strong> (the
 server-driven chatbox prompt, via <a href="../Prompt/"><code>srs.prompt</code></a>) for any other amount — so
 it <strong>blocks</strong> while typing a custom amount. <code>depositAll</code> deposits the whole stack
-(identifier 2, capture-confirmed). The deposit-side identifiers 1 / 3 / 4 / 5 are
-inferred (see the note below); verify live if a deposit misfires.</p>
+. The other deposit quantities are best-effort — check the result if a
+deposit misfires.</p>
 <p><code>depositAllExcept</code> fires Deposit-All on the FIRST non-kept inventory
 slot per call and returns <code>false</code>; the script polls each tick until
 only kept items remain, at which point it returns <code>true</code>.</p>
@@ -3023,8 +3019,8 @@ from the requested one, so it's safe to call every tick.</p>
 </tr>
 </tbody>
 </table>
-<p><code>fillCoalBag</code> fills the coal bag from the open bank via a captured
-CC_OP_LOW_PRIORITY (the bank-contextual "Fill" op). Returns <code>false</code> if
+<p><code>fillCoalBag</code> fills the coal bag from the open bank via the bank-contextual
+"Fill" op. Returns <code>false</code> if
 the bank is closed or no coal bag is held. The empty half lives on
 <a href="../Inventory/">Inventory</a> as <code>Inventory::emptyCoalBag</code> /
 <code>srs.inventory.emptyCoalBag()</code> (works on the main inventory, no bank

@@ -2257,10 +2257,9 @@ arrow-key holds, and <code>setZoom</code> converges by injecting <code>WM_MOUSEW
 events.</p>
 <div class="admonition note">
 <p class="admonition-title">Plugin facade vs. GameSDK Camera</p>
-<p>This is the plugin-API facade for camera control. Internal engine
-access via <code>OSRSClient/GameSDK/Camera.h</code> (low-level state) is
-<em>not</em> part of the public API — use <code>srs::api::Camera</code> from plugins
-and scripts.</p>
+<p>This is the plugin-API facade for camera control. Use
+<code>srs::api::Camera</code> / <code>srs.camera</code> from plugins and scripts — the
+engine's own low-level camera state is not part of the public API.</p>
 </div>
 <h2 id="rotation-modes">Rotation modes<a class="headerlink" href="#rotation-modes" title="Permanent link">&para;</a></h2>
 <p>Three "modes" are exposed via three method families:</p>

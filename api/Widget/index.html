@@ -2259,8 +2259,8 @@ RuneLite's <code>WidgetID</code> encoding.</p>
 </tbody>
 </table>
 <h3 id="dynamic-children">Dynamic children<a class="headerlink" href="#dynamic-children" title="Permanent link">&para;</a></h3>
-<p><code>dynamicChildren</code> enumerates the runtime-allocated IfTypes held in the
-parent's vector at <code>IfType+0xB58</code>. This is where inventory slots,
+<p><code>dynamicChildren</code> enumerates the runtime-allocated children held by a
+parent widget. This is where inventory slots,
 bank items, dialogue options, etc. live; they don't appear in
 <code>group()</code> (which only walks the static <code>Components</code> array).</p>
 <p>Each entry's <code>dynIndex</code> carries its array slot,
@@ -2411,8 +2411,8 @@ offset immediately. Backs <code>Bank::scrollToSlot</code>.</p>
 </tr>
 </tbody>
 </table>
-<p><code>click</code> resolves the widget's absolute screen rect via the live IfRender
-capture, picks a random point in the rect, and routes through <code>Interact</code>
+<p><code>click</code> resolves the widget's absolute screen rect as currently rendered,
+picks a random point inside it, and routes through <code>Interact</code>
 (always-on spoof + DoAction). For inventory slots prefer
 <a href="../Inventory/">Inventory::interact</a> — same mechanism, narrower API.</p>
 <p><code>clickOp</code> is the X-aware sibling of <code>click</code>: it exposes the two DoAction

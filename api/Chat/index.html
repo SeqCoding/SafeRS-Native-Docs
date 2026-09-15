@@ -2133,8 +2133,8 @@ automatically, so a register-once-at-load callback needs no explicit cleanup.</p
 </div>
 <h2 id="chat-types">Chat types<a class="headerlink" href="#chat-types" title="Permanent link">&para;</a></h2>
 <p><code>srs.chat.type.*</code> — engine chat-type ints (RuneLite <code>ChatMessageType</code> values) to
-compare against <code>event.type</code>. <code>GAMEMESSAGE</code> and <code>PUBLIC</code> are verified live; the rest
-are from the reverse-engineering pass. <strong>Server / system messages do not use a single
+compare against <code>event.type</code>. <code>GAMEMESSAGE</code> and <code>PUBLIC</code> are the two you can rely
+on; treat the rest as best-effort labels. <strong>Server / system messages do not use a single
 value</strong> — level-ups and examines arrive as <code>GAMEMESSAGE</code> (<code>0</code>), while filterable "spam"
 like eating or skilling comes through as <code>105</code>, and broadcasts use others still. So the
 robust "is this a system line?" test is an <strong>empty <code>sender</code></strong> (player chat always has a
@@ -2234,7 +2234,7 @@ sender), not a type match. Log <code>event.type</code> to discover others on you
 <tr>
 <td><code>wallClock_ms</code></td>
 <td>int64</td>
-<td><code>GetTickCount64()</code> at capture (Lua: <code>wallClock</code>)</td>
+<td><code>GetTickCount64()</code> when the message was observed (Lua: <code>wallClock</code>)</td>
 </tr>
 </tbody>
 </table>

@@ -2051,10 +2051,9 @@
 <h1 id="world">World<a class="headerlink" href="#world" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::World</code> / <code>srs.world</code></p>
 <p>Current world / server number.</p>
-<p>The world int (e.g. 302, 398) is stored in the GS struct at
-<code>GameSDK::Offsets::GlobalState::WorldId</code> (= 0x321C). This API just
-wraps <code>GameData::worldId()</code> so plugins / Lua can read it without
-touching memory directly.</p>
+<p>The world number (e.g. 302, 398) as the client currently has it. Reads
+<code>0</code> when it isn't available yet — check <code>srs.game.isLoggedIn()</code> before
+trusting it.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

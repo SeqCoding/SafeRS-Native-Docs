@@ -2264,30 +2264,21 @@ Lua table:</p>
 <p><code>target</code> is <code>nil</code> once the victim has despawned (a kill, or the splat that
 killed it) — the flat <code>targetId</code> / <code>targetName</code> / <code>spawnIndex</code> fields are
 always present, so a splat is never dropped just because its actor is gone.</p>
-<p>Attribution uses two mechanisms, because NPC and player splats reach the engine
-sink by different routes. NPC splats arrive with the real NPC object and are
-matched directly; player splats arrive through a dispatch thunk and are matched
-by the server index latched off the mask parser. Either way you get a
-<code>spawnIndex</code>, so an "unresolved" splat still tells you <em>which</em> actor was hit.</p>
-<div class="admonition success">
-<p class="admonition-title"><code>block</code> and <code>damage</code> are confirmed</p>
-<p>Confirmed from a live melee capture (2026-09-12): <code>12</code> = <strong>block</strong> (8/8
-samples <code>amount == 0</code>) and <code>16</code> = <strong>damage</strong> (4/4 samples <code>amount</code> 3..10,
-never 0). These two cover ordinary combat.</p>
+<p>NPC and player splats are attributed by different routes internally, but either
+way you get a <code>spawnIndex</code> — so an <code>"unresolved"</code> splat still tells you <em>which</em>
+actor was hit, even when its name or id could not be filled in.</p>
+<div class="admonition note">
+<p class="admonition-title">Which <code>hitType</code> ids are supported</p>
+<p><code>12</code> (<strong>block</strong>) and <code>16</code> (<strong>damage</strong>) are supported and cover ordinary
+combat. Every other id is passed through as the raw number, and <code>type</code>
+reads <code>"unknown"</code> when an id has no name. <strong>Branch on the numeric
+<code>hitType</code></strong>, not on <code>type</code>, for anything outside block and damage.</p>
 </div>
 <div class="admonition warning">
-<p class="admonition-title">The other type ids are still unconfirmed</p>
-<p><code>0</code> corruption, <code>2</code> poison, <code>5</code> venom and <code>18</code> shield are inherited from
-the original RE and have not appeared in a capture yet. Branch on the raw
-<code>hitType</code> for anything outside block/damage, and expect <code>"unknown"</code> for
-ids we haven't mapped.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title"><code>soakType</code> / <code>soakAmount</code> are mislabelled guesses</p>
-<p>Both were <strong>constant</strong> (<code>0</code> and <code>4</code>) across every splat in that capture,
-for blocks and damage alike — not what a soak pair should look like. The
-fourth field is plausibly the splat's display delay. Don't build logic on
-these two yet; <code>amount</code> and <code>blocked</code> are unaffected.</p>
+<p class="admonition-title"><code>soakType</code> / <code>soakAmount</code> are not supported</p>
+<p>These two are exposed on the entry but carry no meaningful value today.
+Do not branch on them. <code>amount</code> and <code>blocked</code> are unaffected and
+reliable.</p>
 </div>
 <h2 id="threading">Threading<a class="headerlink" href="#threading" title="Permanent link">&para;</a></h2>
 <p>The engine hook fires on the game thread. Nothing here calls Lua from there:

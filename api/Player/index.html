@@ -2243,9 +2243,8 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   Microbot coordinate), falling back to <code>position</code> when the conversion
   can't be made. Pairs with <a href="../Area/"><code>srs.area.isInInstance()</code></a> to
   decide raw-vs-template coordinates in instanced content.</li>
-<li><strong><code>displayName</code></strong> — empty string pre-login. Resolved via WI-map
-  (GS+0xCA40 → WorldInstance → PlayerSubMap.find(LocalPlayerIndex))
-  in patch 238+.</li>
+<li><strong><code>displayName</code></strong> — the local player's display name; empty string
+  pre-login.</li>
 <li><strong><code>animation</code></strong> — current animation id from the active AnimSlot.
   <code>-1</code> = idle.</li>
 <li><strong><code>orientation</code></strong> — the local player's facing angle, 0–2047, same

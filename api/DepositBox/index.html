@@ -2183,10 +2183,9 @@ walk, and fires OPLOC1 on the loc's SW anchor. Returns <code>true</code> (no-op)
 the box is already open, <code>false</code> if no deposit box is in scene.</p>
 <p><code>close</code> clicks the close "X" — a runtime <strong>dynamic child [11] of
 component (192, 1)</strong> (the title-bar frame) — via CC_OP (slot 57) with
-that child's wrapper as <code>overrideWidgetPtr</code>. Verified from a live
-DoAction capture (build 239): <code>slot=57 X=11 Y=12582913 "Close"</code>, i.e.
-<code>(192, 1)</code> subSlot 11 — the same shape as the bank's own close. Returns
-<code>false</code> if the box isn't open or the button isn't rendered this frame.</p>
+that child's wrapper as <code>overrideWidgetPtr</code> — the same shape as the bank's
+own close. Returns <code>false</code> if the box isn't open or the button isn't
+rendered this frame.</p>
 <h2 id="bulk-deposit">Bulk deposit<a class="headerlink" href="#bulk-deposit" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2259,8 +2258,8 @@ blocking, and scripts never need to touch the preset themselves. A pack that
 is entirely kept items still returns <code>true</code> immediately without changing the
 preset.</p>
 <p>If you fire the ops yourself rather than through <code>depositAllExcept</code>, select
-<code>ALL</code> first and check it landed with <code>getQuantity</code> — do not assume the
-identifiers from a capture taken on some other preset.</p>
+<code>ALL</code> first and check it landed with <code>getQuantity</code> — do not assume the op
+that worked under one preset means the same thing under another.</p>
 <p>Keeping an in-inventory tool (e.g. a pickaxe) is the primary use case:</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Bank ore at the deposit box while keeping the pickaxe in the pack.</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="nf">open</span><span class="p">()</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">depositbox</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
