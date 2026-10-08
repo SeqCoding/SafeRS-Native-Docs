@@ -2130,19 +2130,22 @@ IfType is loaded, not that it's the <em>active</em> tab).</p>
 </table>
 <h3 id="switchto-contract">switchTo contract<a class="headerlink" href="#switchto-contract" title="Permanent link">&para;</a></h3>
 <ol>
+<li><code>UNKNOWN</code> and <code>NOTHING_SELECTED</code> are not valid targets → return <code>false</code>.</li>
 <li>If <code>current(ctx) == tab</code> → return <code>true</code> immediately (no-op).</li>
-<li>Read the AWT VK code from the player's <code>STONE_*_KEY</code> varbit for
-   this tab. If bound, inject it as a press+release via the keyboard
-   ring — closest to real player behavior.</li>
-<li>If no hotkey is bound (varbit unset / snapshot not warmed) <strong>or</strong>
-   the keypress can't be delivered (pre-login, GS unresolved), fall
-   back to a spoofed click on the chrome tab widget. The chrome
-   (group, child) pair is resolved from the live display mode
-   (Fixed=548 / ResizableClassic=161 / ResizableModern=164).</li>
+<li>Otherwise it drives the <strong>chrome tab widget</strong> (the sidebar stone), not a
+   hotkey. The chrome (group, child) pair is resolved from the live display
+   mode (Fixed=548 / ResizableClassic=161 / ResizableModern=164). Preferred
+   path: fire the stone's own click action and run its handler, exactly as a
+   hand-click would. If that handler can't be located, fall back to a
+   synthetic left-click on the stone (this fallback returns <code>true</code> without
+   confirming the switch).</li>
+<li>Returns <code>false</code> if the stone isn't in the current render snapshot.</li>
 </ol>
-<p><code>hotkeyVk</code> returns <code>0</code> if unbound (or if the varbit snapshot hasn't
-refreshed yet). Useful for "Inventory tab bound to: F4" UI or gating
-<code>switchTo</code>.</p>
+<p>A switch costs one action slot and lands on a later frame — poll <code>current()</code>
+(or <code>isOpen()</code>) rather than assuming it took effect the same tick.</p>
+<p><code>hotkeyVk</code> is <strong>informational only</strong>: <code>switchTo</code> never presses the bound key.
+It returns <code>0</code> if unbound (or if the varbit snapshot hasn't refreshed yet) and
+is useful for "Inventory tab bound to: F4" UI.</p>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <p><strong>InterfaceTab</strong> (<code>InterfaceTab</code> / <code>srs.tab.*</code>):</p>
 <table>
@@ -2239,8 +2242,8 @@ refreshed yet). Useful for "Inventory tab bound to: F4" UI or gating
 <div class="admonition note">
 <p class="admonition-title">Raw varc values don't match enum</p>
 <p>The underlying varc value is 0-based and DOES NOT match this
-enum's ordinal — see <code>Tab.cpp::current()</code> for the conversion.
-The raw values mirror Microbot's <code>InterfaceTab.varcIntIndex</code>
+enum's ordinal; <code>current()</code> converts it for you (use <code>rawIndex()</code> only
+if you need the raw value). The raw values mirror Microbot's <code>InterfaceTab.varcIntIndex</code>
 (e.g. Combat=0, Inventory=3, AccMan=8, Friends=9, Logout=10).
 The value <code>-1</code> means "no tab selected" (fullscreen interface up,
 or pre-login).</p>

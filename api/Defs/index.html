@@ -2092,7 +2092,8 @@ target from <code>srs.npc.*</code> / <code>entity.*</code>, <strong>or</strong> 
   it from <code>pulse</code> / <code>onTick</code>, never <code>onDraw</code>, and prefer the target form when you
   already have a live NPC.</li>
 </ul>
-<p>Combat level is <strong>not</strong> included — the client never decodes it for NPCs.</p>
+<p>Combat level is <strong>not</strong> part of this table — read <code>.combatLevel</code> from the
+<code>srs.npc.*</code> / <code>entity.*</code> entry instead (<code>-1</code> when the NPC shows no level).</p>
 </div>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- by a live target (instant)</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">nearest</span><span class="p">()</span>

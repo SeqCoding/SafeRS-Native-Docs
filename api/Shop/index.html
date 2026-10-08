@@ -2126,6 +2126,15 @@ a CC_OP on the grid cell (dyn child of <code>Shopmain.ITEMS</code> (300, 16) or 
 <code>Shopside</code> inventory (301, 0)), routed through the engine's action
 dispatcher on the main thread with the input spoof. No packets are
 built by the facade.</p>
+<div class="admonition warning">
+<p class="admonition-title">Buy / sell not yet verified in game</p>
+<p><code>buy</code> / <code>sell</code> (added 2026-09-12) compile and are built on the same
+approach as the Bank per-item withdraw, but have <strong>not</strong> been tested
+against a live shop. Menu positions are read from each slot's own
+action list; the fallback table (<code>Value</code> = 1, <code>1</code> = 2, <code>5</code> = 3,
+<code>10</code> = 4, <code>50</code> = 5) and the <code>Buy X</code> / preset flows are unconfirmed. Test
+on a cheap item before relying on them in a script.</p>
+</div>
 <h2 id="state">State<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2220,8 +2229,9 @@ is delivered:</p>
 <li><strong><code>Buy 1 / 5 / 10 / 50</code></strong> (the standard shop menu): an exact op fires
   when <code>qty</code> matches one. Otherwise the largest ops ≤ <code>qty</code> fire in turn
   (7 = <em>Buy 5, Buy 1, Buy 1</em>), one per game tick — the call <strong>blocks</strong>
-  for (clicks − 1) ticks. It never over-buys; if stock (or the stack
-  being sold) runs out mid-way it stops early and still returns <code>true</code>
+  for (clicks − 1) ticks. It never over-buys on the standard menu (a
+  slot with no <code>Buy 1</code> op would fire its smallest op instead); if stock
+  (or the stack being sold) runs out mid-way it stops early and still returns <code>true</code>
   for the clicks that fired.</li>
 <li><strong><code>Buy X</code> / <code>Sell X</code></strong> (when the UI exposes it): one click, then the
   amount typed into the chatbox prompt (like <code>Bank::withdrawX</code>).</li>

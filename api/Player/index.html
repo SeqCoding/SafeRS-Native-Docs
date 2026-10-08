@@ -2135,7 +2135,7 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td><code>srs.player.runEnergy() → int</code></td>
 </tr>
 <tr>
-<td>Toggle run</td>
+<td>Set run on/off</td>
 <td><code>Player::toggleRunEnergy(ctx, on) → bool</code></td>
 <td><code>srs.player.toggleRunEnergy(on) → bool</code></td>
 </tr>
@@ -2205,6 +2205,11 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <td><code>srs.player.maxHitpoints() → int</code></td>
 </tr>
 <tr>
+<td>Hitpoints percentage</td>
+<td><code>Player::hpPercent(ctx) → int32</code></td>
+<td><code>srs.player.hpPercent() → number</code></td>
+</tr>
+<tr>
 <td>Current prayer points</td>
 <td><code>Player::prayer(ctx) → int32</code></td>
 <td><code>srs.player.prayer() → int</code></td>
@@ -2271,6 +2276,12 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   resolved.</li>
 <li><strong><code>hitpoints</code> / <code>maxHitpoints</code></strong> — shorthand for
   <code>skillLevel(Skill::Hitpoints)</code> / <code>skillBase(Skill::Hitpoints)</code>.</li>
+<li><strong><code>hpPercent</code></strong> — <code>floor(hitpoints * 100 / maxHitpoints)</code>. Can exceed
+  <code>100</code> while boosted (e.g. after an overload or Saradomin brew). Returns <code>0</code>
+  when hitpoints aren't readable (e.g. logged out).</li>
+<li><strong><code>toggleRunEnergy</code></strong> — despite the name this <em>sets</em> the run state: it
+  reads the current run toggle and returns <code>true</code> without clicking if it
+  already matches <code>on</code>; otherwise it clicks the run orb.</li>
 <li><strong><code>prayer</code> / <code>maxPrayer</code></strong> — current prayer points (live, drains with
   use) + base prayer level. Mirrors <code>srs::api::Prayer::points</code> /
   <code>Prayer::level</code>.</li>
@@ -2322,13 +2333,49 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 </tr>
 </tbody>
 </table>
+<p>Methods (Lua, value semantics):</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Offset copy</td>
+<td><code>tile:derive(dx, dy[, dPlane]) → WorldTile</code></td>
+</tr>
+<tr>
+<td>Distance (<code>"chebyshev"</code> default, <code>"manhattan"</code>, <code>"euclidean"</code>)</td>
+<td><code>tile:distanceTo(other[, alg]) → number</code></td>
+</tr>
+<tr>
+<td>Same plane and Chebyshev distance ≤ <code>r</code></td>
+<td><code>tile:withinRange(other, r) → bool</code></td>
+</tr>
+<tr>
+<td>Random tile in the ±<code>rx</code> × ±<code>ry</code> box around this one</td>
+<td><code>tile:randomize(rx, ry) → WorldTile</code></td>
+</tr>
+<tr>
+<td>Coordinate equality</td>
+<td><code>tile:equals(other) → bool</code> (also <code>==</code>)</td>
+</tr>
+<tr>
+<td>Debug string</td>
+<td><code>tostring(tile)</code> → <code>"WorldTile(x, y, plane)"</code></td>
+</tr>
+</tbody>
+</table>
 <div class="admonition note">
-<p class="admonition-title">No Lua constructor</p>
-<p><code>WorldTile</code> is a read-only usertype with <strong>no</strong> Lua constructor —
-scripts obtain one from <code>srs.player.position()</code> (or another API that
-returns tiles). Every Lua API that takes a tile also offers
-<code>(x, y[, plane])</code> overloads (e.g. <code>srs.camera.rotateToTile(x, y)</code>),
-so you never need to build one.</p>
+<p class="admonition-title">Lua constructor</p>
+<p>Fields are read-only. Scripts normally obtain a tile from
+<code>srs.player.position()</code> (or another API that returns tiles), but you can
+build one with <code>WorldTile.new(x, y[, plane])</code> (<code>plane</code> defaults to <code>0</code>).
+Plain <code>WorldTile(x, y)</code> does <strong>not</strong> work. Every Lua API that takes a
+tile also offers <code>(x, y[, plane])</code> overloads (e.g.
+<code>srs.camera.rotateToTile(x, y)</code>), so you rarely need to build one.</p>
 </div>
 <p><strong><code>Skill</code></strong> enum — values match the engine's skill table:</p>
 <p><code>Attack</code>, <code>Defence</code>, <code>Strength</code>, <code>Hitpoints</code>, <code>Ranged</code>, <code>Prayer</code>,

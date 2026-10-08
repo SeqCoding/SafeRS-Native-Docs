@@ -2246,7 +2246,7 @@ protection, so a mistyped event name fails loudly at <code>on()</code> instead o
 firing. <code>off(token)</code> is safe to call from inside a firing callback; a full script
 reload clears all subscriptions automatically.</p>
 <p>The optional middle <code>id</code> argument filters by the event's primary id (see each event
-below) — e.g. only a specific skill's XP, or (once wired) a specific varbit.</p>
+below) — e.g. only a specific skill's XP, or a specific varbit.</p>
 <h2 id="event-catalog">Event catalog<a class="headerlink" href="#event-catalog" title="Permanent link">&para;</a></h2>
 <p><code>srs.events.EVENTS</code> exposes the valid names as constants, e.g.
 <code>srs.events.EVENTS.XP_GAINED == "xpGained"</code>. Every payload table also carries an

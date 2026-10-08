@@ -2384,7 +2384,7 @@ handler fires twice per tick. Register once, at the top level.</p>
 <tr>
 <td>Settings-changed callback</td>
 <td><code>script.onSettingsChanged(fn(settingsTable))</code></td>
-<td>Fires when the user edits settings in the client UI</td>
+<td>Top-level only — silently no-ops from inside a callback. Fires when the user edits settings in the client UI</td>
 </tr>
 <tr>
 <td>Settings button handler</td>
@@ -2591,7 +2591,7 @@ callback.</p>
 </ul>
 <h2 id="available-lua-stdlib">Available Lua stdlib<a class="headerlink" href="#available-lua-stdlib" title="Permanent link">&para;</a></h2>
 <p>Open libraries: <code>base</code>, <code>string</code>, <code>math</code>, <code>table</code>, <code>os</code>.
-Not available: <code>io</code>, <code>package</code> (<code>require</code> is replaced — see above).</p>
+Not available: <code>io</code>, <code>package</code> (<code>require</code> is replaced — see above), <code>coroutine</code>, <code>utf8</code>, <code>debug</code>.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">script</span><span class="p">.</span><span class="py">declareInfo</span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Miner&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">author</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;me&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">                    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Powermines iron&quot;</span><span class="w"> </span><span class="p">}</span>

@@ -2385,7 +2385,8 @@ side-stepping a tick-attack hitbox).</p>
 </span></code></pre></div>
 <h2 id="walksmart-automatic-dispatch"><code>walkSmart</code> — automatic dispatch<a class="headerlink" href="#walksmart-automatic-dispatch" title="Permanent link">&para;</a></h2>
 <p>Picks <code>walkFastCanvas</code> if the target tile projects onto the canvas,
-otherwise falls back to the hybrid path executor (<code>Walk::to</code>).</p>
+otherwise falls back to the hybrid path executor (<code>Walk::to</code>). The fallback is
+always a current-floor walk — <code>plane</code> only applies to the on-canvas click.</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Caller doesn&#39;t need to know whether the tile is visible.</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">game</span><span class="p">.</span><span class="nf">walkSmart</span><span class="p">(</span><span class="nv">targetX</span><span class="p">,</span><span class="w"> </span><span class="nv">targetY</span><span class="p">)</span>
 </span></code></pre></div>
@@ -2413,10 +2414,10 @@ closest tile that satisfies all of:</p>
 <li><strong>Preferably</strong> on the current canvas (one-click reachable).</li>
 </ol>
 <p>The origin tile itself is skipped — call this when the origin is the
-problem. If multiple candidates tie on distance, on-canvas tiles win
-(so the result can usually be reached via <code>walkFastCanvas</code>). If the
-search exhausts without finding any on-canvas safe tile, the closest
-off-canvas safe tile is returned (so <code>walkSmart</code> can fall back to the
+problem. An on-canvas safe tile anywhere within the radius beats a closer
+off-canvas one (so the result can usually be reached via
+<code>walkFastCanvas</code>). If the search exhausts without finding any on-canvas safe
+tile, the closest off-canvas safe tile is returned (so <code>walkSmart</code> can fall back to the
 path executor for the multi-tick approach).</p>
 <p><strong>Arguments:</strong></p>
 <table>
@@ -2471,9 +2472,12 @@ returns the equivalent table — but returns <code>nil</code> instead of a
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="to-full-pathfinder"><code>to</code> — full pathfinder<a class="headerlink" href="#to-full-pathfinder" title="Permanent link">&para;</a></h2>
-<p>The original navigation API. Runs the local A* (or <code>StaticPathfinder</code>
-across regions) and executes the path with hybrid minimap/canvas clicks
-across multiple ticks. Handles transports automatically.</p>
+<p>The full navigation API. Plans a route with <strong>PathfinderV2</strong> (a graph
+search over the bundled collision and transport data; the older v1
+<code>StaticPathfinder</code> is the automatic fallback if that data isn't loaded) and
+executes it with hybrid minimap/canvas clicks across multiple ticks.
+Handles transports automatically. Both planners feed the same executor, so
+click selection, door handling and stall recovery behave identically.</p>
 <ul>
 <li><code>useTransports = true</code> (default): doors, agility shortcuts, fairy
   rings, manholes, ladders, etc. are invoked as the path crosses them.
@@ -2482,9 +2486,10 @@ across multiple ticks. Handles transports automatically.</p>
 <li>Without a <code>plane</code> argument the walk targets the player's current
   floor. Pass the cross-plane overload (<code>plane</code> 0..3) to route via
   stairs/ladders to another floor; <code>-1</code> = current floor.</li>
-<li><code>hasArrived()</code> returns <code>true</code> when no walk has been issued yet, or
-  the executor reached <code>PathExecutor::CLOSE_ENOUGH</code> of the goal. It
-  stays <code>false</code> after an <strong>Unreachable</strong> termination — poll
+<li><code>hasArrived()</code> is <code>true</code> only once a walk has arrived (the executor
+  reached the goal or got as close as it can, within about 5 tiles). It is
+  <code>false</code> before any walk has been issued, while walking, and after an
+  <strong>Unreachable</strong> termination — poll
   <code>srs.walk.state()</code> to tell "arrived" from "gave up", and
   <code>srs.walk.arrivalDistance()</code> for how close the arrival actually got.</li>
 </ul>
@@ -2510,10 +2515,24 @@ across multiple ticks. Handles transports automatically.</p>
   timeout), the executor re-plans from the player's actual landing
   tile.</li>
 </ul>
-<p>If your character genuinely can't use a transport on the shortest route
-(missing agility level, no Lunar spellbook, etc.) and the pathfinder
-still tries to route through it, pass <code>useTransports = false</code> to force
-a walk-only path.</p>
+<p><strong>Requirement filtering (PathfinderV2).</strong> Before each plan the client
+snapshots what your account can actually use — boosted skill levels,
+finished quests, items carried or worn (plus the last-known bank contents),
+relevant varbits/varps and whether you are on a members world — and only
+plans through transports whose requirements pass. Agility shortcuts, teleport
+items and teleport spells are therefore skipped when you lack the level,
+quest, item or runes. Only transport types the executor knows how to fire are
+planned. If the snapshot isn't available yet (e.g. just after login), any
+transport with a requirement is refused rather than assumed.</p>
+<p>Pass <code>useTransports = false</code> to force a walk-only path regardless (for
+example to avoid a transport you do not want to use).</p>
+<p>The executor also waits for an in-flight door "Open" to complete before
+issuing further walk clicks, skips doors that are already open (re-clicking
+would close them), and only opens a door the route actually crosses.</p>
+<p><strong>Instances.</strong> <code>srs.walk.to</code>, <code>Walk::walkSmart</code> and <code>Walk::fastCanvas</code>
+translate wiki/template coordinates into the live instance's coordinates
+when you are inside an instance, so scripts can pass the template tile. The
+legacy <code>game.*</code> walkers do not perform this translation.</p>
 <p><code>walkFastCanvas</code> does <strong>not</strong> invoke transports — it's a one-shot
 canvas click, so anything more elaborate than "click this tile" needs
 the full pathfinder.</p>

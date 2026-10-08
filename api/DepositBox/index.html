@@ -2179,8 +2179,10 @@ deposit buttons, per-item <code>depositAllExcept</code>, and the quantity preset
 scene <strong>loc</strong> instead of a banker NPC: it tries <code>"Bank deposit box"</code> then
 <code>"Deposit box"</code>, resolves the nearest instance that actually exposes the
 <code>"Deposit"</code> verb (decorative twins are filtered), cancels any in-flight
-walk, and fires OPLOC1 on the loc's SW anchor. Returns <code>true</code> (no-op) if
-the box is already open, <code>false</code> if no deposit box is in scene.</p>
+walk, and fires OPLOC1 on the loc's SW anchor. Returns <code>true</code> if the box is
+already open (no-op) <strong>or</strong> the click was issued — it does not mean the
+interface is open yet, so check <code>isOpen()</code> on a later tick. Returns <code>false</code>
+if no deposit box is in scene.</p>
 <p><code>close</code> clicks the close "X" — a runtime <strong>dynamic child [11] of
 component (192, 1)</strong> (the title-bar frame) — via CC_OP (slot 57) with
 that child's wrapper as <code>overrideWidgetPtr</code> — the same shape as the bank's
@@ -2216,8 +2218,8 @@ rendered this frame.</p>
 <h2 id="per-item-deposit">Per-item deposit<a class="headerlink" href="#per-item-deposit" title="Permanent link">&para;</a></h2>
 <p>The deposit-side inventory is widget <code>(192, 24)</code> — the box renders the
 player's backpack in its own grid (not the sidebar). These are UI/CS2
-widget actions, so they dispatch as engine <strong>invokes (DoAction)</strong>, not
-wire packets: a CC_OP (slot 57) at that widget with <code>subSlot = backpack
+widget actions, so they dispatch through the <strong>engine action dispatch</strong>, not
+as raw wire packets: a CC_OP (slot 57) at that widget with <code>subSlot = backpack
 slot (0..27)</code>, <code>itemId</code> from the backpack cache, and op index <strong>1</strong>
 (<code>spawnIdx</code>).</p>
 <table>
@@ -2243,7 +2245,9 @@ slot (0..27)</code>, <code>itemId</code> from the backpack cache, and op index <
 </table>
 <p><code>depositAllExcept</code> fires one deposit click on the FIRST non-kept inventory
 slot per call and returns <code>false</code>; the script polls each tick until only
-kept items remain, at which point it returns <code>true</code>.</p>
+kept items remain, at which point it returns <code>true</code>. The by-name form matches
+by case-insensitive <strong>substring</strong> of the item's name (<code>"pickaxe"</code> keeps every
+pickaxe); the by-id form matches exactly.</p>
 <h3 id="the-item-ops-are-positional">The item ops are positional<a class="headerlink" href="#the-item-ops-are-positional" title="Permanent link">&para;</a></h3>
 <p>The box's item ops are <strong>positional</strong>: op index 1 is whichever quantity the
 <a href="#quantity-preset">quantity preset</a> currently selects — <em>not</em> literally
@@ -2257,6 +2261,13 @@ reads the preset and, if it isn't <code>ALL</code>, clicks the All button and re
 blocking, and scripts never need to touch the preset themselves. A pack that
 is entirely kept items still returns <code>true</code> immediately without changing the
 preset.</p>
+<div class="admonition warning">
+<p class="admonition-title">Op index not yet re-verified on the current client</p>
+<p>The positional "op 1 = preset quantity" mapping was measured before the
+241.1 client update; the bank's deposit ops were re-read and renumbered in
+that update. If <code>depositAllExcept</code> deposits the wrong amount, re-check the
+box's menu before blaming the preset logic.</p>
+</div>
 <p>If you fire the ops yourself rather than through <code>depositAllExcept</code>, select
 <code>ALL</code> first and check it landed with <code>getQuantity</code> — do not assume the op
 that worked under one preset means the same thing under another.</p>

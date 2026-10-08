@@ -2200,9 +2200,9 @@ DoAction).</p>
 </thead>
 <tbody>
 <tr>
-<td>Click action on slot</td>
-<td><code>Inventory::interact(ctx, slot, action) → bool</code></td>
-<td><code>srs.inventory.interact(slot, action) → bool</code></td>
+<td>Click action on slot or item name</td>
+<td><code>Inventory::interact(ctx, slot\|name, action) → bool</code></td>
+<td><code>srs.inventory.interact(slot\|name, action) → bool</code></td>
 </tr>
 <tr>
 <td>Click by id</td>
@@ -2248,10 +2248,16 @@ DoAction).</p>
 </table>
 <p><code>action</code> is the exact menu-option string (e.g. <code>"Eat"</code>, <code>"Drop"</code>,
 <code>"Wield"</code>, <code>"Bury"</code>, <code>"Drink"</code>, <code>"Use"</code>). Returns <code>false</code> on any of:
-slot out of range, slot empty, action not in the opcode table, slot
-widget not currently rendered, or spoofer failure.</p>
+slot out of range, slot empty, slot widget not currently rendered, or
+spoofer failure. An action the item doesn't list does <strong>not</strong> fail — it
+falls back to the item's primary (first) option, so check the verb is
+spelled as the item's menu shows it.</p>
+<p><code>interact</code> takes either a <strong>slot</strong> (a number, 0–27) or an <strong>item name</strong>
+(first slot whose item name contains <code>name</code>, case-insensitive — identical
+to <code>interactByName</code>). A number is always a slot: to act on an item id use
+<code>interactById</code>.</p>
 <p><code>interactByLowestDose</code> targets the <strong>lowest</strong> dose of a potion family —
-<code>interactByLowestDose(ctx, "Prayer potion", "Drink")</code> drinks a <code>(1)</code>
+<code>interactByLowestDose("Prayer potion", "Drink")</code> drinks a <code>(1)</code>
 before a fresh <code>(4)</code> to free inventory slots sooner (the trailing <code>(N)</code>
 is stripped from <code>baseName</code>).</p>
 <p><code>examine</code> fires the item's right-click <strong>Examine</strong> and the engine prints
@@ -2328,6 +2334,14 @@ matching module.</p>
 <p><code>useItemOnItem</code> picks the first inventory slot holding each id (returns
 <code>false</code> if both resolve to the same slot). <code>useItemOnItemBatch</code> repeats the
 item-on-item up to <code>count</code> ∈ [1, 8] times for fast-fletching-style bursts.</p>
+<div class="admonition warning">
+<p class="admonition-title">NPC and ground-item variants not yet verified in game</p>
+<p><code>useItemOnNpc</code> and <code>useItemOnGroundItem</code> compile and
+their menu actions follow the game's use-on-NPC / use-on-ground-item
+options, but they have <strong>not</strong> been tested against a live client.
+<code>useItemOnObject</code> and <code>useItemOnItem</code> are the established paths.
+Test on a harmless target before depending on them.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">How the use-on calls behave</p>
 <p>Every <code>useItemOn*</code> call is two clicks: it stages the inventory item

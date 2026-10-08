@@ -2341,12 +2341,12 @@ the click only as a fallback.</p>
 <td><code>srs.dialogue.selectOption(n) → bool</code></td>
 </tr>
 <tr>
-<td>List option labels</td>
+<td>List option labels (the "Select an Option" header is excluded, so list index <em>i</em> maps to key <em>i</em>)</td>
 <td><code>Dialogue::options(ctx) → vector&lt;string&gt;</code></td>
 <td><code>srs.dialogue.options() → table</code></td>
 </tr>
 <tr>
-<td>Pick by label substring</td>
+<td>Pick by label (exact match first, then substring)</td>
 <td><code>Dialogue::selectOptionByText(ctx, text) → bool</code></td>
 <td><code>srs.dialogue.selectOptionByText(text) → bool</code></td>
 </tr>
@@ -2408,7 +2408,8 @@ submitted, <strong>not</strong> accepted — poll <code>isTextPrompt()</code> a 
 need to know it closed. These are the same calls as
 <a href="../Prompt/"><code>srs.prompt.*</code></a>, placed here so dialogue-driven code has them
 next to the queries it already polls.</p>
-<p><code>selectOptionByText</code>, <code>hasDialogueText</code>, and <code>hasDialogueOption</code> all use
+<p><code>selectOptionByText</code> tries a case-insensitive <strong>exact</strong> match first, then a
+case-insensitive substring match; <code>hasDialogueText</code> and <code>hasDialogueOption</code> use
 case-insensitive substring matching. <code>getDialogueText</code> returns the body
 text of the open dialog (empty if none is up or it hasn't populated yet);
 <code>hasDialogueText</code> / <code>hasDialogueOption</code> are pure queries — they don't

@@ -2087,8 +2087,7 @@ ranged attack ids versus everything else).</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Cache ids</p>
-<p><code>id</code> is <strong>this client's spotanim/graphic cache id</strong> (cache group
-0xD in the OSRS-OS3303-BWXF build). It does <strong>not</strong> directly
+<p><code>id</code> is <strong>this client's spotanim/graphic cache id</strong>. It does <strong>not</strong> directly
 equal RuneLite's <code>ProjectileID</code> enum — different cache revisions
 diverge by varying amounts. If you need RuneLite-style labels,
 build a per-build mapping table.</p>
@@ -2266,7 +2265,9 @@ rather than off <code>ticksUntilLanding</code>.</p>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">wallClock_ms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">};</span>
 </span></code></pre></div>
-<p><code>id</code>, <code>cycle</code>, <code>field288</code> and <code>field290</code> are supported. The <code>pos*</code> fields and
+<p><code>id</code>, <code>cycle</code>, <code>field288</code> and <code>field290</code> are supported in C++. The Lua event
+table carries only <code>id</code>, <code>cycle</code>, <code>pos0</code>–<code>pos2</code> and <code>wallClock</code>, so
+<code>field288</code> / <code>field290</code> are not available to scripts. The <code>pos*</code> fields and
 <code>field280</code> are raw engine values with no defined meaning — don't build on them.
 The landing cycle is <strong>not</strong> on the spawn event; read it from
 <code>ProjectileEntry.absoluteEndCycle</code> on the next poll.</p>

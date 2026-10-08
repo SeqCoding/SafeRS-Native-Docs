@@ -2074,11 +2074,18 @@
 
 <h1 id="runepouch">RunePouch<a class="headerlink" href="#runepouch" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::RunePouch</code> / <code>srs.runepouch</code></p>
-<p>Read the rune pouch contents via VarClient varbits. All slots
-(regular + divine) are exposed; slots that don't exist on the
-player's pouch return rune id 0.</p>
+<p>Read the rune pouch contents via game varbits. All slots
+(regular + divine) are read; slots that don't exist on the
+player's pouch are simply omitted from <code>contents()</code>.</p>
 <p>Each slot is two varbits: TYPE (rune item id) and QUANTITY (1..16k).
 IDs lifted from RuneLite <code>gameval/VarbitID.java</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Unverified: TYPE varbit → item id</p>
+<p>The facade treats the TYPE varbit value as the rune's item id. RuneLite
+resolves that value through an enum lookup, so this mapping has not been
+confirmed in-game. If <code>quantity()</code> / <code>contains()</code> return 0 for a rune you
+know is in the pouch, log <code>contents()</code> and compare the ids.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Read-only</p>
 <p>Modifying the pouch goes through the rune-pouch widget UI
@@ -2116,7 +2123,8 @@ IDs lifted from RuneLite <code>gameval/VarbitID.java</code>.</p>
 </tr>
 </tbody>
 </table>
-<p><code>hasPouch</code> checks 4 item ids against the inventory + worn (cheap).</p>
+<p><code>hasPouch</code> checks the 4 pouch item ids (regular / divine, plain / noted)
+against the inventory, and the 2 un-noted ids against worn equipment (cheap).</p>
 <p><code>contents</code> returns up to 6 entries (4 standard + 2 divine) — empty
 slots are omitted, so <code>.size()</code> equals the number of active runes.</p>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>

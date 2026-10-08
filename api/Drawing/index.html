@@ -2426,17 +2426,17 @@ screen-space. Safe to call from <code>onDraw</code> at any time.</p>
 <tr>
 <td>2D point</td>
 <td><code>Vec2 { float x, y }</code></td>
-<td><code>srs.Vec2.new()</code> / <code>srs.Vec2.new(x, y)</code></td>
+<td>global <code>Vec2.new()</code> / <code>Vec2.new(x, y)</code> (not on <code>srs</code>)</td>
 </tr>
 <tr>
 <td>Rectangle</td>
 <td><code>Rect { int32 x, y, w, h }</code></td>
-<td>read-only <code>srs.Rect</code>, no constructor (returned by <code>widgetRect</code>)</td>
+<td>global read-only <code>Rect</code>, no constructor (returned by <code>widgetRect</code>)</td>
 </tr>
 <tr>
 <td>Color</td>
 <td><code>Color { float r, g, b, a }</code></td>
-<td><code>srs.Color.new()</code> / <code>srs.Color.new(r, g, b, a)</code></td>
+<td><code>srs.Color.new()</code> / <code>srs.Color.new(r, g, b, a)</code> (also global <code>Color.new</code>)</td>
 </tr>
 <tr>
 <td>Corner</td>
@@ -2445,6 +2445,8 @@ screen-space. Safe to call from <code>onDraw</code> at any time.</p>
 </tr>
 </tbody>
 </table>
+<p>Lua scripts cannot construct a <code>Rect</code>, so <code>drawRect</code> / <code>drawFilledRect</code>
+only accept a rect obtained from <code>srs.draw.widgetRect</code>.</p>
 <h2 id="color-presets">Color presets<a class="headerlink" href="#color-presets" title="Permanent link">&para;</a></h2>
 <p><code>srs::api::colors::*</code> / <code>srs.colors.*</code>:</p>
 <p><code>White</code>, <code>Black</code>, <code>Gray</code>, <code>Red</code>, <code>Green</code>, <code>Yellow</code>, <code>Orange</code>, <code>Cyan</code>, <code>Magenta</code>.</p>

@@ -2129,8 +2129,12 @@
 <li><code>shouldDelay</code>'s <code>fatigue</code> argument is the per-call skip probability
   (0..1). Default 5%; pass higher values during long sessions to
   slow the script down.</li>
-<li><code>shouldMicroBreak</code>'s default of 0.1 % at 60 Hz works out to roughly
-  one break per ~16 seconds of polling.</li>
+<li><code>shouldMicroBreak</code>'s default of 0.1 % is per call: roughly one break
+  per ~16 seconds when polled at 60 Hz (<code>pulse</code>), but only about one per
+  ~10 minutes when polled once per game tick from <code>onTick</code> as in the
+  example above. Raise <code>prob</code> for per-tick use.</li>
+<li><code>idleTimeMs</code> returns <code>0</code> and <code>isIdleTooLong</code> returns <code>false</code> until the
+  first <code>recordAction()</code> call.</li>
 <li><code>moveMouseRandomly</code> picks its point inside the live viewport, read
   from the engine's internal camera state; it falls back to
   (1024, 768) if the camera hasn't initialized yet.</li>

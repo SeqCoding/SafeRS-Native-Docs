@@ -2118,7 +2118,7 @@ the Lua path.</p>
 </tbody>
 </table>
 <p><code>onMessage</code> fires for <strong>every</strong> line, not just messages aimed at you — filter in
-your handler. Returns a token (<code>0</code> in C++ if the hook isn't installed); pass it to
+your handler. Returns a token (<code>0</code> in C++ on failure — a null callback or the hook not installed); pass it to
 <code>offMessage</code> to stop listening.</p>
 <p><strong>C++</strong>: process-wide, takes no <code>ScriptContext</code>. The callback
 (<code>ChatMessageCallback = std::function&lt;void(const ChatMessageEvent&amp;)&gt;</code>) runs on the

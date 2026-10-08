@@ -2132,9 +2132,11 @@
 <p><code>srs::api::Spells</code> / <code>srs.spells</code></p>
 <p>Static metadata for OSRS spells. Pure data; casting logic lives in
 <a href="../Magic/">Magic</a>.</p>
-<p>The current table is a representative seed — common combat spells,
-alchemy, and a handful of teleports. Extend as needed; we deliberately
-don't mirror RuneLite's full <code>Spell</code> enum on day one.</p>
+<p>The current table covers 50 Standard-book spells: the 20 strike → surge
+combat spells, alchemy and other utility spells, 8 teleports, and the
+NPC / ground-item target spells (curses, binds, god spells, Telekinetic
+Grab). Other spellbooks are not populated yet, and the full RuneLite
+<code>Spell</code> enum is deliberately not mirrored.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2168,7 +2170,10 @@ don't mirror RuneLite's full <code>Spell</code> enum on day one.</p>
 </tbody>
 </table>
 <p><code>byName</code> / <code>idByName</code> are case-insensitive substring matches against the
-canonical name. <code>byName</code> returns the metadata record; <code>idByName</code> resolves
+canonical name and return the first match in table order (so <code>"Strike"</code>
+resolves to Wind Strike). <code>inBook</code> only returns entries for
+<code>Spellbook.STANDARD</code>; the Ancient, Lunar and Arceuus books return an empty
+list. <code>byName</code> returns the metadata record; <code>idByName</code> resolves
 the <strong><code>Spell</code> enum value</strong> itself, ready to feed into
 <a href="../Magic/"><code>Magic::cast</code> / <code>Magic::canCast</code></a>.</p>
 <div class="admonition note">

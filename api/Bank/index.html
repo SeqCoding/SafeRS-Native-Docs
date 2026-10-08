@@ -2459,34 +2459,31 @@ the buffer before returning.</p>
    Bail with <code>false</code> if the text doesn't match yet (engine mid-update).</li>
 <li>Lease the PIN, look up the digit char for the current position, scan
    the keypad letter slots' dynamic children for one whose text matches.</li>
-<li>Prime the mouse-spoof ring + write the LL-hook AFK timestamps, then
-   synthesize a <code>WM_MOUSEMOVE</code> / <code>WM_LBUTTONDOWN</code> / <code>WM_LBUTTONUP</code>
-   sequence on the game window via the engine's own <code>WndProc</code>. The
-   engine's input pipeline emits the natural <code>MOUSE_MOVE_1/2</code> +
-   <code>CLICK_1/2</code> + <code>CC_OP</code> packet on its next tick.</li>
+<li>Prime the mouse-spoof ring and refresh the AFK timestamps, dispatch a
+   slot-57 "Select" click on the digit's listener widget (the first dynamic
+   child of the letter slot), then run that widget's <code>onClick</code> CS2 script so
+   the keypad accumulates the digit and advances its instruction text.</li>
 <li>Drop the lease (destructor zeros the PIN bytes).</li>
 </ol>
 <p><strong>Why tick-driven</strong>: when the script itself opened the bank, the queued
-<code>DoAction</code> for the banker click and the CS2 script that writes the
-keypad's digit labels both run on the <strong>engine main thread</strong> — which is
-the same thread the script's <code>pulse</code> callback runs on. Blocking inside
-<code>handleBankPin</code> (via <code>sleep_for</code>) starves the engine of the very frames
-it needs to populate those labels, so the wait would time out even
-though the keypad is visible. Each call now returns in &lt;1 ms with no
-blocking; the script re-polls every tick until the widget closes.</p>
-<p><strong>Why a synthesized click instead of the direct path</strong>: the keypad's buttons
-are dynamic children, and the direct path resolves them against the wrong
-parent, which silently drops the click. Routing through the engine's own
-input pipeline sidesteps that — the same mechanism <code>Tab::switchTo</code> and the
-minimap walker use.</p>
+engine action for the banker click and the CS2 script that writes the
+keypad's digit labels both run on the <strong>engine main thread</strong>, one engine
+frame after the keypad opens. The digit labels are therefore empty on the
+first call after the keypad appears. Rather than block waiting for them,
+each call returns in &lt;1 ms (<code>false</code> until the labels are populated) and the
+script re-polls every tick until the widget closes.</p>
+<p><strong>Why the listener widget + CS2 script</strong>: the keypad's buttons are dynamic
+children, and the click's <code>onClick</code> listener lives on the first dynamic child
+of each letter slot, not on the static parent. A plain widget click resolved
+against the parent silently drops, so the digit click targets the listener
+child and also runs its script so the keypad state advances.</p>
 <p><strong>Return values:</strong></p>
 <ul>
 <li><code>true</code> — PIN widget isn't open (no-op) <strong>or</strong> a click was dispatched
   this tick.</li>
 <li><code>false</code> — no account bound, account has no PIN, keypad labels aren't
-  populated yet, instruction text doesn't match a known phrase, the
-  digit widget can't be found in group 213, or the WndProc hook isn't
-  installed yet.</li>
+  populated yet, instruction text doesn't match a known phrase, or the
+  digit widget can't be found in group 213.</li>
 </ul>
 <p><strong>Calling pattern</strong> — call every pulse while the PIN widget is open:</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">pulse</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
@@ -2676,7 +2673,7 @@ the nearest match. Returns false if no banker is in scene.</p>
 <p>The bank has 10 tabs: 0 = "All Items" (∞ icon), 1..9 = user-configurable.
 Current tab lives in varbit <code>BANK_CURRENTTAB</code> (4150). Most scrolling /
 per-item flows operate on the All Items view — <code>Bank::scrollToSlot</code>
-auto-switches to it if you're on another tab.</p>
+switches to it (and asks you to call again) if you're on another tab.</p>
 <table>
 <thead>
 <tr>
@@ -2838,11 +2835,11 @@ reflected. Treat it as a planning hint, not ground truth — re-open the bank
 </tr>
 </tbody>
 </table>
-<p><code>scrollToSlot</code> is the high-level helper: it auto-switches to the All
-Items tab if needed, computes the visual row accounting for tab
-partial-row breaks, and drives both the scroll value and the scrollbar
-redraw so the list actually moves. Returns <code>true</code> if the row is already
-in view (no-op).</p>
+<p><code>scrollToSlot</code> is the high-level helper: it computes the visual row
+accounting for tab partial-row breaks, and drives both the scroll value and
+the scrollbar redraw so the list actually moves. Returns <code>true</code> if the row is
+already in view (no-op). If the bank isn't on the All Items tab it fires the
+tab switch and returns <code>false</code> — call it again next tick.</p>
 <p><code>scrollWheel</code> synthesizes WM_MOUSEWHEEL events over the bank center —
 positive notches scroll DOWN, negative UP. Blocks ~16 ms per notch.</p>
 <h2 id="per-item-withdraw">Per-item withdraw<a class="headerlink" href="#per-item-withdraw" title="Permanent link">&para;</a></h2>
@@ -2887,17 +2884,20 @@ match).</p>
 - 7 = Withdraw-All, 8 = Withdraw-All-but-1</p>
 <p><strong><code>withdrawX</code> amount semantics:</strong>
 - <code>{1, 5, 10}</code> → single packet via fixed identifier (instant)
-- Any other amount → opens the Withdraw-X prompt (identifier 6),
-  blocks ~1 second while <code>InputManager::typeString</code> types each digit
-  and <code>keyTap(VK_RETURN)</code> submits</p>
-<p>Placeholders (id present, quantity 0) are skipped — <code>withdrawX</code> finds
-the first slot with a positive quantity.</p>
+- Any other amount → opens the Withdraw-X prompt (identifier 6), waits
+  for the "Enter amount" chatbox input (up to ~2.4 s), then types each
+  digit and presses Enter. Blocks roughly 1-3 seconds.</p>
+<p>Placeholders (id present, quantity 0) are skipped — every withdraw finds
+the first slot with a positive quantity. Withdraws return <code>false</code> when the
+inventory is full, except <code>withdrawAllButOne</code>, which returns <code>true</code> in that
+case.</p>
 <h2 id="per-item-deposit">Per-item deposit<a class="headerlink" href="#per-item-deposit" title="Permanent link">&para;</a></h2>
 <p>The deposit-side inventory inside the bank window is widget <code>(15, 3)</code>
 (Bankside.ITEMS). Clicks route as CC_OP (slot 57) at that widget with
-<code>subSlot = backpack slot (0..27)</code>, <code>itemId</code> from the backpack cache,
-and Deposit-All identifier 2 (the deposit-side op ordering differs from
-the withdraw side — see <code>Bank.cpp</code> <code>fireDepositSlotClick</code>).</p>
+<code>subSlot = backpack slot (0..27)</code> and <code>itemId</code> from the backpack cache. The
+deposit-side op ordering differs from the withdraw side: explicit
+Deposit-1 / 5 / 10 / X / All ops (identifiers 3 / 4 / 5 / 7 / 8), live-read
+from the 241.1 menu.</p>
 <table>
 <thead>
 <tr>
@@ -2929,27 +2929,15 @@ the withdraw side — see <code>Bank.cpp</code> <code>fireDepositSlotClick</code
 </tr>
 </tbody>
 </table>
-<p><code>deposit</code> uses the 1 / 5 / 10 presets for those amounts and <strong>Deposit-X</strong> (the
-server-driven chatbox prompt, via <a href="../Prompt/"><code>srs.prompt</code></a>) for any other amount — so
-it <strong>blocks</strong> while typing a custom amount. <code>depositAll</code> deposits the whole stack
-. The other deposit quantities are best-effort — check the result if a
-deposit misfires.</p>
+<p><code>deposit</code> uses the explicit Deposit-1 / 5 / 10 ops for those amounts and
+<strong>Deposit-X</strong> (the server-driven chatbox prompt, via <a href="../Prompt/"><code>srs.prompt</code></a>)
+for any other amount — so it <strong>blocks</strong> while typing a custom amount.
+<code>depositAll</code> deposits the whole stack. Because every click uses an explicit
+op rather than the quantity preset's default, deposits do not depend on the
+bank's current quantity setting.</p>
 <p><code>depositAllExcept</code> fires Deposit-All on the FIRST non-kept inventory
 slot per call and returns <code>false</code>; the script polls each tick until
 only kept items remain, at which point it returns <code>true</code>.</p>
-<blockquote>
-<p><strong>Unverified: the bank's deposit ops may follow the quantity preset.</strong>
-The deposit box's item ops turned out to be positional — op 1 is
-whichever quantity the preset selects, so its Deposit-All constant only
-held on the preset it was captured under (see
-<a href="../DepositBox/#the-item-ops-are-positional">DepositBox</a>, fixed there).
-The bank's identifier 2 was confirmed live but we don't know on which
-preset. If the same model applies, 2 stays Deposit-All for every preset
-except <code>ALL</code>, where <code>depositAllExcept</code> would deposit one item per click.
-Until that's measured, treat a bank quantity preset of All as untested —
-the header comment on <code>fireDepositSlotClick</code> in <code>Bank.cpp</code> lists the
-experiment that settles it.</p>
-</blockquote>
 <h2 id="withdraw-mode-item-note">Withdraw mode (Item / Note)<a class="headerlink" href="#withdraw-mode-item-note" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3102,8 +3090,6 @@ pointer probe <code>srs.widget.address(g, c)</code> is documented on
   <code>target - currentInvCount</code> and call <code>withdrawX</code> with the result.</li>
 <li><strong>Predicate-based withdraw / deposit</strong> — <code>withdrawWhere(filter, n)</code>.
   Needs a callable type bound to both C++ and Lua.</li>
-<li><strong>Bank data cache</strong> — event-driven mirror so <code>Bank::all</code> /
-  <code>contains</code> / <code>count</code> work while the bank is closed.</li>
 <li><strong>Bank search box</strong> — type a query into the bank's search field.</li>
 </ul>
 

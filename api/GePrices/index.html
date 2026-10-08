@@ -2140,9 +2140,12 @@ you distribute a script widely.</p>
 </tr>
 </tbody>
 </table>
-<p>Scalar getters return <code>0</code> on any failure. The adaptive prices start from the
-instant side and widen the margin by <code>retry</code> (bump it each time an offer fails
-to fill), widening further when traded volume is thin:
+<p>Scalar getters return <code>0</code> on any failure. Failed lookups are cached for the TTL
+too, so a failure isn't retried until the TTL expires or you call
+<code>clearPriceCache()</code>. The adaptive prices start from the instant side and widen
+the margin by <code>retry</code> (bump it each time an offer fails to fill):
+<code>margin = 2% + 1% × retry</code>, plus another 3% when traded volume is known and
+thin (<code>0 &lt; volume &lt; 1000</code>; unknown volume <code>0</code> adds nothing).
 <code>buy = high × (1 + margin)</code>, <code>sell = low × (1 − margin)</code> (floored at 1). Use
 them to re-list more aggressively.</p>
 <h2 id="cache-config">Cache / config<a class="headerlink" href="#cache-config" title="Permanent link">&para;</a></h2>

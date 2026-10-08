@@ -2180,7 +2180,10 @@
   points, and it is unguarded: two calls in a tick flip the prayer
   twice.</li>
 <li><code>setActive</code> clicks only if currently mismatched, and is the call
-  state-driven code should use — see the rate limit below.</li>
+  state-driven code should use — see the rate limit below. It returns
+  <code>true</code> when the prayer is already in the requested state or a click was
+  sent, and <code>false</code> when it declined (cooling down, unreadable varbit,
+  shadowed slot) or the click could not be dispatched.</li>
 <li><code>activeList</code> is one varbit read per prayer. That is the cheap
   "everything at once" read; the client's own bitfield mirror at
   varbit 4101 (<code>PRAYER_ALLACTIVE</code>) packs the same information, but its
@@ -2581,11 +2584,10 @@ level 8):</p>
 </div>
 </div>
 </div>
-<p><code>devscripts/verify_prayer_book.lua</code> checks every entry in the table
-above against the live client: it dumps group 541, compares each
-child against the label the engine has there, then toggles every
-prayer the account can use and confirms the varbit follows the click
-both ways. Run it after any game update that moves interfaces.</p>
+<p>Every entry in the table above has been checked against the live
+client: each child of group 541 matches the engine's label, and
+toggling each prayer flips its varbit both ways. The table is
+re-verified after game updates that move interfaces.</p>
 
 
 

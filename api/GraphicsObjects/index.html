@@ -2178,12 +2178,13 @@
 boss fights, acid pools (Vasa, Tekton), blood splatters, spell-impact
 tile effects, teleport sparkles, run-energy regen sparkles, and so on.</p>
 <div class="admonition warning">
-<p class="admonition-title">Experimental — must be enabled for your client build</p>
-<p>The query methods return empty / <code>nil</code> until this module is pointed at
-the right container for the build you are on: find it at runtime with
-<code>scan()</code> and lock it in with <code>setContainerOffset()</code> (see
-<a href="#setup">Setup</a>). Only <code>id</code> is supported; the remaining fields are
-unsupported and may read as placeholder values.</p>
+<p class="admonition-title">Experimental — only <code>id</code> is verified</p>
+<p>The engine's graphics-object list is bound automatically at startup, so the
+query methods work without setup. Only <code>id</code> is verified on the current
+client build; the remaining fields are unverified and may read as
+placeholder values. If a client update breaks the binding, the queries read
+empty — use <code>scan()</code> / <code>setContainerOffset()</code> (see <a href="#setup">Setup</a>) to
+re-point it.</p>
 </div>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
@@ -2206,7 +2207,7 @@ unsupported and may read as placeholder values.</p>
 <td><code>srs.graphicsObjects.nearby(cx, cz, plane, radius) → table[]</code></td>
 </tr>
 <tr>
-<td>Earliest-started entry</td>
+<td>Earliest-started entry (lowest <code>startCycle</code>)</td>
 <td><code>GraphicsObjects::next(ctx) → optional&lt;…&gt;</code></td>
 <td><code>srs.graphicsObjects.next() → table \| nil</code></td>
 </tr>
@@ -2214,11 +2215,13 @@ unsupported and may read as placeholder values.</p>
 </table>
 <p><code>nearby(cx, cz, plane, radius)</code> returns entries whose <code>tileX/tileZ</code> are
 within Chebyshev distance <code>radius</code> of <code>(cx, cz)</code> on the given plane.</p>
-<p><code>next()</code> returns the graphics object that will finish (disappear) soonest,
-or <code>nil</code> when none are active.</p>
+<p><code>next()</code> returns the active graphics object with the lowest <code>startCycle</code> —
+the one that began rendering first — or <code>nil</code> when none are active. It is a
+best-effort proxy for "ends first": the engine exposes no end time, since
+duration comes from the animation definition.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
-<p>Helpers for pinning the container offset on a new client build (see the
-warning above). Most scripts never need these.</p>
+<p>Helpers for re-pointing the query if the automatic binding stops working on a
+new client build (see the warning above). Most scripts never need these.</p>
 <table>
 <thead>
 <tr>
@@ -2250,7 +2253,7 @@ warning above). Most scripts never need these.</p>
 </tr>
 </tbody>
 </table>
-<p><code>scan</code> walks each <code>WorldInstance</code> (<code>base = 0</code>) or its <code>Scene</code> (<code>base = 1</code>)
+<p><code>scan</code> probes each world instance (<code>base = 0</code>) or its scene (<code>base = 1</code>)
 looking for a list shaped like the gfx-object container, returning one row
 per candidate. Pick the plausible row and pass its <code>offset</code> / <code>base</code> to
 <code>setContainerOffset</code>; the choice is session-persistent.</p>
@@ -2272,7 +2275,7 @@ per candidate. Pick the plausible row and pass its <code>offset</code> / <code>b
 <tr>
 <td><code>base</code></td>
 <td>int</td>
-<td><code>0</code> = WorldInstance, <code>1</code> = Scene</td>
+<td><code>0</code> = world instance, <code>1</code> = scene</td>
 </tr>
 <tr>
 <td><code>entriesFound</code></td>

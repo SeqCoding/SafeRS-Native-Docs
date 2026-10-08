@@ -2202,8 +2202,8 @@ reachable from scripts.</p>
 </tr>
 <tr>
 <td>Enter / Escape, engine road</td>
-<td><code>Input::pressEnter(ctx)</code> / <code>Input::pressEscape(ctx)</code></td>
-<td><code>srs.input.pressEnter()</code> / <code>srs.input.pressEscape()</code></td>
+<td><code>Input::pressEnter(ctx) → bool</code> / <code>Input::pressEscape(ctx) → bool</code></td>
+<td><code>srs.input.pressEnter() → bool</code> / <code>srs.input.pressEscape() → bool</code></td>
 </tr>
 <tr>
 <td>Tap a key, WndProc road</td>
@@ -2323,11 +2323,16 @@ kept only so older ported scripts keep compiling.</p>
 <div class="tabbed-block">
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// Custom-quantity withdraw: open the prompt, wait for it, type + Enter.</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">Bank</span><span class="o">::</span><span class="n">withdrawX</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Coins&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">          </span><span class="c1">// opens &quot;Enter amount:&quot;</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dialogue</span><span class="o">::</span><span class="n">isTextPrompt</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">Prompt</span><span class="o">::</span><span class="n">waitOpen</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="n">Input</span><span class="o">::</span><span class="n">typeString</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;1337&quot;</span><span class="p">,</span><span class="w"> </span><span class="cm">/*submit*/</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// Custom-quantity withdraw: withdrawX runs the whole Enter-amount prompt</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">// itself (click, wait for the prompt, type, Enter) for any amount other</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">// than 1/5/10 — no manual typing needed. amount &lt;= 0 returns false.</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">Bank</span><span class="o">::</span><span class="n">withdrawX</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Coins&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1337</span><span class="p">);</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">// typeString is for fields you open yourself: fire the trigger, wait for</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">// the prompt, then type + Enter.</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Prompt</span><span class="o">::</span><span class="n">waitOpen</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="n">Input</span><span class="o">::</span><span class="n">typeString</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;1337&quot;</span><span class="p">,</span><span class="w"> </span><span class="cm">/*submit*/</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">

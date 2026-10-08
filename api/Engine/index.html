@@ -2121,8 +2121,8 @@ live in the same Lua table:</p>
 </ol>
 <div class="admonition warning">
 <p class="admonition-title">Scripts MUST NOT block</p>
-<p><code>pulse</code> / <code>onTick</code> / <code>draw</code> handlers run on the engine main thread.
-To gate on action capacity, check <code>canDispatchAction()</code> and yield via
+<p>Script callbacks (<code>pulse</code> / <code>onTick</code> / <code>nextTick</code>) run on the script
+worker thread; a blocked callback stalls your script. To gate on action capacity, check <code>canDispatchAction()</code> and yield via
 <code>script.nextTick(...)</code> if it returns false — never spin-wait.</p>
 </div>
 <h2 id="action-cap-introspection">Action-cap introspection<a class="headerlink" href="#action-cap-introspection" title="Permanent link">&para;</a></h2>
@@ -2217,8 +2217,8 @@ of the production plugin contract.</p>
 <p><code>runScript</code> powers things like the bank scrollbar sync
 (<code>runScript(UPDATE_SCROLLBAR, ...)</code>); use it when there's no
 purpose-built API for the CS2 routine you need to drive.</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Read the current bank scroll position</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">scrollY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">getVarcInt</span><span class="p">(</span><span class="nv">BANK_SCROLL_VARC</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Read the current bank scroll position (VarClientInt BANK_SCROLL = 51)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">scrollY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">getVarcInt</span><span class="p">(</span><span class="mi">51</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="input-block-toggle">Input-block toggle<a class="headerlink" href="#input-block-toggle" title="Permanent link">&para;</a></h3>
 <p>The script engine holds an input gate that prevents the user's WndProc

@@ -2146,7 +2146,14 @@ free functions above.</p>
 <p><strong>Register from <code>onLoad</code>.</strong> <code>onButton</code> uses the same thread_local
 attribution as <code>setValue</code>, and <code>onLoad</code> runs with the plugin attributed.
 Registering elsewhere works too (any callback), but <code>onLoad</code> is the natural
-one-time home. <code>fn</code> is <code>std::function&lt;void(const std::string&amp; action, const ScriptContext&amp; ctx)&gt;</code>.</p>
+one-time home. <code>fn</code> is <code>std::function&lt;void(const std::string&amp; action, const ScriptContext&amp; ctx)&gt;</code>.
+Registering the same <code>action</code> again replaces the earlier handler, and all of a
+plugin's handlers are dropped on <code>onUnload</code>.</p>
+<p><strong>Lua: register at top level.</strong> <code>script.onSettingsButton</code> (and
+<code>script.onSettingsChanged</code>) attach to the script that is currently <em>loading</em>, so
+they must run in the top-level chunk. Called later from <code>pulse</code> / <code>onTick</code> /
+<code>draw</code> they are silently ignored. <code>script.setSetting</code>, by contrast, works from
+any callback.</p>
 <p><strong>ABI note.</strong> This is a registered-callback API (not an IScript virtual)
 specifically so adding it never shifted the IScript vtable. Plugins built
 against an older SDK header keep loading — they simply don't register any
@@ -2234,7 +2241,10 @@ running smoothly.</p>
 </ul>
 <hr />
 <h3 id="exact-c-signature-srsapipluginsettings">Exact C++ signature (<code>srs::api::PluginSettings</code>)<a class="headerlink" href="#exact-c-signature-srsapipluginsettings" title="Permanent link">&para;</a></h3>
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">nlohmann</span><span class="o">::</span><span class="n">json</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">using</span><span class="w"> </span><span class="n">ButtonHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">,</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">                                         </span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onButton</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">ButtonHandler</span><span class="w"> </span><span class="n">fn</span><span class="p">);</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">nlohmann</span><span class="o">::</span><span class="n">json</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
 </span></code></pre></div>
 
 

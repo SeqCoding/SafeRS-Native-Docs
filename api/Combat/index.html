@@ -2109,8 +2109,15 @@
 <h1 id="combat">Combat<a class="headerlink" href="#combat" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Combat</code> / <code>srs.combat</code></p>
 <p>Combat-tab queries and toggles. Reads from <code>VarpSystem</code>; writes via
-<code>Widget::click</code> on the combat tab (group 593). Toggle methods are
-no-ops if already in the desired state.</p>
+<code>Widget::click</code> on the combat tab (group 593). <code>setAutoRetaliate</code> is a
+no-op if already in the desired state; <code>toggleSpec</code> and <code>setAttackStyle</code>
+always click.</p>
+<div class="admonition note">
+<p class="admonition-title">Combat tab must be open</p>
+<p><code>setAttackStyle</code> and <code>setAutoRetaliate</code> click combat-tab widgets, so when a
+click is needed they return <code>false</code> unless the combat tab is the open
+sidebar tab — open it first from your script. <code>toggleSpec</code> is the exception (see below).</p>
+</div>
 <p>Backed by RuneLite-confirmed varbits/varps:</p>
 <table>
 <thead>
@@ -2131,10 +2138,6 @@ no-ops if already in the desired state.</p>
 <tr>
 <td>172</td>
 <td>Auto-retaliate (<strong>0 = on, 1 = off</strong>, inverted)</td>
-</tr>
-<tr>
-<td>43</td>
-<td>Attack-style index</td>
 </tr>
 </tbody>
 </table>
@@ -2175,7 +2178,7 @@ no-ops if already in the desired state.</p>
 </tr>
 <tr>
 <td>Engaged with <strong>this</strong> target</td>
-<td><code>Combat::isInteractingWith(ctx, npc) → bool</code></td>
+<td><code>Combat::isInteractingWith(ctx, npc) → bool</code> (also an <code>ActionTarget</code> overload)</td>
 <td><code>srs.combat.isInteractingWith(target) → bool</code></td>
 </tr>
 <tr>

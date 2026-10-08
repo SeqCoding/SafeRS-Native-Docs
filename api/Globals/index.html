@@ -2095,7 +2095,7 @@ are globals: write <code>Skill.Mining</code>, <strong>not</strong> <code>srs.pla
 </tr>
 <tr>
 <td><code>Quest</code></td>
-<td>210 generated values (<code>CooksAssistant</code> … <code>TheIdesOfMilk</code>)</td>
+<td>209 generated values (<code>CooksAssistant</code> … <code>TheIdesOfMilk</code>)</td>
 <td><a href="../Player/">Player</a></td>
 </tr>
 <tr>
@@ -2196,8 +2196,13 @@ Lua constructor — you only receive them, you can't build them.</p>
 </tr>
 <tr>
 <td><code>WorldTile</code></td>
-<td><strong>no</strong> — pass <code>x, y[, plane]</code> overloads instead; obtain via <code>srs.player.position()</code></td>
-<td><a href="../Player/">Player</a></td>
+<td><strong>yes</strong> — <code>WorldTile.new(x, y[, plane])</code> (bare <code>WorldTile(x, y)</code> does not work); also from <code>srs.player.position()</code></td>
+<td><a href="../Area/#worldtile">Area</a></td>
+</tr>
+<tr>
+<td><code>WorldArea</code></td>
+<td>no — build via <code>srs.area.rect</code> / <code>srs.area.circle</code></td>
+<td><a href="../Area/#worldarea">Area</a></td>
 </tr>
 <tr>
 <td><code>EquippedItem</code></td>

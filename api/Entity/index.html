@@ -2087,7 +2087,7 @@
 <h1 id="entity">Entity<a class="headerlink" href="#entity" title="Permanent link">&para;</a></h1>
 <p><code>entity.*</code> (Lua only — global table)</p>
 <p>Live query over NPCs and players in the loaded scene. Returns
-<code>ActionTarget</code> values you can pass into <a href="../Npc/"><code>srs.api::Npc</code></a> or
+<code>ActionTarget</code> values you can pass into <a href="../Npc/"><code>srs::api::Npc</code></a> or
 call action shortcuts on directly (<code>:attack()</code>, <code>:talkTo()</code>).</p>
 <p>There is no public C++ header — plugins go through <code>EntityQuery</code> and
 <code>ActionTarget</code> (internal-only headers).</p>
@@ -2242,7 +2242,12 @@ entity list.</p>
 <tr>
 <td><code>interactTarget</code></td>
 <td>int</td>
-<td>Other actor this target is fighting (<code>-1</code> if none)</td>
+<td>Index of the actor this target is interacting with, within the kind given by <code>interactTargetKind</code> (<code>-1</code> if none)</td>
+</tr>
+<tr>
+<td><code>interactTargetKind</code></td>
+<td>int</td>
+<td><code>0</code> none, <code>1</code> NPC (<code>interactTarget</code> = NPC <code>spawnIndex</code>), <code>2</code> player (= player <code>spawnIndex</code>), <code>3</code> world entity. Always check it before comparing <code>interactTarget</code></td>
 </tr>
 <tr>
 <td><code>animationId</code></td>
@@ -2276,7 +2281,7 @@ entity list.</p>
 </tr>
 </tbody>
 </table>
-<p><strong><code>TargetKind</code> values</strong> (from <code>ActionTarget.h</code>):</p>
+<p><strong><code>TargetKind</code> values</strong> (also available as the Lua global enum <code>TargetKind</code>, e.g. <code>TargetKind.Npc</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2369,7 +2374,7 @@ the <a href="../Npc/">Npc</a> page for the full contract.</p>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">me</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">displayName</span><span class="p">()</span>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">entity</span><span class="p">.</span><span class="nf">npcs</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">opp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">npc</span><span class="p">.</span><span class="py">interactTarget</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">opp</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="p">.</span><span class="py">interactTargetKind</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="kr">then</span><span class="w">   </span><span class="c1">-- 2 = targeting a player</span>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="kd">local</span><span class="w"> </span><span class="nv">players</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">players</span><span class="p">()</span>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">players</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">            </span><span class="kr">if</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">spawnIndex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">opp</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">me</span><span class="w"> </span><span class="kr">then</span>

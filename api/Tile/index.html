@@ -2101,8 +2101,9 @@ Coordinates are world tile coords. Plane defaults to 0 (ground).</p>
 <h2 id="isreachable-same-floor-can-i-path-there-test"><code>isReachable</code> — same-floor / can-I-path-there test<a class="headerlink" href="#isreachable-same-floor-can-i-path-there-test" title="Permanent link">&para;</a></h2>
 <p>Breadth-first flood-fill from the player's current tile over the live
 collision map (<code>canTraverse</code> edges); the tile is reachable iff the fill
-reaches it. The fill is cached per <code>(player tile, scene)</code>, so many
-queries in one tick share one computation.</p>
+reaches it. The fill is cached per <code>(player tile, scene, collision update)</code>, so many
+queries in one tick share one computation and it rebuilds when the live
+collision changes.</p>
 <p>This is the correct test where <strong>plane can't help</strong>. The classic case
 is the <strong>Motherlode Mine</strong>: its upper level is <code>plane 0</code> exactly like
 the ground floor, but the two are only joined by a ladder — so an

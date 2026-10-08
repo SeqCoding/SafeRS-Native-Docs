@@ -1959,7 +1959,7 @@ public contract.</p>
 <td><a href="Area/">Area</a></td>
 <td><code>srs::api::Area</code></td>
 <td><code>srs.area</code></td>
-<td>Player-position area-containment checks</td>
+<td>Player-position area checks + <code>WorldTile</code> / <code>WorldArea</code> value types</td>
 </tr>
 <tr>
 <td><a href="Bank/">Bank</a></td>
@@ -2100,6 +2100,12 @@ public contract.</p>
 <td>Dropped-item enumeration + loot</td>
 </tr>
 <tr>
+<td><a href="HitSplats/">Hit splats</a></td>
+<td><code>srs::api::HitSplats</code></td>
+<td><code>srs.hitsplats</code></td>
+<td>Combat ground truth — every damage number, with the victim resolved</td>
+</tr>
+<tr>
 <td><a href="Input/">Input</a></td>
 <td><code>srs::api::Input</code></td>
 <td><code>srs.input</code></td>
@@ -2118,16 +2124,10 @@ public contract.</p>
 <td>Spell casting</td>
 </tr>
 <tr>
-<td><a href="HitSplats/">Hit splats</a></td>
-<td><code>srs::api::HitSplats</code></td>
-<td><code>srs.hitsplats</code></td>
-<td>Combat ground truth — every damage number, with the victim resolved</td>
-</tr>
-<tr>
 <td><a href="MenuEntry/">MenuEntry</a></td>
-<td><code>srs::api::MenuEntry</code></td>
-<td><code>srs.menuEntry</code></td>
-<td>Raw MenuAction builder (still spoofed)</td>
+<td><code>srs::api::MenuEntry</code> / <code>srs::api::Menu</code></td>
+<td><code>srs.menuEntry</code> / <code>srs.menu</code></td>
+<td>Raw MenuAction builder (still spoofed) + live menu-entry reader</td>
 </tr>
 <tr>
 <td><a href="Npc/">NPC</a></td>
@@ -2154,22 +2154,28 @@ public contract.</p>
 <td>Local-player state</td>
 </tr>
 <tr>
+<td><a href="PluginSettings/">PluginSettings</a></td>
+<td><code>srs::api::PluginSettings</code></td>
+<td>— (see <code>script.setSetting</code>)</td>
+<td>Write back to your plugin/script's own schema-driven settings</td>
+</tr>
+<tr>
 <td><a href="Prayer/">Prayer</a></td>
 <td><code>srs::api::Prayer</code></td>
 <td><code>srs.prayer</code></td>
 <td>Prayer book state + clicks + overhead-prayer (headicon) enum</td>
 </tr>
 <tr>
-<td><a href="Prompt/">Prompt</a></td>
-<td><code>srs::api::Prompt</code></td>
-<td><code>srs.prompt</code></td>
-<td>The chatbox "Enter amount / name" input prompt</td>
-</tr>
-<tr>
 <td><a href="Projectiles/">Projectiles</a></td>
 <td><code>srs::api::Projectiles</code></td>
 <td><code>srs.projectiles</code></td>
 <td>In-flight projectile enumeration + spawn events</td>
+</tr>
+<tr>
+<td><a href="Prompt/">Prompt</a></td>
+<td><code>srs::api::Prompt</code></td>
+<td><code>srs.prompt</code></td>
+<td>The chatbox "Enter amount / name" input prompt</td>
 </tr>
 <tr>
 <td><a href="RunePouch/">RunePouch</a></td>
@@ -2188,12 +2194,6 @@ public contract.</p>
 <td><code>srs::api::Settings</code></td>
 <td><code>srs.settings</code></td>
 <td>Varbit / varp / varc reads</td>
-</tr>
-<tr>
-<td><a href="PluginSettings/">PluginSettings</a></td>
-<td><code>srs::api::PluginSettings</code></td>
-<td>— (see <code>script.setSetting</code>)</td>
-<td>Write back to your plugin/script's own schema-driven settings</td>
 </tr>
 <tr>
 <td><a href="Shop/">Shop</a></td>
@@ -2241,7 +2241,7 @@ public contract.</p>
 <td><a href="World/">World</a></td>
 <td><code>srs::api::World</code></td>
 <td><code>srs.world</code></td>
-<td>Current world number</td>
+<td>Current world number, seamless hop, world list</td>
 </tr>
 </tbody>
 </table>

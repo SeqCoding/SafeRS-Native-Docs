@@ -2106,7 +2106,7 @@ either, so <code>srs.npc.attack(npc)</code> / <code>npc:attack()</code> work on 
 finder handed you.</p>
 <p>All <code>interact</code> / <code>attack</code> / <code>talkTo</code> / <code>bank</code> / <code>examine</code> calls route
 through <code>Interact</code>, which always spoofs mouse motion + click before
-DoAction (no escape hatch).</p>
+engine action dispatch (no escape hatch).</p>
 <h2 id="finding-npcs">Finding NPCs<a class="headerlink" href="#finding-npcs" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2349,7 +2349,11 @@ action methods accept either type.</p>
 </tr>
 <tr>
 <td><code>interactTarget</code></td>
-<td>Server-side target index (-1 = none)</td>
+<td>Index of the actor this one is interacting with, within the kind given by <code>interactTargetKind</code>; <code>-1</code> when not interacting</td>
+</tr>
+<tr>
+<td><code>interactTargetKind</code></td>
+<td>Kind of that target: <code>0</code> none, <code>1</code> NPC (<code>interactTarget</code> = NPC <code>spawnIndex</code>), <code>2</code> player (= player <code>spawnIndex</code>), <code>3</code> world entity. <strong>Always check the kind before comparing <code>interactTarget</code></strong></td>
 </tr>
 <tr>
 <td><code>animationId</code></td>
@@ -2381,6 +2385,11 @@ action methods accept either type.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Defs</p>
+<p>For static NPC definition data (size, menu actions, max HP) see
+<code>srs.defs</code> in <a href="../Defs/">Defs</a>.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title"><code>orientation</code> / <code>combatLevel</code> semantics</p>
 <p>Both fields are populated for NPCs and players. <code>orientation</code> is the

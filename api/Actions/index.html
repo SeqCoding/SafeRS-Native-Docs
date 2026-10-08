@@ -2777,7 +2777,7 @@ past that return and used to be indistinguishable from success:</p>
 <ul>
 <li>the per-tick budget gate <strong>holds</strong> the action so it fires several ticks
   late, against a world that has moved on;</li>
-<li>the action is drained, <code>DoAction</code> no-ops, and <strong>no packet ever reaches the
+<li>the action is drained, the engine action dispatch no-ops, and <strong>no packet ever reaches the
   wire</strong> — the "Drop click silently did nothing" bug;</li>
 <li>the queue is cleared on script stop before the action ran.</li>
 </ul>
@@ -2798,7 +2798,6 @@ nothing to name.</p>
   <strong>correlation, not an acknowledgement</strong>: a rejection is attributed to the
   most recent action that reached the wire within a 2-tick window.</li>
 </ul>
-<p>Full write-up: <code>notes/action_confirmation_finding.md</code>.</p>
 <h2 id="same-tick-batching">Same-tick batching<a class="headerlink" href="#same-tick-batching" title="Permanent link">&para;</a></h2>
 <p><code>srs.actions.batch</code> is the <strong>pre-dispatch</strong> half: it lands several actions
 inside one game tick, and tells you which ones the tick could not afford.</p>
@@ -2920,7 +2919,8 @@ click and never reaches the server. Split them into two steps.</p>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><code>status</code> is one of <code>dispatched</code>, <code>noop</code>, <code>gated</code>, <code>expired</code>, <code>cancelled</code>,
-<code>failed</code>. <code>missed</code> lists exactly the steps that never reached the wire —
+<code>failed</code> (or <code>pending</code> for a step not yet reached, in a report read before the
+batch finishes). <code>missed</code> lists exactly the steps that never reached the wire —
 that is the list to reprioritise from on the next tick.</p>
 <h3 id="tabs">Tabs<a class="headerlink" href="#tabs" title="Permanent link">&para;</a></h3>
 <p>If a step names a <code>tab</code>, the runner switches to it, waits for it to read
@@ -3059,8 +3059,8 @@ pending</strong>, so it is safe to poll.</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">ticket</span><span class="p">,</span><span class="w"> </span><span class="nv">outcome</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="p">,</span><span class="w"> </span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">,</span><span class="w"> </span><span class="nv">packets</span><span class="p">,</span><span class="w"> </span><span class="nv">queuedTicks</span><span class="p">,</span><span class="w"> </span><span class="nv">ageTicks</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <ul>
-<li><code>kind</code> — <code>"inventory"</code>, <code>"widget"</code>, <code>"object"</code>, <code>"npc"</code>, <code>"player"</code>,
-  <code>"tile"</code>, <code>"clickFire"</code>.</li>
+<li><code>kind</code> — <code>"widget"</code>, <code>"object"</code>, <code>"npc"</code>, <code>"player"</code>, <code>"tile"</code>,
+  <code>"clickFire"</code>, or <code>"action"</code> (an interaction with no more specific kind).</li>
 <li><code>a</code> / <code>b</code> — kind-specific ids (item id, group/child, npc id + spawn index).</li>
 <li><code>packets</code> — action-class packets observed while it ran; <code>0</code> = <code>noPacket</code>.</li>
 <li><code>queuedTicks</code> — server ticks the budget gate held it before it drained.
@@ -3133,7 +3133,7 @@ mistaken for a rejection.</p>
 <tr>
 <td><code>reject</code></td>
 <td>built-in classifier</td>
-<td>List of server-message substrings meaning "give up now".</td>
+<td>List of server-message substrings (or a single string) meaning "give up now".</td>
 </tr>
 <tr>
 <td><code>kind</code></td>

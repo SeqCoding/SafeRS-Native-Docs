@@ -2259,8 +2259,8 @@ disables hopping. <code>setHopWorldProvider</code> is C++-facade only.</p>
 <p>For scripts that need to reach a safe state (banked, out of combat,
 etc.) before they get paused:</p>
 <ol>
-<li>Call <code>declareBreakAware()</code> once (from <code>onTick</code> / <code>onLoad</code> / pulse)
-   to register as a script the Scheduler will wait on.</li>
+<li>Call <code>declareBreakAware()</code> once (from <code>onTick</code> / <code>pulse</code>; C++ plugins
+   may also use <code>onLoad</code>) to register as a script the Scheduler will wait on.</li>
 <li>Check <code>isBreakRequested()</code> each tick during normal work.</li>
 <li>Once safe, call <code>signalReady()</code> — idempotent, fine every tick.</li>
 </ol>
@@ -2293,7 +2293,7 @@ etc.) before they get paused:</p>
 <div class="admonition warning">
 <p class="admonition-title">Caller attribution + no grace timeout</p>
 <p>Handshake calls <strong>must</strong> be made from inside an <code>onTick</code> / <code>pulse</code> /
-<code>onDraw</code> callback — the Scheduler reads the currently-firing script
+<code>draw</code> callback — the Scheduler reads the currently-firing script
 index for attribution. Calls from outside any callback (e.g.
 top-level chunk during <code>loadFile</code>) won't attribute correctly and
 are silently dropped.</p>

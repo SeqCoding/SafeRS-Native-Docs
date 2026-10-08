@@ -2350,6 +2350,9 @@ keyboard for the script.</p>
 </tr>
 </tbody>
 </table>
+<p><code>setCameraMode</code> only records the value (readable via <code>getCameraMode</code>); it does
+not reroute the <code>rotateTo*</code> family. Pick the path by calling the <code>rotateTo*</code>,
+<code>mouseRotateTo*</code> or <code>keyboardRotateTo*</code> method you want.</p>
 <h2 id="state-getters">State getters<a class="headerlink" href="#state-getters" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2466,19 +2469,21 @@ tolerance.</p>
 </tr>
 </tbody>
 </table>
-<p>Interrupt-condition overloads (C++): <code>rotateToTile</code> and
-<code>rotateToEntity</code> accept a <code>Predicate interrupt</code> polled between
-micro-steps. Return <code>true</code> from it to abort early.</p>
+<p>Interrupt-condition overloads (C++ only): <code>rotateToTile</code> and
+<code>rotateToEntity</code> accept a <code>Predicate interrupt</code>, polled once before the
+rotation starts. Return <code>true</code> from it to skip the rotation (the call
+then returns <code>false</code>).</p>
 <div class="admonition note">
 <p class="admonition-title">Lua <code>(x, y[, plane])</code> overloads</p>
 <p>Every tile-taking camera function accepts raw coordinates in Lua —
 <code>rotateToTile(tile)</code>, <code>rotateToTile(x, y)</code>, or
 <code>rotateToTile(x, y, plane)</code> — and the same applies to
 <code>mouseRotateToTile</code>, <code>keyboardRotateToTile</code>, <code>getYawForTile</code>,
-<code>getPitchForTile</code>, and <code>rotateToTileEvent</code>. This matters because
-<strong><code>WorldTile</code> has no Lua constructor</strong>: a script that didn't get a
-tile from an API like <code>srs.player.position()</code> must use the
-coordinate form.</p>
+<code>getPitchForTile</code>, and <code>rotateToTileEvent</code>. A script that didn't get
+a tile from an API like <code>srs.player.position()</code> can use the
+coordinate form directly, or build one with
+<code>WorldTile.new(x, y[, plane])</code> (plain <code>WorldTile(x, y)</code> does not
+work).</p>
 </div>
 <h2 id="ensure-visible">Ensure visible<a class="headerlink" href="#ensure-visible" title="Permanent link">&para;</a></h2>
 <table>
@@ -2542,12 +2547,12 @@ middle-mouse-drag support (TODO).</p>
 </tr>
 </tbody>
 </table>
-<p>For the raw zoom write, see <code>fireZoomEvent</code> under
-<a href="#low-level-event-firing">Low-level event firing</a>.</p>
 <p><code>setZoom</code> injects <code>WM_MOUSEWHEEL</code> events into the game's WndProc
 until live zoom matches <code>zoomLevel</code> within tolerance. Returns
 <code>false</code> if the wheel injector or camera state isn't ready, or if zoom
-didn't converge after ~30 wheel ticks.</p>
+didn't converge after ~30 wheel ticks. The target is clamped to
+<code>[getMinZoom(), getMaxZoom()]</code>. This call blocks the script thread while
+it converges.</p>
 <h2 id="helper-calculators-no-side-effects">Helper calculators (no side effects)<a class="headerlink" href="#helper-calculators-no-side-effects" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2581,7 +2586,10 @@ didn't converge after ~30 wheel ticks.</p>
 </tbody>
 </table>
 <h2 id="low-level-event-firing">Low-level event firing<a class="headerlink" href="#low-level-event-firing" title="Permanent link">&para;</a></h2>
-<p>Direct, no clamping beyond what the engine itself enforces.</p>
+<p><code>firePitchAndYawEvent</code> clamps pitch and masks yaw like <code>rotateTo</code>.
+<code>fireZoomEvent</code> is not a direct write: it forwards to <code>setZoom</code> (blocking
+wheel injection, clamped to the zoom range) and returns nothing, so a
+failure to converge is silent — prefer <code>setZoom</code> and check its result.</p>
 <table>
 <thead>
 <tr>
@@ -2597,7 +2605,7 @@ didn't converge after ~30 wheel ticks.</p>
 <td><code>srs.camera.firePitchAndYawEvent(pitch, yaw)</code></td>
 </tr>
 <tr>
-<td>Raw zoom write</td>
+<td>Zoom (alias of <code>setZoom</code>, result discarded)</td>
 <td><code>Camera::fireZoomEvent(ctx, zoom)</code></td>
 <td><code>srs.camera.fireZoomEvent(zoom)</code></td>
 </tr>
@@ -2618,17 +2626,17 @@ executes later. Stash one and run it on a different tick.</p>
 <tr>
 <td>Build "rotate to yaw/pitch" event</td>
 <td><code>Camera::rotateToEvent(yaw, pitch) → Event</code></td>
-<td><code>srs.camera.rotateToEvent(yaw, pitch) → Event</code></td>
+<td><code>srs.camera.rotateToEvent(yaw, pitch) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Yaw only</td>
 <td><code>Camera::rotateToYawEvent(yaw) → Event</code></td>
-<td><code>srs.camera.rotateToYawEvent(yaw) → Event</code></td>
+<td><code>srs.camera.rotateToYawEvent(yaw) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Pitch only</td>
 <td><code>Camera::rotateToPitchEvent(pitch) → Event</code></td>
-<td><code>srs.camera.rotateToPitchEvent(pitch) → Event</code></td>
+<td><code>srs.camera.rotateToPitchEvent(pitch) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Face a tile</td>
@@ -2647,7 +2655,7 @@ executes later. Stash one and run it on a different tick.</p>
 </tr>
 </tbody>
 </table>
-<p><strong><code>Event</code></strong> fields:</p>
+<p><strong><code>CameraEvent</code></strong> fields (C++ <code>Camera::Event</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2675,12 +2683,12 @@ executes later. Stash one and run it on a different tick.</p>
 <tr>
 <td><code>mode</code></td>
 <td><code>Mode</code></td>
-<td>Rotation mode</td>
+<td>Captured from <code>getCameraMode()</code> when built; informational only — <code>execute</code> always uses the direct write path</td>
 </tr>
 </tbody>
 </table>
-<p><code>execute</code> returns <code>true</code> if every set component succeeded; no-op if
-all axes are <code>-1</code>.</p>
+<p><code>execute</code> returns <code>true</code> if every set component succeeded; any negative
+axis counts as unset, and the call is a no-op if all axes are unset.</p>
 <p>In Lua the usertype is <code>CameraEvent</code> and it is <strong>constructible</strong>:
 <code>CameraEvent.new()</code> gives an empty event (all axes <code>-1</code>) whose <code>yaw</code>,
 <code>pitch</code>, <code>zoom</code>, and <code>mode</code> fields are read/write — build one by hand

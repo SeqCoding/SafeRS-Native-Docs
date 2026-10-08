@@ -2122,7 +2122,9 @@ an actual F2P world.</p>
 engine's load-on-demand item loader on the engine thread. It <strong>blocks
 briefly</strong> (up to ~3 s) while the load completes, falling back to the live
 cache on timeout, and returns an empty string for <code>id &lt;= 0</code> or total
-failure.</p>
+failure. When the id is already decoded (inventory, bank, equipment, hovered
+ground) it is answered instantly from the live cache; only a genuine miss
+pays the wait, so call it from <code>pulse</code> / <code>onTick</code>, never from <code>draw</code>.</p>
 <p><code>itemDefinition</code> is the full <code>ItemType</code> metadata behind that name — the
 RuneMate <code>ItemDefinition</code> parity set (name, examine, stackable, tradeable,
 equip slot, value, weight, noted / placeholder links), read straight off

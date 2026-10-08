@@ -2278,16 +2278,17 @@ mirror forms:</p>
   VM. The host builds the <code>ScriptContext</code> internally; scripts just call
   <code>srs.&lt;module&gt;.&lt;method&gt;(args)</code>.</li>
 </ul>
-<p>The two forms are at <strong>feature parity</strong> — every method documented
-here is callable from both C++ and Lua. Differences in shape (where
-unavoidable, e.g. Lua lacks pointer semantics) are called out
-per-method.</p>
+<p>The two forms are at <strong>near parity</strong> — most methods are callable from
+both C++ and Lua. A few are one-sided (e.g. <code>srs.area.rect</code> / <code>srs.defs.*</code>
+are Lua-only, <code>PluginSettings::onButton</code> is C++-only); each page's tables
+mark a missing side with <code>—</code>. Differences in shape (where unavoidable,
+e.g. Lua lacks pointer semantics) are called out per-method.</p>
 <div class="admonition note">
 <p class="admonition-title">Threading and spoofing contract</p>
 <p>All action-firing methods (<code>interact</code>, <code>attack</code>, <code>click</code>, <code>cast</code>,
 …) route through <code>Interact</code> on the engine main thread with
-always-on input spoofing. There is no escape hatch — calling
-DoAction from the render thread crashes, and the spoofer is
+always-on input spoofing. There is no escape hatch — firing engine
+actions from the render thread crashes, and the spoofer is
 fail-closed (if it can't inject, the action drops).</p>
 </div>
 <h2 id="lifecycle">Lifecycle<a class="headerlink" href="#lifecycle" title="Permanent link">&para;</a></h2>
@@ -2303,9 +2304,12 @@ fail-closed (if it can't inject, the action drops).</p>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onDraw</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">  </span><span class="c1">// per frame, inside ImGui frame</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onSettingsChanged</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">nlohmann</span><span class="o">::</span><span class="n">json</span><span class="o">&amp;</span><span class="w"> </span><span class="n">settings</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">nlohmann</span><span class="o">::</span><span class="n">json</span><span class="w"> </span><span class="nf">schema</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">nlohmann</span><span class="o">::</span><span class="n">json</span><span class="w"> </span><span class="nf">schema</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">nlohmann</span><span class="o">::</span><span class="n">json</span><span class="o">::</span><span class="n">object</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">};</span>
 </span></code></pre></div>
+<p><code>IScript</code> has no virtual for settings-button clicks (adding one would shift
+the vtable for older plugins). Register button handlers by name with
+<code>srs::api::PluginSettings::onButton</code> — see <a href="api/PluginSettings/">PluginSettings</a>.</p>
 <p>Plugins export <code>CreateScript</code> / <code>DestroyScript</code> functions and ship as
 DLLs in the <code>plugins/</code> directory.</p>
 <p>To defer a one-shot to the next game tick from inside <code>pulse</code>, call
@@ -2349,7 +2353,7 @@ top level:</p>
 <p>Both <code>IScript::schema()</code> and <code>script.declareSettings</code> accept the
 same shape — a list of groups, each with a list of rows. The
 launcher renders each row as a typed input (<code>check</code>, <code>select</code>,
-<code>number</code>, <code>slider</code>) and ships the user's edits back to the
+<code>number</code>, <code>slider</code>, <code>text</code>, <code>button</code>) and ships the user's edits back to the
 plugin / script.</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">script</span><span class="p">.</span><span class="py">declareSettings</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nv">groups</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
@@ -2411,8 +2415,21 @@ plugin / script.</p>
 <td>slider</td>
 <td><code>value</code>, <code>min</code>, <code>max</code></td>
 </tr>
+<tr>
+<td><code>text</code></td>
+<td>text box</td>
+<td><code>value: string</code>, <code>placeholder</code>, <code>maxLength</code>, <code>mono</code></td>
+</tr>
+<tr>
+<td><code>button</code></td>
+<td>button (no stored value)</td>
+<td><code>value</code> = caption, <code>action</code> — handled by <code>script.onSettingsButton</code> / <code>PluginSettings::onButton</code></td>
+</tr>
 </tbody>
 </table>
+<p><code>number</code> and <code>slider</code> also accept <code>step</code> and <code>suffix</code>. See
+<a href="api/PluginSettings/">PluginSettings</a> for writing values back from a button
+handler.</p>
 <p>Without a <code>declareSettings</code> / <code>schema()</code> call, the sidebar shows
 just the master enable toggle and no rows.</p>
 <h3 id="reading-values">Reading values<a class="headerlink" href="#reading-values" title="Permanent link">&para;</a></h3>
@@ -2527,7 +2544,7 @@ lands on the next tick, not this one.</p>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_pending</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">hpPercent</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">35</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="n">m_pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="n">ctx</span><span class="p">.</span><span class="n">tickScheduler</span><span class="o">-&gt;</span><span class="n">onNext</span><span class="p">([</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">]{</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="n">ctx</span><span class="p">.</span><span class="n">tickScheduler</span><span class="o">-&gt;</span><span class="n">onNext</span><span class="p">([</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">ctx</span><span class="p">]{</span><span class="w">   </span><span class="c1">// capture ctx BY VALUE</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">            </span><span class="n">Inventory</span><span class="o">::</span><span class="n">interact</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Shark&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Eat&quot;</span><span class="p">);</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">            </span><span class="n">m_pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="p">});</span>
@@ -2540,9 +2557,11 @@ every <code>pulse</code> between detection and the next tick would push another
 copy of the closure onto the queue.</p>
 <div class="admonition warning">
 <p class="admonition-title">Lifetime of captured pointers</p>
-<p><code>ScriptContext</code> references stay valid for the lifetime of the
-enabled plugin/script. Capturing <code>ctx</code> by reference in a closure
-is safe because the deferred callback is dropped if the owning
+<p>The <code>ScriptContext&amp;</code> passed to <code>pulse</code> / <code>onTick</code> is a per-call
+object that is gone by the time a deferred callback runs on a later
+tick. Capture <code>ctx</code> <strong>by value</strong> (it is a plain struct of host
+pointers, which stay valid while the plugin is enabled) — never by
+reference. The deferred callback is dropped if the owning
 plugin/script is disabled before the drain runs. Do <strong>not</strong>
 capture raw pointers into game-state nodes that may rotate
 between ticks (e.g. an <code>NpcInstance*</code> from <code>EntityQuery</code>) —

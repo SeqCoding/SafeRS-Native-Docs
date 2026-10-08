@@ -2113,6 +2113,11 @@ names are nameless decorations (still queryable by id).</p>
 </tr>
 </tbody>
 </table>
+<p><code>interactNearest</code> prefers the nearest same-name loc that actually exposes
+<code>action</code> (skipping decorative twins with no menu), and only falls back to the
+nearest by name alone if the loc cache hasn't decoded any yet. <code>interact</code> and
+<code>interactFirstAvailable</code> re-resolve the loc from the entry's tile and plane, so
+pass an entry from a recent query.</p>
 <p><code>byName</code> / <code>nearestByName</code> are case- and whitespace-insensitive
 against the in-game display name (e.g. <code>"Bank booth"</code>, <code>"bankbooth"</code>,
 and <code>"BANK_BOOTH"</code> all hit the same target).</p>
@@ -2168,7 +2173,7 @@ helpers, or filter the result yourself.</p>
 <p>The <code>actions</code> list removes the need to hardcode or guess verb strings.
 Read it off any entry to discover what the loc can do, or hand a
 candidate list to <code>interactFirstAvailable</code> to click whichever verb the
-loc actually has:</p>
+loc actually has.</p>
 <p><code>interactFirstAvailable(target, actions)</code> tries each candidate in order
 and fires the first one the loc exposes (a read-only probe, so only one
 real click is dispatched — no speculative attempts). Returns the

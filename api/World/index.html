@@ -2052,7 +2052,7 @@
 <p><code>srs::api::World</code> / <code>srs.world</code></p>
 <p>Current world / server number.</p>
 <p>The world number (e.g. 302, 398) as the client currently has it. Reads
-<code>0</code> when it isn't available yet — check <code>srs.game.isLoggedIn()</code> before
+<code>-1</code> when it isn't available yet — check <code>srs.game.isLoggedIn()</code> before
 trusting it.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
@@ -2076,8 +2076,8 @@ trusting it.</p>
 </tr>
 </tbody>
 </table>
-<p><code>getId</code> returns <code>-1</code> if GS isn't resolved or the value is the pre-login
-sentinel.</p>
+<p><code>getId</code> returns <code>-1</code> if the client state isn't available yet or the value is
+the pre-login sentinel.</p>
 <p><code>hopTo</code> performs a seamless in-game world switch (the native
 world-switcher — no logout). It is scheduled onto the engine main thread,
 so it returns as soon as the hop is <strong>accepted</strong>, not when the new world
@@ -2172,6 +2172,12 @@ population / activity / type instead of a hard-coded number.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Field semantics not yet live-verified</p>
+<p>The <code>WorldInfo</code> field decoding (<code>flags</code>, <code>members</code>, <code>pvp</code>, <code>highRisk</code>, …) is
+derived from the client's world-list layout and has not been confirmed in-game
+on the current build — treat <code>flags</code>-derived booleans as best-effort.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Empty until the world list loads</p>
 <p>The engine only populates the world list once the <strong>world-switcher is opened</strong>
