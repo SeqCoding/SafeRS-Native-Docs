@@ -2086,8 +2086,7 @@
 
 <h1 id="tab">Tab<a class="headerlink" href="#tab" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Tab</code> / <code>srs.tab</code></p>
-<p>Authoritative source for "which sidebar tab is open right now",
-mirroring Microbot's <code>Rs2Tab</code>.</p>
+<p>Authoritative source for "which sidebar tab is open right now".</p>
 <p>Tab state lives in VarClient at index <code>TOPLEVEL_PANEL</code> (171). Reading
 it is stricter than the open-iface map (which only says the inventory
 IfType is loaded, not that it's the <em>active</em> tab).</p>
@@ -2243,8 +2242,8 @@ is useful for "Inventory tab bound to: F4" UI.</p>
 <p class="admonition-title">Raw varc values don't match enum</p>
 <p>The underlying varc value is 0-based and DOES NOT match this
 enum's ordinal; <code>current()</code> converts it for you (use <code>rawIndex()</code> only
-if you need the raw value). The raw values mirror Microbot's <code>InterfaceTab.varcIntIndex</code>
-(e.g. Combat=0, Inventory=3, AccMan=8, Friends=9, Logout=10).
+if you need the raw value). Raw values, e.g. Combat=0, Inventory=3,
+AccMan=8, Friends=9, Logout=10.
 The value <code>-1</code> means "no tab selected" (fullscreen interface up,
 or pre-login).</p>
 </div>

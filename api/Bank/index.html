@@ -2755,8 +2755,7 @@ visual-row math for you.</p>
 <strong>open</strong> — the engine drops the container the moment it closes, so <code>count</code>
 returns <code>0</code> from anywhere else. For routing and restock decisions ("do I have
 teleport runes stashed before I walk to a bank?") the host keeps a best-effort
-snapshot, refreshed every tick the bank is open, that persists after it closes
-(RuneMate's <code>useCachedContents</code>).</p>
+snapshot, refreshed every tick the bank is open, that persists after it closes.</p>
 <table>
 <thead>
 <tr>
@@ -2879,7 +2878,7 @@ match).</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Identifier mapping</strong> (matches Microbot's <code>Rs2Bank.invokeMenu</code>):
+<p><strong>Identifier mapping</strong>:
 - 2 = Withdraw-1, 3 = Withdraw-5, 4 = Withdraw-10
 - 7 = Withdraw-All, 8 = Withdraw-All-but-1</p>
 <p><strong><code>withdrawX</code> amount semantics:</strong>

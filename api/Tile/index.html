@@ -2108,9 +2108,8 @@ collision changes.</p>
 is the <strong>Motherlode Mine</strong>: its upper level is <code>plane 0</code> exactly like
 the ground floor, but the two are only joined by a ladder — so an
 upper-floor ore vein / hopper is <em>not</em> walk-reachable from the lower
-floor and <code>isReachable</code> returns <code>false</code> for it. This mirrors
-RuneLite/Microbot <code>nearestReachable()</code>; filter object candidates through
-it instead of trusting <code>plane</code>.</p>
+floor and <code>isReachable</code> returns <code>false</code> for it. Filter object candidates through
+<code>isReachable</code> instead of trusting <code>plane</code>.</p>
 <p>Returns <code>false</code> pre-scene, off-scene, or when <code>plane</code> differs from the
 player's current plane (a different plane needs a transport, not a walk).</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Only mine veins we can actually path to (skips the floor above us).</span>
@@ -2126,8 +2125,7 @@ player's current plane (a different plane needs a transport, not a walk).</p>
 <code>getTileHeights[plane][x][y]</code>), in world units. Where <code>plane</code> is
 ambiguous (MLM again — both floors are plane 0), the height differs by
 hundreds of units, so comparing the player's tile height against a
-threshold tells the floors apart (Microbot's <code>isUpperFloor()</code> uses
-exactly this with a <code>-490</code> cutoff). <code>nil</code> pre-scene / off-scene.</p>
+threshold tells the floors apart (a <code>-490</code> cutoff works). <code>nil</code> pre-scene / off-scene.</p>
 <p>For higher-level pathing (multi-tile A*, transports, stall recovery)
 use <a href="../Walk/">Walk</a> instead — <code>Tile</code> is for spot collision checks.</p>
 

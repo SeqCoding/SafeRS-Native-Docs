@@ -2079,7 +2079,7 @@
 sure?" dialog (that's a RuneLite feature), so
 <a href="../GrandExchange/"><code>GrandExchange::buyItem</code> / <code>sellItem</code></a> place whatever price
 you pass with no safety net. These methods give scripts an independent market
-reference. Mirrors Microbot's <code>Rs2GrandExchange.getRealTimePrices</code>.</p>
+reference.</p>
 <p>Prices are fetched <strong>client-side over HTTPS</strong> from the OSRS Wiki real-time API
 (with a GE-Tracker fallback) and cached per item id for 60 s. Lookups are keyed
 purely by item id — <strong>no <code>ScriptContext</code>, no login required</strong> — and are

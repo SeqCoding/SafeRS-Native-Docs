@@ -2244,8 +2244,8 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   instance this is the raw instance-local tile.</li>
 <li><strong><code>templatePosition</code></strong> — same as <code>position</code> outside an instance; inside
   an instance it maps the raw instance-local tile back through the engine's
-  chunk layout to the <strong>template</strong> world tile (the wiki / RuneLite /
-  Microbot coordinate), falling back to <code>position</code> when the conversion
+  chunk layout to the <strong>template</strong> world tile (the wiki / RuneLite
+  coordinate), falling back to <code>position</code> when the conversion
   can't be made. Pairs with <a href="../Area/"><code>srs.area.isInInstance()</code></a> to
   decide raw-vs-template coordinates in instanced content.</li>
 <li><strong><code>displayName</code></strong> — the local player's display name; empty string
@@ -2262,7 +2262,7 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <li><strong><code>runEnergy</code></strong> — in 0..10000 range (raw network units; divide by
   100 for the displayed percentage). <code>-1</code> if GS isn't resolved.</li>
 <li><strong><code>poison</code> / <code>isPoisoned</code> / <code>isVenomed</code></strong> — read VarPlayer 102, the
-  poison damage counter (the same var RuneLite/Microbot use). <code>poison()</code>
+  poison damage counter (the same var RuneLite uses). <code>poison()</code>
   returns the raw value: <code>0</code> = clean, <code>1..999999</code> = poisoned, <code>&gt;= 1000000</code>
   = venomed, <code>&lt; 0</code> = temporary immunity that counts back up toward 0 after
   an antidote/cure. <code>isPoisoned()</code> is <code>1..999999</code>; <code>isVenomed()</code> is
@@ -2292,7 +2292,7 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   it via <a href="../Npc/"><code>Npc::overheadPrayer</code></a>).</li>
 <li><strong><code>questState</code></strong> — completion bucket for a quest (<code>NotStarted</code> /
   <code>InProgress</code> / <code>Finished</code>). Backed by the engine's <code>QUEST_STATUS_GET</code>
-  clientscript (CS2 4029) — the same source RuneLite/Microbot use — so it is
+  clientscript (CS2 4029) — the same source RuneLite uses — so it is
   correct for every quest with no hand-maintained thresholds. The script must
   run on the engine thread while scripts run on the render thread, so the
   value is <strong>cached</strong> and refreshed asynchronously on the engine thread
@@ -2386,7 +2386,7 @@ tile also offers <code>(x, y[, plane])</code> overloads (e.g.
 <p><strong><code>Quest</code></strong> enum — every quest the engine tracks (209 generated
 enumerators, identical in C++ and Lua), value
 = stable index. Names + the underlying quest-config struct ids are ported
-from RuneLite's <code>Quest</code> enum (via Microbot's bundled Quest Helper). Examples:
+from RuneLite's <code>Quest</code> enum. Examples:
 <code>Quest.CooksAssistant</code>, <code>Quest.DragonSlayerI</code>, <code>Quest.MonkeyMadnessIi</code>,
 <code>Quest.RecipeForDisaster</code>, <code>Quest.DesertTreasureIiTheFallenEmpire</code>. Registered
 at Lua global scope (same as <code>Skill</code>). Regenerate after a game update with

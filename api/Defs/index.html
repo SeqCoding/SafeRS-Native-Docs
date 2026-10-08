@@ -2033,8 +2033,8 @@
 <p>Read-only <strong>definition / cache metadata</strong> — "what <em>is</em> this thing" (static per-id data
 decoded from the game's type structs), as opposed to the live-entity finders
 (<a href="../Npc/"><code>srs.npc</code></a>, <a href="../GameObject/"><code>srs.gameobject</code></a>) that give you a specific
-on-screen instance's position / animation / HP. This is the SafeRS counterpart to
-RuneMate's <code>NpcDefinition</code> family — the subset our core actually decodes.</p>
+on-screen instance's position / animation / HP. It covers the definition fields
+the client actually decodes.</p>
 <h2 id="srsdefsnpctarget-id"><code>srs.defs.npc(target | id)</code><a class="headerlink" href="#srsdefsnpctarget-id" title="Permanent link">&para;</a></h2>
 <p>Resolve an NPC's <code>NpcType</code> metadata — <code>size</code> (tile footprint), <code>maxHp</code>, and the full
 <code>actions</code> list — that the finders don't carry on the entry. Pass <strong>either</strong> a live
@@ -2115,8 +2115,7 @@ target from <code>srs.npc.*</code> / <code>entity.*</code>, <strong>or</strong> 
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="srsdefsitemid"><code>srs.defs.item(id)</code><a class="headerlink" href="#srsdefsitemid" title="Permanent link">&para;</a></h2>
-<p>Resolve an item's full <code>ItemType</code> metadata <strong>by id</strong> — the RuneMate <code>ItemDefinition</code>
-parity set. Works for any id, including off-screen items the renderer never touches.
+<p>Resolve an item's full <code>ItemType</code> metadata <strong>by id</strong>. Works for any id, including off-screen items the renderer never touches.
 Returns a table:</p>
 <table>
 <thead>

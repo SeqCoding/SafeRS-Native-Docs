@@ -2125,8 +2125,7 @@ cache on timeout, and returns an empty string for <code>id &lt;= 0</code> or tot
 failure. When the id is already decoded (inventory, bank, equipment, hovered
 ground) it is answered instantly from the live cache; only a genuine miss
 pays the wait, so call it from <code>pulse</code> / <code>onTick</code>, never from <code>draw</code>.</p>
-<p><code>itemDefinition</code> is the full <code>ItemType</code> metadata behind that name — the
-RuneMate <code>ItemDefinition</code> parity set (name, examine, stackable, tradeable,
+<p><code>itemDefinition</code> is the full <code>ItemType</code> metadata behind that name (name, examine, stackable, tradeable,
 equip slot, value, weight, noted / placeholder links), read straight off
 the engine's decoded <code>ItemType</code> with no hand-maintained tables. It uses
 the <strong>same resolution as <code>itemName</code></strong>, so the same ~3 s blocking caveat

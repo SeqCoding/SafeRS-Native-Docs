@@ -2114,7 +2114,7 @@ the spoofer can't inject.</p>
 <p>Use this when you need raw control over MenuAction params (e.g. while
 RE'ing a new interaction type) without bypassing the input simulation
 contract.</p>
-<p>Equivalent to Microbot's <code>NewMenuEntry</code>, minus the option/target text
+<p>The builder has no option/target text
 fields (those route through <code>Interact::perform</code>'s higher-level path;
 this builder targets the raw MenuAction dispatch path).</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
@@ -2250,8 +2250,8 @@ this builder targets the raw MenuAction dispatch path).</p>
 </tbody>
 </table>
 <h2 id="reading-the-menu-srsmenu">Reading the menu (<code>srs.menu</code>)<a class="headerlink" href="#reading-the-menu-srsmenu" title="Permanent link">&para;</a></h2>
-<p><code>srs::api::Menu</code> / <code>srs.menu</code> is the <strong>reader</strong> counterpart to the builder above
-(RuneMate <code>Menu</code> parity) — it snapshots the engine's live menu-entry buffer.</p>
+<p><code>srs::api::Menu</code> / <code>srs.menu</code> is the <strong>reader</strong> counterpart to the builder above —
+it snapshots the engine's live menu-entry buffer.</p>
 <table>
 <thead>
 <tr>

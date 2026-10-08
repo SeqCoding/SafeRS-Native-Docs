@@ -2250,7 +2250,7 @@
 
 <h1 id="camera">Camera<a class="headerlink" href="#camera" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Camera</code> / <code>srs.camera</code></p>
-<p>DreamBot-style camera facade: read pitch / yaw / zoom and rotate or
+<p>Camera facade: read pitch / yaw / zoom and rotate or
 zoom the view. <code>rotateTo*</code> snaps instantly via a direct memory write to
 the engine's target angles, <code>keyboardRotateTo*</code> drives human-looking
 arrow-key holds, and <code>setZoom</code> converges by injecting <code>WM_MOUSEWHEEL</code>
@@ -2284,7 +2284,7 @@ engine's own low-level camera state is not part of the public API.</p>
 </tr>
 <tr>
 <td><code>mouseRotateTo*</code></td>
-<td>DreamBot uses scroll-wheel here</td>
+<td>Scroll-wheel rotation</td>
 <td>OSRS scroll is bound to <strong>zoom</strong>, not yaw, so this falls back to the direct memory path on this client. Kept for source compatibility with ported scripts.</td>
 </tr>
 </tbody>
@@ -2423,7 +2423,7 @@ not reroute the <code>rotateTo*</code> family. Pick the path by calling the <cod
 <div class="admonition note">
 <p class="admonition-title">How zoom works</p>
 <p>OSRS has no user-zoom integer — camera distance derives from pitch +
-viewport. <code>getZoom</code> returns a value normalized to DreamBot's
+viewport. <code>getZoom</code> returns a value normalized to the
 <code>[330, 3000]</code> range, and <code>setZoom</code> reaches a target by injecting
 <code>WM_MOUSEWHEEL</code> events (see <a href="#zoom">Zoom</a> below). Convergence is
 best-effort: <code>setZoom</code> returns <code>false</code> if it can't settle within
@@ -2612,7 +2612,7 @@ failure to converge is silent — prefer <code>setZoom</code> and check its resu
 </tbody>
 </table>
 <h2 id="event-based-rotation-deferred-execution">Event-based rotation (deferred execution)<a class="headerlink" href="#event-based-rotation-deferred-execution" title="Permanent link">&para;</a></h2>
-<p>DreamBot's <code>CameraEvent</code> holds a pending rotation that the caller
+<p>A <code>CameraEvent</code> holds a pending rotation that the caller
 executes later. Stash one and run it on a different tick.</p>
 <table>
 <thead>

@@ -2172,9 +2172,8 @@ NPC aggression). Pass an optional 4th <code>plane</code> argument to restrict to
 single plane; omit it for any plane. <code>entity.npcsWithin(...)</code> is the NPC
 companion — but note that visible NPC planes are currently normalized to
 <code>0</code>, so the <code>plane</code> filter is effectively any-plane for NPCs (omit it).</p>
-<p>This is the built-in form of a "count nearby players" anti-crash scan —
-equivalent to Microbot's
-<code>playerCache.query().where(p -&gt; p.getWorldLocation().distanceTo(t) &lt;= r)</code>:</p>
+<p>This is the built-in form of a "count nearby players" anti-crash scan
+(every player within <code>r</code> tiles of <code>t</code>):</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Number of OTHER players within 2 tiles of a vein</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">crowd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="nv">entity</span><span class="p">.</span><span class="nf">playersWithin</span><span class="p">(</span><span class="nv">vein</span><span class="p">.</span><span class="py">tileX</span><span class="p">,</span><span class="w"> </span><span class="nv">vein</span><span class="p">.</span><span class="py">tileY</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
 </span></code></pre></div>
