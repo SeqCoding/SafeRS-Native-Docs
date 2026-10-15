@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1508,6 +1514,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1732,6 +1766,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1740,6 +1802,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2195,6 +2285,16 @@ primitives, see <strong><a href="../Overlay/">Overlay</a></strong> (<code>srs.ov
 calling from <code>pulse</code> / <code>onTick</code> will fault on builds where those
 paths run off-frame.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Coordinates are game-canvas pixels</p>
+<p>All positions and sizes here (<code>widgetRect</code>, <code>anchorToWidget</code>,
+<code>beginOverlay</code>, the foreground draw list, <code>overlaySize</code>) are in
+<strong>game canvas pixels</strong> — the same space as widget rects and
+world-to-screen projection. When the game's UI scaling is
+compensated, the host maps them onto the window for you, scaling
+thickness, radius, rounding and text size as well; scripts never
+convert.</p>
+</div>
 <h2 id="anchoring">Anchoring<a class="headerlink" href="#anchoring" title="Permanent link">&para;</a></h2>
 <p>Pin overlays to OSRS widgets so they follow tab switches and layout
 mode changes.</p>
@@ -2243,7 +2343,7 @@ mode change to evict.</p>
 </thead>
 <tbody>
 <tr>
-<td>Open overlay at pos</td>
+<td>Open overlay at pos (canvas px)</td>
 <td><code>Drawing::beginOverlay(name, pos, pivot=TopLeft, bgAlpha=0.55) → bool</code></td>
 <td><code>srs.draw.beginOverlay(name, pos, pivot?, bgAlpha?) → bool</code></td>
 </tr>
@@ -2257,8 +2357,22 @@ mode change to evict.</p>
 <td><code>Drawing::endOverlay()</code></td>
 <td><code>srs.draw.endOverlay()</code></td>
 </tr>
+<tr>
+<td>Inner size of the open overlay</td>
+<td><code>Drawing::overlaySize() → Vec2</code></td>
+<td><code>srs.draw.overlaySize() → Vec2</code></td>
+</tr>
 </tbody>
 </table>
+<p>When the game's UI scaling is compensated, an overlay's content (font,
+padding, explicit widget sizes) is scaled by the same factor as the game
+UI.</p>
+<p><code>overlaySize()</code> returns the inner (padding-excluded) size of the
+innermost open overlay window, in canvas pixels. Call it between
+<code>begin*</code> and <code>endOverlay</code>. An auto-resizing window reports last frame's
+layout, so you can fit custom art (<code>drawLine</code> / <code>drawFilledRect</code> behind a
+<code>dummy()</code>) to the panel your text rows actually produced. Returns
+<code>{0, 0}</code> outside any window.</p>
 <p>Pair every <code>begin*</code> that returns <code>true</code> with one <code>endOverlay</code>.
 <code>beginAnchoredOverlay</code> returns <code>false</code> when the widget has never been
 seen (no cached rect either); in that case <strong>do NOT</strong> call
@@ -2375,8 +2489,8 @@ seen (no cached rect either); in that case <strong>do NOT</strong> call
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">changed</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nf">onToggle</span><span class="p">(</span><span class="nv">v</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="foreground-draw-list">Foreground draw list<a class="headerlink" href="#foreground-draw-list" title="Permanent link">&para;</a></h2>
-<p>Always-on-top primitives; no window needed. Coordinates are
-screen-space. Safe to call from <code>onDraw</code> at any time.</p>
+<p>Always-on-top primitives; no window needed. Coordinates are game canvas
+pixels (see the note at the top). Safe to call from <code>onDraw</code> at any time.</p>
 <table>
 <thead>
 <tr>

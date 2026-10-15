@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1362,6 +1368,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1683,6 +1717,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1691,6 +1753,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2207,7 +2297,7 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <tr>
 <td>Hitpoints percentage</td>
 <td><code>Player::hpPercent(ctx) → int32</code></td>
-<td><code>srs.player.hpPercent() → number</code></td>
+<td><code>srs.player.hpPercent() → int</code></td>
 </tr>
 <tr>
 <td>Current prayer points</td>
@@ -2244,7 +2334,7 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   instance this is the raw instance-local tile.</li>
 <li><strong><code>templatePosition</code></strong> — same as <code>position</code> outside an instance; inside
   an instance it maps the raw instance-local tile back through the engine's
-  chunk layout to the <strong>template</strong> world tile (the wiki / RuneLite
+  chunk layout to the <strong>template</strong> world tile (the wiki
   coordinate), falling back to <code>position</code> when the conversion
   can't be made. Pairs with <a href="../Area/"><code>srs.area.isInInstance()</code></a> to
   decide raw-vs-template coordinates in instanced content.</li>
@@ -2255,14 +2345,14 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <li><strong><code>orientation</code></strong> — the local player's facing angle, 0–2047, same
   units and convention as <code>ActionTarget.orientation</code> (see
   <a href="../Entity/">Entity</a>): 0 = S, 512 = W, 1024 = N, 1536 = E. This is the <em>target</em> angle the engine turns
-  toward (RuneLite <code>Actor.getOrientation()</code>); the rendered model catches
+  toward; the rendered model catches
   up within a few ticks. <code>-1</code> pre-login. Compare against a cardinal with
   a tolerance (<code>math.abs(o - 1024) &lt;= 256</code> for north).</li>
-<li><strong><code>weight</code></strong> — reads VarPlayer 169.</li>
+<li><strong><code>weight</code></strong> — carried weight in kg, as shown by the game.</li>
 <li><strong><code>runEnergy</code></strong> — in 0..10000 range (raw network units; divide by
   100 for the displayed percentage). <code>-1</code> if GS isn't resolved.</li>
-<li><strong><code>poison</code> / <code>isPoisoned</code> / <code>isVenomed</code></strong> — read VarPlayer 102, the
-  poison damage counter (the same var RuneLite uses). <code>poison()</code>
+<li><strong><code>poison</code> / <code>isPoisoned</code> / <code>isVenomed</code></strong> — read the game's poison
+  damage counter (VarPlayer 102). <code>poison()</code>
   returns the raw value: <code>0</code> = clean, <code>1..999999</code> = poisoned, <code>&gt;= 1000000</code>
   = venomed, <code>&lt; 0</code> = temporary immunity that counts back up toward 0 after
   an antidote/cure. <code>isPoisoned()</code> is <code>1..999999</code>; <code>isVenomed()</code> is
@@ -2276,9 +2366,9 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   resolved.</li>
 <li><strong><code>hitpoints</code> / <code>maxHitpoints</code></strong> — shorthand for
   <code>skillLevel(Skill::Hitpoints)</code> / <code>skillBase(Skill::Hitpoints)</code>.</li>
-<li><strong><code>hpPercent</code></strong> — <code>floor(hitpoints * 100 / maxHitpoints)</code>. Can exceed
-  <code>100</code> while boosted (e.g. after an overload or Saradomin brew). Returns <code>0</code>
-  when hitpoints aren't readable (e.g. logged out).</li>
+<li><strong><code>hpPercent</code></strong> — <code>floor(hitpoints * 100 / maxHitpoints)</code>, an integer.
+  Can exceed <code>100</code> while boosted (e.g. after an anglerfish or Saradomin
+  brew). Returns <code>0</code> when hitpoints aren't readable (e.g. logged out).</li>
 <li><strong><code>toggleRunEnergy</code></strong> — despite the name this <em>sets</em> the run state: it
   reads the current run toggle and returns <code>true</code> without clicking if it
   already matches <code>on</code>; otherwise it clicks the run orb.</li>
@@ -2291,18 +2381,16 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   (a Lua <strong>global</strong> enum — same values for players and NPCs; NPCs read
   it via <a href="../Npc/"><code>Npc::overheadPrayer</code></a>).</li>
 <li><strong><code>questState</code></strong> — completion bucket for a quest (<code>NotStarted</code> /
-  <code>InProgress</code> / <code>Finished</code>). Backed by the engine's <code>QUEST_STATUS_GET</code>
-  clientscript (CS2 4029) — the same source RuneLite uses — so it is
-  correct for every quest with no hand-maintained thresholds. The script must
-  run on the engine thread while scripts run on the render thread, so the
-  value is <strong>cached</strong> and refreshed asynchronously on the engine thread
-  (EngineDispatch's non-click work lane, drained on every outbound packet):
-  the first lookup of a given quest returns <code>QuestState::Unknown</code> and kicks
+  <code>InProgress</code> / <code>Finished</code>). Backed by the game's own quest-status
+  clientscript, so it is correct for every quest with no hand-maintained
+  thresholds. That script must run on the engine thread while your script
+  runs on another thread, so the value is <strong>cached</strong> and refreshed
+  asynchronously: the first lookup of a given quest returns <code>QuestState::Unknown</code> and kicks
   off a refresh that lands <strong>within a tick or two on its own — no click
   needed</strong>, then stays live. Poll until <code>!= Unknown</code>, or just read it each
   tick. Subsequent reads are instant.</li>
 <li><strong><code>questProgress</code></strong> — the raw varbit/varp that increments as a quest
-  advances (RuneLite <code>QuestVarbits</code> / <code>QuestVarPlayer</code>) — i.e. the step
+  advances — i.e. the step
   number a questing script wants. Thread-safe and instant (a plain var read,
   no clientscript). <code>0</code> before the quest is started; quest-specific value as
   it advances; <code>-1</code> for the handful of quests with no single tracked progress
@@ -2385,12 +2473,10 @@ tile also offers <code>(x, y[, plane])</code> overloads (e.g.
 <p>In Lua: <code>Skill.Hitpoints</code>, etc. (registered at Lua global scope, same as <code>CameraMode</code>).</p>
 <p><strong><code>Quest</code></strong> enum — every quest the engine tracks (209 generated
 enumerators, identical in C++ and Lua), value
-= stable index. Names + the underlying quest-config struct ids are ported
-from RuneLite's <code>Quest</code> enum. Examples:
+= stable index. Examples:
 <code>Quest.CooksAssistant</code>, <code>Quest.DragonSlayerI</code>, <code>Quest.MonkeyMadnessIi</code>,
 <code>Quest.RecipeForDisaster</code>, <code>Quest.DesertTreasureIiTheFallenEmpire</code>. Registered
-at Lua global scope (same as <code>Skill</code>). Regenerate after a game update with
-<code>tools/gen_quest_sources.py</code> (sourced from <code>tools/quest_table.txt</code>).</p>
+at Lua global scope (same as <code>Skill</code>).</p>
 <p><strong><code>QuestState</code></strong> enum:</p>
 <table>
 <thead>

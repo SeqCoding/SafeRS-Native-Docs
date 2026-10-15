@@ -428,6 +428,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1360,6 +1366,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1584,6 +1618,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1592,6 +1654,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2079,9 +2169,14 @@ trusting it.</p>
 <p><code>getId</code> returns <code>-1</code> if the client state isn't available yet or the value is
 the pre-login sentinel.</p>
 <p><code>hopTo</code> performs a seamless in-game world switch (the native
-world-switcher — no logout). It is scheduled onto the engine main thread,
-so it returns as soon as the hop is <strong>accepted</strong>, not when the new world
-finishes loading — poll <code>getId()</code> / <code>Game::state()</code> for completion.
+world-switcher — no logout). The current game version only honours a hop
+while the <strong>World Switcher</strong> is open, so if it isn't showing, <code>hopTo</code>
+first switches to the Logout tab, clicks "World Switcher" and waits for it
+to open. That step <strong>blocks the calling script thread for up to ~5
+seconds</strong> and <strong>leaves the Logout tab selected</strong>. The hop itself is then
+scheduled onto the engine main thread, so the call returns as soon as the
+hop is <strong>accepted</strong>, not when the new world finishes loading — poll
+<code>getId()</code> / <code>Game::state()</code> for completion.
 Returns <code>false</code> (nothing scheduled) when not logged in, when <code>world</code> is
 the current world, when <code>world</code> isn't a known world, or when the engine
 isn't resolved. Must be logged in; for a members world the account must be
@@ -2138,7 +2233,7 @@ population / activity / type instead of a hard-coded number.</p>
 <tr>
 <td><code>location</code></td>
 <td>int</td>
-<td>raw region code (RuneLite <code>WorldRegion</code>: 0=US, 1=UK, 3=AU, 7=DE)</td>
+<td>raw region code (0=US, 1=UK, 3=AU, 7=DE)</td>
 </tr>
 <tr>
 <td><code>members</code></td>
@@ -2158,7 +2253,7 @@ population / activity / type instead of a hard-coded number.</p>
 <tr>
 <td><code>flags</code></td>
 <td>int</td>
-<td>raw <code>WorldType</code> mask — check other RuneLite bits yourself if needed</td>
+<td>raw world-type mask — check other bits yourself if needed</td>
 </tr>
 <tr>
 <td><code>host</code></td>

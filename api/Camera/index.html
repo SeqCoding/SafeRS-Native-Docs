@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1541,6 +1547,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1765,6 +1799,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1773,6 +1835,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2274,8 +2364,8 @@ engine's own low-level camera state is not part of the public API.</p>
 <tbody>
 <tr>
 <td><code>rotateTo*</code></td>
-<td>Direct write to engine <code>TargetPitch</code> / <code>TargetYaw</code></td>
-<td>Instant, no smoothing. Cheap and reliable. <strong>Default.</strong></td>
+<td>Direct write to the engine's target pitch / yaw</td>
+<td>Instant, no smoothing (use <code>easeToYaw</code> for a smooth yaw turn). Cheap and reliable. <strong>Default.</strong></td>
 </tr>
 <tr>
 <td><code>keyboardRotateTo*</code></td>
@@ -2430,8 +2520,8 @@ best-effort: <code>setZoom</code> returns <code>false</code> if it can't settle 
 tolerance.</p>
 </div>
 <h2 id="rotation-default-memory-write">Rotation (default — memory write)<a class="headerlink" href="#rotation-default-memory-write" title="Permanent link">&para;</a></h2>
-<p>All <code>rotateTo*</code> calls clamp pitch to <code>[128, 383]</code> and mask yaw with
-<code>&amp; 0x7FF</code> before writing. Return <code>true</code> on a successful write,
+<p>All <code>rotateTo*</code> calls clamp pitch to <code>[128, 383]</code> and wrap yaw into 0..2047
+before writing. Return <code>true</code> on a successful write,
 <code>false</code> if the camera state isn't resolved or the write faults.</p>
 <table>
 <thead>
@@ -2453,6 +2543,11 @@ tolerance.</p>
 <td><code>srs.camera.rotateToYaw(yaw) → bool</code></td>
 </tr>
 <tr>
+<td>Yaw only, smooth</td>
+<td><code>Camera::easeToYaw(ctx, yaw) → bool</code></td>
+<td><code>srs.camera.easeToYaw(yaw) → bool</code></td>
+</tr>
+<tr>
 <td>Pitch only</td>
 <td><code>Camera::rotateToPitch(ctx, pitch) → bool</code></td>
 <td><code>srs.camera.rotateToPitch(pitch) → bool</code></td>
@@ -2469,6 +2564,12 @@ tolerance.</p>
 </tr>
 </tbody>
 </table>
+<p><code>easeToYaw</code> sets only the engine's target yaw (masked to 0..2047) and
+lets the game's own follow interpolation turn the view over the next
+frames, whereas <code>rotateToYaw</code> snaps instantly. Use it for continuous
+follow-cameras where a snap would look jarring; the current yaw
+(<code>getYaw</code>) converges toward the target over several frames rather than
+changing at once.</p>
 <p>Interrupt-condition overloads (C++ only): <code>rotateToTile</code> and
 <code>rotateToEntity</code> accept a <code>Predicate interrupt</code>, polled once before the
 rotation starts. Return <code>true</code> from it to skip the rotation (the call

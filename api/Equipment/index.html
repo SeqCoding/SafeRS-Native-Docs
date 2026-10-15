@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1010,6 +1016,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worn-item-actions-c-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worn-item actions (C++ only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1453,6 +1476,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1677,6 +1728,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1685,6 +1764,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2020,6 +2127,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#worn-item-actions-c-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Worn-item actions (C++ only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2074,8 +2198,8 @@
 
 <h1 id="equipment">Equipment<a class="headerlink" href="#equipment" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Equipment</code> / <code>srs.equipment</code></p>
-<p>Worn-items view plus equip/unequip actions. Slot indices match RuneLite's
-<code>EquipmentInventorySlot</code> (gaps are intentional).</p>
+<p>Worn-items view plus equip/unequip actions. Slot indices follow the game's
+equipment slot numbering (gaps are intentional; see the constants below).</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2116,6 +2240,16 @@
 <td><code>Equipment::unequip(ctx, slot) → bool</code></td>
 <td><code>srs.equipment.unequip(slot) → bool</code></td>
 </tr>
+<tr>
+<td>Fire a named op on a worn item</td>
+<td><code>Equipment::interactWorn(ctx, itemId, action) → bool</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Ops a worn item exposes</td>
+<td><code>Equipment::wornActions(ctx, itemId) → vector&lt;string&gt;</code></td>
+<td>—</td>
+</tr>
 </tbody>
 </table>
 <p>Name lookups match the item's in-game display name (case- and whitespace-insensitive substring).</p>
@@ -2124,6 +2258,23 @@
 <code>"Wield"</code> vs <code>"Wear"</code>; it reads the item's action list and clicks whichever of
 Wield / Wear / Equip / Hold applies. <code>unequip</code> fires <code>"Remove"</code> on the Worn Equipment
 interface, opening the equipment tab if needed.</p>
+<h3 id="worn-item-actions-c-only">Worn-item actions (C++ only)<a class="headerlink" href="#worn-item-actions-c-only" title="Permanent link">&para;</a></h3>
+<p>Some worn-item ops — jewellery teleports and similar — are reachable only
+from the Worn Equipment interface, not from the backpack.</p>
+<ul>
+<li><code>interactWorn(ctx, itemId, action)</code> matches <code>action</code>
+  case- and punctuation-insensitively against the ops the live widget
+  actually exposes and fires the one it finds; the op index comes from its
+  position in that list, so items with an unusual op order still work.
+  Opens the equipment tab if needed. Returns <code>false</code> when the item isn't
+  worn, the slot has no widget, the widget exposes no such action, or the
+  click is refused.</li>
+<li><code>wornActions(ctx, itemId)</code> returns the ops the interface currently lists
+  for the item, in display order. It is empty when the item isn't worn or
+  the interface hasn't rendered, so you can pick an action you recognise
+  instead of guessing a name.</li>
+</ul>
+<p>These two calls have no Lua binding.</p>
 <div class="admonition note">
 <p class="admonition-title">Runtime-verify</p>
 <p><code>unequip</code> uses the slot's standard primary op. If it no-ops in-game for a
@@ -2239,6 +2390,9 @@ equip verb can't be read it falls back to <code>"Wear"</code>.</p>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">ammo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Equipment</span><span class="o">::</span><span class="n">at</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">EquipmentSlot</span><span class="o">::</span><span class="n">Ammo</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ammo</span><span class="o">-&gt;</span><span class="n">quantity</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* restock arrows */</span><span class="w"> </span><span class="p">}</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">// Jewellery teleport from a worn combat bracelet(4)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">auto</span><span class="w"> </span><span class="n">ops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Equipment</span><span class="o">::</span><span class="n">wornActions</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">11118</span><span class="p">);</span><span class="w">   </span><span class="c1">// e.g. {&quot;Warriors&#39; Guild&quot;, ...}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ops</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="n">Equipment</span><span class="o">::</span><span class="n">interactWorn</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">11118</span><span class="p">,</span><span class="w"> </span><span class="n">ops</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">

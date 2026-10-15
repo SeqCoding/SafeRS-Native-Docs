@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1475,6 +1481,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1699,6 +1733,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1707,6 +1769,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2134,7 +2224,7 @@ DoAction).</p>
 <tr>
 <td>Snapshot all slots</td>
 <td><code>Inventory::all(ctx) → vector&lt;InventoryItem&gt;</code></td>
-<td><code>srs.inventory.all() → table</code></td>
+<td><code>srs.inventory.all() → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>One slot (0..27)</td>
@@ -2246,16 +2336,20 @@ DoAction).</p>
 </tr>
 </tbody>
 </table>
-<p><code>action</code> is the exact menu-option string (e.g. <code>"Eat"</code>, <code>"Drop"</code>,
+<p><code>action</code> is the menu-option string (e.g. <code>"Eat"</code>, <code>"Drop"</code>,
 <code>"Wield"</code>, <code>"Bury"</code>, <code>"Drink"</code>, <code>"Use"</code>). Returns <code>false</code> on any of:
 slot out of range, slot empty, slot widget not currently rendered, or
 spoofer failure. An action the item doesn't list does <strong>not</strong> fail — it
 falls back to the item's primary (first) option, so check the verb is
 spelled as the item's menu shows it.</p>
 <p><code>interact</code> takes either a <strong>slot</strong> (a number, 0–27) or an <strong>item name</strong>
-(first slot whose item name contains <code>name</code>, case-insensitive — identical
-to <code>interactByName</code>). A number is always a slot: to act on an item id use
-<code>interactById</code>.</p>
+(a string: first slot whose item name contains it, case-insensitive —
+identical to <code>interactByName</code>). A number is always a slot, never an item id:
+to act on an item id use <code>interactById</code>.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interact</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Drop&quot;</span><span class="p">)</span><span class="w">           </span><span class="c1">-- slot 0</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interact</span><span class="p">(</span><span class="s2">&quot;Lobster&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Eat&quot;</span><span class="p">)</span><span class="w">    </span><span class="c1">-- first slot whose name contains &quot;Lobster&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactById</span><span class="p">(</span><span class="mi">379</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Eat&quot;</span><span class="p">)</span><span class="w">      </span><span class="c1">-- by item id</span>
+</span></code></pre></div>
 <p><code>interactByLowestDose</code> targets the <strong>lowest</strong> dose of a potion family —
 <code>interactByLowestDose("Prayer potion", "Drink")</code> drinks a <code>(1)</code>
 before a fresh <code>(4)</code> to free inventory slots sooner (the trailing <code>(N)</code>
@@ -2390,18 +2484,18 @@ checks the pile is still on its tile first. Keep the target on screen
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Inventory</span><span class="o">::</span><span class="n">isFull</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">Inventory</span><span class="o">::</span><span class="n">dropAll</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bones&quot;</span><span class="p">);</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">Inventory</span><span class="o">::</span><span class="n">interactByName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Lobster&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Eat&quot;</span><span class="p">);</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Inventory</span><span class="o">::</span><span class="n">isFull</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">Inventory</span><span class="o">::</span><span class="n">dropAll</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bones&quot;</span><span class="p">);</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">Inventory</span><span class="o">::</span><span class="n">interactByName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Lobster&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Eat&quot;</span><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">isFull</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Bones&quot;</span><span class="p">)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">end</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactByName</span><span class="p">(</span><span class="s2">&quot;Lobster&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Eat&quot;</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">isFull</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Bones&quot;</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kr">end</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactByName</span><span class="p">(</span><span class="s2">&quot;Lobster&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Eat&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 </div>
 </div>

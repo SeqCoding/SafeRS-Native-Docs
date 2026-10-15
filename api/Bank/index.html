@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1596,6 +1602,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1820,6 +1854,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1828,6 +1890,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2362,8 +2452,7 @@
 <p><code>srs::api::Bank</code> / <code>srs.bank</code></p>
 <p>Full bank workflow: navigation to named banks, opening / closing, tab
 switching, per-item withdraw + deposit, bulk deposit, scrolling, and the
-"1 / 5 / 10 / X / All" quantity preset. Constants lifted from RuneLite
-(<code>InterfaceID.Bankmain</code>, <code>VarbitID.BANK_*</code>, <code>ScriptID.UPDATE_SCROLLBAR</code>).</p>
+"1 / 5 / 10 / X / All" quantity preset.</p>
 <h2 id="constants-c">Constants (C++)<a class="headerlink" href="#constants-c" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2422,10 +2511,9 @@ switching, per-item withdraw + deposit, bulk deposit, scrolling, and the
 <p>Auto-enter the bound account's 4-digit PIN on the keypad. The PIN itself is
 stored in the launcher's per-account encrypted record (DPAPI, user-scope) and
 <strong>never crosses the script API boundary</strong> — <code>handleBankPin</code> takes no PIN
-argument and <code>hasBoundBankPin</code> only exposes a boolean. The DLL leases the
-PIN through <code>osrs::breakmgr::CredentialStore::leaseBankPin()</code>, dispatches
-four CC_OP (slot 57) clicks on the keypad widgets in group 213, and zeros
-the buffer before returning.</p>
+argument and <code>hasBoundBankPin</code> only exposes a boolean. The client reads the
+PIN only for the instant it needs one digit, clicks that digit's button on
+the keypad (group 213), and wipes it again before returning.</p>
 <table>
 <thead>
 <tr>
@@ -2447,7 +2535,7 @@ the buffer before returning.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Per-call flow</strong> (one keypad click per pulse — tick-driven):</p>
+<p><strong>Per-call flow</strong> (at most one keypad click per call):</p>
 <ol>
 <li>Bail with <code>true</code> (no-op success) if the PIN widget isn't open.</li>
 <li>Bail with <code>false</code> if no account is bound, the account has no PIN, or
@@ -2457,33 +2545,34 @@ the buffer before returning.</p>
 <li>Read widget <code>(213, 10)</code> to determine which digit position the keypad
    is currently asking for (<code>FIRST</code> / <code>SECOND</code> / <code>THIRD</code> / <code>FOURTH</code>).
    Bail with <code>false</code> if the text doesn't match yet (engine mid-update).</li>
-<li>Lease the PIN, look up the digit char for the current position, scan
+<li>Read the digit for the current position and scan
    the keypad letter slots' dynamic children for one whose text matches.</li>
-<li>Prime the mouse-spoof ring and refresh the AFK timestamps, dispatch a
-   slot-57 "Select" click on the digit's listener widget (the first dynamic
-   child of the letter slot), then run that widget's <code>onClick</code> CS2 script so
-   the keypad accumulates the digit and advances its instruction text.</li>
-<li>Drop the lease (destructor zeros the PIN bytes).</li>
+<li>Move the cursor onto that digit and click it like a player would
+   (press, a short human-length hold, release). The game's own click handling
+   records the digit and advances the instruction text. If the digit's label is
+   blank because the cursor is hovering its button (the keypad hides the label
+   under the cursor), the digit is inferred by elimination from the other nine.</li>
+<li>Wipe the PIN from memory.</li>
 </ol>
-<p><strong>Why tick-driven</strong>: when the script itself opened the bank, the queued
-engine action for the banker click and the CS2 script that writes the
-keypad's digit labels both run on the <strong>engine main thread</strong>, one engine
-frame after the keypad opens. The digit labels are therefore empty on the
-first call after the keypad appears. Rather than block waiting for them,
-each call returns in &lt;1 ms (<code>false</code> until the labels are populated) and the
-script re-polls every tick until the widget closes.</p>
-<p><strong>Why the listener widget + CS2 script</strong>: the keypad's buttons are dynamic
-children, and the click's <code>onClick</code> listener lives on the first dynamic child
-of each letter slot, not on the static parent. A plain widget click resolved
-against the parent silently drops, so the digit click targets the listener
-child and also runs its script so the keypad state advances.</p>
+<p>While a click is settling (up to ~1.2 s, until the instruction moves on to
+the next digit) further calls return <code>true</code> without clicking again, so
+calling every pulse never enters a digit twice.</p>
+<p><strong>Why tick-driven</strong>: the game writes the keypad's (shuffled) digit labels a
+frame or two after the keypad appears, so they are empty on the first call.
+Rather than block waiting for them, each call returns in &lt;1 ms (<code>false</code> until
+the labels are populated) and the script re-polls until the keypad closes.</p>
+<p><strong>Why a real click</strong>: the keypad only records a digit when its button's own
+click handler runs. Clicking the button the way a player does lets the game
+run that handler itself, so there is nothing build-specific to keep in sync.</p>
 <p><strong>Return values:</strong></p>
 <ul>
-<li><code>true</code> — PIN widget isn't open (no-op) <strong>or</strong> a click was dispatched
+<li><code>true</code> — PIN widget isn't open (no-op), a click was dispatched, <strong>or</strong> the
+  previous click is still settling
   this tick.</li>
 <li><code>false</code> — no account bound, account has no PIN, keypad labels aren't
-  populated yet, instruction text doesn't match a known phrase, or the
-  digit widget can't be found in group 213.</li>
+  populated yet, instruction text doesn't match a known phrase, the
+  digit widget can't be found in group 213, or the click couldn't be sent
+  (game window input not hooked yet).</li>
 </ul>
 <p><strong>Calling pattern</strong> — call every pulse while the PIN widget is open:</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">pulse</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
@@ -2715,7 +2804,7 @@ call returns <code>false</code> if the bank isn't open or the index is out of ra
 <tr>
 <td>All slots</td>
 <td><code>Bank::all(ctx) → vector&lt;InventoryItem&gt;</code></td>
-<td><code>srs.bank.all() → table</code></td>
+<td><code>srs.bank.all() → table (1-based list of items)</code></td>
 </tr>
 <tr>
 <td>Contains by id</td>
@@ -2895,8 +2984,7 @@ case.</p>
 (Bankside.ITEMS). Clicks route as CC_OP (slot 57) at that widget with
 <code>subSlot = backpack slot (0..27)</code> and <code>itemId</code> from the backpack cache. The
 deposit-side op ordering differs from the withdraw side: explicit
-Deposit-1 / 5 / 10 / X / All ops (identifiers 3 / 4 / 5 / 7 / 8), live-read
-from the 241.1 menu.</p>
+Deposit-1 / 5 / 10 / X / All ops (identifiers 3 / 4 / 5 / 7 / 8).</p>
 <table>
 <thead>
 <tr>
@@ -2931,9 +3019,10 @@ from the 241.1 menu.</p>
 <p><code>deposit</code> uses the explicit Deposit-1 / 5 / 10 ops for those amounts and
 <strong>Deposit-X</strong> (the server-driven chatbox prompt, via <a href="../Prompt/"><code>srs.prompt</code></a>)
 for any other amount — so it <strong>blocks</strong> while typing a custom amount.
-<code>depositAll</code> deposits the whole stack. Because every click uses an explicit
-op rather than the quantity preset's default, deposits do not depend on the
-bank's current quantity setting.</p>
+<code>depositAll</code> uses the explicit Deposit-All op for the whole stack. Because
+every click uses its own explicit op rather than the quantity preset's
+default, deposits are <strong>independent of the bank's current quantity setting</strong>
+(<code>setWithdrawQuantity</code> only affects withdraws).</p>
 <p><code>depositAllExcept</code> fires Deposit-All on the FIRST non-kept inventory
 slot per call and returns <code>false</code>; the script polls each tick until
 only kept items remain, at which point it returns <code>true</code>.</p>
@@ -2960,7 +3049,7 @@ only kept items remain, at which point it returns <code>true</code>.</p>
 </tbody>
 </table>
 <p><code>isNoteMode</code> reads varbit <code>3958</code> (<code>0</code> = item, <code>1</code> = note). <code>setNoteMode</code> clicks the
-bank's Note/Item toggle (group 12, child 19) <strong>only</strong> when the current mode differs
+bank's Note/Item toggle (group 12, child 25) <strong>only</strong> when the current mode differs
 from the requested one, so it's safe to call every tick.</p>
 <h2 id="bulk-deposit">Bulk deposit<a class="headerlink" href="#bulk-deposit" title="Permanent link">&para;</a></h2>
 <table>

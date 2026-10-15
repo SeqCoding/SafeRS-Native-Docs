@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1362,6 +1368,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1586,6 +1620,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1594,6 +1656,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -1893,6 +1983,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#controlling-teleports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controlling teleports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#state-arrivaldistance" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2107,6 +2208,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#controlling-teleports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controlling teleports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#state-arrivaldistance" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2252,6 +2364,11 @@ intent) when the executor isn't wired (pre-init host).</p>
 <td><code>srs.walk.to(x, y[, useTransports], plane) → bool</code></td>
 </tr>
 <tr>
+<td>Path-routed walk, teleport control</td>
+<td><code>Walk::to(ctx, x, y, useTransports, plane, allowTeleports) → bool</code></td>
+<td><code>srs.walk.to(x, y, { transports, plane, teleports }) → bool</code><br><code>game.moveTo(x, y, { transports, plane, teleports }) → bool</code></td>
+</tr>
+<tr>
 <td>Path-routed canvas walk</td>
 <td>—</td>
 <td><code>game.walkTo(x, y[, useTransports]) → bool</code></td>
@@ -2309,15 +2426,28 @@ intent) when the executor isn't wired (pre-init host).</p>
 </tbody>
 </table>
 <h3 id="srswalkto-overloads-lua"><code>srs.walk.to</code> overloads (Lua)<a class="headerlink" href="#srswalkto-overloads-lua" title="Permanent link">&para;</a></h3>
-<p>Lua exposes <strong>four</strong> overloads — the type of the third argument
-(bool vs int) disambiguates:</p>
+<p>Lua exposes <strong>five</strong> overloads — the type of the third argument
+(bool, int or table) disambiguates:</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span><span class="w">                        </span><span class="c1">-- current floor, transports on</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">useTransports</span><span class="p">)</span><span class="w">         </span><span class="c1">-- bool arg 3</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="p">)</span><span class="w">                 </span><span class="c1">-- int arg 3: cross-plane</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">useTransports</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="p">)</span><span class="w">  </span><span class="c1">-- full form</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">transports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">teleports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">})</span><span class="w">  </span><span class="c1">-- options table</span>
 </span></code></pre></div>
 <p><code>plane</code> 0..3 routes via stairs/ladders to the target floor; <code>-1</code> means
 the current floor.</p>
+<p>The <strong>options table</strong> form takes three optional fields: <code>transports</code>
+(default <code>true</code>), <code>plane</code> (default <code>-1</code>) and <code>teleports</code> (default <code>true</code>).
+<code>game.moveTo(x, y, opts)</code> accepts the same table.</p>
+<h3 id="controlling-teleports">Controlling teleports<a class="headerlink" href="#controlling-teleports" title="Permanent link">&para;</a></h3>
+<p><code>teleports = false</code> (C++: <code>allowTeleports = false</code>) keeps stairs, ladders,
+doors, shortcuts and fixed networks (fairy rings, spirit trees, gliders,
+levers, portals) but <strong>never plans an item, spell, home or minigame
+teleport</strong>. <code>transports = false</code> still means walk-only, regardless of
+<code>teleports</code>.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Walk to the bank, using doors/stairs/fairy rings but no teleport items or spells.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="mi">3185</span><span class="p">,</span><span class="w"> </span><span class="mi">3436</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">teleports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">})</span>
+</span></code></pre></div>
 <h3 id="state-arrivaldistance"><code>state</code> / <code>arrivalDistance</code><a class="headerlink" href="#state-arrivaldistance" title="Permanent link">&para;</a></h3>
 <p><code>state</code> reports the walk lifecycle. Lua maps the enum to a string:
 <code>"idle"</code>, <code>"waitingForPath"</code>, <code>"walking"</code>, <code>"arrived"</code>,
@@ -2379,16 +2509,16 @@ side-stepping a tick-attack hitbox).</p>
   <code>srs.player.position()</code> next tick if you need to confirm.</li>
 <li><code>plane</code> defaults to the player's current plane.</li>
 </ul>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Side-step east by one tile, immediately.</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">game</span><span class="p">.</span><span class="nf">walkFastCanvas</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">plane</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Side-step east by one tile, immediately.</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nv">game</span><span class="p">.</span><span class="nf">walkFastCanvas</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">plane</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="walksmart-automatic-dispatch"><code>walkSmart</code> — automatic dispatch<a class="headerlink" href="#walksmart-automatic-dispatch" title="Permanent link">&para;</a></h2>
 <p>Picks <code>walkFastCanvas</code> if the target tile projects onto the canvas,
 otherwise falls back to the hybrid path executor (<code>Walk::to</code>). The fallback is
 always a current-floor walk — <code>plane</code> only applies to the on-canvas click.</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Caller doesn&#39;t need to know whether the tile is visible.</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">game</span><span class="p">.</span><span class="nf">walkSmart</span><span class="p">(</span><span class="nv">targetX</span><span class="p">,</span><span class="w"> </span><span class="nv">targetY</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- Caller doesn&#39;t need to know whether the tile is visible.</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">game</span><span class="p">.</span><span class="nf">walkSmart</span><span class="p">(</span><span class="nv">targetX</span><span class="p">,</span><span class="w"> </span><span class="nv">targetY</span><span class="p">)</span>
 </span></code></pre></div>
 <p>Returns <code>true</code> if a walk was dispatched. Useful when you have a target
 tile from some computation (<code>findSafeTile</code>, a script's own planning,
@@ -2452,24 +2582,24 @@ path executor for the multi-tick approach).</p>
 </tbody>
 </table>
 <p><strong>Returns</strong> — C++ gets a <code>SafeTile</code> struct:</p>
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">SafeTile</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">valid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">      </span><span class="c1">// false = no candidate met the constraints</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">plane</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">onCanvas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">   </span><span class="c1">// projects onto the current canvas</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">walkable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">};</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">SafeTile</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">valid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">      </span><span class="c1">// false = no candidate met the constraints</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">plane</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">onCanvas</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">   </span><span class="c1">// projects onto the current canvas</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">walkable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">};</span>
 </span></code></pre></div>
 <p>Check <code>valid</code> before using the coordinates. Lua (<code>game.findSafeTile</code>)
 returns the equivalent table — but returns <code>nil</code> instead of a
 <code>valid=false</code> record:</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">onCanvas</span><span class="o">=</span><span class="kc">true</span><span class="o">|</span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nv">walkable</span><span class="o">=</span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">x</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="o">=</span><span class="err">…</span><span class="p">,</span><span class="w"> </span><span class="nv">onCanvas</span><span class="o">=</span><span class="kc">true</span><span class="o">|</span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nv">walkable</span><span class="o">=</span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">danger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="nv">x</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">plane</span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1">-- I&#39;m standing on it</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kd">local</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">game</span><span class="p">.</span><span class="nf">findSafeTile</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">danger</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="kr">if</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nv">game</span><span class="p">.</span><span class="nf">walkSmart</span><span class="p">(</span><span class="nv">safe</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">plane</span><span class="p">)</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="kr">end</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">danger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">{</span><span class="nv">x</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">plane</span><span class="o">=</span><span class="nv">p</span><span class="p">.</span><span class="py">plane</span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1">-- I&#39;m standing on it</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kd">local</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">game</span><span class="p">.</span><span class="nf">findSafeTile</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">danger</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="kr">if</span><span class="w"> </span><span class="nv">safe</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nv">game</span><span class="p">.</span><span class="nf">walkSmart</span><span class="p">(</span><span class="nv">safe</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">safe</span><span class="p">.</span><span class="py">plane</span><span class="p">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="to-full-pathfinder"><code>to</code> — full pathfinder<a class="headerlink" href="#to-full-pathfinder" title="Permanent link">&para;</a></h2>
 <p>The full navigation API. Plans a route with <strong>PathfinderV2</strong> (a graph
@@ -2483,6 +2613,8 @@ click selection, door handling and stall recovery behave identically.</p>
   rings, manholes, ladders, etc. are invoked as the path crosses them.
   Set <code>false</code> to force a walk-only path (free accounts, missing quest
   reqs).</li>
+<li><code>allowTeleports = false</code> (Lua <code>teleports = false</code>) excludes item, spell,
+  home and minigame teleports while leaving other transports available.</li>
 <li>Without a <code>plane</code> argument the walk targets the player's current
   floor. Pass the cross-plane overload (<code>plane</code> 0..3) to route via
   stairs/ladders to another floor; <code>-1</code> = current floor.</li>
@@ -2493,11 +2625,11 @@ click selection, door handling and stall recovery behave identically.</p>
   <code>srs.walk.state()</code> to tell "arrived" from "gave up", and
   <code>srs.walk.arrivalDistance()</code> for how close the arrival actually got.</li>
 </ul>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">)</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1">-- … later ticks …</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">hasArrived</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nf">doStuffAtDestination</span><span class="p">()</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="kr">end</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">to</span><span class="p">(</span><span class="mi">3210</span><span class="p">,</span><span class="w"> </span><span class="mi">3210</span><span class="p">)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1">-- … later ticks …</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">walk</span><span class="p">.</span><span class="nf">hasArrived</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nf">doStuffAtDestination</span><span class="p">()</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="transports-full-pathfinder-only">Transports (full pathfinder only)<a class="headerlink" href="#transports-full-pathfinder-only" title="Permanent link">&para;</a></h2>
 <p>When <code>useTransports = true</code>, the executor handles:</p>

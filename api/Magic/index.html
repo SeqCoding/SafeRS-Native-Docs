@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1481,6 +1487,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1705,6 +1739,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1713,6 +1775,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2130,8 +2220,9 @@
 
 <h1 id="magic">Magic<a class="headerlink" href="#magic" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Magic</code> / <code>srs.magic</code></p>
-<p>Cast spells using the <a href="../Spells/">Spells</a> metadata table. Widget child
-IDs come from RuneLite <code>gameval/InterfaceID</code> <code>MagicSpellbook</code> (group 218).</p>
+<p>Cast spells using the <a href="../Spells/">Spells</a> metadata table. All four
+spellbooks (Standard, Ancient, Lunar, Arceuus) share spellbook widget
+group 218; the matching book must be the active one when you cast.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2227,19 +2318,27 @@ inventory change, NPC animation, <code>srs.combat.isInCombat()</code>) rather
 than the return value.</p>
 <ul>
 <li><code>castOnInventory(s, slot)</code> — High Alchemy, Bones to Bananas,
-  Superheat and other item-target spells.</li>
+  Superheat and other item-target spells (including the Arceuus
+  reanimation spells, which target an ensouled head in the backpack).</li>
 <li><code>castOnNpc(s, target)</code> — <code>target</code> is what <code>srs.npc.*</code> / <code>entity.*</code>
   return. The NPC is re-resolved by spawn index right before the second
   click, so a snapshot from earlier in the tick is fine; the cast is
   dropped (with a console line) if it despawned or no longer projects on
   screen. Any in-flight walk is cancelled first, like <code>srs.npc.interact</code>.
   Wind Strike on a chicken, Stun / Bind / Snare / Entangle, Crumble
-  Undead, Confuse / Weaken / Curse, the god spells — see the constants
-  in <a href="../Spells/">Spells</a>.</li>
+  Undead, Confuse / Weaken / Curse, the god spells, the Ancient combat
+  spells, Monster Examine, the Arceuus Grasp / Demonbane spells and Dark
+  Lure — see the per-book target tables in <a href="../Spells/">Spells</a>.
+  Player-target spells (Teleport Block, Cure Other, Stat Spy, Energy
+  Transfer, Heal Other, Vengeance Other) are not supported by this call.
+  In Lua <code>target</code> is the <code>ActionTarget</code> that <code>srs.npc.*</code> returns; C++
+  also accepts an <code>NpcEntry</code>.</li>
 <li><code>castOnGroundItem(s, entry)</code> — <code>entry</code> from <code>srs.grounditem.*</code>
   (Telekinetic Grab). The pile must still be on that tile and on screen
   at fire time.</li>
 </ul>
+<p>Self-cast Lunar and Arceuus spells (teleports, Vengeance, Spellbook
+Swap, ...) use plain <code>cast</code>.</p>
 <p>All two-click casts (including <code>highAlch</code> / <code>lowAlch</code>) need the
 spellbook showing, and <strong>the script owns the tab</strong>: open it with
 <code>srs.tab.switchTo(srs.tab.MAGIC)</code> and check <code>srs.tab.isOpen</code> before
@@ -2250,26 +2349,26 @@ variants return <code>false</code> when the spell metadata is unpopulated.</p>
 <p><code>setAutocast(s[, defensive])</code> drives the combat tab, which the script
 opens first (<code>srs.tab.switchTo(srs.tab.COMBAT)</code>; <code>false</code> when it is not
 showing): clicks the autocast button (593.28, or 593.23 for defensive),
-waits up to 1.5 s for the
-spell picker (group 201), clicks the matching entry (matched by label,
-then by icon sprite) and waits up to ~1.2 s for varbit 276 to reflect
-the choice, then retries once with a real click for another ~1.2 s.
-Returns <code>true</code> when varbit 276 shows <code>s</code> and the defensive-mode varbit
-(2668) matches <code>defensive</code> — including when they already did before the
-call. Only the 20 standard strike → surge spells
-are accepted. The game hides the autocast buttons unless a staff that
-can autocast is wielded, so wield the staff first.</p>
+waits up to 1.5 s for the spell picker (group 201), clicks the matching
+entry (matched by label, then by icon sprite) and waits for varbit 276 to
+reflect the choice, retrying once with a real click. Returns <code>true</code> when
+varbit 276 shows <code>s</code> and the defensive-mode varbit (2668) matches
+<code>defensive</code> — including when they already did before the call. Autocast
+is supported for the 20 Standard strike → surge spells and the 16 Ancient
+combat spells (<code>SMOKE_RUSH</code> … <code>ICE_BARRAGE</code>); any other spell returns
+<code>false</code>. The game hides the autocast buttons unless a staff that can
+autocast the spell is wielded, so wield the staff first. The Lua call
+blocks the script for up to a few seconds while it waits.</p>
 <p><code>autocastSpell()</code> maps varbit 276 back to a <code>srs.spell.*</code> value
-(<code>nil</code> when nothing is set or the value is an Ancient / unknown spell);
-<code>isAutocasting()</code> is the cheap <code>varbit ~= 0</code> check.</p>
+(<code>nil</code> when nothing is set or the value is not one of the autocastable
+spells above); <code>isAutocasting()</code> is the cheap <code>varbit ~= 0</code> check.</p>
 <div class="admonition warning">
-<p class="admonition-title">Live verification pending (2026-09-12)</p>
-<p><code>castOnNpc</code>, <code>castOnGroundItem</code> and the autocast picker flow were
-built from RuneLite <code>MenuAction</code> ids, the already-working spell stage
-click and the RuneLite widget ids; the autocast varbit values are
-community-documented. Not yet tested in game. Planned checks: Wind Strike on a chicken,
-Telekinetic Grab on a dropped item, autocast Wind Strike with a staff
-of air.</p>
+<p class="admonition-title">Not yet verified in game</p>
+<p><code>castOnNpc</code>, <code>castOnGroundItem</code>, the Ancient autocast entries and the
+autocast picker flow have not been fully tested in game. Planned
+checks: Wind Strike on a chicken, Telekinetic Grab on a dropped item,
+autocast Wind Strike with a staff of air, autocast Ice Barrage with an
+Ancient staff.</p>
 </div>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>RuneSource</code></strong> (C++-only; Lua uses the defaults):</p>
@@ -2296,6 +2395,10 @@ only meaningful while the bank is open / cached.</p>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Magic</span><span class="o">::</span><span class="n">autocastSpell</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">FireStrike</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="n">Magic</span><span class="o">::</span><span class="n">setAutocast</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">FireStrike</span><span class="p">);</span>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">}</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1">// Ancient combat spell on an NPC (Ancient spellbook active)</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Npc</span><span class="o">::</span><span class="n">nearestByName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Chicken&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="n">Magic</span><span class="o">::</span><span class="n">castOnNpc</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">IceBarrage</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">npc</span><span class="p">);</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">

@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1362,6 +1368,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1586,6 +1620,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1594,6 +1656,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2219,8 +2309,7 @@
 <h1 id="widget">Widget<a class="headerlink" href="#widget" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Widget</code> / <code>srs.widget</code></p>
 <p>Read-only inspection of the OSRS interface tree, plus a generic
-click. Widgets are identified by <code>(groupId, childId)</code> — matches
-RuneLite's <code>WidgetID</code> encoding.</p>
+click. Widgets are identified by <code>(groupId, childId)</code>.</p>
 <h2 id="state-lookup">State / lookup<a class="headerlink" href="#state-lookup" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2252,7 +2341,7 @@ RuneLite's <code>WidgetID</code> encoding.</p>
 <td><code>srs.widget.dynamicChildren(g, c) → table</code></td>
 </tr>
 <tr>
-<td>RuneLite-style label</td>
+<td>Readable label</td>
 <td><code>Widget::label(g, c) → string</code></td>
 <td><code>srs.widget.label(g, c) → string</code></td>
 </tr>
@@ -2307,9 +2396,9 @@ holds the option label or item-derived caption.</p>
 </table>
 <p><code>isVisible</code> returns <code>true</code> iff the engine actually drew the widget
 last frame (hook-snapshot path). The renderer skips any widget whose
-own or any ancestor's Hidden flag is set, so this matches RuneLite's
-recursive <code>Widget.isHidden()</code> semantics for free.</p>
-<p>Defaults on lookup-miss mirror the Java helpers exactly:</p>
+own or any ancestor's Hidden flag is set, so this matches a recursive "hidden or any ancestor hidden" check
+for free.</p>
+<p>Defaults on lookup-miss:</p>
 <ul>
 <li><code>isVisible(g, c)</code> → <code>false</code> when widget can't be found</li>
 <li><code>isHidden(g, c)</code> → <code>true</code> when widget can't be found</li>
@@ -2552,12 +2641,27 @@ it in production scripts.</p>
 <tr>
 <td><code>actions</code></td>
 <td>vector<string></td>
-<td>Right-click options (first 5 only; overflow not fetched). Lua: a real table of strings</td>
+<td>Right-click options (first 5 only; overflow not fetched). <strong>Empty op slots are dropped, so a position in <code>actions</code> is not an op number</strong> — use <code>actionOps</code>. Lua: a real table of strings</td>
+</tr>
+<tr>
+<td><code>actionOps</code></td>
+<td>vector<int32></td>
+<td>The real 1-based op of each <code>actions[i]</code> (same length and order as <code>actions</code>). Use this for any op you send (e.g. <code>clickOp</code>'s <code>actionIndex</code>). Lua: a real table of ints</td>
 </tr>
 <tr>
 <td><code>dynChildCount</code></td>
 <td>uint64</td>
 <td>Use <code>dynamicChildren(g, c)</code> to walk them</td>
+</tr>
+<tr>
+<td><code>modelId</code></td>
+<td>int32</td>
+<td>Id of the model the widget renders; <code>-1</code> if none</td>
+</tr>
+<tr>
+<td><code>modelType</code></td>
+<td>int32</td>
+<td>What <code>modelId</code> refers to: <code>1</code> = model, <code>2</code> = NPC chat head, <code>3</code> = player chat head; <code>0</code> or <code>-1</code> if none</td>
 </tr>
 </tbody>
 </table>

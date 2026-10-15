@@ -13,10 +13,10 @@
         <link rel="canonical" href="https://seqcoding.github.io/SafeRS-Native-Docs/api/RunePouch/">
       
       
-        <link rel="prev" href="../Prompt/">
+        <link rel="prev" href="../RandomEvents/">
       
       
-        <link rel="next" href="../Script/">
+        <link rel="next" href="../Sailing/">
       
       
         
@@ -328,6 +328,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -1362,6 +1368,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1583,6 +1617,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1654,6 +1716,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pouch-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pouch window
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1693,6 +1772,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -2020,6 +2127,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pouch-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pouch window
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2074,22 +2198,18 @@
 
 <h1 id="runepouch">RunePouch<a class="headerlink" href="#runepouch" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::RunePouch</code> / <code>srs.runepouch</code></p>
-<p>Read the rune pouch contents via game varbits. All slots
-(regular + divine) are read; slots that don't exist on the
-player's pouch are simply omitted from <code>contents()</code>.</p>
-<p>Each slot is two varbits: TYPE (rune item id) and QUANTITY (1..16k).
-IDs lifted from RuneLite <code>gameval/VarbitID.java</code>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Unverified: TYPE varbit → item id</p>
-<p>The facade treats the TYPE varbit value as the rune's item id. RuneLite
-resolves that value through an enum lookup, so this mapping has not been
-confirmed in-game. If <code>quantity()</code> / <code>contains()</code> return 0 for a rune you
-know is in the pouch, log <code>contents()</code> and compare the ids.</p>
-</div>
+<p>Read the rune pouch contents and move runes in and out through the
+pouch window (interface group 190). All slots (regular + divine) are
+read; slots that don't exist on the player's pouch are simply omitted
+from <code>contents()</code>.</p>
+<p>Each slot is two varbits: TYPE (a rune index that the facade maps to the
+rune's item id) and QUANTITY (1..16k). <code>contents()</code>, <code>quantity()</code> and
+<code>contains()</code> report <strong>rune item ids</strong>.</p>
 <div class="admonition note">
-<p class="admonition-title">Read-only</p>
-<p>Modifying the pouch goes through the rune-pouch widget UI
-(group 190) — that's a separate facade if/when needed.</p>
+<p class="admonition-title">Pouch window</p>
+<p><code>open</code> / <code>close</code> / <code>deposit</code> / <code>withdraw</code> operate on the pouch window
+and <strong>block</strong> the calling script for up to a couple of seconds (waiting
+for the window, or for the typed amount prompt). Reads need no window.</p>
 </div>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
@@ -2121,12 +2241,62 @@ know is in the pouch, log <code>contents()</code> and compare the ids.</p>
 <td><code>RunePouch::contains(ctx, runeItemId, min=1) → bool</code></td>
 <td><code>srs.runepouch.contains(runeItemId, min?) → bool</code></td>
 </tr>
+<tr>
+<td>Register pouch varbits for reading</td>
+<td><code>RunePouch::prewarm()</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Pouch window showing?</td>
+<td><code>RunePouch::isOpen(ctx) → bool</code></td>
+<td><code>srs.runepouch.isOpen() → bool</code></td>
+</tr>
+<tr>
+<td>Open the pouch window</td>
+<td><code>RunePouch::open(ctx) → bool</code></td>
+<td><code>srs.runepouch.open() → bool</code></td>
+</tr>
+<tr>
+<td>Close the pouch window</td>
+<td><code>RunePouch::close(ctx) → bool</code></td>
+<td><code>srs.runepouch.close() → bool</code></td>
+</tr>
+<tr>
+<td>Backpack → pouch</td>
+<td><code>RunePouch::deposit(ctx, runeItemId, amount) → bool</code></td>
+<td><code>srs.runepouch.deposit(runeItemId, amount?) → bool</code></td>
+</tr>
+<tr>
+<td>Pouch → backpack</td>
+<td><code>RunePouch::withdraw(ctx, runeItemId, amount) → bool</code></td>
+<td><code>srs.runepouch.withdraw(runeItemId, amount?) → bool</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>hasPouch</code> checks the 4 pouch item ids (regular / divine, plain / noted)
 against the inventory, and the 2 un-noted ids against worn equipment (cheap).</p>
 <p><code>contents</code> returns up to 6 entries (4 standard + 2 divine) — empty
 slots are omitted, so <code>.size()</code> equals the number of active runes.</p>
+<p><code>prewarm()</code> registers the pouch varbits with the varbit snapshot so the
+very first <code>contents()</code> / <code>quantity()</code> read already has values. It is
+idempotent; the Lua environment calls it for you when a script loads, so
+it is only relevant to C++ plugins (call it once, e.g. in <code>onLoad</code>, before
+the first read).</p>
+<h3 id="pouch-window">Pouch window<a class="headerlink" href="#pouch-window" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>open()</code> uses the pouch's inventory "Open" op and waits up to about 2 s
+  for the window; returns <code>true</code> when the window is showing. The pouch
+  must be in the backpack.</li>
+<li><code>close()</code> clicks the window's Close button (Escape as a fallback) and
+  waits about 1.2 s.</li>
+<li><code>deposit</code> / <code>withdraw</code> require the window to be open. <code>amount</code> is <code>1</code>,
+  <code>5</code>, any other <code>n</code> (uses the Store-X / Withdraw-X typed prompt, which
+  blocks for about 2 s), or <code>&lt;= 0</code> for <strong>All</strong>. In Lua <code>amount</code> may be
+  omitted (= All). They return <code>true</code> once the click (and typed amount)
+  has been sent — poll <code>quantity()</code> to confirm the result. They return
+  <code>false</code> (and print the window's cells to the console) when the rune
+  isn't on the source side of the window.</li>
+</ul>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <p><strong>Item ids</strong> (<code>RunePouch::k*</code> / <code>srs.runepouch.*</code>):</p>
 <table>
@@ -2197,6 +2367,12 @@ slots are omitted, so <code>.size()</code> equals the number of active runes.</p
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="o">!</span><span class="n">RunePouch</span><span class="o">::</span><span class="n">contains</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">561</span><span class="w"> </span><span class="cm">/* Nature rune */</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="c1">// fewer than 100 natures left — go restock</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">// Top up: open the window, store every nature rune from the backpack</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">RunePouch</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="n">RunePouch</span><span class="o">::</span><span class="n">deposit</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">561</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">   </span><span class="c1">// 0 = All</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="n">RunePouch</span><span class="o">::</span><span class="n">close</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -2206,6 +2382,13 @@ slots are omitted, so <code>.size()</code> equals the number of active runes.</p
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">            </span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="nv">slot</span><span class="p">.</span><span class="py">index</span><span class="p">,</span><span class="w"> </span><span class="nv">slot</span><span class="p">.</span><span class="py">runeItemId</span><span class="p">,</span><span class="w"> </span><span class="nv">slot</span><span class="p">.</span><span class="py">quantity</span><span class="p">))</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kr">end</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kr">end</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1">-- Top up natures from the backpack (blocks briefly while the window opens)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">runepouch</span><span class="p">.</span><span class="nf">open</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">runepouch</span><span class="p">.</span><span class="nf">deposit</span><span class="p">(</span><span class="mi">561</span><span class="p">)</span><span class="w">          </span><span class="c1">-- amount omitted = All</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">runepouch</span><span class="p">.</span><span class="nf">withdraw</span><span class="p">(</span><span class="mi">563</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w">      </span><span class="c1">-- Withdraw-5 law runes</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">runepouch</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="kr">end</span>
 </span></code></pre></div>
 </div>
 </div>

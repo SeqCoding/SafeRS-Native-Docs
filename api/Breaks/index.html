@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1486,6 +1492,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1710,6 +1744,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1718,6 +1780,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2156,6 +2246,14 @@ to phase events.</p>
 callbacks just stop firing. Scripts don't need to call <code>setPaused</code>
 on themselves.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Logout during breaks is the default</p>
+<p><code>logoutDuringBreak</code> now defaults to <strong><code>true</code></strong>: the scheduler logs the
+account out for the break and logs back in when it ends. Set it to
+<code>false</code> in the profile to idle in place instead. Because <code>setProfile</code>
+is declarative, a script that calls it without this key gets the
+logout behaviour.</p>
+</div>
 <h2 id="lifecycle-control">Lifecycle control<a class="headerlink" href="#lifecycle-control" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2390,8 +2488,8 @@ and pass the <strong>whole table</strong> back:</p>
 </tr>
 <tr>
 <td><code>logoutDuringBreak</code></td>
-<td><code>false</code></td>
-<td>Idle-in-place vs. logout. Defaults to idling in place; enable it only once you have confirmed the logout click works on your setup.</td>
+<td><code>true</code></td>
+<td>Logout vs. idle-in-place. Defaults to logging out for the break and logging back in when it ends; set <code>false</code> to idle in place instead.</td>
 </tr>
 <tr>
 <td><code>maxLoginRetries</code></td>
@@ -2464,6 +2562,14 @@ to remove.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Lua subscriptions are cleaned up for you</p>
+<p>Subscriptions made from Lua are tracked by the client and dropped
+automatically when the script engine is rebuilt (for example when a
+script is disabled and re-enabled), so a stale callback is never
+invoked. Calling <code>unsubscribe(handle)</code> removes one early; re-register
+your handlers when the script is installed again.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Subscribers fire on the engine tick thread</p>
 <p>Don't do heavy work inside event callbacks — post to a queue if

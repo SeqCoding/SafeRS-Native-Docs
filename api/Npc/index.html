@@ -16,7 +16,7 @@
         <link rel="prev" href="../MenuEntry/">
       
       
-        <link rel="next" href="../Object/">
+        <link rel="next" href="../Notify/">
       
       
         
@@ -328,6 +328,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -1464,6 +1470,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1688,6 +1722,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1696,6 +1758,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2218,6 +2308,11 @@ them for "different" results:</p>
 <td><code>srs.npc.interact(target, action) → bool</code></td>
 </tr>
 <tr>
+<td>Option by position</td>
+<td><code>Npc::interactOp(ctx, target, op, label) → bool</code></td>
+<td><code>srs.npc.interactOp(target, op[, label]) → bool</code></td>
+</tr>
+<tr>
 <td>Attack</td>
 <td><code>Npc::attack(ctx, target) → bool</code></td>
 <td><code>srs.npc.attack(target) → bool</code></td>
@@ -2252,11 +2347,24 @@ them for "different" results:</p>
 <td><code>Npc::overheadText(ctx, target) → std::string</code></td>
 <td><code>srs.npc.overheadText(target) → string</code></td>
 </tr>
+<tr>
+<td>Static definition (size, actions, max HP)</td>
+<td><code>Npc::definition(ctx, target \| npcId) → NpcDefinition</code></td>
+<td>— (use <code>srs.defs.npc(target \| id)</code>, see <a href="../Defs/">Defs</a>)</td>
+</tr>
 </tbody>
 </table>
 <p><code>action</code> is the exact menu-option string the game shows (<code>"Attack"</code>,
 <code>"Talk-to"</code>, <code>"Bank"</code>, <code>"Pickpocket"</code>, <code>"Trade"</code>, <code>"Steal-from"</code>, …).
-<code>examine</code> fires the right-click <strong>Examine</strong> and the engine prints the
+<code>interactOp</code> presses option <code>op</code> (1..5) of the NPC's menu <strong>by position</strong>
+instead of by text; any other <code>op</code> returns <code>false</code>. Use it for
+multi-state NPCs whose current options live on a varbit-selected child
+type — the parent type the game reports has no options at all, so
+<code>interact("Start-trial")</code> can't find the text and falls back to option 1.
+<code>label</code> is only used in logs (Lua: optional, defaults to <code>"op&lt;N&gt;"</code>). Like
+<code>examine</code>, <code>interactOp</code> is not an <code>ActionTarget</code> method — call
+<code>srs.npc.interactOp(npc, 3)</code>.</p>
+<p><code>examine</code> fires the right-click <strong>Examine</strong> and the engine prints the
 NPC's description to chat.</p>
 <p><code>overheadPrayer</code> reads the NPC's protection-prayer headicon (live
 override when set, else the <code>NpcType</code> definition). Returns
@@ -2267,12 +2375,11 @@ takes an <code>NpcEntry</code> (a legacy <code>ActionTarget</code> overload also
 it's a Lua <strong>global</strong> enum, not under <code>srs.npc</code>.</p>
 <p><code>overheadText</code> is the chat text drawn above the actor right now —
 NPC forced chat (an entling's <code>"Short on top!"</code>, a Forester's shout) or
-a player's public chat — the equivalent of RuneLite's
-<code>Actor.getOverheadText()</code>. Returns <code>""</code> when nothing is shown, when the
+a player's public chat — the same text the game draws over the head. Returns <code>""</code> when nothing is shown, when the
 NPC has despawned, or when the text has expired (the engine clears it
 the tick its countdown reaches zero). Every finder result also carries
 an <code>overheadText</code> <strong>snapshot</strong> field plus <code>overheadCycles</code> (client ticks
-left before it clears, RuneLite <code>getOverheadCycle()</code>); the method
+left before it clears); the method
 re-reads the live actor and is what to use when you hold an older
 target. Works for NPC and player targets.</p>
 <div class="admonition note">
@@ -2373,7 +2480,7 @@ action methods accept either type.</p>
 </tr>
 <tr>
 <td><code>orientation</code></td>
-<td>Facing angle 0–2047, clockwise from south: 0 = S, 512 = W, 1024 = N, 1536 = E (RuneLite <code>Direction</code> values); −1 = unknown</td>
+<td>Facing angle 0–2047, clockwise from south: 0 = S, 512 = W, 1024 = N, 1536 = E; −1 = unknown</td>
 </tr>
 <tr>
 <td><code>combatLevel</code></td>
@@ -2393,7 +2500,7 @@ action methods accept either type.</p>
 <div class="admonition note">
 <p class="admonition-title"><code>orientation</code> / <code>combatLevel</code> semantics</p>
 <p>Both fields are populated for NPCs and players. <code>orientation</code> is the
-actor's <strong>target</strong> facing (RuneLite <code>Actor.getOrientation()</code>): the
+actor's <strong>target</strong> facing: the
 angle the engine turns toward, so it changes the tick the server sets
 it and the rendered model catches up over the next few ticks. Compare
 against the four cardinals with a tolerance (e.g. north =

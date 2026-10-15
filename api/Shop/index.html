@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1362,6 +1368,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1586,6 +1620,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1594,6 +1656,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2119,8 +2209,10 @@
 <h1 id="shop">Shop<a class="headerlink" href="#shop" title="Permanent link">&para;</a></h1>
 <p><code>srs::api::Shop</code> / <code>srs.shop</code></p>
 <p>Read shop stock, buy from the stock grid and sell from the side
-inventory. Stock lives in container id 300 (matches the widget group);
-the sell side is the player-inventory mirror in group 301.</p>
+inventory. Stock is read from the shop's stock grid (<code>Shopmain.ITEMS</code>,
+widget 300/16) — each shop has its <strong>own</strong> inventory id, so there is no single
+container to read; the grid always mirrors whichever shop is open. The sell
+side is the player-inventory mirror in group 301.</p>
 <p>Per-item clicks use the same recipe as <a href="../Bank/">Bank</a> per-item withdraw:
 a CC_OP on the grid cell (dyn child of <code>Shopmain.ITEMS</code> (300, 16) or the
 <code>Shopside</code> inventory (301, 0)), routed through the engine's action
@@ -2128,7 +2220,7 @@ dispatcher on the main thread with the input spoof. No packets are
 built by the facade.</p>
 <div class="admonition warning">
 <p class="admonition-title">Buy / sell not yet verified in game</p>
-<p><code>buy</code> / <code>sell</code> (added 2026-09-12) compile and are built on the same
+<p><code>buy</code> / <code>sell</code> compile and are built on the same
 approach as the Bank per-item withdraw, but have <strong>not</strong> been tested
 against a live shop. Menu positions are read from each slot's own
 action list; the fallback table (<code>Value</code> = 1, <code>1</code> = 2, <code>5</code> = 3,
@@ -2195,8 +2287,10 @@ on a cheap item before relying on them in a script.</p>
 </tbody>
 </table>
 <p>Name lookups match the item's in-game display name (case- and whitespace-insensitive substring).</p>
-<p>The <code>slot</code> field on returned items is the index into the shop's stock
-grid (top-left = 0, row-major).</p>
+<p><code>stock()</code> returns an empty list while the shop is closed. The <code>slot</code> field on
+returned items is the index into the shop's stock grid (top-left = 0,
+row-major). Out-of-stock entries (quantity 0) stay in the list; <code>buy</code> skips
+them.</p>
 <h2 id="per-item-buy-sell">Per-item buy / sell<a class="headerlink" href="#per-item-buy-sell" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2290,12 +2384,12 @@ are per-module — don't pass one module's value to another.</p>
 <tr>
 <td><code>kShopContainerId</code></td>
 <td>300</td>
-<td>Shop stock container id</td>
+<td><strong>Deprecated</strong> — not a shop container (inventory 300 is unrelated); nothing reads it. Kept only so older plugins still compile</td>
 </tr>
 <tr>
 <td><code>kShopGroup</code></td>
 <td>300</td>
-<td>Shop widget group (matches container id)</td>
+<td>Shop widget group</td>
 </tr>
 <tr>
 <td><code>kShopSideGroup</code></td>

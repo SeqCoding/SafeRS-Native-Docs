@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1503,6 +1509,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1727,6 +1761,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1735,6 +1797,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2222,7 +2312,7 @@ its own, right next to the dialogue gate, and answer it with <code>enterText</co
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="widget-groups">Widget groups<a class="headerlink" href="#widget-groups" title="Permanent link">&para;</a></h2>
-<p>Groups (RuneLite <code>gameval/InterfaceID.java</code>), and which are advanceable with
+<p>Widget groups, and which are advanceable with
 <code>clickContinue</code>:</p>
 <table>
 <thead>
@@ -2341,7 +2431,7 @@ the click only as a fallback.</p>
 <td><code>srs.dialogue.selectOption(n) → bool</code></td>
 </tr>
 <tr>
-<td>List option labels (the "Select an Option" header is excluded, so list index <em>i</em> maps to key <em>i</em>)</td>
+<td>List option labels (never includes the menu's title row — "Select an Option" or a custom question — so <code>options()[i]</code> is exactly what <code>selectOption(i)</code> presses)</td>
 <td><code>Dialogue::options(ctx) → vector&lt;string&gt;</code></td>
 <td><code>srs.dialogue.options() → table</code></td>
 </tr>

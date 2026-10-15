@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1442,6 +1448,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1666,6 +1700,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1674,6 +1736,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2069,17 +2159,17 @@ names are nameless decorations (still queryable by id).</p>
 <tr>
 <td>All locs (heavy)</td>
 <td><code>GameObject::all(ctx) → vector&lt;GameObjectEntry&gt;</code></td>
-<td><code>srs.gameobject.all() → table</code></td>
+<td><code>srs.gameobject.all() → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>By id</td>
 <td><code>GameObject::byId(ctx, id) → vector&lt;GameObjectEntry&gt;</code></td>
-<td><code>srs.gameobject.byId(id) → table</code></td>
+<td><code>srs.gameobject.byId(id) → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>By name</td>
 <td><code>GameObject::byName(ctx, name) → vector&lt;GameObjectEntry&gt;</code></td>
-<td><code>srs.gameobject.byName(name) → table</code></td>
+<td><code>srs.gameobject.byName(name) → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>Nearest (any)</td>
@@ -2166,7 +2256,7 @@ helpers, or filter the result yourself.</p>
 <tr>
 <td><code>actions</code></td>
 <td>string[]</td>
-<td>Menu-option verbs the loc exposes, in menu order (e.g. <code>{"Mine"}</code>, <code>{"Deposit"}</code>, <code>{"Search"}</code>). These are the exact strings <code>interact</code> accepts. Empty when the <code>LocType</code> isn't cached yet (renderer decodes lazily).</td>
+<td>Menu-option verbs the loc exposes, in menu order (e.g. <code>{"Mine"}</code>, <code>{"Deposit"}</code>, <code>{"Search"}</code>). These are the exact strings <code>interact</code> accepts. Empty when the <code>LocType</code> isn't cached yet (renderer decodes lazily). In Lua this is a real 1-based table (a copy), safe to keep and iterate with <code>ipairs</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -2174,6 +2264,8 @@ helpers, or filter the result yourself.</p>
 Read it off any entry to discover what the loc can do, or hand a
 candidate list to <code>interactFirstAvailable</code> to click whichever verb the
 loc actually has.</p>
+<p>All list returns (<code>all</code>, <code>byId</code>, <code>byName</code>) are real 1-based Lua tables, so
+<code>type(x) == "table"</code>, <code>#x</code> and <code>ipairs</code> all work.</p>
 <p><code>interactFirstAvailable(target, actions)</code> tries each candidate in order
 and fires the first one the loc exposes (a read-only probe, so only one
 real click is dispatched — no speculative attempts). Returns the

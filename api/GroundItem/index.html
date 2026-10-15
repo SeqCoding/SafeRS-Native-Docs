@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1453,6 +1459,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1677,6 +1711,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1685,6 +1747,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2090,7 +2180,7 @@ Chebyshev tile distance from the local player.</p>
 <tr>
 <td>All ground items</td>
 <td><code>GroundItem::all(ctx) → vector&lt;GroundItemEntry&gt;</code></td>
-<td><code>srs.grounditem.all() → table</code></td>
+<td><code>srs.grounditem.all() → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>By id</td>
@@ -2204,7 +2294,7 @@ or a <code>GroundItemEntry</code>.</p>
 </tbody>
 </table>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
-<p>Ownership values mirror RuneLite's <code>TileItem.OWNERSHIP_*</code> and are sent by
+<p>Ownership values are sent by
 the server with every ground item:</p>
 <table>
 <thead>
@@ -2240,17 +2330,15 @@ the server with every ground item:</p>
 <div class="admonition warning">
 <p class="admonition-title">Use <code>isMine</code>, not <code>ownership == Self</code></p>
 <p>On an account that is <strong>not</strong> a group ironman the server reports other
-players' drops as <code>Group</code> (both sides have group id -1 — the same quirk
-RuneLite works around in its Ground Items plugin). <code>isMine</code> is <code>true</code> for
-<code>Self</code>, and for <code>Group</code> only while the local account type (varbit 1777) is
+players' drops as <code>Group</code> (both sides have group id -1). <code>isMine</code> is <code>true</code> for
+<code>Self</code>, and for <code>Group</code> only while the local account type is
 a group-ironman variant, so it is the right test for "loot my items only".</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Items you have not received an <code>OBJ_ADD</code> for — other players' drops before
 they become public — are not in the pile at all, so they never appear in
-<code>all()</code>. Ownership is written once when the pile entry is created; no
-packet handler we have traced rewrites it later.</p>
+<code>all()</code>. Ownership is fixed when the pile entry is created.</p>
 </div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>

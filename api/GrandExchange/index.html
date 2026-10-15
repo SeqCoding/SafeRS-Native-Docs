@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1508,6 +1514,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1732,6 +1766,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1740,6 +1802,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2186,8 +2276,7 @@
 <p><code>srs::api::GrandExchange</code> / <code>srs.ge</code></p>
 <p>Read the player's 8 Grand Exchange offer slots and drive the GE interface.</p>
 <p>Offer <strong>state</strong> is read live from the engine's offer array and works whether
-the GE window is <strong>open or closed</strong> (the RuneLite <code>getGrandExchangeOffers</code>
-analog) — no hook, no open window required. <strong>Interaction</strong> drives the GE's
+the GE window is <strong>open or closed</strong> — no hook, no open window required. <strong>Interaction</strong> drives the GE's
 CS2 interface components (offer boxes, steppers, search box) plus the keyboard
 subsystem for exact numeric / item-name entry.</p>
 <div class="admonition note">
@@ -2471,8 +2560,9 @@ unverified op-4 box action (<code>kOp_CreateSell</code>), which may be a no-op �
 </table>
 <p>These open the relevant chatbox prompt, type the value with human-paced
 timing, wait for the input queue to drain, and (for numbers) submit with
-Enter. <code>searchItem</code> populates the result list but does <strong>not</strong> pick a result —
-use <code>buyItem</code> for the full flow.</p>
+Enter. <code>searchItem</code> populates the result list (shown as children of the chatbox
+search results component, 162/53) but does <strong>not</strong> pick a result — use
+<code>buyItem</code> for the full flow, which also selects the matching result.</p>
 <h2 id="one-call-offers-blocking">One-call offers (blocking)<a class="headerlink" href="#one-call-offers-blocking" title="Permanent link">&para;</a></h2>
 <p>The high-level surface — find a slot, select the item, set quantity + price,
 confirm, all in one call. The GE offer screen must already be open.</p>
@@ -2555,8 +2645,8 @@ components directly. All <code>static constexpr int</code> on <code>GrandExchang
 </tr>
 <tr>
 <td><code>kSearch_Input</code> / <code>kSearch_Results</code></td>
-<td>44 / 52</td>
-<td>Search input line / results list</td>
+<td>44 / 53</td>
+<td>Search input line / results list (dynamic children, one per match)</td>
 </tr>
 <tr>
 <td><code>kOffers_Box0</code></td>

@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1362,6 +1368,34 @@
   
   
     <li class="md-nav__item">
+      <a href="Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="Object/" class="md-nav__link">
         
   
@@ -1586,6 +1620,34 @@
   
   
     <li class="md-nav__item">
+      <a href="RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="RunePouch/" class="md-nav__link">
         
   
@@ -1594,6 +1656,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -2136,6 +2226,12 @@ public contract.</p>
 <td>Per-NPC actions (attack / talk-to / bank / generic)</td>
 </tr>
 <tr>
+<td><a href="Notify/">Notify</a></td>
+<td><code>srs::api::Notify</code></td>
+<td><code>srs.notify</code> (function)</td>
+<td>Push a notification to the launcher (and Discord webhook)</td>
+</tr>
+<tr>
 <td><a href="Object/">Object</a></td>
 <td>—</td>
 <td><code>object</code> (global)</td>
@@ -2178,10 +2274,22 @@ public contract.</p>
 <td>The chatbox "Enter amount / name" input prompt</td>
 </tr>
 <tr>
+<td><a href="RandomEvents/">Random events</a></td>
+<td><code>srs::api::RandomEvents</code></td>
+<td><code>srs.randomEvents</code></td>
+<td>Built-in random-event handler: state + suspend / resume</td>
+</tr>
+<tr>
 <td><a href="RunePouch/">RunePouch</a></td>
 <td><code>srs::api::RunePouch</code></td>
 <td><code>srs.runepouch</code></td>
-<td>Rune pouch contents (read-only)</td>
+<td>Rune pouch contents + pouch window (open / store / withdraw)</td>
+</tr>
+<tr>
+<td><a href="Sailing/">Sailing</a></td>
+<td><code>srs::api::Sailing</code></td>
+<td><code>srs.sailing</code></td>
+<td>Boat state, helm / sails, cargo hold, port-task board</td>
 </tr>
 <tr>
 <td><a href="Script/">Script lifecycle</a></td>
@@ -2199,7 +2307,7 @@ public contract.</p>
 <td><a href="Shop/">Shop</a></td>
 <td><code>srs::api::Shop</code></td>
 <td><code>srs.shop</code></td>
-<td>Shop UI stock reads + quantity preset</td>
+<td>Shop UI stock reads, per-item buy / sell, quantity preset</td>
 </tr>
 <tr>
 <td><a href="Spells/">Spells</a></td>

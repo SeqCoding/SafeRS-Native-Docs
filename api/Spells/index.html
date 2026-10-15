@@ -430,6 +430,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1362,6 +1368,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../Notify/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -1586,6 +1620,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../RandomEvents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Random events
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../RunePouch/" class="md-nav__link">
         
   
@@ -1594,6 +1656,34 @@
     
   
     RunePouch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Sailing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sailing
   
 
     
@@ -1796,6 +1886,39 @@
     <span class="md-ellipsis">
       
         Spell (Spell / srs.spell.*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ancient-magicks-combat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ancient Magicks (combat)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lunar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lunar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arceuus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arceuus
       
     </span>
   </a>
@@ -2084,6 +2207,39 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#ancient-magicks-combat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ancient Magicks (combat)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lunar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lunar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arceuus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arceuus
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2132,11 +2288,12 @@
 <p><code>srs::api::Spells</code> / <code>srs.spells</code></p>
 <p>Static metadata for OSRS spells. Pure data; casting logic lives in
 <a href="../Magic/">Magic</a>.</p>
-<p>The current table covers 50 Standard-book spells: the 20 strike → surge
-combat spells, alchemy and other utility spells, 8 teleports, and the
-NPC / ground-item target spells (curses, binds, god spells, Telekinetic
-Grab). Other spellbooks are not populated yet, and the full RuneLite
-<code>Spell</code> enum is deliberately not mirrored.</p>
+<p>The table covers 50 Standard-book spells (the 20 strike → surge combat
+spells, alchemy and other utility spells, 8 teleports, and the NPC /
+ground-item target spells), the 16 Ancient Magicks combat spells, and the
+full Lunar (44) and Arceuus (44) books. Standard-book spells other than
+those listed are not populated, and the Ancient book's non-combat spells
+(teleports, etc.) are not in the table.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2171,9 +2328,8 @@ Grab). Other spellbooks are not populated yet, and the full RuneLite
 </table>
 <p><code>byName</code> / <code>idByName</code> are case-insensitive substring matches against the
 canonical name and return the first match in table order (so <code>"Strike"</code>
-resolves to Wind Strike). <code>inBook</code> only returns entries for
-<code>Spellbook.STANDARD</code>; the Ancient, Lunar and Arceuus books return an empty
-list. <code>byName</code> returns the metadata record; <code>idByName</code> resolves
+resolves to Wind Strike). <code>inBook</code> returns every populated entry for that book (Standard 50,
+Ancient 16, Lunar 44, Arceuus 44). <code>byName</code> returns the metadata record; <code>idByName</code> resolves
 the <strong><code>Spell</code> enum value</strong> itself, ready to feed into
 <a href="../Magic/"><code>Magic::cast</code> / <code>Magic::canCast</code></a>.</p>
 <div class="admonition note">
@@ -2230,17 +2386,579 @@ take, or <code>nil</code> if nothing matches.</p>
 <code>FALADOR_TELEPORT</code>, <code>CAMELOT_TELEPORT</code>, <code>ARDOUGNE_TELEPORT</code>,
 <code>WATCHTOWER_TELEPORT</code>, <code>TROLLHEIM_TELEPORT</code>.</p>
 <p><strong>NPC / ground-item targets</strong> (for <code>srs.magic.castOnNpc</code> /
-<code>castOnGroundItem</code>, added 2026-09-12 — appended after the teleports so
-existing enum values are unchanged):</p>
+<code>castOnGroundItem</code>):</p>
 <p><code>TELEKINETIC_GRAB</code> (ground item), <code>CONFUSE</code>, <code>WEAKEN</code>, <code>CURSE</code>, <code>BIND</code>,
 <code>SNARE</code>, <code>ENTANGLE</code>, <code>STUN</code>, <code>VULNERABILITY</code>, <code>ENFEEBLE</code>,
 <code>CRUMBLE_UNDEAD</code>, <code>IBAN_BLAST</code>, <code>MAGIC_DART</code>, <code>SARADOMIN_STRIKE</code>,
 <code>CLAWS_OF_GUTHIX</code>, <code>FLAMES_OF_ZAMORAK</code>, <code>TELEPORT_BLOCK</code> (player
 target — no cast helper yet).</p>
+<p>The Ancient, Lunar and Arceuus constants are listed per book below. The
+<strong>Target</strong> column says which <code>Magic</code> call drives the spell: <em>NPC</em> →
+<code>castOnNpc</code>, <em>Inventory item</em> → <code>castOnInventory</code>, <em>Self / none</em> →
+<code>cast</code>. <em>Player</em>-target spells have no cast helper yet (<code>castOnNpc</code> does
+not apply). All books share spellbook widget group 218; the book must be
+the active one for the spell to be clickable.</p>
+<h3 id="ancient-magicks-combat">Ancient Magicks (combat)<a class="headerlink" href="#ancient-magicks-combat" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Lua constant (<code>srs.spell.*</code>)</th>
+<th>C++ (<code>Spell::</code>)</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SMOKE_RUSH</code></td>
+<td><code>SmokeRush</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SHADOW_RUSH</code></td>
+<td><code>ShadowRush</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>BLOOD_RUSH</code></td>
+<td><code>BloodRush</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>ICE_RUSH</code></td>
+<td><code>IceRush</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SMOKE_BURST</code></td>
+<td><code>SmokeBurst</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SHADOW_BURST</code></td>
+<td><code>ShadowBurst</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>BLOOD_BURST</code></td>
+<td><code>BloodBurst</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>ICE_BURST</code></td>
+<td><code>IceBurst</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SMOKE_BLITZ</code></td>
+<td><code>SmokeBlitz</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SHADOW_BLITZ</code></td>
+<td><code>ShadowBlitz</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>BLOOD_BLITZ</code></td>
+<td><code>BloodBlitz</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>ICE_BLITZ</code></td>
+<td><code>IceBlitz</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SMOKE_BARRAGE</code></td>
+<td><code>SmokeBarrage</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SHADOW_BARRAGE</code></td>
+<td><code>ShadowBarrage</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>BLOOD_BARRAGE</code></td>
+<td><code>BloodBarrage</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>ICE_BARRAGE</code></td>
+<td><code>IceBarrage</code></td>
+<td>NPC</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lunar">Lunar<a class="headerlink" href="#lunar" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Lua constant (<code>srs.spell.*</code>)</th>
+<th>C++ (<code>Spell::</code>)</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LUNAR_HOME_TELEPORT</code></td>
+<td><code>LunarHomeTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>BAKE_PIE</code></td>
+<td><code>BakePie</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>GEOMANCY</code></td>
+<td><code>Geomancy</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>CURE_PLANT</code></td>
+<td><code>CurePlant</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>MONSTER_EXAMINE</code></td>
+<td><code>MonsterExamine</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>NPC_CONTACT</code></td>
+<td><code>NpcContact</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>CURE_OTHER</code></td>
+<td><code>CureOther</code></td>
+<td>Player</td>
+</tr>
+<tr>
+<td><code>HUMIDIFY</code></td>
+<td><code>Humidify</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>MOONCLAN_TELEPORT</code></td>
+<td><code>MoonclanTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>TELE_GROUP_MOONCLAN</code></td>
+<td><code>TeleGroupMoonclan</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>CURE_ME</code></td>
+<td><code>CureMe</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>OURANIA_TELEPORT</code></td>
+<td><code>OuraniaTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>HUNTER_KIT</code></td>
+<td><code>HunterKit</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>WATERBIRTH_TELEPORT</code></td>
+<td><code>WaterbirthTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>TELE_GROUP_WATERBIRTH</code></td>
+<td><code>TeleGroupWaterbirth</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>CURE_GROUP</code></td>
+<td><code>CureGroup</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>STAT_SPY</code></td>
+<td><code>StatSpy</code></td>
+<td>Player</td>
+</tr>
+<tr>
+<td><code>BARBARIAN_TELEPORT</code></td>
+<td><code>BarbarianTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>TELE_GROUP_BARBARIAN</code></td>
+<td><code>TeleGroupBarbarian</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>SPIN_FLAX</code></td>
+<td><code>SpinFlax</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>SUPERGLASS_MAKE</code></td>
+<td><code>SuperglassMake</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>TAN_LEATHER</code></td>
+<td><code>TanLeather</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>KHAZARD_TELEPORT</code></td>
+<td><code>KhazardTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>TELE_GROUP_KHAZARD</code></td>
+<td><code>TeleGroupKhazard</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>DREAM</code></td>
+<td><code>Dream</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>STRING_JEWELLERY</code></td>
+<td><code>StringJewellery</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>STAT_RESTORE_POT_SHARE</code></td>
+<td><code>StatRestorePotShare</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>MAGIC_IMBUE</code></td>
+<td><code>MagicImbue</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>FERTILE_SOIL</code></td>
+<td><code>FertileSoil</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>BOOST_POTION_SHARE</code></td>
+<td><code>BoostPotionShare</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>FISHING_GUILD_TELEPORT</code></td>
+<td><code>FishingGuildTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>TELE_GROUP_FISHING_GUILD</code></td>
+<td><code>TeleGroupFishingGuild</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>PLANK_MAKE</code></td>
+<td><code>PlankMake</code></td>
+<td>Inventory item</td>
+</tr>
+<tr>
+<td><code>CATHERBY_TELEPORT</code></td>
+<td><code>CatherbyTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>TELE_GROUP_CATHERBY</code></td>
+<td><code>TeleGroupCatherby</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RECHARGE_DRAGONSTONE</code></td>
+<td><code>RechargeDragonstone</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>ICE_PLATEAU_TELEPORT</code></td>
+<td><code>IcePlateauTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>TELE_GROUP_ICE_PLATEAU</code></td>
+<td><code>TeleGroupIcePlateau</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>ENERGY_TRANSFER</code></td>
+<td><code>EnergyTransfer</code></td>
+<td>Player</td>
+</tr>
+<tr>
+<td><code>HEAL_OTHER</code></td>
+<td><code>HealOther</code></td>
+<td>Player</td>
+</tr>
+<tr>
+<td><code>VENGEANCE_OTHER</code></td>
+<td><code>VengeanceOther</code></td>
+<td>Player</td>
+</tr>
+<tr>
+<td><code>VENGEANCE</code></td>
+<td><code>Vengeance</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>HEAL_GROUP</code></td>
+<td><code>HealGroup</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>SPELLBOOK_SWAP</code></td>
+<td><code>SpellbookSwap</code></td>
+<td>Self / none</td>
+</tr>
+</tbody>
+</table>
+<h3 id="arceuus">Arceuus<a class="headerlink" href="#arceuus" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Lua constant (<code>srs.spell.*</code>)</th>
+<th>C++ (<code>Spell::</code>)</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ARCEUUS_HOME_TELEPORT</code></td>
+<td><code>ArceuusHomeTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>ARCEUUS_LIBRARY_TELEPORT</code></td>
+<td><code>ArceuusLibraryTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>BASIC_REANIMATION</code></td>
+<td><code>BasicReanimation</code></td>
+<td>Inventory item</td>
+</tr>
+<tr>
+<td><code>DRAYNOR_MANOR_TELEPORT</code></td>
+<td><code>DraynorManorTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>BATTLEFRONT_TELEPORT</code></td>
+<td><code>BattlefrontTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>MIND_ALTAR_TELEPORT</code></td>
+<td><code>MindAltarTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESPAWN_TELEPORT</code></td>
+<td><code>RespawnTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>GHOSTLY_GRASP</code></td>
+<td><code>GhostlyGrasp</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>RESURRECT_LESSER_GHOST</code></td>
+<td><code>ResurrectLesserGhost</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESURRECT_LESSER_SKELETON</code></td>
+<td><code>ResurrectLesserSkeleton</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESURRECT_LESSER_ZOMBIE</code></td>
+<td><code>ResurrectLesserZombie</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>SALVE_GRAVEYARD_TELEPORT</code></td>
+<td><code>SalveGraveyardTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>ADEPT_REANIMATION</code></td>
+<td><code>AdeptReanimation</code></td>
+<td>Inventory item</td>
+</tr>
+<tr>
+<td><code>INFERIOR_DEMONBANE</code></td>
+<td><code>InferiorDemonbane</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SHADOW_VEIL</code></td>
+<td><code>ShadowVeil</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>FENKENSTRAINS_CASTLE_TELEPORT</code></td>
+<td><code>FenkenstrainsCastleTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>DARK_LURE</code></td>
+<td><code>DarkLure</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>SKELETAL_GRASP</code></td>
+<td><code>SkeletalGrasp</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>RESURRECT_SUPERIOR_GHOST</code></td>
+<td><code>ResurrectSuperiorGhost</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESURRECT_SUPERIOR_SKELETON</code></td>
+<td><code>ResurrectSuperiorSkeleton</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESURRECT_SUPERIOR_ZOMBIE</code></td>
+<td><code>ResurrectSuperiorZombie</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>MARK_OF_DARKNESS</code></td>
+<td><code>MarkOfDarkness</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>WEST_ARDOUGNE_TELEPORT</code></td>
+<td><code>WestArdougneTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>SUPERIOR_DEMONBANE</code></td>
+<td><code>SuperiorDemonbane</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>LESSER_CORRUPTION</code></td>
+<td><code>LesserCorruption</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>HARMONY_ISLAND_TELEPORT</code></td>
+<td><code>HarmonyIslandTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>VILE_VIGOUR</code></td>
+<td><code>VileVigour</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>DEGRIME</code></td>
+<td><code>Degrime</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>CEMETERY_TELEPORT</code></td>
+<td><code>CemeteryTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>EXPERT_REANIMATION</code></td>
+<td><code>ExpertReanimation</code></td>
+<td>Inventory item</td>
+</tr>
+<tr>
+<td><code>WARD_OF_ARCEUUS</code></td>
+<td><code>WardOfArceuus</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESURRECT_GREATER_GHOST</code></td>
+<td><code>ResurrectGreaterGhost</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESURRECT_GREATER_SKELETON</code></td>
+<td><code>ResurrectGreaterSkeleton</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESURRECT_GREATER_ZOMBIE</code></td>
+<td><code>ResurrectGreaterZombie</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>RESURRECT_CROPS</code></td>
+<td><code>ResurrectCrops</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>UNDEAD_GRASP</code></td>
+<td><code>UndeadGrasp</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>DEATH_CHARGE</code></td>
+<td><code>DeathCharge</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>DARK_DEMONBANE</code></td>
+<td><code>DarkDemonbane</code></td>
+<td>NPC</td>
+</tr>
+<tr>
+<td><code>BARROWS_TELEPORT</code></td>
+<td><code>BarrowsTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>DEMONIC_OFFERING</code></td>
+<td><code>DemonicOffering</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>GREATER_CORRUPTION</code></td>
+<td><code>GreaterCorruption</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>MASTER_REANIMATION</code></td>
+<td><code>MasterReanimation</code></td>
+<td>Inventory item</td>
+</tr>
+<tr>
+<td><code>APE_ATOLL_TELEPORT</code></td>
+<td><code>ApeAtollTeleport</code></td>
+<td>Self / none</td>
+</tr>
+<tr>
+<td><code>SINISTER_OFFERING</code></td>
+<td><code>SinisterOffering</code></td>
+<td>Self / none</td>
+</tr>
+</tbody>
+</table>
 <p>Rune costs are the plain wiki costs; staff substitution (Iban's staff,
-slayer staff, god staves) is not modelled, so <code>canCast</code> reports <code>false</code>
-for Iban Blast / Magic Dart / the god spells unless the base runes are
-carried.</p>
+slayer staff, god staves, elemental staves) is not modelled, so <code>canCast</code>
+reports <code>false</code> for Iban Blast / Magic Dart / the god spells unless the
+base runes are carried. Non-rune reagents (bones, ashes, ensouled heads,
+logs, etc.) are not modelled either.</p>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>SpellInfo</code></strong> (read-only):</p>
 <table>
@@ -2331,6 +3049,11 @@ carried.</p>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">cost</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">info</span><span class="p">.</span><span class="py">runes</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;  rune %d x%d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">cost</span><span class="p">.</span><span class="py">runeItemId</span><span class="p">,</span><span class="w"> </span><span class="nv">cost</span><span class="p">.</span><span class="py">count</span><span class="p">))</span>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="kr">end</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1">-- Every spell in a book (real 1-based table):</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">sp</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spells</span><span class="p">.</span><span class="nf">inBook</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spellbook</span><span class="p">.</span><span class="py">ANCIENT</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;%s (Magic %d)&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">sp</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">sp</span><span class="p">.</span><span class="py">level</span><span class="p">))</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="kr">end</span>
 </span></code></pre></div>
 </div>
 </div>
