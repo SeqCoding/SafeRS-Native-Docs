@@ -436,6 +436,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1509,6 +1513,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../Screenshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Screenshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Session/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Session
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../Object/" class="md-nav__link">
         
   
@@ -2339,9 +2399,12 @@ DoAction).</p>
 <p><code>action</code> is the menu-option string (e.g. <code>"Eat"</code>, <code>"Drop"</code>,
 <code>"Wield"</code>, <code>"Bury"</code>, <code>"Drink"</code>, <code>"Use"</code>). Returns <code>false</code> on any of:
 slot out of range, slot empty, slot widget not currently rendered, or
-spoofer failure. An action the item doesn't list does <strong>not</strong> fail — it
-falls back to the item's primary (first) option, so check the verb is
-spelled as the item's menu shows it.</p>
+spoofer failure. Any option the item lists in its inventory menu works,
+including item-specific verbs (<code>"Lay"</code>, <code>"Release"</code>, <code>"Teleport"</code>, <code>"Rub"</code>, …).
+A common verb (<code>Eat</code>, <code>Drop</code>, <code>Wield</code>, …) that this item doesn't list does
+<strong>not</strong> fail — it falls back to the item's primary (first) option — while an
+uncommon verb the item doesn't list returns <code>false</code>. Either way, spell the
+verb as the item's menu shows it.</p>
 <p><code>interact</code> takes either a <strong>slot</strong> (a number, 0–27) or an <strong>item name</strong>
 (a string: first slot whose item name contains it, case-insensitive —
 identical to <code>interactByName</code>). A number is always a slot, never an item id:
