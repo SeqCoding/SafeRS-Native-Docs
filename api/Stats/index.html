@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2179,9 +2179,8 @@
 
 
 <h1 id="stats">Stats<a class="headerlink" href="#stats" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Stats</code> / <code>srs.stats</code></p>
-<p>A lightweight <strong>session XP / runtime tracker</strong> (the SkillsTracker half of a bot's
-stat panel). It captures a baseline — per-skill XP + level and a start timestamp — the
+<p><code>srs.stats</code></p>
+<p>A lightweight <strong>session XP / runtime tracker</strong> for a script's stat panel. It captures a baseline — per-skill XP + level and a start timestamp — the
 first time it's accessed while logged in, then reports gained-since-baseline and
 extrapolated per-hour rates, computed live on demand (no per-tick bookkeeping).</p>
 <div class="admonition note">
@@ -2216,53 +2215,40 @@ policy the script should own. Accumulate <code>e.quantityDelta &gt; 0</code> per
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Re-baseline now</td>
-<td><code>Stats::reset(ctx)</code></td>
 <td><code>srs.stats.reset()</code></td>
 </tr>
 <tr>
 <td>Seconds since baseline</td>
-<td><code>Stats::runtimeSeconds(ctx) → int64</code></td>
-<td><code>srs.stats.runtime() → int</code></td>
+<td><code>srs.stats.runtime() → integer</code></td>
 </tr>
 <tr>
 <td>XP gained in a skill</td>
-<td><code>Stats::xpGained(ctx, skill) → int32</code></td>
-<td><code>srs.stats.xpGained(skill) → int</code></td>
+<td><code>srs.stats.xpGained(skill) → integer</code></td>
 </tr>
 <tr>
 <td>Total XP gained</td>
-<td><code>Stats::totalXpGained(ctx) → int64</code></td>
-<td><code>srs.stats.totalXpGained() → int</code></td>
+<td><code>srs.stats.totalXpGained() → integer</code></td>
 </tr>
 <tr>
 <td>XP/hour for a skill</td>
-<td><code>Stats::xpPerHour(ctx, skill) → double</code></td>
 <td><code>srs.stats.xpPerHour(skill) → number</code></td>
 </tr>
 <tr>
 <td>Total XP/hour</td>
-<td><code>Stats::totalXpPerHour(ctx) → double</code></td>
 <td><code>srs.stats.totalXpPerHour() → number</code></td>
 </tr>
 <tr>
 <td>Real levels gained</td>
-<td><code>Stats::levelsGained(ctx, skill) → int32</code></td>
-<td><code>srs.stats.levelsGained(skill) → int</code></td>
+<td><code>srs.stats.levelsGained(skill) → integer</code></td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="admonition-title">Name differs across the two forms</p>
-<p>The C++ method is <code>runtimeSeconds</code>; the Lua binding is <code>srs.stats.runtime()</code>.
-Everything else mirrors one-to-one.</p>
-</div>
 <p><code>skill</code> is a <code>Skill</code> index (see <a href="../Globals/">Globals</a>). <code>xpGained</code> clamps to
 <code>≥ 0</code>, and the per-hour rates return <code>0</code> until at least one second of runtime
 has elapsed. <code>levelsGained</code> counts <strong>real</strong> (unboosted) levels.</p>

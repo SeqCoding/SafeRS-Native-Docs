@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -1931,10 +1931,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#spellbook-spellbook-srsspellbook" class="md-nav__link">
+  <a href="#spellbook-srsspellbook" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spellbook (Spellbook / srs.spellbook.*)
+        Spellbook (srs.spellbook.*)
       
     </span>
   </a>
@@ -1942,10 +1942,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#spell-spell-srsspell" class="md-nav__link">
+  <a href="#spell-srsspell" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spell (Spell / srs.spell.*)
+        Spell (srs.spell.*)
       
     </span>
   </a>
@@ -2246,10 +2246,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#spellbook-spellbook-srsspellbook" class="md-nav__link">
+  <a href="#spellbook-srsspellbook" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spellbook (Spellbook / srs.spellbook.*)
+        Spellbook (srs.spellbook.*)
       
     </span>
   </a>
@@ -2257,10 +2257,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#spell-spell-srsspell" class="md-nav__link">
+  <a href="#spell-srsspell" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spell (Spell / srs.spell.*)
+        Spell (srs.spell.*)
       
     </span>
   </a>
@@ -2345,7 +2345,7 @@
 
 
 <h1 id="spells">Spells<a class="headerlink" href="#spells" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Spells</code> / <code>srs.spells</code></p>
+<p><code>srs.spells</code></p>
 <p>Static metadata for OSRS spells. Pure data; casting logic lives in
 <a href="../Magic/">Magic</a>.</p>
 <p>The table covers 50 Standard-book spells (the 20 strike → surge combat
@@ -2359,39 +2359,35 @@ those listed are not populated, and the Ancient book's non-combat spells
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Spell metadata</td>
-<td><code>Spells::info(s) → SpellInfo</code></td>
 <td><code>srs.spells.info(s) → SpellInfo</code></td>
 </tr>
 <tr>
 <td>Lookup by name</td>
-<td><code>Spells::byName(name) → optional&lt;SpellInfo&gt;</code></td>
 <td><code>srs.spells.byName(name) → SpellInfo \| nil</code></td>
 </tr>
 <tr>
 <td>Enum lookup by name</td>
-<td><code>Spells::idByName(name) → optional&lt;Spell&gt;</code></td>
 <td><code>srs.spells.idByName(name) → int \| nil</code></td>
 </tr>
 <tr>
 <td>All spells in a book</td>
-<td><code>Spells::inBook(book) → vector&lt;SpellInfo&gt;</code></td>
 <td><code>srs.spells.inBook(book) → table</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>byName</code> / <code>idByName</code> are case-insensitive substring matches against the
-canonical name and return the first match in table order (so <code>"Strike"</code>
-resolves to Wind Strike). <code>inBook</code> returns every populated entry for that book (Standard 50,
+<p><code>byName</code> / <code>idByName</code> are case-insensitive: an exact name match wins,
+otherwise the first substring match in table order is returned (so
+<code>"Strike"</code> resolves to Wind Strike). <code>info</code> returns an empty record
+(<code>name == ""</code>) for a value outside the table. <code>inBook</code> returns every populated entry for that book (Standard 50,
 Ancient 16, Lunar 44, Arceuus 44). <code>byName</code> returns the metadata record; <code>idByName</code> resolves
 the <strong><code>Spell</code> enum value</strong> itself, ready to feed into
-<a href="../Magic/"><code>Magic::cast</code> / <code>Magic::canCast</code></a>.</p>
+<a href="../Magic/"><code>srs.magic.cast</code> / <code>srs.magic.canCast</code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Use <code>idByName</code> for casting, <code>byName</code> for metadata</p>
 <p><code>srs.spells.byName</code> returns a <code>SpellInfo</code> (metadata), <strong>not</strong> a
@@ -2400,7 +2396,7 @@ it returns the <code>Spell</code> enum value <code>srs.magic.cast</code> / <code
 take, or <code>nil</code> if nothing matches.</p>
 </div>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
-<h3 id="spellbook-spellbook-srsspellbook">Spellbook (<code>Spellbook</code> / <code>srs.spellbook.*</code>)<a class="headerlink" href="#spellbook-spellbook-srsspellbook" title="Permanent link">&para;</a></h3>
+<h3 id="spellbook-srsspellbook">Spellbook (<code>srs.spellbook.*</code>)<a class="headerlink" href="#spellbook-srsspellbook" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -2432,7 +2428,7 @@ take, or <code>nil</code> if nothing matches.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="spell-spell-srsspell">Spell (<code>Spell</code> / <code>srs.spell.*</code>)<a class="headerlink" href="#spell-spell-srsspell" title="Permanent link">&para;</a></h3>
+<h3 id="spell-srsspell">Spell (<code>srs.spell.*</code>)<a class="headerlink" href="#spell-srsspell" title="Permanent link">&para;</a></h3>
 <p><strong>Combat (Standard)</strong> — 20 strike → surge spells:</p>
 <p><code>WIND_STRIKE</code>, <code>WATER_STRIKE</code>, <code>EARTH_STRIKE</code>, <code>FIRE_STRIKE</code>,
 <code>WIND_BOLT</code>, <code>WATER_BOLT</code>, <code>EARTH_BOLT</code>, <code>FIRE_BOLT</code>,
@@ -2463,89 +2459,72 @@ the active one for the spell to be clickable.</p>
 <thead>
 <tr>
 <th>Lua constant (<code>srs.spell.*</code>)</th>
-<th>C++ (<code>Spell::</code>)</th>
 <th>Target</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>SMOKE_RUSH</code></td>
-<td><code>SmokeRush</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SHADOW_RUSH</code></td>
-<td><code>ShadowRush</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>BLOOD_RUSH</code></td>
-<td><code>BloodRush</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>ICE_RUSH</code></td>
-<td><code>IceRush</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SMOKE_BURST</code></td>
-<td><code>SmokeBurst</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SHADOW_BURST</code></td>
-<td><code>ShadowBurst</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>BLOOD_BURST</code></td>
-<td><code>BloodBurst</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>ICE_BURST</code></td>
-<td><code>IceBurst</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SMOKE_BLITZ</code></td>
-<td><code>SmokeBlitz</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SHADOW_BLITZ</code></td>
-<td><code>ShadowBlitz</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>BLOOD_BLITZ</code></td>
-<td><code>BloodBlitz</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>ICE_BLITZ</code></td>
-<td><code>IceBlitz</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SMOKE_BARRAGE</code></td>
-<td><code>SmokeBarrage</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SHADOW_BARRAGE</code></td>
-<td><code>ShadowBarrage</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>BLOOD_BARRAGE</code></td>
-<td><code>BloodBarrage</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>ICE_BARRAGE</code></td>
-<td><code>IceBarrage</code></td>
 <td>NPC</td>
 </tr>
 </tbody>
@@ -2555,229 +2534,184 @@ the active one for the spell to be clickable.</p>
 <thead>
 <tr>
 <th>Lua constant (<code>srs.spell.*</code>)</th>
-<th>C++ (<code>Spell::</code>)</th>
 <th>Target</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>LUNAR_HOME_TELEPORT</code></td>
-<td><code>LunarHomeTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>BAKE_PIE</code></td>
-<td><code>BakePie</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>GEOMANCY</code></td>
-<td><code>Geomancy</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>CURE_PLANT</code></td>
-<td><code>CurePlant</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>MONSTER_EXAMINE</code></td>
-<td><code>MonsterExamine</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>NPC_CONTACT</code></td>
-<td><code>NpcContact</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>CURE_OTHER</code></td>
-<td><code>CureOther</code></td>
 <td>Player</td>
 </tr>
 <tr>
 <td><code>HUMIDIFY</code></td>
-<td><code>Humidify</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>MOONCLAN_TELEPORT</code></td>
-<td><code>MoonclanTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>TELE_GROUP_MOONCLAN</code></td>
-<td><code>TeleGroupMoonclan</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>CURE_ME</code></td>
-<td><code>CureMe</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>OURANIA_TELEPORT</code></td>
-<td><code>OuraniaTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>HUNTER_KIT</code></td>
-<td><code>HunterKit</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>WATERBIRTH_TELEPORT</code></td>
-<td><code>WaterbirthTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>TELE_GROUP_WATERBIRTH</code></td>
-<td><code>TeleGroupWaterbirth</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>CURE_GROUP</code></td>
-<td><code>CureGroup</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>STAT_SPY</code></td>
-<td><code>StatSpy</code></td>
 <td>Player</td>
 </tr>
 <tr>
 <td><code>BARBARIAN_TELEPORT</code></td>
-<td><code>BarbarianTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>TELE_GROUP_BARBARIAN</code></td>
-<td><code>TeleGroupBarbarian</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>SPIN_FLAX</code></td>
-<td><code>SpinFlax</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>SUPERGLASS_MAKE</code></td>
-<td><code>SuperglassMake</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>TAN_LEATHER</code></td>
-<td><code>TanLeather</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>KHAZARD_TELEPORT</code></td>
-<td><code>KhazardTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>TELE_GROUP_KHAZARD</code></td>
-<td><code>TeleGroupKhazard</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>DREAM</code></td>
-<td><code>Dream</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>STRING_JEWELLERY</code></td>
-<td><code>StringJewellery</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>STAT_RESTORE_POT_SHARE</code></td>
-<td><code>StatRestorePotShare</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>MAGIC_IMBUE</code></td>
-<td><code>MagicImbue</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>FERTILE_SOIL</code></td>
-<td><code>FertileSoil</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>BOOST_POTION_SHARE</code></td>
-<td><code>BoostPotionShare</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>FISHING_GUILD_TELEPORT</code></td>
-<td><code>FishingGuildTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>TELE_GROUP_FISHING_GUILD</code></td>
-<td><code>TeleGroupFishingGuild</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>PLANK_MAKE</code></td>
-<td><code>PlankMake</code></td>
 <td>Inventory item</td>
 </tr>
 <tr>
 <td><code>CATHERBY_TELEPORT</code></td>
-<td><code>CatherbyTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>TELE_GROUP_CATHERBY</code></td>
-<td><code>TeleGroupCatherby</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RECHARGE_DRAGONSTONE</code></td>
-<td><code>RechargeDragonstone</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>ICE_PLATEAU_TELEPORT</code></td>
-<td><code>IcePlateauTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>TELE_GROUP_ICE_PLATEAU</code></td>
-<td><code>TeleGroupIcePlateau</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>ENERGY_TRANSFER</code></td>
-<td><code>EnergyTransfer</code></td>
 <td>Player</td>
 </tr>
 <tr>
 <td><code>HEAL_OTHER</code></td>
-<td><code>HealOther</code></td>
 <td>Player</td>
 </tr>
 <tr>
 <td><code>VENGEANCE_OTHER</code></td>
-<td><code>VengeanceOther</code></td>
 <td>Player</td>
 </tr>
 <tr>
 <td><code>VENGEANCE</code></td>
-<td><code>Vengeance</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>HEAL_GROUP</code></td>
-<td><code>HealGroup</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>SPELLBOOK_SWAP</code></td>
-<td><code>SpellbookSwap</code></td>
 <td>Self / none</td>
 </tr>
 </tbody>
@@ -2787,229 +2721,184 @@ the active one for the spell to be clickable.</p>
 <thead>
 <tr>
 <th>Lua constant (<code>srs.spell.*</code>)</th>
-<th>C++ (<code>Spell::</code>)</th>
 <th>Target</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>ARCEUUS_HOME_TELEPORT</code></td>
-<td><code>ArceuusHomeTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>ARCEUUS_LIBRARY_TELEPORT</code></td>
-<td><code>ArceuusLibraryTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>BASIC_REANIMATION</code></td>
-<td><code>BasicReanimation</code></td>
 <td>Inventory item</td>
 </tr>
 <tr>
 <td><code>DRAYNOR_MANOR_TELEPORT</code></td>
-<td><code>DraynorManorTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>BATTLEFRONT_TELEPORT</code></td>
-<td><code>BattlefrontTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>MIND_ALTAR_TELEPORT</code></td>
-<td><code>MindAltarTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESPAWN_TELEPORT</code></td>
-<td><code>RespawnTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>GHOSTLY_GRASP</code></td>
-<td><code>GhostlyGrasp</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>RESURRECT_LESSER_GHOST</code></td>
-<td><code>ResurrectLesserGhost</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESURRECT_LESSER_SKELETON</code></td>
-<td><code>ResurrectLesserSkeleton</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESURRECT_LESSER_ZOMBIE</code></td>
-<td><code>ResurrectLesserZombie</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>SALVE_GRAVEYARD_TELEPORT</code></td>
-<td><code>SalveGraveyardTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>ADEPT_REANIMATION</code></td>
-<td><code>AdeptReanimation</code></td>
 <td>Inventory item</td>
 </tr>
 <tr>
 <td><code>INFERIOR_DEMONBANE</code></td>
-<td><code>InferiorDemonbane</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SHADOW_VEIL</code></td>
-<td><code>ShadowVeil</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>FENKENSTRAINS_CASTLE_TELEPORT</code></td>
-<td><code>FenkenstrainsCastleTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>DARK_LURE</code></td>
-<td><code>DarkLure</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>SKELETAL_GRASP</code></td>
-<td><code>SkeletalGrasp</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>RESURRECT_SUPERIOR_GHOST</code></td>
-<td><code>ResurrectSuperiorGhost</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESURRECT_SUPERIOR_SKELETON</code></td>
-<td><code>ResurrectSuperiorSkeleton</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESURRECT_SUPERIOR_ZOMBIE</code></td>
-<td><code>ResurrectSuperiorZombie</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>MARK_OF_DARKNESS</code></td>
-<td><code>MarkOfDarkness</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>WEST_ARDOUGNE_TELEPORT</code></td>
-<td><code>WestArdougneTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>SUPERIOR_DEMONBANE</code></td>
-<td><code>SuperiorDemonbane</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>LESSER_CORRUPTION</code></td>
-<td><code>LesserCorruption</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>HARMONY_ISLAND_TELEPORT</code></td>
-<td><code>HarmonyIslandTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>VILE_VIGOUR</code></td>
-<td><code>VileVigour</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>DEGRIME</code></td>
-<td><code>Degrime</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>CEMETERY_TELEPORT</code></td>
-<td><code>CemeteryTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>EXPERT_REANIMATION</code></td>
-<td><code>ExpertReanimation</code></td>
 <td>Inventory item</td>
 </tr>
 <tr>
 <td><code>WARD_OF_ARCEUUS</code></td>
-<td><code>WardOfArceuus</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESURRECT_GREATER_GHOST</code></td>
-<td><code>ResurrectGreaterGhost</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESURRECT_GREATER_SKELETON</code></td>
-<td><code>ResurrectGreaterSkeleton</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESURRECT_GREATER_ZOMBIE</code></td>
-<td><code>ResurrectGreaterZombie</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>RESURRECT_CROPS</code></td>
-<td><code>ResurrectCrops</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>UNDEAD_GRASP</code></td>
-<td><code>UndeadGrasp</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>DEATH_CHARGE</code></td>
-<td><code>DeathCharge</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>DARK_DEMONBANE</code></td>
-<td><code>DarkDemonbane</code></td>
 <td>NPC</td>
 </tr>
 <tr>
 <td><code>BARROWS_TELEPORT</code></td>
-<td><code>BarrowsTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>DEMONIC_OFFERING</code></td>
-<td><code>DemonicOffering</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>GREATER_CORRUPTION</code></td>
-<td><code>GreaterCorruption</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>MASTER_REANIMATION</code></td>
-<td><code>MasterReanimation</code></td>
 <td>Inventory item</td>
 </tr>
 <tr>
 <td><code>APE_ATOLL_TELEPORT</code></td>
-<td><code>ApeAtollTeleport</code></td>
 <td>Self / none</td>
 </tr>
 <tr>
 <td><code>SINISTER_OFFERING</code></td>
-<td><code>SinisterOffering</code></td>
 <td>Self / none</td>
 </tr>
 </tbody>
@@ -3037,32 +2926,32 @@ logs, etc.) are not modelled either.</p>
 </tr>
 <tr>
 <td><code>level</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Magic level required</td>
 </tr>
 <tr>
 <td><code>book</code></td>
-<td>Spellbook int</td>
+<td>integer (<code>srs.spellbook.*</code>)</td>
 <td>See above</td>
 </tr>
 <tr>
 <td><code>widgetGroupId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Spellbook widget group</td>
 </tr>
 <tr>
 <td><code>widgetChildId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Child id within group</td>
 </tr>
 <tr>
 <td><code>iconItemId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>UI / identification (-1 if N/A)</td>
 </tr>
 <tr>
 <td><code>runes</code></td>
-<td>vector<RuneCost></td>
+<td>table of <code>RuneCost</code></td>
 <td>Per-cast rune cost</td>
 </tr>
 </tbody>
@@ -3078,46 +2967,33 @@ logs, etc.) are not modelled either.</p>
 <tbody>
 <tr>
 <td><code>runeItemId</code></td>
-<td>int32</td>
+<td>integer</td>
 </tr>
 <tr>
 <td><code>count</code></td>
-<td>int32</td>
+<td>integer</td>
 </tr>
 </tbody>
 </table>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Spells</span><span class="o">::</span><span class="n">idByName</span><span class="p">(</span><span class="s">&quot;High Level Alchemy&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Magic</span><span class="o">::</span><span class="n">canCast</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">))</span><span class="w"> </span><span class="n">Magic</span><span class="o">::</span><span class="n">cast</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">s</span><span class="p">);</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Name → enum for casting:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">spells</span><span class="p">.</span><span class="nf">idByName</span><span class="p">(</span><span class="s2">&quot;High Level Alchemy&quot;</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">canCast</span><span class="p">(</span><span class="nv">s</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">cast</span><span class="p">(</span><span class="nv">s</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">-- Metadata via the srs.spell.* constants:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">spells</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">HIGH_ALCHEMY</span><span class="p">)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;%s needs Magic %d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">info</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">info</span><span class="p">.</span><span class="py">level</span><span class="p">))</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">cost</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">info</span><span class="p">.</span><span class="py">runes</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;  rune %d x%d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">cost</span><span class="p">.</span><span class="py">runeItemId</span><span class="p">,</span><span class="w"> </span><span class="nv">cost</span><span class="p">.</span><span class="py">count</span><span class="p">))</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="kr">end</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1">-- Every spell in a book (real 1-based table):</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">sp</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spells</span><span class="p">.</span><span class="nf">inBook</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spellbook</span><span class="p">.</span><span class="py">ANCIENT</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;%s (Magic %d)&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">sp</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">sp</span><span class="p">.</span><span class="py">level</span><span class="p">))</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Name → enum for casting:</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">spells</span><span class="p">.</span><span class="nf">idByName</span><span class="p">(</span><span class="s2">&quot;High Level Alchemy&quot;</span><span class="p">)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">canCast</span><span class="p">(</span><span class="nv">s</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">cast</span><span class="p">(</span><span class="nv">s</span><span class="p">)</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kr">end</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1">-- Metadata via the srs.spell.* constants:</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">spells</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">HIGH_ALCHEMY</span><span class="p">)</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;%s needs Magic %d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">info</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">info</span><span class="p">.</span><span class="py">level</span><span class="p">))</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">cost</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">info</span><span class="p">.</span><span class="py">runes</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;  rune %d x%d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">cost</span><span class="p">.</span><span class="py">runeItemId</span><span class="p">,</span><span class="w"> </span><span class="nv">cost</span><span class="p">.</span><span class="py">count</span><span class="p">))</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="kr">end</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1">-- Every spell in a book (real 1-based table):</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">sp</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spells</span><span class="p">.</span><span class="nf">inBook</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spellbook</span><span class="p">.</span><span class="py">ANCIENT</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;%s (Magic %d)&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">sp</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">sp</span><span class="p">.</span><span class="py">level</span><span class="p">))</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

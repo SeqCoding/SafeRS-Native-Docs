@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2201,7 +2201,7 @@
 
 
 <h1 id="tile">Tile<a class="headerlink" href="#tile" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Tile</code> / <code>srs.tile</code></p>
+<p><code>srs.tile</code></p>
 <p>Collision queries against the active scene <code>CollisionMap</code>.
 Coordinates are world tile coords. Plane defaults to 0 (ground).</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
@@ -2209,47 +2209,40 @@ Coordinates are world tile coords. Plane defaults to 0 (ground).</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Walkable</td>
-<td><code>Tile::isWalkable(ctx, x, y, plane=0) → bool</code></td>
-<td><code>srs.tile.isWalkable(x, y, plane?) → bool</code></td>
+<td><code>srs.tile.isWalkable(x, y, plane?) → boolean</code></td>
 </tr>
 <tr>
 <td>In loaded scene</td>
-<td><code>Tile::isInScene(ctx, x, y) → bool</code></td>
-<td><code>srs.tile.isInScene(x, y) → bool</code></td>
+<td><code>srs.tile.isInScene(x, y) → boolean</code></td>
 </tr>
 <tr>
 <td>Can step between tiles</td>
-<td><code>Tile::canTraverse(ctx, fx, fy, tx, ty, plane=0) → bool</code></td>
-<td><code>srs.tile.canTraverse(fx, fy, tx, ty, plane?) → bool</code></td>
+<td><code>srs.tile.canTraverse(fx, fy, tx, ty, plane?) → boolean</code></td>
 </tr>
 <tr>
 <td><strong>Reachable on foot</strong></td>
-<td><code>Tile::isReachable(ctx, x, y, plane=0) → bool</code></td>
-<td><code>srs.tile.isReachable(x, y, plane?) → bool</code></td>
+<td><code>srs.tile.isReachable(x, y, plane?) → boolean</code></td>
 </tr>
 <tr>
 <td><strong>Tile render height</strong></td>
-<td><code>Tile::height(ctx, x, y, plane=0) → optional&lt;int&gt;</code></td>
-<td><code>srs.tile.height(x, y, plane?) → int \| nil</code></td>
+<td><code>srs.tile.height(x, y, plane?) → integer \| nil</code></td>
 </tr>
 <tr>
 <td>Raw flag bits</td>
-<td><code>Tile::flags(ctx, x, y, plane=0) → uint32</code></td>
-<td><code>srs.tile.flags(x, y, plane?) → int</code></td>
+<td><code>srs.tile.flags(x, y, plane?) → integer</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>flags</code> returns the raw collision bitfield. Decode against
-<code>CollisionMap</code> flag constants for blocked-N/E/S/W and similar.</p>
+<p><code>flags</code> returns the raw collision bitfield (blocked-N/E/S/W and similar
+bits); <code>0</code> when no collision data is available.</p>
 <h2 id="isreachable-same-floor-can-i-path-there-test"><code>isReachable</code> — same-floor / can-I-path-there test<a class="headerlink" href="#isreachable-same-floor-can-i-path-there-test" title="Permanent link">&para;</a></h2>
-<p>Breadth-first flood-fill from the player's current tile over the live
+<p>Flood-fill from the player's current tile over the live
 collision map (<code>canTraverse</code> edges); the tile is reachable iff the fill
 reaches it. The fill is cached per <code>(player tile, scene, collision update)</code>, so many
 queries in one tick share one computation and it rebuilds when the live
@@ -2271,8 +2264,7 @@ player's current plane (a different plane needs a transport, not a walk).</p>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="height-render-height-for-floor-detection"><code>height</code> — render height for floor detection<a class="headerlink" href="#height-render-height-for-floor-detection" title="Permanent link">&para;</a></h2>
-<p>Engine render height at the tile's SW corner (RuneLite
-<code>getTileHeights[plane][x][y]</code>), in world units. Where <code>plane</code> is
+<p>Engine render height at the tile's SW corner, in world units. Where <code>plane</code> is
 ambiguous (MLM again — both floors are plane 0), the height differs by
 hundreds of units, so comparing the player's tile height against a
 threshold tells the floors apart (a <code>-490</code> cutoff works). <code>nil</code> pre-scene / off-scene.</p>

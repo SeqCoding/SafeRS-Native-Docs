@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2333,15 +2333,14 @@
 
 
 <h1 id="drawing">Drawing<a class="headerlink" href="#drawing" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Drawing</code> / <code>srs.draw</code></p>
+<p><code>srs.draw</code></p>
 <p>Overlay drawing.</p>
 <p>For a themed, batteries-included HUD (dark-glass panels, per-skill
 accents, XP rows, animated bars, level rings) layered on top of these
 primitives, see <strong><a href="../Overlay/">Overlay</a></strong> (<code>srs.overlay</code>).</p>
 <div class="admonition warning">
-<p class="admonition-title">onDraw only</p>
-<p>Only valid inside <code>IScript::onDraw</code> (C++) or <code>script.draw(fn)</code>
-(Lua). The host guarantees a live in-game ImGui frame there;
+<p class="admonition-title">script.draw only</p>
+<p>Only valid inside a <code>script.draw(fn)</code> callback. The host guarantees a live in-game ImGui frame there;
 calling from <code>pulse</code> / <code>onTick</code> will fault on builds where those
 paths run off-frame.</p>
 </div>
@@ -2362,24 +2361,20 @@ mode changes.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Live widget rect (cached)</td>
-<td><code>Drawing::widgetRect(ctx, g, c) → optional&lt;Rect&gt;</code></td>
 <td><code>srs.draw.widgetRect(g, c) → Rect \| nil</code></td>
 </tr>
 <tr>
 <td>Compute pinned screen position</td>
-<td><code>Drawing::anchorToWidget(ctx, g, c, corner, dx?, dy?, pivot?) → optional&lt;Vec2&gt;</code></td>
 <td><code>srs.draw.anchorToWidget(g, c, corner, dx?, dy?, pivot?) → Vec2 \| nil</code></td>
 </tr>
 <tr>
 <td>Evict cached rects</td>
-<td><code>Drawing::clearAnchorCache()</code></td>
 <td><code>srs.draw.clearAnchorCache()</code></td>
 </tr>
 </tbody>
@@ -2397,29 +2392,24 @@ mode change to evict.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Open overlay at pos (canvas px)</td>
-<td><code>Drawing::beginOverlay(name, pos, pivot=TopLeft, bgAlpha=0.55) → bool</code></td>
 <td><code>srs.draw.beginOverlay(name, pos, pivot?, bgAlpha?) → bool</code></td>
 </tr>
 <tr>
 <td>One-call: anchor + begin</td>
-<td><code>Drawing::beginAnchoredOverlay(ctx, name, g, c, corner, dx?, dy?, pivot?, bgAlpha?) → bool</code></td>
 <td><code>srs.draw.beginAnchoredOverlay(name, g, c, corner, dx?, dy?, pivot?, bgAlpha?) → bool</code></td>
 </tr>
 <tr>
 <td>Close overlay</td>
-<td><code>Drawing::endOverlay()</code></td>
 <td><code>srs.draw.endOverlay()</code></td>
 </tr>
 <tr>
 <td>Inner size of the open overlay</td>
-<td><code>Drawing::overlaySize() → Vec2</code></td>
 <td><code>srs.draw.overlaySize() → Vec2</code></td>
 </tr>
 </tbody>
@@ -2438,38 +2428,37 @@ layout, so you can fit custom art (<code>drawLine</code> / <code>drawFilledRect<
 seen (no cached rect either); in that case <strong>do NOT</strong> call
 <code>endOverlay</code>.</p>
 <h2 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">&para;</a></h2>
-<p>All identical between C++ and Lua:</p>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>Notes</th>
+<th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>separator()</code></td>
 <td>Horizontal rule</td>
+<td><code>srs.draw.separator()</code></td>
 </tr>
 <tr>
-<td><code>sameLine(spacing=-1)</code></td>
-<td>Stay on same line (negative = ImGui default)</td>
+<td>Stay on same line (negative spacing = default)</td>
+<td><code>srs.draw.sameLine(spacing?)</code></td>
 </tr>
 <tr>
-<td><code>spacing()</code></td>
 <td>Insert vertical gap</td>
+<td><code>srs.draw.spacing()</code></td>
 </tr>
 <tr>
-<td><code>newLine()</code></td>
 <td>Force newline</td>
+<td><code>srs.draw.newLine()</code></td>
 </tr>
 <tr>
-<td><code>indent(w=0)</code> / <code>unindent(w=0)</code></td>
-<td>Indent / unindent</td>
+<td>Indent / unindent (<code>w</code> defaults to <code>0</code>)</td>
+<td><code>srs.draw.indent(w?)</code> / <code>srs.draw.unindent(w?)</code></td>
 </tr>
 <tr>
-<td><code>dummy(Vec2)</code></td>
 <td>Reserve blank space</td>
+<td><code>srs.draw.dummy(size)</code> — <code>size</code> is a <code>Vec2</code></td>
 </tr>
 </tbody>
 </table>
@@ -2478,68 +2467,57 @@ seen (no cached rect either); in that case <strong>do NOT</strong> call
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Plain text</td>
-<td><code>text(str)</code> (overloads for <code>const char*</code> / <code>std::string</code>)</td>
 <td><code>srs.draw.text(str)</code></td>
 </tr>
 <tr>
 <td>Colored</td>
-<td><code>textColored(Color, str)</code></td>
 <td><code>srs.draw.textColored(color, str)</code></td>
 </tr>
 <tr>
 <td>Bulleted</td>
-<td><code>bulletText(str)</code></td>
 <td><code>srs.draw.bulletText(str)</code></td>
 </tr>
 </tbody>
 </table>
 <h2 id="interactive-widgets">Interactive widgets<a class="headerlink" href="#interactive-widgets" title="Permanent link">&para;</a></h2>
-<p>C++ takes a pointer to mutate the value in place; Lua returns a
-<code>(changed, newValue)</code> tuple since it lacks pointer semantics.</p>
+<p>The stateful widgets return a <code>(changed, newValue)</code> pair: pass the current
+value in and store the returned one.</p>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Button</td>
-<td><code>button(label, size={0,0}) → bool</code></td>
 <td><code>srs.draw.button(label, size?) → bool</code></td>
 </tr>
 <tr>
 <td>Small button</td>
-<td><code>smallButton(label) → bool</code></td>
 <td><code>srs.draw.smallButton(label) → bool</code></td>
 </tr>
 <tr>
 <td>Checkbox</td>
-<td><code>checkbox(label, bool*) → bool</code> (changed)</td>
 <td><code>srs.draw.checkbox(label, value) → (changed, newValue)</code></td>
 </tr>
 <tr>
 <td>Slider int</td>
-<td><code>sliderInt(label, int*, vMin, vMax) → bool</code></td>
 <td><code>srs.draw.sliderInt(label, value, vMin, vMax) → (changed, newValue)</code></td>
 </tr>
 <tr>
 <td>Slider float</td>
-<td><code>sliderFloat(label, float*, vMin, vMax) → bool</code></td>
 <td><code>srs.draw.sliderFloat(label, value, vMin, vMax) → (changed, newValue)</code></td>
 </tr>
 <tr>
 <td>Progress bar</td>
-<td><code>progressBar(fraction, size={-1,0}, overlay=nullptr)</code></td>
 <td><code>srs.draw.progressBar(fraction, size?, overlay?)</code></td>
 </tr>
 </tbody>
@@ -2550,39 +2528,33 @@ seen (no cached rect either); in that case <strong>do NOT</strong> call
 </span></code></pre></div>
 <h2 id="foreground-draw-list">Foreground draw list<a class="headerlink" href="#foreground-draw-list" title="Permanent link">&para;</a></h2>
 <p>Always-on-top primitives; no window needed. Coordinates are game canvas
-pixels (see the note at the top). Safe to call from <code>onDraw</code> at any time.</p>
+pixels (see the note at the top). Safe to call from <code>script.draw</code> at any time.</p>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Line</td>
-<td><code>drawLine(a, b, color, thickness=1)</code></td>
 <td><code>srs.draw.drawLine(a, b, color, thickness?)</code></td>
 </tr>
 <tr>
 <td>Rect outline</td>
-<td><code>drawRect(rect, color, rounding=0, thickness=1)</code></td>
 <td><code>srs.draw.drawRect(rect, color, rounding?, thickness?)</code></td>
 </tr>
 <tr>
 <td>Filled rect</td>
-<td><code>drawFilledRect(rect, color, rounding=0)</code></td>
 <td><code>srs.draw.drawFilledRect(rect, color, rounding?)</code></td>
 </tr>
 <tr>
 <td>Circle</td>
-<td><code>drawCircle(center, radius, color, segments=0, thickness=1)</code></td>
 <td><code>srs.draw.drawCircle(center, radius, color, segments?, thickness?)</code></td>
 </tr>
 <tr>
 <td>Text</td>
-<td><code>drawText(pos, color, str)</code></td>
 <td><code>srs.draw.drawText(pos, color, str)</code></td>
 </tr>
 </tbody>
@@ -2592,29 +2564,24 @@ pixels (see the note at the top). Safe to call from <code>onDraw</code> at any t
 <thead>
 <tr>
 <th>Type</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>2D point</td>
-<td><code>Vec2 { float x, y }</code></td>
 <td>global <code>Vec2.new()</code> / <code>Vec2.new(x, y)</code> (not on <code>srs</code>)</td>
 </tr>
 <tr>
 <td>Rectangle</td>
-<td><code>Rect { int32 x, y, w, h }</code></td>
 <td>global read-only <code>Rect</code>, no constructor (returned by <code>widgetRect</code>)</td>
 </tr>
 <tr>
 <td>Color</td>
-<td><code>Color { float r, g, b, a }</code></td>
 <td><code>srs.Color.new()</code> / <code>srs.Color.new(r, g, b, a)</code> (also global <code>Color.new</code>)</td>
 </tr>
 <tr>
 <td>Corner</td>
-<td><code>enum Drawing::Corner { TopLeft, TopRight, BottomLeft, BottomRight, Center }</code></td>
 <td><code>srs.Corner.TopLeft</code> etc.</td>
 </tr>
 </tbody>
@@ -2622,45 +2589,23 @@ pixels (see the note at the top). Safe to call from <code>onDraw</code> at any t
 <p>Lua scripts cannot construct a <code>Rect</code>, so <code>drawRect</code> / <code>drawFilledRect</code>
 only accept a rect obtained from <code>srs.draw.widgetRect</code>.</p>
 <h2 id="color-presets">Color presets<a class="headerlink" href="#color-presets" title="Permanent link">&para;</a></h2>
-<p><code>srs::api::colors::*</code> / <code>srs.colors.*</code>:</p>
+<p><code>srs.colors.*</code>:</p>
 <p><code>White</code>, <code>Black</code>, <code>Gray</code>, <code>Red</code>, <code>Green</code>, <code>Yellow</code>, <code>Orange</code>, <code>Cyan</code>, <code>Magenta</code>.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">MyPlugin::onDraw</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ScriptContext</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="c1">// Window 4 px above chatbox top-left.</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Drawing</span><span class="o">::</span><span class="n">beginAnchoredOverlay</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;##my-overlay&quot;</span><span class="p">,</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">                                      </span><span class="mi">162</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">                                      </span><span class="n">Drawing</span><span class="o">::</span><span class="n">Corner</span><span class="o">::</span><span class="n">TopLeft</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">-4</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="n">Drawing</span><span class="o">::</span><span class="n">textColored</span><span class="p">(</span><span class="n">colors</span><span class="o">::</span><span class="n">Orange</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Barbarian Fishing&quot;</span><span class="p">);</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="n">Drawing</span><span class="o">::</span><span class="n">separator</span><span class="p">();</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="n">Drawing</span><span class="o">::</span><span class="n">text</span><span class="p">(</span><span class="s">&quot;Mode: Drop fish&quot;</span><span class="p">);</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="n">Drawing</span><span class="o">::</span><span class="n">sameLine</span><span class="p">();</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">        </span><span class="n">Drawing</span><span class="o">::</span><span class="n">textColored</span><span class="p">(</span><span class="n">colors</span><span class="o">::</span><span class="n">Yellow</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Tick: 3-tick&quot;</span><span class="p">);</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="n">Drawing</span><span class="o">::</span><span class="n">endOverlay</span><span class="p">();</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="c1">-- Window 4 px above chatbox top-left.</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">beginAnchoredOverlay</span><span class="p">(</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">            </span><span class="s2">&quot;##my-overlay&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">162</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">Corner</span><span class="p">.</span><span class="py">TopLeft</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">textColored</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">colors</span><span class="p">.</span><span class="py">Orange</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Barbarian Fishing&quot;</span><span class="p">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">separator</span><span class="p">()</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">text</span><span class="p">(</span><span class="s2">&quot;Mode: Drop fish&quot;</span><span class="p">)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">sameLine</span><span class="p">()</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">textColored</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">colors</span><span class="p">.</span><span class="py">Yellow</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Tick: 3-tick&quot;</span><span class="p">)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">endOverlay</span><span class="p">()</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">draw</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">beginAnchoredOverlay</span><span class="p">(</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">            </span><span class="s2">&quot;##my-overlay&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">162</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">Corner</span><span class="p">.</span><span class="py">TopLeft</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">textColored</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">colors</span><span class="p">.</span><span class="py">Orange</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Barbarian Fishing&quot;</span><span class="p">)</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">separator</span><span class="p">()</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">text</span><span class="p">(</span><span class="s2">&quot;Mode: Drop fish&quot;</span><span class="p">)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">sameLine</span><span class="p">()</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">textColored</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">colors</span><span class="p">.</span><span class="py">Yellow</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Tick: 3-tick&quot;</span><span class="p">)</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">draw</span><span class="p">.</span><span class="nf">endOverlay</span><span class="p">()</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="kr">end</span><span class="p">)</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

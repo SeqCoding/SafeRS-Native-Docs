@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2223,7 +2223,7 @@
 
 
 <h1 id="randomevents">RandomEvents<a class="headerlink" href="#randomevents" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::RandomEvents</code> / <code>srs.randomEvents</code></p>
+<p><code>srs.randomEvents</code></p>
 <p>The client runs a random-event handler on its own, for every script — no
 script needs event logic of its own. Settings are <strong>per account</strong> and are
 edited in the launcher only; scripts cannot change them. Scripts can pause the
@@ -2248,51 +2248,42 @@ handler for a stretch and read its state.</p>
 <table>
 <thead>
 <tr>
-<th>Description</th>
-<th>C++</th>
+<th>Method</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Pause handling</td>
-<td><code>RandomEvents::suspend()</code></td>
 <td><code>srs.randomEvents.suspend()</code></td>
 </tr>
 <tr>
 <td>Resume handling</td>
-<td><code>RandomEvents::resume()</code></td>
 <td><code>srs.randomEvents.resume()</code></td>
 </tr>
 <tr>
 <td>Is handling paused by a script?</td>
-<td><code>RandomEvents::isSuspended() → bool</code></td>
-<td><code>srs.randomEvents.isSuspended() → bool</code></td>
+<td><code>srs.randomEvents.isSuspended() → boolean</code></td>
 </tr>
 <tr>
 <td>Is the handler acting right now?</td>
-<td><code>RandomEvents::isHandling() → bool</code></td>
-<td><code>srs.randomEvents.isHandling() → bool</code></td>
+<td><code>srs.randomEvents.isHandling() → boolean</code></td>
 </tr>
 <tr>
 <td>Current phase</td>
-<td><code>RandomEvents::phase() → string</code></td>
 <td><code>srs.randomEvents.phase() → string</code></td>
 </tr>
 <tr>
 <td>Account's lamp skill (<code>""</code> = Genie is dismissed)</td>
-<td><code>RandomEvents::lampSkill() → string</code></td>
 <td><code>srs.randomEvents.lampSkill() → string</code></td>
 </tr>
 <tr>
 <td>Is handling enabled for this account?</td>
-<td><code>RandomEvents::isEnabled() → bool</code></td>
-<td><code>srs.randomEvents.isEnabled() → bool</code></td>
+<td><code>srs.randomEvents.isEnabled() → boolean</code></td>
 </tr>
 <tr>
 <td>Events handled since the client started</td>
-<td><code>RandomEvents::handledCount() → int32</code></td>
-<td><code>srs.randomEvents.handledCount() → int</code></td>
+<td><code>srs.randomEvents.handledCount() → integer</code></td>
 </tr>
 </tbody>
 </table>

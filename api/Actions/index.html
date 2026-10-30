@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -592,6 +592,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -651,7 +662,7 @@
   <a href="#srsactionsbatchsteps-opts-handle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        srs.actions.batch(steps, opts) -&gt; handle
+        srs.actions.batch(steps[, opts]) -&gt; handle
       
     </span>
   </a>
@@ -684,7 +695,7 @@
   <a href="#srsactionsbudgetremainingreserve-integer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        srs.actions.budgetRemaining(reserve) -&gt; integer
+        srs.actions.budgetRemaining([reserve]) -&gt; integer
       
     </span>
   </a>
@@ -707,17 +718,6 @@
     <span class="md-ellipsis">
       
         srs.actions.cancelAll()
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-facade" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C++ facade
       
     </span>
   </a>
@@ -800,7 +800,7 @@
   <a href="#srsactionsrecentn-list" class="md-nav__link">
     <span class="md-ellipsis">
       
-        srs.actions.recent(n) -&gt; list
+        srs.actions.recent([n]) -&gt; list
       
     </span>
   </a>
@@ -872,7 +872,7 @@
   <a href="#srsactionsrejectionsn-list" class="md-nav__link">
     <span class="md-ellipsis">
       
-        srs.actions.rejections(n) -&gt; list
+        srs.actions.rejections([n]) -&gt; list
       
     </span>
   </a>
@@ -2494,6 +2494,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#why-this-exists" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2553,7 +2564,7 @@
   <a href="#srsactionsbatchsteps-opts-handle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        srs.actions.batch(steps, opts) -&gt; handle
+        srs.actions.batch(steps[, opts]) -&gt; handle
       
     </span>
   </a>
@@ -2586,7 +2597,7 @@
   <a href="#srsactionsbudgetremainingreserve-integer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        srs.actions.budgetRemaining(reserve) -&gt; integer
+        srs.actions.budgetRemaining([reserve]) -&gt; integer
       
     </span>
   </a>
@@ -2609,17 +2620,6 @@
     <span class="md-ellipsis">
       
         srs.actions.cancelAll()
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-facade" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        C++ facade
       
     </span>
   </a>
@@ -2702,7 +2702,7 @@
   <a href="#srsactionsrecentn-list" class="md-nav__link">
     <span class="md-ellipsis">
       
-        srs.actions.recent(n) -&gt; list
+        srs.actions.recent([n]) -&gt; list
       
     </span>
   </a>
@@ -2774,7 +2774,7 @@
   <a href="#srsactionsrejectionsn-list" class="md-nav__link">
     <span class="md-ellipsis">
       
-        srs.actions.rejections(n) -&gt; list
+        srs.actions.rejections([n]) -&gt; list
       
     </span>
   </a>
@@ -2910,15 +2910,110 @@
 </tr>
 </tbody>
 </table>
-<p>Both halves live in <code>srs::api::Actions</code> (<code>PluginAPI/API/Actions.h</code> in the
-SDK) and are documented on this page.</p>
+<p>Both halves live on the <code>srs.actions</code> table and are documented on this page.</p>
 <div class="admonition warning">
 <p class="admonition-title">Scripts MUST NOT block</p>
-<p>Verifiers are pumped once per game tick on the script thread, at the top
-of <code>ScriptEngine::tick()</code> — before your <code>script.onTick</code> runs. Nothing here
+<p>Verifiers are pumped once per game tick on the script thread, before your
+<code>script.onTick</code> runs. Nothing here
 waits or spins. You fire an action, register a verifier, and read
 <code>srs.actions.state(handle)</code> whenever you like.</p>
 </div>
+<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<p>Each function has its own section below.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run a same-tick action ladder</td>
+<td><code>srs.actions.batch(steps[, opts]) → handle</code></td>
+</tr>
+<tr>
+<td>Action slots left this tick</td>
+<td><code>srs.actions.budgetRemaining([reserve]) → integer</code></td>
+</tr>
+<tr>
+<td>Batch steps still waiting</td>
+<td><code>srs.actions.pending() → integer</code></td>
+</tr>
+<tr>
+<td>Drop every queued batch step</td>
+<td><code>srs.actions.cancelAll()</code></td>
+</tr>
+<tr>
+<td>Ticket of the last dispatched action</td>
+<td><code>srs.actions.lastTicket() → integer</code></td>
+</tr>
+<tr>
+<td>What happened to a ticket</td>
+<td><code>srs.actions.outcome(ticket) → string</code></td>
+</tr>
+<tr>
+<td>Did the ticket send a packet</td>
+<td><code>srs.actions.sent(ticket) → boolean</code></td>
+</tr>
+<tr>
+<td>Did the ticket fail</td>
+<td><code>srs.actions.failed(ticket) → boolean</code></td>
+</tr>
+<tr>
+<td>Full record for a ticket</td>
+<td><code>srs.actions.info(ticket) → table \| nil</code></td>
+</tr>
+<tr>
+<td>Most recent tickets</td>
+<td><code>srs.actions.recent([n]) → list</code></td>
+</tr>
+<tr>
+<td>Actions queued, not yet drained</td>
+<td><code>srs.actions.queued() → integer</code></td>
+</tr>
+<tr>
+<td>Age of the oldest queued action</td>
+<td><code>srs.actions.oldestPendingTicks() → integer</code></td>
+</tr>
+<tr>
+<td>Dispatch counters</td>
+<td><code>srs.actions.stats() → table</code></td>
+</tr>
+<tr>
+<td>Last server rejection message</td>
+<td><code>srs.actions.lastRejection() → table \| nil</code></td>
+</tr>
+<tr>
+<td>Recent server rejections</td>
+<td><code>srs.actions.rejections([n]) → list</code></td>
+</tr>
+<tr>
+<td>Confirm an action took effect</td>
+<td><code>srs.actions.verify(spec) → handle</code></td>
+</tr>
+<tr>
+<td>Verifier state</td>
+<td><code>srs.actions.state(handle) → string</code></td>
+</tr>
+<tr>
+<td>Verifier finished</td>
+<td><code>srs.actions.done(handle) → boolean</code></td>
+</tr>
+<tr>
+<td>Verifier result</td>
+<td><code>srs.actions.check(handle) → table \| nil</code></td>
+</tr>
+<tr>
+<td>Stop a verifier</td>
+<td><code>srs.actions.cancel(handle) → boolean</code></td>
+</tr>
+<tr>
+<td>Verifiers still running</td>
+<td><code>srs.actions.verifying() → integer</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="why-this-exists">Why this exists<a class="headerlink" href="#why-this-exists" title="Permanent link">&para;</a></h2>
 <p>Across the API a <code>true</code> return means <strong>"the click was enqueued"</strong>, never
 "the action happened". The Dialogue docs already say this outright; it is
@@ -2927,7 +3022,7 @@ past that return and used to be indistinguishable from success:</p>
 <ul>
 <li>the per-tick budget gate <strong>holds</strong> the action so it fires several ticks
   late, against a world that has moved on;</li>
-<li>the action is drained, the engine action dispatch no-ops, and <strong>no packet ever reaches the
+<li>the action is drained, the engine's action dispatch no-ops, and <strong>no packet ever reaches the
   wire</strong> — the "Drop click silently did nothing" bug;</li>
 <li>the queue is cleared on script stop before the action ran.</li>
 </ul>
@@ -2972,13 +3067,13 @@ inside one game tick, and tells you which ones the tick could not afford.</p>
 <p>One action per rendered frame is a <strong>hard engine floor</strong>, not a pacing
 preference:</p>
 <ol>
-<li>Every scripted action primes a click, and <code>InputSpoofer::stagePendingClick</code>
-   is <em>latest-wins</em> — the engine has one click slot pair.</li>
-<li><code>ClickSlotResetHook</code> consumes at most one staged click per dispatcher tick
-   (~50/s, i.e. once per rendered frame), so at most one <code>CLICK_2</code> is emitted
-   per frame.</li>
-<li><code>EngineDispatch::drainOnMainThread</code> fires <strong>at most one</strong> queued action
-   lambda, and only on a <code>CLICK_2</code>.</li>
+<li>Every scripted action primes a click, and a newly staged click replaces
+   any earlier one that has not been consumed yet — the engine has one click
+   slot pair.</li>
+<li>At most one staged click is consumed per dispatcher tick (~50/s, i.e. once
+   per rendered frame), so at most one click is emitted per frame.</li>
+<li>The engine fires <strong>at most one</strong> queued action per frame, and only when
+   that click is emitted.</li>
 </ol>
 <p>So firing two actions in one frame does not get you two actions — the second
 click overwrites the first, one lambda is left in the paired queue with no
@@ -2993,11 +3088,11 @@ ordinary action packet, no different from clicking an item. A ladder that hops
 prayer → inventory → prayer therefore spends 3 of its 8 slots on sidebar
 management alone — prefer a resting tab and let the runner coalesce
 consecutive steps that share one.</p>
-<p><code>EngineDispatch</code>'s own budget gate <strong>defers</strong> an over-cap action to a later
-drain. For a tick-scoped ladder that is the wrong answer — the deferred
+<p>The engine's own per-tick budget gate <strong>defers</strong> an over-cap action to a
+later drain. For a tick-scoped ladder that is the wrong answer — the deferred
 attack lands two ticks late. The batch runner instead <strong>fails fast</strong>: a step
 that does not fit is never dispatched, and comes back as <code>gated</code>.</p>
-<h3 id="srsactionsbatchsteps-opts-handle"><code>srs.actions.batch(steps, opts) -&gt; handle</code><a class="headerlink" href="#srsactionsbatchsteps-opts-handle" title="Permanent link">&para;</a></h3>
+<h3 id="srsactionsbatchsteps-opts-handle"><code>srs.actions.batch(steps[, opts]) -&gt; handle</code><a class="headerlink" href="#srsactionsbatchsteps-opts-handle" title="Permanent link">&para;</a></h3>
 <p><code>steps</code> is an ordered list. Each entry is a function, or a table:</p>
 <table>
 <thead>
@@ -3049,7 +3144,7 @@ click and never reaches the server. Split them into two steps.</p>
 <tr>
 <td><code>tabSettleFrames</code></td>
 <td><code>2</code></td>
-<td>Frames to let the engine draw a newly switched panel before clicking into it. The tab varc flips synchronously, but <code>IfRenderHook</code>'s rect snapshot is a frame behind.</td>
+<td>Frames to let the engine draw a newly switched panel before clicking into it. The tab flips synchronously, but the panel's drawn rectangle is a frame behind.</td>
 </tr>
 <tr>
 <td><code>onDone</code></td>
@@ -3081,7 +3176,7 @@ already on its tab costs nothing.</p>
 unavailable), the runner does <em>not</em> refuse to act: it switches once blind,
 settles, and proceeds. Refusing would strand the whole ladder, which is
 strictly worse than clicking after a switch.</p>
-<h3 id="srsactionsbudgetremainingreserve-integer"><code>srs.actions.budgetRemaining(reserve) -&gt; integer</code><a class="headerlink" href="#srsactionsbudgetremainingreserve-integer" title="Permanent link">&para;</a></h3>
+<h3 id="srsactionsbudgetremainingreserve-integer"><code>srs.actions.budgetRemaining([reserve]) -&gt; integer</code><a class="headerlink" href="#srsactionsbudgetremainingreserve-integer" title="Permanent link">&para;</a></h3>
 <p>Action slots believed usable this tick. Unlike
 <code>srs.engine.actionsSentThisTick()</code>, this also counts actions the runner has
 dispatched whose packets have not reached the wire yet, so it never
@@ -3092,67 +3187,6 @@ over-reports capacity.</p>
 <p>Flags every in-flight batch for cancellation. Remaining steps report
 <code>cancelled</code>. Batches are also dropped automatically when the script that
 submitted them is disabled or reloaded.</p>
-<h3 id="c-facade">C++ facade<a class="headerlink" href="#c-facade" title="Permanent link">&para;</a></h3>
-<p>The batch runner is <code>srs::api::Actions</code> in <code>PluginAPI/API/Actions.h</code>. The
-Lua <code>handle</code> is sugar over a batch <strong>id</strong>; in C++ you hold the <code>uint64_t</code>
-yourself.</p>
-<table>
-<thead>
-<tr>
-<th>Lua</th>
-<th>C++</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>srs.actions.batch(steps, opts) → handle</code></td>
-<td><code>Actions::submit(ctx, std::vector&lt;ActionStep&gt;, const BatchOptions&amp;) → uint64_t</code> (<code>0</code> = rejected)</td>
-</tr>
-<tr>
-<td><code>handle:report()</code></td>
-<td><code>Actions::report(uint64_t id) → BatchReport</code></td>
-</tr>
-<tr>
-<td><code>handle:done()</code></td>
-<td><code>!Actions::isRunning(uint64_t id)</code></td>
-</tr>
-<tr>
-<td><code>handle:cancel()</code></td>
-<td><code>Actions::cancel(uint64_t id)</code></td>
-</tr>
-<tr>
-<td><code>srs.actions.cancelAll()</code></td>
-<td><code>Actions::cancelAll()</code></td>
-</tr>
-<tr>
-<td><code>srs.actions.budgetRemaining(reserve)</code></td>
-<td><code>Actions::budgetRemaining(ctx, int32_t reserve = 0) → int32_t</code></td>
-</tr>
-<tr>
-<td><code>srs.actions.pending()</code></td>
-<td><code>Actions::pending() → size_t</code></td>
-</tr>
-<tr>
-<td>—</td>
-<td><code>Actions::cancelOwner(uint64_t owner)</code> — drops every batch carrying <code>BatchOptions::owner</code>; how the host tears down a script's in-flight batches on disable / reload</td>
-</tr>
-</tbody>
-</table>
-<p><code>ActionStep</code> is <code>{ std::string label; std::function&lt;bool()&gt; fn; int32_t tab = -1; }</code>
-(<code>tab</code> takes an <code>InterfaceTab</code> cast to <code>int</code>, <code>-1</code> for "don't care").
-<code>BatchOptions</code> carries <code>tickScoped</code> / <code>reserve</code> / <code>tabSettleFrames</code> plus two
-fields Lua does not expose: <code>owner</code> (the cancellation token above) and
-<code>onDone</code>, which fires once on the worker thread under the GIL.</p>
-<p><code>BatchReport</code> matches the Lua table field-for-field, except that <code>complete</code>
-is a <strong>method</strong> (<code>rep.complete()</code>) rather than a field, and it additionally
-carries <code>tickSubmitted</code> / <code>tickRetired</code>. There is no <code>missed</code> list — filter
-<code>steps</code> on <code>stepMissed(s.status)</code>, which is what the Lua binding does.</p>
-<div class="admonition note">
-<p class="admonition-title"><code>purge</code>, <code>pump</code> and <code>onGameTick</code> are host wiring</p>
-<p>Those three are exported for the client itself (the per-frame pulse
-lane, the tick rollover, and the <code>lua_State</code> teardown). Plugins and
-scripts never call them.</p>
-</div>
 <h2 id="dispatch-tickets">Dispatch tickets<a class="headerlink" href="#dispatch-tickets" title="Permanent link">&para;</a></h2>
 <p>Every marshaled action gets a ticket. Ask for it straight after the call:</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactById</span><span class="p">(</span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Drop&quot;</span><span class="p">)</span>
@@ -3217,8 +3251,9 @@ pending</strong>, so it is safe to poll.</p>
   <strong>Non-zero means you queued more actions in a tick than the server's
   8-per-tick cap allows and this one landed late.</strong></li>
 </ul>
-<h3 id="srsactionsrecentn-list"><code>srs.actions.recent(n) -&gt; list</code><a class="headerlink" href="#srsactionsrecentn-list" title="Permanent link">&para;</a></h3>
-<p>Last <code>n</code> ledger rows, oldest first. Returns a proper Lua table.</p>
+<h3 id="srsactionsrecentn-list"><code>srs.actions.recent([n]) -&gt; list</code><a class="headerlink" href="#srsactionsrecentn-list" title="Permanent link">&para;</a></h3>
+<p>Last <code>n</code> ledger rows (default <code>16</code>), oldest first. Returns a proper Lua table
+of <code>info</code> rows.</p>
 <h3 id="srsactionsqueued-integer"><code>srs.actions.queued() -&gt; integer</code><a class="headerlink" href="#srsactionsqueued-integer" title="Permanent link">&para;</a></h3>
 <p>Ledger tickets enqueued but not yet drained. (Distinct from
 <code>srs.actions.pending()</code>, which counts batch-runner steps.)</p>
@@ -3230,7 +3265,8 @@ than queue more.</p>
 <p><code>{ opened, sent, noPacket, discarded }</code> — lifetime counters, for HUDs.</p>
 <h2 id="server-rejections">Server rejections<a class="headerlink" href="#server-rejections" title="Permanent link">&para;</a></h2>
 <h3 id="srsactionslastrejection-table-nil"><code>srs.actions.lastRejection() -&gt; table | nil</code><a class="headerlink" href="#srsactionslastrejection-table-nil" title="Permanent link">&para;</a></h3>
-<h3 id="srsactionsrejectionsn-list"><code>srs.actions.rejections(n) -&gt; list</code><a class="headerlink" href="#srsactionsrejectionsn-list" title="Permanent link">&para;</a></h3>
+<h3 id="srsactionsrejectionsn-list"><code>srs.actions.rejections([n]) -&gt; list</code><a class="headerlink" href="#srsactionsrejectionsn-list" title="Permanent link">&para;</a></h3>
+<p>Last <code>n</code> rejection rows (default <code>8</code>), oldest first.</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">text</span><span class="p">,</span><span class="w"> </span><span class="nv">reason</span><span class="p">,</span><span class="w"> </span><span class="nv">ticket</span><span class="p">,</span><span class="w"> </span><span class="nv">tick</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <p><code>reason</code> is a classifier label: <code>materials</code>, <code>space</code>, <code>reach</code>, <code>level</code>,
@@ -3312,13 +3348,17 @@ window. A confirmed outcome always wins over a rejection guess.</p>
 <p><code>pending</code> | <code>confirmed</code> | <code>rejected</code> | <code>failed</code> | <code>unknown</code>. Resolved handles
 stay readable for ~20 ticks, then report <code>unknown</code>.</p>
 <h3 id="srsactionsdonehandle-boolean"><code>srs.actions.done(handle) -&gt; boolean</code><a class="headerlink" href="#srsactionsdonehandle-boolean" title="Permanent link">&para;</a></h3>
+<p>True once the verifier has resolved (<code>confirmed</code>, <code>rejected</code> or <code>failed</code>).</p>
 <h3 id="srsactionscheckhandle-table-nil"><code>srs.actions.check(handle) -&gt; table | nil</code><a class="headerlink" href="#srsactionscheckhandle-table-nil" title="Permanent link">&para;</a></h3>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="w"> </span><span class="nv">state</span><span class="p">,</span><span class="w"> </span><span class="nv">detail</span><span class="p">,</span><span class="w"> </span><span class="nv">kind</span><span class="p">,</span><span class="w"> </span><span class="nv">ticket</span><span class="p">,</span><span class="w"> </span><span class="nv">attempts</span><span class="p">,</span><span class="w"> </span><span class="nv">ageTicks</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <p><code>detail</code> says <strong>why</strong> it ended: the rejection text, the dispatch outcome, or
 <code>"not confirmed within the retry budget"</code>.</p>
 <h3 id="srsactionscancelhandle-boolean"><code>srs.actions.cancel(handle) -&gt; boolean</code><a class="headerlink" href="#srsactionscancelhandle-boolean" title="Permanent link">&para;</a></h3>
+<p>Stop verifying; the handle resolves <code>failed</code> with detail <code>"cancelled"</code>.
+Returns <code>false</code> if the handle is unknown or already resolved.</p>
 <h3 id="srsactionsverifying-integer"><code>srs.actions.verifying() -&gt; integer</code><a class="headerlink" href="#srsactionsverifying-integer" title="Permanent link">&para;</a></h3>
+<p>How many verifiers are still pending.</p>
 <h2 id="worked-example-a-bowl-craft-that-the-server-refuses">Worked example: a bowl craft that the server refuses<a class="headerlink" href="#worked-example-a-bowl-craft-that-the-server-refuses" title="Permanent link">&para;</a></h2>
 <p>The spend is the confirmation — the crafted item sometimes never reads as
 owned, but the shards always leave.</p>

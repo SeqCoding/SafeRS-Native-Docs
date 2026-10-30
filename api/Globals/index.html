@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2292,7 +2292,7 @@ are globals: write <code>Skill.Mining</code>, <strong>not</strong> <code>srs.pla
 </tr>
 <tr>
 <td><code>log</code></td>
-<td><code>info</code> / <code>warn</code> / <code>error</code> logging</td>
+<td><code>info</code> / <code>warn</code> / <code>error</code> / <code>file</code> logging</td>
 <td><a href="../Script/">Script lifecycle</a></td>
 </tr>
 <tr>
@@ -2314,11 +2314,6 @@ are globals: write <code>Skill.Mining</code>, <strong>not</strong> <code>srs.pla
 <td><code>object</code></td>
 <td>Scene loc query (low-level — prefer <code>srs.gameobject</code>)</td>
 <td><a href="../Object/">Object</a></td>
-</tr>
-<tr>
-<td><code>mem</code></td>
-<td><strong>Deprecated</strong> raw-memory reads — do not use; being removed</td>
-<td>—</td>
 </tr>
 </tbody>
 </table>
@@ -2363,6 +2358,11 @@ Lua constructor — you only receive them, you can't build them.</p>
 <td><code>FoodInfo</code></td>
 <td>no</td>
 <td><a href="../Food/">Food</a></td>
+</tr>
+<tr>
+<td><code>StoredPotion</code></td>
+<td>no</td>
+<td><a href="../Bank/">Bank</a></td>
 </tr>
 <tr>
 <td><code>GameObjectEntry</code></td>

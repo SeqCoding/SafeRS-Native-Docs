@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2311,11 +2311,10 @@
 
 
 <h1 id="game-legacy-table">Game (legacy table)<a class="headerlink" href="#game-legacy-table" title="Permanent link">&para;</a></h1>
-<p><code>game.*</code> (Lua only — global table)</p>
+<p><code>game.*</code> (global table)</p>
 <p>The original low-level scripting surface: projection math, minimap
 math, pathfinding, collision queries, the transport registry, and raw
-screen clicks. All Lua-only — there is no <code>srs::api</code> facade for this
-table. Prefer the <code>srs.*</code> facades where one exists
+screen clicks. Prefer the <code>srs.*</code> facades where one exists
 (<a href="../Walk/">Walk</a>, <a href="../Tile/">Tile</a>, <a href="../Camera/">Camera</a>,
 <a href="../Player/">Player</a>); <code>game.*</code> is the layer underneath, kept for
 existing scripts and for the few things only it exposes.</p>
@@ -2442,13 +2441,12 @@ is skipped. Three overloads: <code>(originX, originY, dangerTiles)</code>,
 <code>(…, radius)</code>, <code>(…, radius, plane)</code>. Returns <code>nil</code> when no candidate
 within the radius qualifies.</p>
 <div class="admonition note">
-<p class="admonition-title">Unified with <code>Walk::findSafeTile</code></p>
-<p><code>game.findSafeTile</code> is a thin adapter over <code>Walk::findSafeTile</code>
-(<a href="../Walk/">Walk</a>) — both surfaces share a single ring-search
-implementation, so behavior cannot drift between them. The Lua
-contract is unchanged: same <code>{x, y, plane, onCanvas, walkable}</code>
-table (or <code>nil</code> where C++ reports <code>valid = false</code>), and danger
-entries without a <code>plane</code> key still default to the search plane.</p>
+<p class="admonition-title">Same search as <code>srs.walk</code></p>
+<p><code>game.findSafeTile</code> shares its ring-search implementation with the safe-tile
+search on <a href="../Walk/">Walk</a>, so behavior cannot drift between them. The
+result is a <code>{x, y, plane, onCanvas, walkable}</code> table (or <code>nil</code> when no
+tile qualifies), and danger entries without a <code>plane</code> key default to the
+search plane.</p>
 </div>
 <h2 id="live-collision">Live collision<a class="headerlink" href="#live-collision" title="Permanent link">&para;</a></h2>
 <p>Player-plane only — <a href="../Tile/"><code>srs.tile</code></a> adds a plane argument plus
@@ -2480,7 +2478,7 @@ entries without a <code>plane</code> key still default to the search plane.</p>
 </tbody>
 </table>
 <h2 id="static-collision">Static collision<a class="headerlink" href="#static-collision" title="Permanent link">&para;</a></h2>
-<p>Cache-derived (Skretzo substrate) world-wide collision — independent
+<p>Cache-derived world-wide collision — independent
 of the loaded scene. All return <code>false</code> if the static map isn't
 loaded.</p>
 <table>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2235,8 +2235,8 @@
 
 
 <h1 id="player">Player<a class="headerlink" href="#player" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Player</code> / <code>srs.player</code></p>
-<p>Local-player state. Thin wrappers over <code>GameData</code> getters. Each
+<p><code>srs.player</code></p>
+<p>Local-player state. Each
 helper returns a sensible fallback (empty string / -1 / 0) instead of
 optional so Lua callers don't have to deal with a multi-return shape.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
@@ -2244,153 +2244,125 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>World-tile position</td>
-<td><code>Player::position(ctx) → WorldTile</code></td>
 <td><code>srs.player.position() → WorldTile</code></td>
 </tr>
 <tr>
 <td>Template-space position</td>
-<td><code>Player::templatePosition(ctx) → WorldTile</code></td>
 <td><code>srs.player.templatePosition() → WorldTile</code></td>
 </tr>
 <tr>
 <td>Display name</td>
-<td><code>Player::displayName(ctx) → string</code></td>
 <td><code>srs.player.displayName() → string</code></td>
 </tr>
 <tr>
 <td>Active animation id</td>
-<td><code>Player::animation(ctx) → int32</code></td>
 <td><code>srs.player.animation() → int</code></td>
 </tr>
 <tr>
 <td>Facing angle</td>
-<td><code>Player::orientation(ctx) → int32</code></td>
 <td><code>srs.player.orientation() → int</code></td>
 </tr>
 <tr>
 <td>Carried weight (kg)</td>
-<td><code>Player::weight(ctx) → int32</code></td>
 <td><code>srs.player.weight() → int</code></td>
 </tr>
 <tr>
 <td>Run energy</td>
-<td><code>Player::runEnergy(ctx) → int32</code></td>
 <td><code>srs.player.runEnergy() → int</code></td>
 </tr>
 <tr>
 <td>Set run on/off</td>
-<td><code>Player::toggleRunEnergy(ctx, on) → bool</code></td>
 <td><code>srs.player.toggleRunEnergy(on) → bool</code></td>
 </tr>
 <tr>
 <td>Poison counter (raw)</td>
-<td><code>Player::poison(ctx) → int32</code></td>
 <td><code>srs.player.poison() → int</code></td>
 </tr>
 <tr>
 <td>Is poisoned</td>
-<td><code>Player::isPoisoned(ctx) → bool</code></td>
 <td><code>srs.player.isPoisoned() → bool</code></td>
 </tr>
 <tr>
 <td>Is venomed</td>
-<td><code>Player::isVenomed(ctx) → bool</code></td>
 <td><code>srs.player.isVenomed() → bool</code></td>
 </tr>
 <tr>
 <td>Idle ticks counter</td>
-<td><code>Player::idleTicks(ctx) → int32</code></td>
 <td><code>srs.player.idleTicks() → int</code></td>
 </tr>
 <tr>
 <td>Boosted skill level</td>
-<td><code>Player::skillLevel(ctx, Skill) → int32</code></td>
 <td><code>srs.player.skillLevel(Skill) → int</code></td>
 </tr>
 <tr>
 <td>Base skill level</td>
-<td><code>Player::skillBase(ctx, Skill) → int32</code></td>
 <td><code>srs.player.skillBase(Skill) → int</code></td>
 </tr>
 <tr>
 <td>Skill XP</td>
-<td><code>Player::skillXp(ctx, Skill) → int32</code></td>
 <td><code>srs.player.skillXp(Skill) → int</code></td>
 </tr>
 <tr>
 <td>XP for a level <em>(static)</em></td>
-<td><code>Player::xpForLevel(level) → int32</code></td>
 <td><code>srs.player.xpForLevel(level) → int</code></td>
 </tr>
 <tr>
 <td>Level for total XP <em>(static)</em></td>
-<td><code>Player::levelForXp(xp) → int32</code></td>
 <td><code>srs.player.levelForXp(xp) → int</code></td>
 </tr>
 <tr>
 <td>XP remaining to next level</td>
-<td><code>Player::xpToNextLevel(ctx, Skill) → int32</code></td>
 <td><code>srs.player.xpToNextLevel(Skill) → int</code></td>
 </tr>
 <tr>
 <td>Progress into current level (0..1)</td>
-<td><code>Player::levelProgress(ctx, Skill) → double</code></td>
 <td><code>srs.player.levelProgress(Skill) → number</code></td>
 </tr>
 <tr>
 <td>Current hitpoints</td>
-<td><code>Player::hitpoints(ctx) → int32</code></td>
 <td><code>srs.player.hitpoints() → int</code></td>
 </tr>
 <tr>
 <td>Max hitpoints</td>
-<td><code>Player::maxHitpoints(ctx) → int32</code></td>
 <td><code>srs.player.maxHitpoints() → int</code></td>
 </tr>
 <tr>
 <td>Hitpoints percentage</td>
-<td><code>Player::hpPercent(ctx) → int32</code></td>
 <td><code>srs.player.hpPercent() → int</code></td>
 </tr>
 <tr>
 <td>Current prayer points</td>
-<td><code>Player::prayer(ctx) → int32</code></td>
 <td><code>srs.player.prayer() → int</code></td>
 </tr>
 <tr>
 <td>Prayer level (base)</td>
-<td><code>Player::maxPrayer(ctx) → int32</code></td>
 <td><code>srs.player.maxPrayer() → int</code></td>
 </tr>
 <tr>
 <td>Overhead prayer headicon</td>
-<td><code>Player::overheadPrayer(ctx) → OverheadPrayer</code></td>
 <td><code>srs.player.overheadPrayer() → OverheadPrayer</code></td>
 </tr>
 <tr>
 <td>Quest completion state</td>
-<td><code>Player::questState(ctx, Quest) → QuestState</code></td>
 <td><code>srs.player.questState(Quest) → QuestState</code></td>
 </tr>
 <tr>
 <td>Quest raw progress</td>
-<td><code>Player::questProgress(ctx, Quest) → int32</code></td>
 <td><code>srs.player.questProgress(Quest) → int</code></td>
 </tr>
 </tbody>
 </table>
 <h3 id="detail">Detail<a class="headerlink" href="#detail" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong><code>position</code></strong> — returns <code>{0, 0, 0}</code> when GS or the player struct
-  isn't resolved (pre-login). Callers that care about the
-  difference should check <code>World::getId(ctx) &gt;= 0</code> first. Inside an
+<li><strong><code>position</code></strong> — returns a <code>WorldTile</code> of <code>{0, 0, 0}</code> when the player
+  isn't available (pre-login). Callers that care about the
+  difference should check that they are logged in first. Inside an
   instance this is the raw instance-local tile.</li>
 <li><strong><code>templatePosition</code></strong> — same as <code>position</code> outside an instance; inside
   an instance it maps the raw instance-local tile back through the engine's
@@ -2410,22 +2382,22 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   a tolerance (<code>math.abs(o - 1024) &lt;= 256</code> for north).</li>
 <li><strong><code>weight</code></strong> — carried weight in kg, as shown by the game.</li>
 <li><strong><code>runEnergy</code></strong> — in 0..10000 range (raw network units; divide by
-  100 for the displayed percentage). <code>-1</code> if GS isn't resolved.</li>
+  100 for the displayed percentage). <code>-1</code> if unavailable.</li>
 <li><strong><code>poison</code> / <code>isPoisoned</code> / <code>isVenomed</code></strong> — read the game's poison
   damage counter (VarPlayer 102). <code>poison()</code>
   returns the raw value: <code>0</code> = clean, <code>1..999999</code> = poisoned, <code>&gt;= 1000000</code>
   = venomed, <code>&lt; 0</code> = temporary immunity that counts back up toward 0 after
   an antidote/cure. <code>isPoisoned()</code> is <code>1..999999</code>; <code>isVenomed()</code> is
   <code>&gt;= 1000000</code> (venom is not "poisoned" — check it first). Returns
-  <code>0</code> / <code>false</code> when VarpSystem isn't ready.</li>
+  <code>0</code> / <code>false</code> when the value can't be read.</li>
 <li><strong><code>idleTicks</code></strong> — number of consecutive game ticks the player's
   active animation has been -1. Reset to 0 the moment any non-idle
-  animation plays. Maintained by <code>GameData::onTick</code>.</li>
+  animation plays.</li>
 <li><strong><code>skillLevel</code> / <code>skillBase</code> / <code>skillXp</code></strong> — read the boosted level,
-  base level, or total XP for any skill. Returns 0 when GS isn't
-  resolved.</li>
+  base level, or total XP for any skill. Returns 0 when
+  unavailable.</li>
 <li><strong><code>hitpoints</code> / <code>maxHitpoints</code></strong> — shorthand for
-  <code>skillLevel(Skill::Hitpoints)</code> / <code>skillBase(Skill::Hitpoints)</code>.</li>
+  <code>skillLevel(Skill.Hitpoints)</code> / <code>skillBase(Skill.Hitpoints)</code>.</li>
 <li><strong><code>hpPercent</code></strong> — <code>floor(hitpoints * 100 / maxHitpoints)</code>, an integer.
   Can exceed <code>100</code> while boosted (e.g. after an anglerfish or Saradomin
   brew). Returns <code>0</code> when hitpoints aren't readable (e.g. logged out).</li>
@@ -2433,19 +2405,19 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   reads the current run toggle and returns <code>true</code> without clicking if it
   already matches <code>on</code>; otherwise it clicks the run orb.</li>
 <li><strong><code>prayer</code> / <code>maxPrayer</code></strong> — current prayer points (live, drains with
-  use) + base prayer level. Mirrors <code>srs::api::Prayer::points</code> /
-  <code>Prayer::level</code>.</li>
+  use) + base prayer level. Mirrors <code>srs.prayer.points</code> /
+  <code>srs.prayer.level</code>.</li>
 <li><strong><code>overheadPrayer</code></strong> — the <strong>local</strong> player's active Protect-from
   headicon. <code>OverheadPrayer.None</code> when no overhead prayer is active or
   pre-login. See <a href="../Prayer/">Prayer</a> for the <code>OverheadPrayer</code> enum
   (a Lua <strong>global</strong> enum — same values for players and NPCs; NPCs read
-  it via <a href="../Npc/"><code>Npc::overheadPrayer</code></a>).</li>
+  it via <a href="../Npc/"><code>srs.npc.overheadPrayer</code></a>).</li>
 <li><strong><code>questState</code></strong> — completion bucket for a quest (<code>NotStarted</code> /
   <code>InProgress</code> / <code>Finished</code>). Backed by the game's own quest-status
   clientscript, so it is correct for every quest with no hand-maintained
   thresholds. That script must run on the engine thread while your script
   runs on another thread, so the value is <strong>cached</strong> and refreshed
-  asynchronously: the first lookup of a given quest returns <code>QuestState::Unknown</code> and kicks
+  asynchronously: the first lookup of a given quest returns <code>QuestState.Unknown</code> and kicks
   off a refresh that lands <strong>within a tick or two on its own — no click
   needed</strong>, then stays live. Poll until <code>!= Unknown</code>, or just read it each
   tick. Subsequent reads are instant.</li>
@@ -2454,7 +2426,7 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   number a questing script wants. Thread-safe and instant (a plain var read,
   no clientscript). <code>0</code> before the quest is started; quest-specific value as
   it advances; <code>-1</code> for the handful of quests with no single tracked progress
-  var, or when <code>VarpSystem</code> isn't ready. Use <code>questState</code> for completion;
+  var, or when the value isn't readable yet. Use <code>questState</code> for completion;
   use this for "which step am I on".</li>
 </ul>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
@@ -2464,20 +2436,24 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
 <tr>
 <th>Field</th>
 <th>Type</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>x</code></td>
-<td>int32</td>
+<td>integer</td>
+<td>World X</td>
 </tr>
 <tr>
 <td><code>y</code></td>
-<td>int32</td>
+<td>integer</td>
+<td>World Y</td>
 </tr>
 <tr>
 <td><code>plane</code></td>
-<td>int32</td>
+<td>integer</td>
+<td>Plane / level</td>
 </tr>
 </tbody>
 </table>
@@ -2532,7 +2508,7 @@ tile also offers <code>(x, y[, plane])</code> overloads (e.g.
 <code>Slayer</code>, <code>Farming</code>, <code>Runecraft</code>, <code>Hunter</code>, <code>Construction</code>, <code>Sailing</code>.</p>
 <p>In Lua: <code>Skill.Hitpoints</code>, etc. (registered at Lua global scope, same as <code>CameraMode</code>).</p>
 <p><strong><code>Quest</code></strong> enum — every quest the engine tracks (209 generated
-enumerators, identical in C++ and Lua), value
+enumerators), value
 = stable index. Examples:
 <code>Quest.CooksAssistant</code>, <code>Quest.DragonSlayerI</code>, <code>Quest.MonkeyMadnessIi</code>,
 <code>Quest.RecipeForDisaster</code>, <code>Quest.DesertTreasureIiTheFallenEmpire</code>. Registered
@@ -2566,33 +2542,18 @@ at Lua global scope (same as <code>Skill</code>).</p>
 </table>
 <p>In Lua: <code>QuestState.Finished</code>, etc. (registered at Lua global scope).</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">auto</span><span class="w"> </span><span class="n">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">position</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Player</span><span class="o">::</span><span class="n">hitpoints</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Player</span><span class="o">::</span><span class="n">maxHitpoints</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">Food</span><span class="o">::</span><span class="n">eatBest</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Player</span><span class="o">::</span><span class="n">idleTicks</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&amp;&amp;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n">Player</span><span class="o">::</span><span class="n">overheadPrayer</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OverheadPrayer</span><span class="o">::</span><span class="n">None</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="c1">// idle and no protection up — do something</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;at %d, %d (plane %d)&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">pos</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">pos</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">pos</span><span class="p">.</span><span class="py">plane</span><span class="p">))</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">hitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">maxHitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">food</span><span class="p">.</span><span class="nf">eatBest</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">idleTicks</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">overheadPrayer</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">OverheadPrayer</span><span class="p">.</span><span class="py">None</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="c1">-- idle and no protection up — do something</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kr">end</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">questState</span><span class="p">(</span><span class="nv">Quest</span><span class="p">.</span><span class="py">CooksAssistant</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">QuestState</span><span class="p">.</span><span class="py">Finished</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;Cook&#39;s Assistant done&quot;</span><span class="p">)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">position</span><span class="p">()</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;at %d, %d (plane %d)&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">pos</span><span class="p">.</span><span class="py">x</span><span class="p">,</span><span class="w"> </span><span class="nv">pos</span><span class="p">.</span><span class="py">y</span><span class="p">,</span><span class="w"> </span><span class="nv">pos</span><span class="p">.</span><span class="py">plane</span><span class="p">))</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">hitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">maxHitpoints</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">food</span><span class="p">.</span><span class="nf">eatBest</span><span class="p">()</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kr">end</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">questState</span><span class="p">(</span><span class="nv">Quest</span><span class="p">.</span><span class="py">CooksAssistant</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">QuestState</span><span class="p">.</span><span class="py">Finished</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;Cook&#39;s Assistant done&quot;</span><span class="p">)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

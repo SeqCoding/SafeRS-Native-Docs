@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -814,6 +814,17 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#srsdefsnpctarget-id" class="md-nav__link">
@@ -2140,6 +2151,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#srsdefsnpctarget-id" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2179,14 +2201,33 @@
 
 
 <h1 id="defs">Defs<a class="headerlink" href="#defs" title="Permanent link">&para;</a></h1>
-<p><code>srs.defs</code> (Lua)</p>
+<p><code>srs.defs</code></p>
 <p>Read-only <strong>definition / cache metadata</strong> — "what <em>is</em> this thing" (static per-id data
 decoded from the game's type structs), as opposed to the live-entity finders
 (<a href="../Npc/"><code>srs.npc</code></a>, <a href="../GameObject/"><code>srs.gameobject</code></a>) that give you a specific
 on-screen instance's position / animation / HP. It covers the definition fields
 the client actually decodes.</p>
+<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NPC definition from a live target or an id</td>
+<td><code>srs.defs.npc(target \| id) → table</code></td>
+</tr>
+<tr>
+<td>Item definition by id</td>
+<td><code>srs.defs.item(id) → table</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="srsdefsnpctarget-id"><code>srs.defs.npc(target | id)</code><a class="headerlink" href="#srsdefsnpctarget-id" title="Permanent link">&para;</a></h2>
-<p>Resolve an NPC's <code>NpcType</code> metadata — <code>size</code> (tile footprint), <code>maxHp</code>, and the full
+<p>Resolve an NPC's definition metadata — <code>size</code> (tile footprint), <code>maxHp</code>, and the full
 <code>actions</code> list — that the finders don't carry on the entry. Pass <strong>either</strong> a live
 target from <code>srs.npc.*</code> / <code>entity.*</code>, <strong>or</strong> a raw NPC id. Returns a table:</p>
 <table>
@@ -2200,8 +2241,8 @@ target from <code>srs.npc.*</code> / <code>entity.*</code>, <strong>or</strong> 
 <tbody>
 <tr>
 <td><code>id</code></td>
-<td>int</td>
-<td><code>NpcType</code> definition id</td>
+<td>integer</td>
+<td>NPC definition id</td>
 </tr>
 <tr>
 <td><code>name</code></td>
@@ -2210,36 +2251,36 @@ target from <code>srs.npc.*</code> / <code>entity.*</code>, <strong>or</strong> 
 </tr>
 <tr>
 <td><code>size</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Tile-footprint side</td>
 </tr>
 <tr>
 <td><code>maxHp</code></td>
-<td>int</td>
+<td>integer</td>
 <td></td>
 </tr>
 <tr>
 <td><code>actions</code></td>
-<td>string[]</td>
+<td>table of strings</td>
 <td>Non-empty right-click options, in slot order</td>
 </tr>
 <tr>
 <td><code>valid</code></td>
-<td>bool</td>
-<td><code>false</code> if the <code>NpcType</code> couldn't be read</td>
+<td>boolean</td>
+<td><code>false</code> if the definition couldn't be read (e.g. the NPC despawned — then only <code>id</code> / <code>name</code> / <code>maxHp</code> are filled in)</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="admonition-title">Target vs id</p>
 <ul>
-<li><strong><code>srs.defs.npc(target)</code></strong> reads the <strong>live</strong> <code>NpcInstance</code> of an NPC currently
+<li><strong><code>srs.defs.npc(target)</code></strong> reads the <strong>live</strong> NPC currently
   in the scene — instant.</li>
-<li><strong><code>srs.defs.npc(id)</code></strong> resolves the <code>NpcType</code> straight from the cache
-  (<code>NpcTypeCacheLookup</code>), so it works for <strong>any id</strong>, including NPCs not on screen.
+<li><strong><code>srs.defs.npc(id)</code></strong> resolves the definition straight from the game's cache,
+  so it works for <strong>any id</strong>, including NPCs not on screen.
   It <strong>loads-on-miss</strong>, marshalled to the engine thread, so it can <strong>block up to
   ~3 s</strong> the first time an off-scene id is requested (instant once decoded) — call
-  it from <code>pulse</code> / <code>onTick</code>, never <code>onDraw</code>, and prefer the target form when you
+  it from <code>pulse</code> / <code>onTick</code>, never <code>draw</code>, and prefer the target form when you
   already have a live NPC.</li>
 </ul>
 <p>Combat level is <strong>not</strong> part of this table — read <code>.combatLevel</code> from the
@@ -2265,7 +2306,7 @@ target from <code>srs.npc.*</code> / <code>entity.*</code>, <strong>or</strong> 
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kr">end</span>
 </span></code></pre></div>
 <h2 id="srsdefsitemid"><code>srs.defs.item(id)</code><a class="headerlink" href="#srsdefsitemid" title="Permanent link">&para;</a></h2>
-<p>Resolve an item's full <code>ItemType</code> metadata <strong>by id</strong>. Works for any id, including off-screen items the renderer never touches.
+<p>Resolve an item's full definition metadata <strong>by id</strong>. Works for any id, including off-screen items the renderer never touches.
 Returns a table:</p>
 <table>
 <thead>
@@ -2278,7 +2319,7 @@ Returns a table:</p>
 <tbody>
 <tr>
 <td><code>id</code></td>
-<td>int</td>
+<td>integer</td>
 <td>The item id you passed</td>
 </tr>
 <tr>
@@ -2293,47 +2334,47 @@ Returns a table:</p>
 </tr>
 <tr>
 <td><code>stackable</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td>Stacks into one inventory slot</td>
 </tr>
 <tr>
 <td><code>tradeable</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td>GE-tradeable</td>
 </tr>
 <tr>
 <td><code>equipable</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td>Has an equipment slot</td>
 </tr>
 <tr>
 <td><code>equipSlot</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Equipment slot index; <code>-1</code> if not equipable</td>
 </tr>
 <tr>
 <td><code>value</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Shop/GE base value (high alch ≈ <code>value * 0.6</code>)</td>
 </tr>
 <tr>
 <td><code>weight</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Engine weight units</td>
 </tr>
 <tr>
 <td><code>notedId</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Noted↔unnoted linked id (the "cert" id)</td>
 </tr>
 <tr>
 <td><code>placeholderId</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Bank placeholder linked id</td>
 </tr>
 <tr>
 <td><code>valid</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td><code>false</code> only when the id can't be resolved at all</td>
 </tr>
 </tbody>
@@ -2341,10 +2382,10 @@ Returns a table:</p>
 <div class="admonition warning">
 <p class="admonition-title">May block briefly on a cache miss</p>
 <p>Resolution uses the <strong>same</strong> path as <a href="../Game/"><code>srs.game.itemName</code></a>: a live
-<code>ItemType</code>-cache read (instant) when the id is already decoded — inventory, bank,
+item-cache read (instant) when the id is already decoded — inventory, bank,
 equipment, hovered ground — otherwise a load-on-demand decode marshalled to the
 engine thread that <strong>blocks up to ~3 s</strong>. Call it from <code>pulse</code> / <code>onTick</code>, never
-from <code>onDraw</code>. For hot loops over known ids, resolve once and cache the table.</p>
+from <code>draw</code>. For hot loops over known ids, resolve once and cache the table.</p>
 </div>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">def</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">defs</span><span class="p">.</span><span class="nf">item</span><span class="p">(</span><span class="mi">12791</span><span class="p">)</span><span class="w">          </span><span class="c1">-- Rune pouch</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">def</span><span class="p">.</span><span class="py">valid</span><span class="w"> </span><span class="kr">then</span>
@@ -2357,7 +2398,7 @@ from <code>onDraw</code>. For hot loops over known ids, resolve once and cache t
 <div class="admonition info">
 <p class="admonition-title">Loc definitions</p>
 <p>Loc/object definitions are handled at the source rather than via a separate
-<code>srs.defs.loc</code>: <code>lookupLocType</code> resolves the <strong>multiloc <code>transform</code></strong>, so a
+<code>srs.defs.loc</code>: the object lookup resolves the <strong>multiloc <code>transform</code></strong>, so a
 <code>_PARENT</code> loc (GOTR portals, staged doors/banks) reports its varbit-selected
 child's real name + actions through the existing
 <a href="../Object/"><code>object.lookup</code></a> / <a href="../GameObject/"><code>GameObjectEntry.actions</code></a> /

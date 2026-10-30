@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2223,13 +2223,11 @@
 
 
 <h1 id="object">Object<a class="headerlink" href="#object" title="Permanent link">&para;</a></h1>
-<p><code>object.*</code> (Lua only — global table)</p>
+<p><code>object</code> (global table)</p>
 <p>Live query over scene objects (trees, doors, banks, stairs, etc. —
 "Locs" in OSRS terminology). Distinct from
 <a href="../Entity/"><code>entity</code></a> (NPCs / players) and
 <a href="../GroundItem/"><code>grounditem</code></a> (lootable items on the floor).</p>
-<p>There is no public C++ header — plugins go through <code>ObjectQuery</code>
-directly.</p>
 <div class="admonition note">
 <p class="admonition-title">Global table</p>
 <p>Lives at Lua global scope, not under <code>srs.*</code> — <code>object.nearest()</code>,
@@ -2286,8 +2284,7 @@ a built-in <code>interact()</code> helper.</p>
 <p><code>object.all()</code> is <strong>heavy</strong> — tens of thousands of rows in a typical
 city. Prefer <code>byId</code> / <code>byName</code> / <code>nearest*</code>, or filter yourself.</p>
 <p>Name lookups are case- and whitespace-insensitive (<code>"Bank booth"</code>,
-<code>"bankbooth"</code>, <code>"BANK_BOOTH"</code> all match the same target). See
-<code>IdLookup::normalize</code> for exact normalization rules.</p>
+<code>"bankbooth"</code>, <code>"BANK_BOOTH"</code> all match the same target).</p>
 <h2 id="loctypedata">LocTypeData<a class="headerlink" href="#loctypedata" title="Permanent link">&para;</a></h2>
 <p>Returned by <code>object.lookup(id)</code>. Read-only.</p>
 <table>
@@ -2301,12 +2298,12 @@ city. Prefer <code>byId</code> / <code>byName</code> / <code>nearest*</code>, or
 <tbody>
 <tr>
 <td><code>valid</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td>False on cache miss (decoder hasn't touched this id)</td>
 </tr>
 <tr>
 <td><code>active</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td>True if the LocType declares any menu options</td>
 </tr>
 <tr>
@@ -2316,8 +2313,8 @@ city. Prefer <code>byId</code> / <code>byName</code> / <code>nearest*</code>, or
 </tr>
 <tr>
 <td><code>address</code></td>
-<td>int (raw ptr)</td>
-<td>Internal LocType* — for RE / debug only</td>
+<td>integer</td>
+<td>Raw internal address of the LocType; not useful to scripts</td>
 </tr>
 </tbody>
 </table>

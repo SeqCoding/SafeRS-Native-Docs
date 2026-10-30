@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2401,6 +2401,44 @@ below) — e.g. only a specific skill's XP, or a specific varbit.</p>
 <p><code>srs.events.EVENTS</code> exposes the valid names as constants, e.g.
 <code>srs.events.EVENTS.XP_GAINED == "xpGained"</code>. Every payload table also carries an
 <code>event</code> field (the name) so one handler can dispatch on multiple subscriptions.</p>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Event name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>XP_GAINED</code></td>
+<td><code>"xpGained"</code></td>
+</tr>
+<tr>
+<td><code>LEVEL_UP</code></td>
+<td><code>"levelUp"</code></td>
+</tr>
+<tr>
+<td><code>INVENTORY_CHANGED</code></td>
+<td><code>"inventoryChanged"</code></td>
+</tr>
+<tr>
+<td><code>VARBIT_CHANGED</code></td>
+<td><code>"varbitChanged"</code></td>
+</tr>
+<tr>
+<td><code>NPC_SPAWNED</code></td>
+<td><code>"npcSpawned"</code></td>
+</tr>
+<tr>
+<td><code>NPC_DESPAWNED</code></td>
+<td><code>"npcDespawned"</code></td>
+</tr>
+<tr>
+<td><code>HITSPLAT</code></td>
+<td><code>"hitsplat"</code></td>
+</tr>
+</tbody>
+</table>
 <div class="admonition info">
 <p class="admonition-title">Catalog</p>
 <p>Every event listed below is <strong>live</strong>. <code>srs.events.EVENTS</code> holds the name
@@ -2447,7 +2485,7 @@ index (see <a href="../Globals/"><code>Skill</code></a>).</p>
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td><code>GetTickCount64()</code> when the event was observed</td>
+<td>Milliseconds when the event was observed</td>
 </tr>
 </tbody>
 </table>
@@ -2486,7 +2524,7 @@ optional <code>id</code> filter is the skill index.</p>
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td><code>GetTickCount64()</code> when the event was observed</td>
+<td>Milliseconds when the event was observed</td>
 </tr>
 </tbody>
 </table>
@@ -2539,7 +2577,7 @@ one event per changed item id per tick, not per slot). Optional <code>id</code> 
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td><code>GetTickCount64()</code> when the event was observed</td>
+<td>Milliseconds when the event was observed</td>
 </tr>
 </tbody>
 </table>

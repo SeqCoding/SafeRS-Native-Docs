@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2423,12 +2423,10 @@
 
 
 <h1 id="script-lifecycle">Script lifecycle<a class="headerlink" href="#script-lifecycle" title="Permanent link">&para;</a></h1>
-<p><code>script.*</code> / <code>log.*</code> / <code>srs.wait</code> (Lua — global tables)</p>
+<p><code>script.*</code> / <code>log.*</code> / <code>srs.wait</code> (global tables)</p>
 <p>Everything a Lua script uses to hook into the engine: lifecycle
 callbacks, script metadata + settings, logging, tick suspension, and
-the sandboxed module loader. There is no <code>srs::api</code> facade for this
-surface — C++ plugins implement the <code>IScript</code> virtuals
-(<code>onLoad</code> / <code>onTick</code> / <code>pulse</code> / <code>onDraw</code>) directly instead.</p>
+the sandboxed module loader.</p>
 <h2 id="lifecycle-callbacks">Lifecycle callbacks<a class="headerlink" href="#lifecycle-callbacks" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2587,7 +2585,7 @@ The user can start the script again from its settings panel.</p>
 <tr>
 <td>Settings-changed callback</td>
 <td><code>script.onSettingsChanged(fn(settingsTable))</code></td>
-<td>Top-level only — silently no-ops from inside a callback. Fires when the user edits settings in the client UI</td>
+<td>Top-level only — silently no-ops from inside a callback. Fires when the user edits settings in the client UI, and once after the schema defaults are merged in</td>
 </tr>
 <tr>
 <td>Settings button handler</td>
@@ -2649,14 +2647,6 @@ characters keep independent configs.</p>
 </tr>
 </tbody>
 </table>
-<div class="admonition tip">
-<p class="admonition-title">C++ plugins have the same surface</p>
-<p>The Lua <code>script.onSettingsButton</code> / <code>script.setSetting</code> map to the
-<code>IScript::onSettingsButton(action, ctx)</code> virtual and the
-<a href="../PluginSettings/"><code>srs::api::PluginSettings::setValue(key, value)</code></a> free
-function. The schema shape (row kinds, per-character storage, worker-thread
-dispatch) is identical.</p>
-</div>
 <h3 id="gear-setup-example">Gear-setup example<a class="headerlink" href="#gear-setup-example" title="Permanent link">&para;</a></h3>
 <p>A <code>button</code> row + a <code>text</code> row let a script pull the currently worn gear
 into a textbox:</p>

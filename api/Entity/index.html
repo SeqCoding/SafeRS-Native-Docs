@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2235,12 +2235,10 @@
 
 
 <h1 id="entity">Entity<a class="headerlink" href="#entity" title="Permanent link">&para;</a></h1>
-<p><code>entity.*</code> (Lua only — global table)</p>
+<p><code>entity.*</code> (global table)</p>
 <p>Live query over NPCs and players in the loaded scene. Returns
-<code>ActionTarget</code> values you can pass into <a href="../Npc/"><code>srs::api::Npc</code></a> or
+<code>ActionTarget</code> values you can pass into <a href="../Npc/"><code>srs.npc</code></a> or
 call action shortcuts on directly (<code>:attack()</code>, <code>:talkTo()</code>).</p>
-<p>There is no public C++ header — plugins go through <code>EntityQuery</code> and
-<code>ActionTarget</code> (internal-only headers).</p>
 <div class="admonition note">
 <p class="admonition-title">Global table</p>
 <p>Lives at Lua global scope, not under <code>srs.*</code> — <code>entity.npcs()</code>,
@@ -2350,62 +2348,62 @@ entity list.</p>
 <tbody>
 <tr>
 <td><code>kind</code></td>
-<td>int</td>
+<td>integer</td>
 <td>See <code>TargetKind</code> table below</td>
 </tr>
 <tr>
 <td><code>tileX</code> / <code>tileY</code> / <code>tileZ</code></td>
-<td>int</td>
+<td>integer</td>
 <td>World tile coords</td>
 </tr>
 <tr>
 <td><code>plane</code></td>
-<td>int</td>
+<td>integer</td>
 <td>0–3</td>
 </tr>
 <tr>
 <td><code>spawnIndex</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Server slot (NPC) or render slot (Player)</td>
 </tr>
 <tr>
 <td><code>entityId</code></td>
-<td>int</td>
+<td>integer</td>
 <td>NpcType id / item id / LocType id by kind</td>
 </tr>
 <tr>
 <td><code>name</code></td>
 <td>string</td>
-<td>Display name (UTF-8)</td>
+<td>Display name</td>
 </tr>
 <tr>
 <td><code>currentHp</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Current HP — <code>-1</code> when no head-bar is visible (server pushes ratio for ~6 s after a hit, then it goes unknowable)</td>
 </tr>
 <tr>
 <td><code>maxHp</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Inferred from health-bar ratio + NpcType</td>
 </tr>
 <tr>
 <td><code>interactTarget</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Index of the actor this target is interacting with, within the kind given by <code>interactTargetKind</code> (<code>-1</code> if none)</td>
 </tr>
 <tr>
 <td><code>interactTargetKind</code></td>
-<td>int</td>
+<td>integer</td>
 <td><code>0</code> none, <code>1</code> NPC (<code>interactTarget</code> = NPC <code>spawnIndex</code>), <code>2</code> player (= player <code>spawnIndex</code>), <code>3</code> world entity. Always check it before comparing <code>interactTarget</code></td>
 </tr>
 <tr>
 <td><code>animationId</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Active anim id (<code>-1</code> if idle)</td>
 </tr>
 <tr>
 <td><code>modelMagnitude</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Engine getXYZMag half-extent of the model (<code>0</code> = unknown)</td>
 </tr>
 <tr>
@@ -2415,17 +2413,17 @@ entity list.</p>
 </tr>
 <tr>
 <td><code>overheadCycles</code></td>
-<td>int</td>
-<td>Client ticks left before <code>overheadText</code> clears (<code>0</code> = none); RuneLite <code>getOverheadCycle()</code></td>
+<td>integer</td>
+<td>Client ticks left before <code>overheadText</code> clears (<code>0</code> = none)</td>
 </tr>
 <tr>
 <td><code>orientation</code></td>
-<td>int</td>
-<td>Facing angle, 0–2047, clockwise from south: 0 = S, 512 = W, 1024 = N, 1536 = E (RuneLite <code>Direction</code> values); <code>-1</code> = unknown. NPCs and players. This is the actor's <em>target</em> facing (RuneLite <code>Actor.getOrientation()</code>) — the rendered model catches up within a few ticks</td>
+<td>integer</td>
+<td>Facing angle, 0–2047, clockwise from south: 0 = S, 512 = W, 1024 = N, 1536 = E; <code>-1</code> = unknown. NPCs and players. This is the actor's <em>target</em> facing — the rendered model catches up within a few ticks</td>
 </tr>
 <tr>
 <td><code>combatLevel</code></td>
-<td>int</td>
+<td>integer</td>
 <td>Combat level; <code>-1</code> = unknown. NPCs and players. NPCs that show no level on the right-click (bankers, pets) read <code>-1</code></td>
 </tr>
 </tbody>
@@ -2484,7 +2482,7 @@ entity list.</p>
 <tr>
 <td>Generic action</td>
 <td><code>target:interact(action) → bool</code></td>
-<td>Routes through <code>srs::api::Npc::interact</code></td>
+<td>Same path as <code>srs.npc.interact</code>; <code>action</code> is any menu-option string</td>
 </tr>
 <tr>
 <td>Attack shortcut</td>
@@ -2504,7 +2502,17 @@ entity list.</p>
 <tr>
 <td>Overhead prayer</td>
 <td><code>target:overheadPrayer() → OverheadPrayer</code></td>
-<td>Protection-prayer headicon via <code>srs::api::Npc::overheadPrayer</code>; returns the global <code>OverheadPrayer</code> enum (<code>None</code> / <code>Melee</code> / <code>Missiles</code> / <code>Magic</code> / <code>Retribution</code> / <code>Smite</code> / <code>Redemption</code>)</td>
+<td>Protection-prayer headicon the NPC is showing (e.g. boss phases); returns the global <code>OverheadPrayer</code> enum (<code>None</code> / <code>Melee</code> / <code>Missiles</code> / <code>Magic</code> / <code>Retribution</code> / <code>Smite</code> / <code>Redemption</code>)</td>
+</tr>
+<tr>
+<td>Spot animations</td>
+<td><code>target:spotAnims() → table</code></td>
+<td>Array of <code>{slot, id, height, startCycle, delay, active}</code> for the graphics playing on the actor now (empty table when none). Details on <a href="../Npc/">Npc</a></td>
+</tr>
+<tr>
+<td>Has a spot animation</td>
+<td><code>target:hasSpotAnim(id) → bool</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>

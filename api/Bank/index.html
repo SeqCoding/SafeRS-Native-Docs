@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -648,17 +648,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#constants-c" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Constants (C++)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#state" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -795,6 +784,17 @@
     <span class="md-ellipsis">
       
         Coal bag
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#potion-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Potion storage
       
     </span>
   </a>
@@ -2305,17 +2305,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#constants-c" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Constants (C++)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#state" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2459,6 +2448,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#potion-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Potion storage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#withdraw-quantity-preset" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2509,60 +2509,29 @@
 
 
 <h1 id="bank">Bank<a class="headerlink" href="#bank" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Bank</code> / <code>srs.bank</code></p>
+<p><code>srs.bank</code></p>
 <p>Full bank workflow: navigation to named banks, opening / closing, tab
 switching, per-item withdraw + deposit, bulk deposit, scrolling, and the
 "1 / 5 / 10 / X / All" quantity preset.</p>
-<h2 id="constants-c">Constants (C++)<a class="headerlink" href="#constants-c" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Constant</th>
-<th>Value</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Bank::kBankContainerId</code></td>
-<td>95</td>
-<td>Bank item container id</td>
-</tr>
-<tr>
-<td><code>Bank::kBankGroup</code></td>
-<td>12</td>
-<td>Bankmain widget group</td>
-</tr>
-<tr>
-<td><code>Bank::kBankPinGroup</code></td>
-<td>213</td>
-<td>Bank PIN keypad widget group</td>
-</tr>
-</tbody>
-</table>
 <h2 id="state">State<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Is bank open</td>
-<td><code>Bank::isOpen(ctx) → bool</code></td>
 <td><code>srs.bank.isOpen() → bool</code></td>
 </tr>
 <tr>
 <td>Is bank PIN open</td>
-<td><code>Bank::isPinOpen(ctx) → bool</code></td>
 <td><code>srs.bank.isPinOpen() → bool</code></td>
 </tr>
 <tr>
 <td>Is a banker NPC nearby</td>
-<td><code>Bank::isBankerNearby(ctx) → bool</code></td>
 <td><code>srs.bank.isBankerNearby() → bool</code></td>
 </tr>
 </tbody>
@@ -2578,19 +2547,16 @@ the keypad (group 213), and wipes it again before returning.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Auto-enter the PIN</td>
-<td><code>Bank::handleBankPin(ctx) → bool</code></td>
 <td><code>srs.bank.handleBankPin() → bool</code></td>
 </tr>
 <tr>
 <td>Has a PIN been bound</td>
-<td><code>Bank::hasBoundBankPin() → bool</code></td>
 <td><code>srs.bank.hasBoundBankPin() → bool</code></td>
 </tr>
 </tbody>
@@ -2650,80 +2616,66 @@ enter a 4-digit PIN in the "Bank PIN" field, and save. The PIN is
 encrypted alongside the password and only the bound game tab can read it
 back (DPAPI user-scope + per-binary entropy salt).</p>
 <h2 id="named-locations-walking">Named locations + walking<a class="headerlink" href="#named-locations-walking" title="Permanent link">&para;</a></h2>
-<p>Bank locations are exposed as <code>Bank::BankLocation</code> (enum) / Lua int
-constants on <code>srs.bank.*</code>. Tile picks land on a banker booth row so
-<code>Bank::open</code>'s ~6-tile NPC scan succeeds on arrival.</p>
+<p>Bank locations are exposed as integer constants on <code>srs.bank.*</code>. Tile picks
+land on a banker booth row so <code>srs.bank.open()</code>'s ~6-tile NPC scan succeeds
+on arrival.</p>
 <table>
 <thead>
 <tr>
-<th>C++ enum value</th>
 <th>Lua const</th>
 <th>Tile (x, y, plane)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>BankLocation::VarrockEast</code></td>
 <td><code>srs.bank.VarrockEast</code></td>
 <td>(3253, 3420, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::VarrockWest</code></td>
 <td><code>srs.bank.VarrockWest</code></td>
 <td>(3185, 3437, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::GrandExchange</code></td>
 <td><code>srs.bank.GrandExchange</code></td>
 <td>(3164, 3489, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::Edgeville</code></td>
 <td><code>srs.bank.Edgeville</code></td>
 <td>(3094, 3491, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::Draynor</code></td>
 <td><code>srs.bank.Draynor</code></td>
 <td>(3092, 3243, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::Falador_East</code></td>
 <td><code>srs.bank.Falador_East</code></td>
 <td>(3013, 3355, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::Falador_West</code></td>
 <td><code>srs.bank.Falador_West</code></td>
 <td>(2946, 3368, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::SeersVillage</code></td>
 <td><code>srs.bank.SeersVillage</code></td>
 <td>(2725, 3493, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::Camelot</code></td>
 <td><code>srs.bank.Camelot</code></td>
 <td>(2725, 3493, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::Catherby</code></td>
 <td><code>srs.bank.Catherby</code></td>
 <td>(2808, 3441, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::ArdougneNorth</code></td>
 <td><code>srs.bank.ArdougneNorth</code></td>
 <td>(2616, 3332, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::ArdougneSouth</code></td>
 <td><code>srs.bank.ArdougneSouth</code></td>
 <td>(2655, 3283, 0)</td>
 </tr>
 <tr>
-<td><code>BankLocation::LumbridgeUpstairs</code></td>
 <td><code>srs.bank.LumbridgeUpstairs</code></td>
 <td>(3208, 3220, 2)</td>
 </tr>
@@ -2739,30 +2691,25 @@ an alias that routes to the Seers' Village bank booth row.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Lookup info</td>
-<td><code>Bank::info(loc) → BankInfo</code></td>
 <td><code>srs.bank.info(loc) → {x, y, plane, displayName}</code></td>
 </tr>
 <tr>
 <td>Walk to bank</td>
-<td><code>Bank::walkTo(ctx, loc) → bool</code></td>
 <td><code>srs.bank.walkTo(loc) → bool</code></td>
 </tr>
 <tr>
 <td>Nearest bank</td>
-<td><code>Bank::nearestBank(ctx) → optional&lt;BankLocation&gt;</code></td>
 <td><code>srs.bank.nearestBank() → int or nil</code></td>
 </tr>
 </tbody>
 </table>
-<p><strong><code>BankInfo</code></strong> (returned by <code>Bank::info</code>; Lua receives a table with the
-same fields):</p>
+<p><strong><code>BankInfo</code></strong> (the table returned by <code>srs.bank.info</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2774,12 +2721,12 @@ same fields):</p>
 <tbody>
 <tr>
 <td><code>x</code> / <code>y</code> / <code>plane</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Bank booth-row tile</td>
 </tr>
 <tr>
 <td><code>displayName</code></td>
-<td>const char*</td>
+<td>string</td>
 <td>Human-readable location name</td>
 </tr>
 </tbody>
@@ -2789,7 +2736,7 @@ etc.) and returns the tile + name behind it — handy for feeding a
 location's tile into <code>srs.walk.to</code> yourself or logging where
 <code>nearestBank()</code> chose.</p>
 <p><code>walkTo</code> returns <code>true</code> once the player is within 6 tiles (ready for
-<code>Bank::open</code>). Call once per tick — it handles the "already at" /
+<code>srs.bank.open()</code>). Call once per tick — it handles the "already at" /
 "already walking" cases internally.</p>
 <p><code>nearestBank</code> is chebyshev distance over the enum tiles. It does <strong>not</strong>
 filter members-only / quest-locked banks.</p>
@@ -2798,53 +2745,45 @@ filter members-only / quest-locked banks.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Open via nearest banker</td>
-<td><code>Bank::open(ctx) → bool</code></td>
 <td><code>srs.bank.open() → bool</code></td>
 </tr>
 <tr>
 <td>Close (X-button)</td>
-<td><code>Bank::close(ctx) → bool</code></td>
 <td><code>srs.bank.close() → bool</code></td>
 </tr>
 </tbody>
 </table>
 <p><code>open</code> matches bankers by name list (Banker / Banker Tutor / Sigli the
-Huntsman / Astley / Felkrash) and routes through <code>Interact::perform</code> on
-the nearest match. Returns false if no banker is in scene.</p>
+Huntsman / Astley / Felkrash) and interacts with the nearest match. Returns false if no banker is in scene.</p>
 <h2 id="tabs">Tabs<a class="headerlink" href="#tabs" title="Permanent link">&para;</a></h2>
 <p>The bank has 10 tabs: 0 = "All Items" (∞ icon), 1..9 = user-configurable.
 Current tab lives in varbit <code>BANK_CURRENTTAB</code> (4150). Most scrolling /
-per-item flows operate on the All Items view — <code>Bank::scrollToSlot</code>
+per-item flows operate on the All Items view — <code>srs.bank.scrollToSlot</code>
 switches to it (and asks you to call again) if you're on another tab.</p>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Current tab</td>
-<td><code>Bank::currentTab(ctx) → int (0..9)</code></td>
 <td><code>srs.bank.currentTab() → int</code></td>
 </tr>
 <tr>
 <td>Open a specific tab</td>
-<td><code>Bank::openTab(ctx, idx) → bool</code></td>
 <td><code>srs.bank.openTab(idx) → bool</code></td>
 </tr>
 <tr>
 <td>Open All Items (∞)</td>
-<td><code>Bank::openMainTab(ctx) → bool</code></td>
 <td><code>srs.bank.openMainTab() → bool</code></td>
 </tr>
 </tbody>
@@ -2856,34 +2795,28 @@ call returns <code>false</code> if the bank isn't open or the index is out of ra
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>All slots</td>
-<td><code>Bank::all(ctx) → vector&lt;InventoryItem&gt;</code></td>
 <td><code>srs.bank.all() → table (1-based list of items)</code></td>
 </tr>
 <tr>
 <td>Contains by id</td>
-<td><code>Bank::contains(ctx, id) → bool</code></td>
 <td><code>srs.bank.contains(id) → bool</code></td>
 </tr>
 <tr>
 <td>Contains by name</td>
-<td><code>Bank::contains(ctx, name) → bool</code></td>
 <td><code>srs.bank.contains(name) → bool</code></td>
 </tr>
 <tr>
 <td>Count by id</td>
-<td><code>Bank::count(ctx, id) → int32</code></td>
 <td><code>srs.bank.count(id) → int</code></td>
 </tr>
 <tr>
 <td>Count by name</td>
-<td><code>Bank::count(ctx, name) → int32</code></td>
 <td><code>srs.bank.count(name) → int</code></td>
 </tr>
 </tbody>
@@ -2891,7 +2824,7 @@ call returns <code>false</code> if the bank isn't open or the index is out of ra
 <p>Name lookups match the item's in-game display name (case- and whitespace-insensitive substring). <code>contains("prayer potion")</code> matches all 4 dose variants because every dose string contains it.</p>
 <div class="admonition note">
 <p class="admonition-title">Bank slot index</p>
-<p>The <code>slot</code> field on items returned from <code>Bank::all</code> is the bank
+<p>The <code>slot</code> field on items returned from <code>srs.bank.all()</code> is the bank
 container index (0..hundreds), <strong>not</strong> a backpack 0..27 index. The
 container is laid out in tab order — slots <code>[0..N1-1]</code> for tab 1,
 then <code>[N1..N1+N2-1]</code> for tab 2, ..., then untabbed (tab 0) at the
@@ -2956,29 +2889,24 @@ reflected. Treat it as a planning hint, not ground truth — re-open the bank
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Scroll a slot into view</td>
-<td><code>Bank::scrollToSlot(ctx, slotIndex) → bool</code></td>
 <td><code>srs.bank.scrollToSlot(slot) → bool</code></td>
 </tr>
 <tr>
 <td>Mouse-wheel notches</td>
-<td><code>Bank::scrollWheel(ctx, notches) → bool</code></td>
 <td><code>srs.bank.scrollWheel(n) → bool</code></td>
 </tr>
 <tr>
 <td>Raw widget scrollY read</td>
-<td>—</td>
 <td><code>srs.widget.scrollY(g, c) → int or nil</code></td>
 </tr>
 <tr>
 <td>Raw widget scrollY write</td>
-<td>—</td>
 <td><code>srs.widget.setScrollY(g, c, y) → bool</code></td>
 </tr>
 </tbody>
@@ -2991,38 +2919,33 @@ tab switch and returns <code>false</code> — call it again next tick.</p>
 <p><code>scrollWheel</code> synthesizes WM_MOUSEWHEEL events over the bank center —
 positive notches scroll DOWN, negative UP. Blocks ~16 ms per notch.</p>
 <h2 id="per-item-withdraw">Per-item withdraw<a class="headerlink" href="#per-item-withdraw" title="Permanent link">&para;</a></h2>
-<p>All variants route a CC_OP (slot 57) packet at widget <code>(12, 12)</code> —
-Bankmain.ITEMS — with <code>subSlot = bank slot index</code>, <code>itemId</code> from the
-container at that slot, and the menu identifier per quantity. The
+<p>All variants click the bank item at widget <code>(12, 12)</code> (the bank's item
+grid), using the item's slot in the bank container and the menu op for the
+requested quantity. The
 caller picks the item by id or by name (case-insensitive partial
 match).</p>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Withdraw 1</td>
-<td><code>Bank::withdrawOne(ctx, id\|name) → bool</code></td>
 <td><code>srs.bank.withdrawOne(id\|name) → bool</code></td>
 </tr>
 <tr>
 <td>Withdraw N</td>
-<td><code>Bank::withdrawX(ctx, id\|name, amount) → bool</code></td>
 <td><code>srs.bank.withdrawX(id\|name, amount) → bool</code></td>
 </tr>
 <tr>
 <td>Withdraw all</td>
-<td><code>Bank::withdrawAll(ctx, id\|name) → bool</code></td>
 <td><code>srs.bank.withdrawAll(id\|name) → bool</code></td>
 </tr>
 <tr>
 <td>Withdraw all-but-one</td>
-<td><code>Bank::withdrawAllButOne(ctx, id\|name) → bool</code></td>
 <td><code>srs.bank.withdrawAllButOne(id\|name) → bool</code></td>
 </tr>
 </tbody>
@@ -3041,37 +2964,32 @@ inventory is full, except <code>withdrawAllButOne</code>, which returns <code>tr
 case.</p>
 <h2 id="per-item-deposit">Per-item deposit<a class="headerlink" href="#per-item-deposit" title="Permanent link">&para;</a></h2>
 <p>The deposit-side inventory inside the bank window is widget <code>(15, 3)</code>
-(Bankside.ITEMS). Clicks route as CC_OP (slot 57) at that widget with
-<code>subSlot = backpack slot (0..27)</code> and <code>itemId</code> from the backpack cache. The
+(the backpack shown beside the bank). Clicks target that widget with the
+backpack slot (0..27) and the item id in that slot. The
 deposit-side op ordering differs from the withdraw side: explicit
 Deposit-1 / 5 / 10 / X / All ops (identifiers 3 / 4 / 5 / 7 / 8).</p>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Deposit all except (by id)</td>
-<td><code>Bank::depositAllExcept(ctx, vector&lt;int32_t&gt;) → bool</code></td>
 <td><code>srs.bank.depositAllExcept({ids...}) → bool</code></td>
 </tr>
 <tr>
 <td>Deposit all except (by name)</td>
-<td><code>Bank::depositAllExcept(ctx, vector&lt;string&gt;) → bool</code></td>
 <td><code>srs.bank.depositAllExcept({"names"...}) → bool</code></td>
 </tr>
 <tr>
 <td>Deposit item / N</td>
-<td><code>Bank::deposit(ctx, id\|name, amount) → bool</code></td>
 <td><code>srs.bank.deposit(id\|name, amount) → bool</code></td>
 </tr>
 <tr>
 <td>Deposit whole stack</td>
-<td><code>Bank::depositAll(ctx, id\|name) → bool</code></td>
 <td><code>srs.bank.depositAll(id\|name) → bool</code></td>
 </tr>
 </tbody>
@@ -3091,19 +3009,16 @@ only kept items remain, at which point it returns <code>true</code>.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Read note mode</td>
-<td><code>Bank::isNoteMode(ctx) → bool</code></td>
 <td><code>srs.bank.isNoteMode() → bool</code></td>
 </tr>
 <tr>
 <td>Set note mode</td>
-<td><code>Bank::setNoteMode(ctx, on) → bool</code></td>
 <td><code>srs.bank.setNoteMode(on) → bool</code></td>
 </tr>
 </tbody>
@@ -3116,24 +3031,20 @@ from the requested one, so it's safe to call every tick.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Deposit whole inventory</td>
-<td><code>Bank::depositInventory(ctx) → bool</code></td>
 <td><code>srs.bank.depositInventory() → bool</code></td>
 </tr>
 <tr>
 <td>Deposit worn equipment</td>
-<td><code>Bank::depositEquipment(ctx) → bool</code></td>
 <td><code>srs.bank.depositEquipment() → bool</code></td>
 </tr>
 <tr>
 <td>Deposit looting bag</td>
-<td><code>Bank::depositLootingBag(ctx) → bool</code></td>
 <td><code>srs.bank.depositLootingBag() → bool</code></td>
 </tr>
 </tbody>
@@ -3143,14 +3054,12 @@ from the requested one, so it's safe to call every tick.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Fill coal bag</td>
-<td><code>Bank::fillCoalBag(ctx) → bool</code></td>
 <td><code>srs.bank.fillCoalBag() → bool</code></td>
 </tr>
 </tbody>
@@ -3158,9 +3067,106 @@ from the requested one, so it's safe to call every tick.</p>
 <p><code>fillCoalBag</code> fills the coal bag from the open bank via the bank-contextual
 "Fill" op. Returns <code>false</code> if
 the bank is closed or no coal bag is held. The empty half lives on
-<a href="../Inventory/">Inventory</a> as <code>Inventory::emptyCoalBag</code> /
-<code>srs.inventory.emptyCoalBag()</code> (works on the main inventory, no bank
+<a href="../Inventory/">Inventory</a> as <code>srs.inventory.emptyCoalBag()</code> (works on the main inventory, no bank
 needed).</p>
+<h2 id="potion-storage">Potion storage<a class="headerlink" href="#potion-storage" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Panel showing</td>
+<td><code>srs.bank.potionStore.isOpen() → bool</code></td>
+</tr>
+<tr>
+<td>Open / close panel</td>
+<td><code>srs.bank.potionStore.open()</code> / <code>close() → bool</code></td>
+</tr>
+<tr>
+<td>Withdraw n potions</td>
+<td><code>srs.bank.potionStore.withdraw(idOrName, n) → bool</code></td>
+</tr>
+<tr>
+<td>Withdraw all / all but one</td>
+<td><code>srs.bank.potionStore.withdrawAll(idOrName)</code> / <code>withdrawAllButOne(idOrName)</code></td>
+</tr>
+<tr>
+<td>Set dose size (1..4)</td>
+<td><code>srs.bank.potionStore.setWithdrawDoses(idOrName, doses) → bool</code></td>
+</tr>
+<tr>
+<td>Current dose size</td>
+<td><code>srs.bank.potionStore.getWithdrawDoses(idOrName) → int</code> (0 = not stored / not loaded)</td>
+</tr>
+<tr>
+<td>Deposit n / all</td>
+<td><code>srs.bank.potionStore.deposit(idOrName, n)</code> / <code>depositAll(idOrName)</code></td>
+</tr>
+<tr>
+<td>Contents loaded</td>
+<td><code>srs.bank.potionStore.isLoaded() → bool</code></td>
+</tr>
+<tr>
+<td>Stored potions</td>
+<td><code>srs.bank.potionStore.all() → list of StoredPotion</code></td>
+</tr>
+<tr>
+<td>Doses of a potion</td>
+<td><code>srs.bank.potionStore.doses(idOrName) → int</code></td>
+</tr>
+<tr>
+<td>Potions at current dose size</td>
+<td><code>srs.bank.potionStore.count(idOrName) → int</code></td>
+</tr>
+<tr>
+<td>Has at least one potion</td>
+<td><code>srs.bank.potionStore.contains(idOrName) → bool</code></td>
+</tr>
+<tr>
+<td>Empty vials</td>
+<td><code>srs.bank.potionStore.vials() → int</code></td>
+</tr>
+</tbody>
+</table>
+<p>Reads work with the bank closed. Contents come from the game's own
+potion-store scripts and are cached until a potion-store varp changes; the
+first call after inject returns an empty list until <code>isLoaded()</code> is true
+(usually within a tick).</p>
+<p><code>StoredPotion</code> fields: <code>enumId</code>, <code>name</code> (no dose suffix, e.g. "Prayer
+potion"), <code>itemId</code> (item withdrawn at the current dose size), <code>doses</code> (total),
+<code>withdrawDoses</code> (1..4), <code>count</code> (<code>doses / withdrawDoses</code>), <code>unfinished</code>
+(unfinished potions and herb vials). <code>doses(id)</code> matches any of the potion's
+1..4-dose item ids; <code>doses(name)</code> sums every potion whose name contains it.
+<code>count</code> and <code>contains</code> match the same way but count whole potions at the
+store's current withdraw size, so <code>count(x)</code> lines up with <code>withdraw(x, n)</code>;
+leftover doses below that size don't make <code>contains</code> true.</p>
+<p><code>srs.bank.contains</code> / <code>count</code> / <code>all</code> cover the bank only — potion storage is
+never included. To check both:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">ps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="py">potionStore</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="s2">&quot;Prayer potion&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">ps</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="s2">&quot;Prayer potion&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span>
+</span></code></pre></div>
+<p>Withdraw and deposit need the bank open <strong>and</strong> the potion storage panel open
+(<code>open()</code> first). <code>withdraw</code> amounts are potions at the store's current dose
+size for that potion (<code>withdrawDoses</code>), which <code>setWithdrawDoses(x, 1..4)</code>
+changes — it's per potion, saved by the game, and shows in <code>withdrawDoses</code> a
+tick or so later. It always clicks, since the size the client has cached can
+lag the server; wait for <code>getWithdrawDoses</code> to read the new size before
+withdrawing. 1/5/10 use fixed ops, any other amount
+goes through Withdraw-X and blocks while it types. Withdraw by name matches the
+first stored potion whose name contains the text. The panel scrolls to the
+potion on its own. Deposits use the bank's normal Deposit ops — with the panel
+open the game puts potions into the store; the functions refuse when the panel
+is shut, so a potion never lands in the bank by mistake.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="py">potionStore</span><span class="p">.</span><span class="nf">isLoaded</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">bank</span><span class="p">.</span><span class="py">potionStore</span><span class="p">.</span><span class="nf">all</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">p</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">doses</span><span class="p">,</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">count</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; x (&quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">p</span><span class="p">.</span><span class="py">withdrawDoses</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="kr">end</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kr">end</span>
+</span></code></pre></div>
 <h2 id="withdraw-quantity-preset">Withdraw quantity preset<a class="headerlink" href="#withdraw-quantity-preset" title="Permanent link">&para;</a></h2>
 <p>Sticky across subsequent withdraw clicks. Mirrors the "1 / 5 / 10 / X / All"
 button row at the bottom of the bank UI.</p>
@@ -3168,51 +3174,43 @@ button row at the bottom of the bank UI.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Set quantity</td>
-<td><code>Bank::setWithdrawQuantity(ctx, q) → bool</code></td>
 <td><code>srs.bank.setWithdrawQuantity(q) → bool</code></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Quantity constants</strong> (<code>Bank::Quantity</code> / <code>srs.bank.*</code>):</p>
+<p><strong>Quantity constants</strong> (<code>srs.bank.*</code>):</p>
 <table>
 <thead>
 <tr>
 <th>Lua const</th>
-<th>C++</th>
 <th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>ONE</code></td>
-<td><code>Quantity::One</code></td>
 <td>Withdraw 1 per click</td>
 </tr>
 <tr>
 <td><code>FIVE</code></td>
-<td><code>Quantity::Five</code></td>
 <td>Withdraw 5 per click</td>
 </tr>
 <tr>
 <td><code>TEN</code></td>
-<td><code>Quantity::Ten</code></td>
 <td>Withdraw 10 per click</td>
 </tr>
 <tr>
 <td><code>X</code></td>
-<td><code>Quantity::X</code></td>
 <td>Prompts for a number (number-entry dialog)</td>
 </tr>
 <tr>
 <td><code>ALL</code></td>
-<td><code>Quantity::All</code></td>
 <td>Withdraw all of stack</td>
 </tr>
 </tbody>
@@ -3235,7 +3233,7 @@ on <a href="../Engine/">Engine</a> — <code>srs.engine.setVarcInt</code> / <cod
   what we have. <code>withdrawDeficit(item, target)</code> would compute
   <code>target - currentInvCount</code> and call <code>withdrawX</code> with the result.</li>
 <li><strong>Predicate-based withdraw / deposit</strong> — <code>withdrawWhere(filter, n)</code>.
-  Needs a callable type bound to both C++ and Lua.</li>
+  Needs a callable filter argument.</li>
 <li><strong>Bank search box</strong> — type a query into the bank's search field.</li>
 </ul>
 

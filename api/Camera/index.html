@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -737,10 +737,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rotation-default-memory-write" class="md-nav__link">
+  <a href="#rotation-default-direct-write" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rotation (default — memory write)
+        Rotation (default — direct write)
       
     </span>
   </a>
@@ -2283,10 +2283,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#rotation-default-memory-write" class="md-nav__link">
+  <a href="#rotation-default-direct-write" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Rotation (default — memory write)
+        Rotation (default — direct write)
       
     </span>
   </a>
@@ -2399,18 +2399,12 @@
 
 
 <h1 id="camera">Camera<a class="headerlink" href="#camera" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Camera</code> / <code>srs.camera</code></p>
+<p><code>srs.camera</code></p>
 <p>Camera facade: read pitch / yaw / zoom and rotate or
-zoom the view. <code>rotateTo*</code> snaps instantly via a direct memory write to
-the engine's target angles, <code>keyboardRotateTo*</code> drives human-looking
+zoom the view. <code>rotateTo*</code> snaps instantly by writing the
+engine's target angles, <code>keyboardRotateTo*</code> drives human-looking
 arrow-key holds, and <code>setZoom</code> converges by injecting <code>WM_MOUSEWHEEL</code>
 events.</p>
-<div class="admonition note">
-<p class="admonition-title">Plugin facade vs. GameSDK Camera</p>
-<p>This is the plugin-API facade for camera control. Use
-<code>srs::api::Camera</code> / <code>srs.camera</code> from plugins and scripts — the
-engine's own low-level camera state is not part of the public API.</p>
-</div>
 <h2 id="rotation-modes">Rotation modes<a class="headerlink" href="#rotation-modes" title="Permanent link">&para;</a></h2>
 <p>Three "modes" are exposed via three method families:</p>
 <table>
@@ -2424,18 +2418,18 @@ engine's own low-level camera state is not part of the public API.</p>
 <tbody>
 <tr>
 <td><code>rotateTo*</code></td>
-<td>Direct write to the engine's target pitch / yaw</td>
+<td>Direct write of the target pitch / yaw</td>
 <td>Instant, no smoothing (use <code>easeToYaw</code> for a smooth yaw turn). Cheap and reliable. <strong>Default.</strong></td>
 </tr>
 <tr>
 <td><code>keyboardRotateTo*</code></td>
-<td>Arrow-key holds through <code>InputManager</code></td>
+<td>Arrow-key holds</td>
 <td>Slower, human-looking. For antiban scenarios.</td>
 </tr>
 <tr>
 <td><code>mouseRotateTo*</code></td>
 <td>Scroll-wheel rotation</td>
-<td>OSRS scroll is bound to <strong>zoom</strong>, not yaw, so this falls back to the direct memory path on this client. Kept for source compatibility with ported scripts.</td>
+<td>OSRS scroll is bound to <strong>zoom</strong>, not yaw, so this falls back to the direct write path on this client.</td>
 </tr>
 </tbody>
 </table>
@@ -2446,28 +2440,24 @@ keyboard for the script.</p>
 <table>
 <thead>
 <tr>
-<th>Lua const</th>
-<th>C++</th>
+<th>Name</th>
 <th>Value</th>
 <th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>—</td>
-<td><code>Camera::kLowestPitch</code></td>
+<td>Lowest pitch (<code>srs.camera.getLowestPitch()</code>)</td>
 <td>128</td>
 <td>Lowest pitch (nearly horizontal)</td>
 </tr>
 <tr>
-<td>—</td>
-<td><code>Camera::kHighestPitch</code></td>
+<td>Highest pitch</td>
 <td>383</td>
 <td>Highest pitch (top-down)</td>
 </tr>
 <tr>
-<td>—</td>
-<td><code>Camera::kYawMod</code></td>
+<td>Yaw range</td>
 <td>2048</td>
 <td>2048 units = 360°</td>
 </tr>
@@ -2478,24 +2468,20 @@ keyboard for the script.</p>
 <thead>
 <tr>
 <th>Lua const</th>
-<th>C++</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>CameraMode.MouseOrKeyboard</code></td>
-<td><code>Mode::MouseOrKeyboard</code></td>
-<td>Default — direct memory write</td>
+<td>Default — direct write</td>
 </tr>
 <tr>
 <td><code>CameraMode.MouseOnly</code></td>
-<td><code>Mode::MouseOnly</code></td>
 <td>Scroll / middle-drag (middle-drag is TODO)</td>
 </tr>
 <tr>
 <td><code>CameraMode.KeyboardOnly</code></td>
-<td><code>Mode::KeyboardOnly</code></td>
 <td>Arrow-key holds</td>
 </tr>
 </tbody>
@@ -2508,64 +2494,52 @@ not reroute the <code>rotateTo*</code> family. Pick the path by calling the <cod
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Pitch</td>
-<td><code>Camera::getPitch(ctx) → int32</code></td>
 <td><code>srs.camera.getPitch() → int</code></td>
 </tr>
 <tr>
 <td>Yaw</td>
-<td><code>Camera::getYaw(ctx) → int32</code></td>
 <td><code>srs.camera.getYaw() → int</code></td>
 </tr>
 <tr>
 <td>Scene-fine X</td>
-<td><code>Camera::getX(ctx) → int32</code></td>
 <td><code>srs.camera.getX() → int</code></td>
 </tr>
 <tr>
 <td>Scene-fine Y (vertical)</td>
-<td><code>Camera::getY(ctx) → int32</code></td>
 <td><code>srs.camera.getY() → int</code></td>
 </tr>
 <tr>
 <td>Scene-fine Z</td>
-<td><code>Camera::getZ(ctx) → int32</code></td>
 <td><code>srs.camera.getZ() → int</code></td>
 </tr>
 <tr>
 <td>Current zoom (normalized to [330, 3000])</td>
-<td><code>Camera::getZoom(ctx) → int32</code></td>
 <td><code>srs.camera.getZoom() → int</code></td>
 </tr>
 <tr>
 <td>Min zoom</td>
-<td><code>Camera::getMinZoom(ctx) → int32</code></td>
 <td><code>srs.camera.getMinZoom() → int</code></td>
 </tr>
 <tr>
 <td>Max zoom</td>
-<td><code>Camera::getMaxZoom(ctx) → int32</code></td>
 <td><code>srs.camera.getMaxZoom() → int</code></td>
 </tr>
 <tr>
 <td>Lowest pitch constant</td>
-<td><code>Camera::getLowestPitch() → int32</code></td>
 <td><code>srs.camera.getLowestPitch() → int</code></td>
 </tr>
 <tr>
 <td>Current camera mode</td>
-<td><code>Camera::getCameraMode() → Mode</code></td>
 <td><code>srs.camera.getCameraMode() → CameraMode</code></td>
 </tr>
 <tr>
 <td>Set camera mode</td>
-<td><code>Camera::setCameraMode(Mode)</code></td>
 <td><code>srs.camera.setCameraMode(m)</code></td>
 </tr>
 </tbody>
@@ -2579,7 +2553,7 @@ viewport. <code>getZoom</code> returns a value normalized to the
 best-effort: <code>setZoom</code> returns <code>false</code> if it can't settle within
 tolerance.</p>
 </div>
-<h2 id="rotation-default-memory-write">Rotation (default — memory write)<a class="headerlink" href="#rotation-default-memory-write" title="Permanent link">&para;</a></h2>
+<h2 id="rotation-default-direct-write">Rotation (default — direct write)<a class="headerlink" href="#rotation-default-direct-write" title="Permanent link">&para;</a></h2>
 <p>All <code>rotateTo*</code> calls clamp pitch to <code>[128, 383]</code> and wrap yaw into 0..2047
 before writing. Return <code>true</code> on a successful write,
 <code>false</code> if the camera state isn't resolved or the write faults.</p>
@@ -2587,39 +2561,32 @@ before writing. Return <code>true</code> on a successful write,
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Both axes</td>
-<td><code>Camera::rotateTo(ctx, yaw, pitch) → bool</code></td>
 <td><code>srs.camera.rotateTo(yaw, pitch) → bool</code></td>
 </tr>
 <tr>
 <td>Yaw only</td>
-<td><code>Camera::rotateToYaw(ctx, yaw) → bool</code></td>
 <td><code>srs.camera.rotateToYaw(yaw) → bool</code></td>
 </tr>
 <tr>
 <td>Yaw only, smooth</td>
-<td><code>Camera::easeToYaw(ctx, yaw) → bool</code></td>
 <td><code>srs.camera.easeToYaw(yaw) → bool</code></td>
 </tr>
 <tr>
 <td>Pitch only</td>
-<td><code>Camera::rotateToPitch(ctx, pitch) → bool</code></td>
 <td><code>srs.camera.rotateToPitch(pitch) → bool</code></td>
 </tr>
 <tr>
 <td>Face a tile</td>
-<td><code>Camera::rotateToTile(ctx, tile) → bool</code></td>
 <td><code>srs.camera.rotateToTile(tile \| x, y[, plane]) → bool</code></td>
 </tr>
 <tr>
 <td>Face an entity</td>
-<td><code>Camera::rotateToEntity(ctx, target) → bool</code></td>
 <td><code>srs.camera.rotateToEntity(target) → bool</code></td>
 </tr>
 </tbody>
@@ -2630,10 +2597,6 @@ frames, whereas <code>rotateToYaw</code> snaps instantly. Use it for continuous
 follow-cameras where a snap would look jarring; the current yaw
 (<code>getYaw</code>) converges toward the target over several frames rather than
 changing at once.</p>
-<p>Interrupt-condition overloads (C++ only): <code>rotateToTile</code> and
-<code>rotateToEntity</code> accept a <code>Predicate interrupt</code>, polled once before the
-rotation starts. Return <code>true</code> from it to skip the rotation (the call
-then returns <code>false</code>).</p>
 <div class="admonition note">
 <p class="admonition-title">Lua <code>(x, y[, plane])</code> overloads</p>
 <p>Every tile-taking camera function accepts raw coordinates in Lua —
@@ -2651,19 +2614,16 @@ work).</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Ensure a tile is on-screen</td>
-<td><code>Camera::ensureVisible(ctx, tile) → bool</code></td>
 <td><code>srs.camera.ensureVisible(tile \| x, y[, plane]) → bool</code></td>
 </tr>
 <tr>
 <td>Ensure an entity is on-screen</td>
-<td><code>Camera::ensureVisible(ctx, target) → bool</code></td>
 <td><code>srs.camera.ensureVisible(target) → bool</code></td>
 </tr>
 </tbody>
@@ -2678,37 +2638,90 @@ angle write, so the pixel lands on-screen next frame.</p>
 <code>ensureVisible(tile)</code>, <code>ensureVisible(target)</code>, <code>ensureVisible(x, y)</code>
 (plane 0), or <code>ensureVisible(x, y, plane)</code>.</p>
 <h2 id="mouse-rotation-family">Mouse-rotation family<a class="headerlink" href="#mouse-rotation-family" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>mouseRotateTo, mouseRotateToYaw, mouseRotateToPitch,
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mouseRotateToTile, mouseRotateToEntity
-</span></code></pre></div>
-<p>Same signatures as the <code>rotateTo*</code> family. <strong>Falls back to the
-direct memory path on this client</strong> — OSRS scroll-wheel is mapped to
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Both axes</td>
+<td><code>srs.camera.mouseRotateTo(yaw, pitch) → bool</code></td>
+</tr>
+<tr>
+<td>Yaw only</td>
+<td><code>srs.camera.mouseRotateToYaw(yaw) → bool</code></td>
+</tr>
+<tr>
+<td>Pitch only</td>
+<td><code>srs.camera.mouseRotateToPitch(pitch) → bool</code></td>
+</tr>
+<tr>
+<td>Face a tile</td>
+<td><code>srs.camera.mouseRotateToTile(tile \| x, y[, plane]) → bool</code></td>
+</tr>
+<tr>
+<td>Face an entity</td>
+<td><code>srs.camera.mouseRotateToEntity(target) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p>Same behaviour as the <code>rotateTo*</code> family. <strong>Falls back to the
+direct write path on this client</strong> — OSRS scroll-wheel is mapped to
 zoom, not rotation, and a true scroll-rotate isn't available without
 middle-mouse-drag support (TODO).</p>
 <h2 id="keyboard-rotation-family">Keyboard-rotation family<a class="headerlink" href="#keyboard-rotation-family" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>keyboardRotateTo, keyboardRotateToYaw, keyboardRotateToPitch,
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>keyboardRotateToTile, keyboardRotateToEntity
-</span></code></pre></div>
-<p>Same signatures. Drives the game's arrow-key camera-rotate via
-<code>InputManager</code>. Slower, human-looking.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Both axes</td>
+<td><code>srs.camera.keyboardRotateTo(yaw, pitch) → bool</code></td>
+</tr>
+<tr>
+<td>Yaw only</td>
+<td><code>srs.camera.keyboardRotateToYaw(yaw) → bool</code></td>
+</tr>
+<tr>
+<td>Pitch only</td>
+<td><code>srs.camera.keyboardRotateToPitch(pitch) → bool</code></td>
+</tr>
+<tr>
+<td>Face a tile</td>
+<td><code>srs.camera.keyboardRotateToTile(tile \| x, y[, plane]) → bool</code></td>
+</tr>
+<tr>
+<td>Face an entity</td>
+<td><code>srs.camera.keyboardRotateToEntity(target) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p>Drives the game's arrow-key camera rotation. Slower, human-looking. The
+call queues the key hold and returns immediately; the camera finishes
+turning over the following frames.</p>
 <h2 id="zoom">Zoom<a class="headerlink" href="#zoom" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Set zoom level</td>
-<td><code>Camera::setZoom(ctx, zoom) → bool</code></td>
 <td><code>srs.camera.setZoom(zoom) → bool</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>setZoom</code> injects <code>WM_MOUSEWHEEL</code> events into the game's WndProc
+<p><code>setZoom</code> injects mouse-wheel events into the game window
 until live zoom matches <code>zoomLevel</code> within tolerance. Returns
 <code>false</code> if the wheel injector or camera state isn't ready, or if zoom
 didn't converge after ~30 wheel ticks. The target is clamped to
@@ -2719,29 +2732,24 @@ it converges.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Yaw needed to face a tile</td>
-<td><code>Camera::getYawForTile(ctx, tile) → int32</code></td>
 <td><code>srs.camera.getYawForTile(tile \| x, y[, plane]) → int</code></td>
 </tr>
 <tr>
 <td>Yaw needed to face an entity</td>
-<td><code>Camera::getYawForEntity(ctx, target) → int32</code></td>
 <td><code>srs.camera.getYawForEntity(target) → int</code></td>
 </tr>
 <tr>
 <td>Pitch needed for a tile</td>
-<td><code>Camera::getPitchForTile(ctx, tile) → int32</code></td>
 <td><code>srs.camera.getPitchForTile(tile \| x, y[, plane]) → int</code></td>
 </tr>
 <tr>
 <td>Pitch needed for an entity</td>
-<td><code>Camera::getPitchForEntity(ctx, target) → int32</code></td>
 <td><code>srs.camera.getPitchForEntity(target) → int</code></td>
 </tr>
 </tbody>
@@ -2755,19 +2763,16 @@ failure to converge is silent — prefer <code>setZoom</code> and check its resu
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Raw pitch+yaw write</td>
-<td><code>Camera::firePitchAndYawEvent(ctx, pitch, yaw)</code></td>
+<td>Raw pitch+yaw write (pitch first)</td>
 <td><code>srs.camera.firePitchAndYawEvent(pitch, yaw)</code></td>
 </tr>
 <tr>
 <td>Zoom (alias of <code>setZoom</code>, result discarded)</td>
-<td><code>Camera::fireZoomEvent(ctx, zoom)</code></td>
 <td><code>srs.camera.fireZoomEvent(zoom)</code></td>
 </tr>
 </tbody>
@@ -2779,44 +2784,37 @@ executes later. Stash one and run it on a different tick.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Build "rotate to yaw/pitch" event</td>
-<td><code>Camera::rotateToEvent(yaw, pitch) → Event</code></td>
 <td><code>srs.camera.rotateToEvent(yaw, pitch) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Yaw only</td>
-<td><code>Camera::rotateToYawEvent(yaw) → Event</code></td>
 <td><code>srs.camera.rotateToYawEvent(yaw) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Pitch only</td>
-<td><code>Camera::rotateToPitchEvent(pitch) → Event</code></td>
 <td><code>srs.camera.rotateToPitchEvent(pitch) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Face a tile</td>
-<td><code>Camera::rotateToTileEvent(ctx, tile) → Event</code></td>
 <td><code>srs.camera.rotateToTileEvent(tile \| x, y[, plane]) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Face an entity</td>
-<td><code>Camera::rotateToEntityEvent(ctx, target) → Event</code></td>
 <td><code>srs.camera.rotateToEntityEvent(target) → CameraEvent</code></td>
 </tr>
 <tr>
 <td>Execute a stored event</td>
-<td><code>event.execute(ctx) → bool</code></td>
 <td><code>event:execute() → bool</code></td>
 </tr>
 </tbody>
 </table>
-<p><strong><code>CameraEvent</code></strong> fields (C++ <code>Camera::Event</code>):</p>
+<p><strong><code>CameraEvent</code></strong> fields:</p>
 <table>
 <thead>
 <tr>
@@ -2828,22 +2826,22 @@ executes later. Stash one and run it on a different tick.</p>
 <tbody>
 <tr>
 <td><code>yaw</code></td>
-<td>int32</td>
+<td>integer</td>
 <td><code>-1</code> = leave this axis alone</td>
 </tr>
 <tr>
 <td><code>pitch</code></td>
-<td>int32</td>
+<td>integer</td>
 <td><code>-1</code> = leave this axis alone</td>
 </tr>
 <tr>
 <td><code>zoom</code></td>
-<td>int32</td>
+<td>integer</td>
 <td><code>-1</code> = leave this axis alone</td>
 </tr>
 <tr>
 <td><code>mode</code></td>
-<td><code>Mode</code></td>
+<td><code>CameraMode</code></td>
 <td>Captured from <code>getCameraMode()</code> when built; informational only — <code>execute</code> always uses the direct write path</td>
 </tr>
 </tbody>
@@ -2854,36 +2852,22 @@ axis counts as unset, and the call is a no-op if all axes are unset.</p>
 <code>CameraEvent.new()</code> gives an empty event (all axes <code>-1</code>) whose <code>yaw</code>,
 <code>pitch</code>, <code>zoom</code>, and <code>mode</code> fields are read/write — build one by hand
 instead of going through the factory functions:</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">ev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">CameraEvent</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">ev</span><span class="p">.</span><span class="py">yaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nv">ev</span><span class="p">.</span><span class="py">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1500</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">ev</span><span class="p">:</span><span class="nf">execute</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">ev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">CameraEvent</span><span class="p">.</span><span class="nf">new</span><span class="p">()</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">ev</span><span class="p">.</span><span class="py">yaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">ev</span><span class="p">.</span><span class="py">zoom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1500</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">ev</span><span class="p">:</span><span class="nf">execute</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">entityQuery</span><span class="o">-&gt;</span><span class="n">nearestNpc</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">Camera</span><span class="o">::</span><span class="n">rotateToEntity</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">npc</span><span class="p">);</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="n">Camera</span><span class="o">::</span><span class="n">setZoom</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">1500</span><span class="p">);</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToEntity</span><span class="p">(</span><span class="nv">npc</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">setZoom</span><span class="p">(</span><span class="mi">1500</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kr">end</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1">-- Or build a deferred event and execute next tick:</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToYawEvent</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">pending</span><span class="p">:</span><span class="nf">execute</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToEntity</span><span class="p">(</span><span class="nv">npc</span><span class="p">)</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">setZoom</span><span class="p">(</span><span class="mi">1500</span><span class="p">)</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kr">end</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">-- Or build a deferred event and execute next tick:</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="kd">local</span><span class="w"> </span><span class="nv">pending</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">rotateToYawEvent</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="nv">pending</span><span class="p">:</span><span class="nf">execute</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span><span class="p">)</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

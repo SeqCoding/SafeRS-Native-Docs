@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -1274,17 +1274,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#constants-c" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Constants (C++)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,17 +2272,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#constants-c" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Constants (C++)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#types" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2333,28 +2311,25 @@
 
 
 <h1 id="grand-exchange">Grand Exchange<a class="headerlink" href="#grand-exchange" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::GrandExchange</code> / <code>srs.ge</code></p>
+<p><code>srs.ge</code></p>
 <p>Read the player's 8 Grand Exchange offer slots and drive the GE interface.</p>
-<p>Offer <strong>state</strong> is read live from the engine's offer array and works whether
-the GE window is <strong>open or closed</strong> — no hook, no open window required. <strong>Interaction</strong> drives the GE's
-CS2 interface components (offer boxes, steppers, search box) plus the keyboard
-subsystem for exact numeric / item-name entry.</p>
+<p>Offer <strong>state</strong> is read live and works whether the GE window is <strong>open or
+closed</strong> — no open window required. <strong>Interaction</strong> drives the GE's interface
+components (offer boxes, steppers, search box) plus keyboard entry for exact
+numeric / item-name input.</p>
 <div class="admonition note">
 <p class="admonition-title">Most interaction needs the GE open</p>
 <p>State reads (<code>offers</code>, <code>offer</code>, <code>hasData</code>, the slot predicates) work
 anywhere. Everything that clicks — <code>createBuyOffer</code>, <code>buyItem</code>, <code>confirm</code>,
 … — needs the Grand Exchange interface open first. Open it by interacting
-with a GE clerk: <code>srs.npc.interact(clerk, "Exchange")</code> (C++
-<code>Npc::interact</code>).</p>
+with a GE clerk: <code>srs.npc.interact(clerk, "Exchange")</code>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Blocking helpers</p>
 <p><code>buyItem</code> / <code>sellItem</code> / <code>setQuantity</code> / <code>setPrice</code> / <code>searchItem</code> drive a
 multi-step flow with internal sleeps and keyboard entry. They <strong>block</strong> the
 calling script thread (up to a few seconds) and mute its <code>pulse</code> / <code>onTick</code>
-until they return. Blocking is safe — the DoAction is marshalled to the
-engine thread and keystrokes post asynchronously — but never call them from
-<code>draw</code>.</p>
+until they return. Blocking is safe, but never call them from <code>draw</code>.</p>
 </div>
 <h2 id="state">State<a class="headerlink" href="#state" title="Permanent link">&para;</a></h2>
 <p>Valid GE open or closed. <code>slot</code> is <code>0..7</code>.</p>
@@ -2362,54 +2337,44 @@ engine thread and keystrokes post asynchronously — but never call them from
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Any offer data resolved</td>
-<td><code>GrandExchange::hasData(ctx) → bool</code></td>
 <td><code>srs.ge.hasData() → bool</code></td>
 </tr>
 <tr>
 <td>All 8 slots</td>
-<td><code>GrandExchange::offers(ctx) → GeOfferInfo[8]</code></td>
 <td><code>srs.ge.offers() → table (8 entries, 1-based)</code></td>
 </tr>
 <tr>
 <td>One slot</td>
-<td><code>GrandExchange::offer(ctx, slot) → GeOfferInfo</code></td>
 <td><code>srs.ge.offer(slot) → GeOfferInfo</code></td>
 </tr>
 <tr>
 <td>First empty slot (−1 if none)</td>
-<td><code>GrandExchange::firstEmptySlot(ctx) → int32</code></td>
 <td><code>srs.ge.firstEmptySlot() → int</code></td>
 </tr>
 <tr>
 <td>Slot holding <code>itemId</code> (−1 if none)</td>
-<td><code>GrandExchange::slotOf(ctx, itemId) → int32</code></td>
 <td><code>srs.ge.slotOf(itemId) → int</code></td>
 </tr>
 <tr>
 <td>Slot is buying/selling</td>
-<td><code>GrandExchange::isSlotActive(ctx, slot) → bool</code></td>
 <td><code>srs.ge.isSlotActive(slot) → bool</code></td>
 </tr>
 <tr>
 <td>Slot is finished/cancelled</td>
-<td><code>GrandExchange::isSlotFinished(ctx, slot) → bool</code></td>
 <td><code>srs.ge.isSlotFinished(slot) → bool</code></td>
 </tr>
 <tr>
 <td>Anything collectable</td>
-<td><code>GrandExchange::anyFinished(ctx) → bool</code></td>
 <td><code>srs.ge.anyFinished() → bool</code></td>
 </tr>
 <tr>
 <td>Every non-empty slot complete</td>
-<td><code>GrandExchange::allComplete(ctx) → bool</code></td>
 <td><code>srs.ge.allComplete() → bool</code></td>
 </tr>
 </tbody>
@@ -2419,19 +2384,16 @@ engine thread and keystrokes post asynchronously — but never call them from
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>GE window or standalone collection box open</td>
-<td><code>GrandExchange::isOpen(ctx) → bool</code></td>
 <td><code>srs.ge.isOpen() → bool</code></td>
 </tr>
 <tr>
 <td>GE offers interface open (overview <strong>or</strong> setup)</td>
-<td><code>GrandExchange::isOfferScreenOpen(ctx) → bool</code></td>
 <td><code>srs.ge.isOfferScreenOpen() → bool</code></td>
 </tr>
 </tbody>
@@ -2444,44 +2406,36 @@ returns true for the standalone collection box opened from the bank.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Collect finished offers to inventory</td>
-<td><code>GrandExchange::collectToInventory(ctx) → bool</code></td>
 <td><code>srs.ge.collectToInventory() → bool</code></td>
 </tr>
 <tr>
 <td>Collect to bank (collection box only)</td>
-<td><code>GrandExchange::collectToBank(ctx) → bool</code></td>
 <td><code>srs.ge.collectToBank() → bool</code></td>
 </tr>
 <tr>
 <td>Open an active offer's detail screen</td>
-<td><code>GrandExchange::openSlot(ctx, slot) → bool</code></td>
 <td><code>srs.ge.openSlot(slot) → bool</code></td>
 </tr>
 <tr>
 <td>Abort an active offer (detail screen must be open)</td>
-<td><code>GrandExchange::abort(ctx, slot) → bool</code></td>
 <td><code>srs.ge.abort(slot) → bool</code></td>
 </tr>
 <tr>
 <td>Collect one box of the open detail screen</td>
-<td><code>GrandExchange::collectSlot(ctx, asNotes = true) → bool</code></td>
 <td><code>srs.ge.collectSlot([asNotes=true]) → bool</code></td>
 </tr>
 <tr>
 <td>Close the GE window</td>
-<td><code>GrandExchange::close(ctx) → bool</code></td>
 <td><code>srs.ge.close() → bool</code></td>
 </tr>
 <tr>
 <td>Compat no-op — always <code>false</code></td>
-<td><code>GrandExchange::back(ctx) → bool</code></td>
 <td><code>srs.ge.back() → bool</code></td>
 </tr>
 </tbody>
@@ -2520,64 +2474,64 @@ always returns <code>false</code>; use <code>close()</code> to leave.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Start a BUY on an empty box; opens setup + search</td>
-<td><code>GrandExchange::createBuyOffer(ctx, slot) → bool</code></td>
 <td><code>srs.ge.createBuyOffer(slot) → bool</code></td>
 </tr>
 <tr>
 <td>Start a SELL on an empty box — [UNVERIFIED]</td>
-<td><code>GrandExchange::createSellOffer(ctx, slot) → bool</code></td>
 <td><code>srs.ge.createSellOffer(slot) → bool</code></td>
 </tr>
 <tr>
 <td>Pick a SELL item from the side inventory</td>
-<td><code>GrandExchange::setOfferItem(ctx, invSlot, itemId) → bool</code></td>
 <td><code>srs.ge.setOfferItem(invSlot, itemId) → bool</code></td>
 </tr>
 <tr>
 <td>Quantity +1</td>
-<td><code>GrandExchange::addQuantity1(ctx) → bool</code></td>
 <td><code>srs.ge.addQuantity1() → bool</code></td>
 </tr>
 <tr>
 <td>Quantity +10</td>
-<td><code>GrandExchange::addQuantity10(ctx) → bool</code></td>
 <td><code>srs.ge.addQuantity10() → bool</code></td>
 </tr>
 <tr>
 <td>Quantity +100</td>
-<td><code>GrandExchange::addQuantity100(ctx) → bool</code></td>
 <td><code>srs.ge.addQuantity100() → bool</code></td>
 </tr>
 <tr>
 <td>Quantity +All</td>
-<td><code>GrandExchange::addQuantityAll(ctx) → bool</code></td>
 <td><code>srs.ge.addQuantityAll() → bool</code></td>
 </tr>
 <tr>
 <td>Open the exact-quantity chatbox prompt</td>
-<td><code>GrandExchange::promptQuantity(ctx) → bool</code></td>
 <td><code>srs.ge.promptQuantity() → bool</code></td>
 </tr>
 <tr>
-<td>Price −5% / −1% / +1% / +5%</td>
-<td><code>GrandExchange::decreasePrice5pct \| decreasePrice1pct \| increasePrice1pct \| increasePrice5pct(ctx) → bool</code></td>
-<td><code>srs.ge.decreasePrice5pct \| … () → bool</code></td>
+<td>Price −5%</td>
+<td><code>srs.ge.decreasePrice5pct() → bool</code></td>
+</tr>
+<tr>
+<td>Price −1%</td>
+<td><code>srs.ge.decreasePrice1pct() → bool</code></td>
+</tr>
+<tr>
+<td>Price +1%</td>
+<td><code>srs.ge.increasePrice1pct() → bool</code></td>
+</tr>
+<tr>
+<td>Price +5%</td>
+<td><code>srs.ge.increasePrice5pct() → bool</code></td>
 </tr>
 <tr>
 <td>Open the exact-price chatbox prompt</td>
-<td><code>GrandExchange::promptPrice(ctx) → bool</code></td>
 <td><code>srs.ge.promptPrice() → bool</code></td>
 </tr>
 <tr>
 <td>Confirm the offer being set up</td>
-<td><code>GrandExchange::confirm(ctx) → bool</code></td>
 <td><code>srs.ge.confirm() → bool</code></td>
 </tr>
 </tbody>
@@ -2586,9 +2540,9 @@ always returns <code>false</code>; use <code>close()</code> to leave.</p>
 <p class="admonition-title">createSellOffer is [UNVERIFIED]</p>
 <p>A SELL offer is begun by clicking the item in the GE side inventory
 (<code>setOfferItem</code>, group 467), not by an empty-box action.
-<code>createSellOffer(ctx, slot)</code> exists for API symmetry but fires the
-unverified op-4 box action (<code>kOp_CreateSell</code>), which may be a no-op —
-<code>sellItem</code> does <strong>not</strong> use this path. Prefer <code>sellItem</code> /
+<code>createSellOffer(slot)</code> exists for API symmetry but fires an
+unverified box action which may be a no-op — <code>sellItem</code> does <strong>not</strong> use
+this path. Prefer <code>sellItem</code> /
 <code>setOfferItem</code>.</p>
 </div>
 <h2 id="exact-entry-search-blocking">Exact entry &amp; search (blocking)<a class="headerlink" href="#exact-entry-search-blocking" title="Permanent link">&para;</a></h2>
@@ -2596,24 +2550,20 @@ unverified op-4 box action (<code>kOp_CreateSell</code>), which may be a no-op �
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Type an exact quantity into the prompt</td>
-<td><code>GrandExchange::setQuantity(ctx, quantity) → bool</code></td>
 <td><code>srs.ge.setQuantity(quantity) → bool</code></td>
 </tr>
 <tr>
 <td>Type an exact price into the prompt</td>
-<td><code>GrandExchange::setPrice(ctx, price) → bool</code></td>
 <td><code>srs.ge.setPrice(price) → bool</code></td>
 </tr>
 <tr>
 <td>Type an item name into the buy-search box</td>
-<td><code>GrandExchange::searchItem(ctx, itemName) → bool</code></td>
 <td><code>srs.ge.searchItem(itemName) → bool</code></td>
 </tr>
 </tbody>
@@ -2630,19 +2580,16 @@ confirm, all in one call. The GE offer screen must already be open.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Place a complete buy offer</td>
-<td><code>GrandExchange::buyItem(ctx, itemId\|name, quantity, price) → bool</code></td>
 <td><code>srs.ge.buyItem(itemId\|name, quantity, price) → bool</code></td>
 </tr>
 <tr>
 <td>Place a complete sell offer</td>
-<td><code>GrandExchange::sellItem(ctx, itemId\|name, quantity, price) → bool</code></td>
 <td><code>srs.ge.sellItem(itemId\|name, quantity, price) → bool</code></td>
 </tr>
 </tbody>
@@ -2656,105 +2603,9 @@ picks its slot automatically. Returns <code>true</code> only if the flow ran thr
 Confirm.</p>
 <p>For sensible prices, pair these with the <a href="../GePrices/">market-price helpers</a> on
 the same <code>srs.ge</code> table — e.g. <code>srs.ge.buyItem(id, qty, srs.ge.buyPrice(id))</code>.</p>
-<h2 id="constants-c">Constants (C++)<a class="headerlink" href="#constants-c" title="Permanent link">&para;</a></h2>
-<p>Widget topology of the GE interface, exposed for scripts that drive
-components directly. All <code>static constexpr int</code> on <code>GrandExchange</code>.</p>
-<table>
-<thead>
-<tr>
-<th>Constant</th>
-<th>Value</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>kSlotCount</code></td>
-<td>8</td>
-<td>Offer slots</td>
-</tr>
-<tr>
-<td><code>kOffersGroup</code></td>
-<td>465</td>
-<td>GE_OFFERS (overview + setup)</td>
-</tr>
-<tr>
-<td><code>kOffersSideGroup</code></td>
-<td>467</td>
-<td>GE_OFFERS_SIDE (side inventory)</td>
-</tr>
-<tr>
-<td><code>kCollectGroup</code></td>
-<td>402</td>
-<td>GE_COLLECT (standalone collection box)</td>
-</tr>
-<tr>
-<td><code>kCollect_Inv</code> / <code>kCollect_Bank</code></td>
-<td>3 / 4</td>
-<td>Collection-box "to inventory" / "to bank"</td>
-</tr>
-<tr>
-<td><code>kCollect_Slot0</code></td>
-<td>5</td>
-<td>Collection-box slot children (slot <em>i</em> → <code>5 + i</code>)</td>
-</tr>
-<tr>
-<td><code>kSearchGroup</code></td>
-<td>162</td>
-<td>CHATBOX (buy-offer item search)</td>
-</tr>
-<tr>
-<td><code>kSearch_Input</code> / <code>kSearch_Results</code></td>
-<td>44 / 53</td>
-<td>Search input line / results list (dynamic children, one per match)</td>
-</tr>
-<tr>
-<td><code>kOffers_Box0</code></td>
-<td>7</td>
-<td>Offer boxes are children 7..14 (slot <em>i</em> → <code>7 + i</code>)</td>
-</tr>
-<tr>
-<td><code>kOffers_Collect</code></td>
-<td>6</td>
-<td>Overview "Collect" button</td>
-</tr>
-<tr>
-<td><code>kOffers_Abort</code></td>
-<td>23</td>
-<td>Detail-screen "Abort offer"</td>
-</tr>
-<tr>
-<td><code>kOffers_SlotColl</code></td>
-<td>24</td>
-<td>Detail-screen collect area</td>
-</tr>
-<tr>
-<td><code>kOffers_Stepper</code></td>
-<td>26</td>
-<td>Setup-screen stepper strip (ops below)</td>
-</tr>
-<tr>
-<td><code>kOffers_Confirm</code></td>
-<td>30</td>
-<td>Setup-screen "Confirm"</td>
-</tr>
-<tr>
-<td><code>kOffers_Close</code></td>
-<td>2</td>
-<td>Window close "X"</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Offer-box menu ops</strong> (on a box child): <code>kOp_ViewOffer</code> = 2,
-<code>kOp_CreateBuy</code> = 3, <code>kOp_CreateSell</code> = 4 ([UNVERIFIED] — selling
-starts via the side inventory, not the box).</p>
-<p><strong>Child-26 setup ops</strong>: <code>kOp_ChooseItem</code> = 0, <code>kOp_Qty1</code> = 3,
-<code>kOp_Qty10</code> = 4, <code>kOp_Qty100</code> = 5, <code>kOp_QtyAll</code> = 6, <code>kOp_EnterQty</code> = 7,
-<code>kOp_Price_m5</code> = 10, <code>kOp_EnterPrice</code> = 12, <code>kOp_Price_p5</code> = 13,
-<code>kOp_Price_m1</code> = 14, <code>kOp_Price_p1</code> = 15.</p>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>GeOfferInfo</code></strong> — one offer slot. Fields are read-only; the <code>is*</code> helpers are
-callable in both C++ and Lua (<code>offer:isFinished()</code>).</p>
+called with <code>:</code> (<code>offer:isFinished()</code>).</p>
 <table>
 <thead>
 <tr>
@@ -2766,43 +2617,43 @@ callable in both C++ and Lua (<code>offer:isFinished()</code>).</p>
 <tbody>
 <tr>
 <td><code>slot</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Slot index 0..7 (−1 if invalid)</td>
 </tr>
 <tr>
 <td><code>state</code></td>
-<td>GeState</td>
+<td><code>srs.ge.State</code> value</td>
 <td>Lifecycle (see below)</td>
 </tr>
 <tr>
 <td><code>itemId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Traded item id (−1 if empty)</td>
 </tr>
 <tr>
 <td><code>totalQuantity</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Offer size</td>
 </tr>
 <tr>
 <td><code>quantityDone</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Bought / sold so far</td>
 </tr>
 <tr>
 <td><code>price</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Price per item on the offer</td>
 </tr>
 <tr>
 <td><code>spent</code></td>
-<td>int64</td>
+<td>integer</td>
 <td>gp moved so far</td>
 </tr>
 </tbody>
 </table>
 <p>Helpers: <code>isEmpty()</code>, <code>isActive()</code>, <code>isComplete()</code>, <code>isFinished()</code>.</p>
-<p><strong><code>GeState</code></strong> (C++ <code>GeState</code>; Lua <code>srs.ge.State.*</code> — there is no global <code>GeState</code>):</p>
+<p><strong><code>GeState</code></strong> (Lua <code>srs.ge.State.*</code> — there is no global <code>GeState</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2851,7 +2702,7 @@ callable in both C++ and Lua (<code>offer:isFinished()</code>).</p>
 </table>
 <div class="admonition note">
 <p class="admonition-title">Terminal states are best-effort</p>
-<p><code>Empty</code> / <code>Buying</code> / <code>Selling</code> are read directly from the live offer array.
+<p><code>Empty</code> / <code>Buying</code> / <code>Selling</code> are read directly from the live offers.
 The terminal bytes (<code>Bought</code> / <code>Sold</code>, and the cancelled split) are
 best-effort decodes — gate on <code>isFinished()</code> / <code>anyFinished()</code> rather than a
 specific terminal value where you can.</p>

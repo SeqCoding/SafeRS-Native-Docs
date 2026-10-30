@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2223,7 +2223,7 @@
 
 
 <h1 id="hit-splats">Hit splats<a class="headerlink" href="#hit-splats" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::HitSplats</code> / <code>srs.hitsplats</code></p>
+<p><code>srs.hitsplats</code></p>
 <p>The engine's hit-splat feed — every damage number the server applies to any
 actor in the scene, with the victim resolved.</p>
 <p>This is combat <strong>ground truth</strong>. The server tells the client "actor X took N
@@ -2270,51 +2270,46 @@ that combat is actually happening:</p>
 <table>
 <thead>
 <tr>
-<th>desc</th>
-<th>C++</th>
+<th>Method</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Splats in the last N ticks (any actor)</td>
-<td><code>HitSplats::recent(ctx, ticks) → vector&lt;HitSplatEntry&gt;</code></td>
-<td><code>srs.hitsplats.recent(ticks) → table</code></td>
+<td><code>srs.hitsplats.recent([ticks]) → table</code></td>
 </tr>
 <tr>
 <td>Splats that landed on you</td>
-<td><code>HitSplats::onSelf(ctx, ticks) → vector&lt;HitSplatEntry&gt;</code></td>
-<td><code>srs.hitsplats.onSelf(ticks) → table</code></td>
+<td><code>srs.hitsplats.onSelf([ticks]) → table</code></td>
 </tr>
 <tr>
 <td>Splats that landed on one entity</td>
-<td><code>HitSplats::onTarget(ctx, target, ticks) → vector&lt;HitSplatEntry&gt;</code></td>
-<td><code>srs.hitsplats.onTarget(target, ticks) → table</code></td>
+<td><code>srs.hitsplats.onTarget(target [, ticks]) → table</code></td>
 </tr>
 <tr>
 <td>Is the engine hook installed?</td>
-<td><code>HitSplats::isActive() → bool</code></td>
 <td><code>srs.hitsplats.isActive() → bool</code></td>
 </tr>
 <tr>
 <td>Splats observed this session</td>
-<td><code>HitSplats::totalSeen() → uint64</code></td>
 <td><code>srs.hitsplats.totalSeen() → number</code></td>
 </tr>
 <tr>
 <td>Subscribe to splats</td>
-<td><code>HitSplats::onApplied(cb) → uint64</code></td>
 <td><code>srs.hitsplats.onApplied(fn) → token</code></td>
 </tr>
 <tr>
 <td>Unsubscribe</td>
-<td><code>HitSplats::offApplied(token)</code></td>
 <td><code>srs.hitsplats.offApplied(token) → bool</code></td>
 </tr>
 </tbody>
 </table>
 <p><code>ticks</code> is a lookback window in game ticks; omit it (or pass <code>0</code>) for "this
-tick only". Lists come back oldest-first.</p>
+tick only". Lists come back oldest-first. <code>target</code> is an <code>ActionTarget</code> from
+<code>srs.npc.*</code> / <code>entity.*</code>; it is matched by <code>spawnIndex</code>. <code>onApplied(fn)</code> takes
+a function that receives one entry table per splat; <code>offApplied</code> returns
+<code>false</code> for an unknown or already-removed token.</p>
 <div class="admonition warning">
 <p class="admonition-title">The first poll returns empty</p>
 <p>The feed is idle-gated — it costs nothing until something wants it. Your
@@ -2324,7 +2319,7 @@ reads and no subscribers.</p>
 </div>
 <h2 id="entry-shape">Entry shape<a class="headerlink" href="#entry-shape" title="Permanent link">&para;</a></h2>
 <p>Every entry — from <code>recent</code>, the filtered reads, or <code>onApplied</code> — is a plain
-Lua table:</p>
+Lua table (<code>target</code> is the one field that differs, see below):</p>
 <table>
 <thead>
 <tr>
@@ -2336,7 +2331,7 @@ Lua table:</p>
 <tbody>
 <tr>
 <td><code>hitType</code></td>
-<td>int</td>
+<td>integer</td>
 <td><strong>raw</strong> engine type id — branch on this</td>
 </tr>
 <tr>
@@ -2346,37 +2341,37 @@ Lua table:</p>
 </tr>
 <tr>
 <td><code>amount</code></td>
-<td>int</td>
+<td>integer</td>
 <td>damage; <code>0</code> means blocked / miss</td>
 </tr>
 <tr>
 <td><code>blocked</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td><code>amount == 0</code></td>
 </tr>
 <tr>
 <td><code>soakType</code></td>
-<td>int</td>
+<td>integer</td>
 <td>soak type id, <code>-1</code> when absent</td>
 </tr>
 <tr>
 <td><code>soakAmount</code></td>
-<td>int</td>
+<td>integer</td>
 <td>soaked damage</td>
 </tr>
 <tr>
 <td><code>tick</code></td>
-<td>int</td>
+<td>integer</td>
 <td>game tick the splat was delivered on</td>
 </tr>
 <tr>
 <td><code>wallClock</code></td>
 <td>number</td>
-<td><code>GetTickCount64()</code> milliseconds</td>
+<td>Millisecond timestamp (system uptime clock, <code>GetTickCount64</code>) when the splat was applied</td>
 </tr>
 <tr>
 <td><code>isSelf</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td>landed on the local player</td>
 </tr>
 <tr>
@@ -2386,12 +2381,12 @@ Lua table:</p>
 </tr>
 <tr>
 <td><code>spawnIndex</code></td>
-<td>int</td>
+<td>integer</td>
 <td>entity index, <code>-1</code> when unresolved</td>
 </tr>
 <tr>
 <td><code>targetId</code></td>
-<td>int</td>
+<td>integer</td>
 <td>NPC definition id (<code>0</code> for players)</td>
 </tr>
 <tr>
@@ -2401,19 +2396,21 @@ Lua table:</p>
 </tr>
 <tr>
 <td><code>tileX</code> <code>tileY</code> <code>plane</code></td>
-<td>int</td>
+<td>integer</td>
 <td>victim's tile</td>
 </tr>
 <tr>
 <td><code>target</code></td>
 <td>ActionTarget | nil</td>
-<td>live target, so <code>e.target:attack()</code> works. <code>nil</code> for <code>"self"</code> splats and for despawned victims</td>
+<td>live target, so <code>e.target:attack()</code> works. Only set on entries from the polling reads (<code>recent</code> / <code>onSelf</code> / <code>onTarget</code>), and only for NPC victims still in the scene; <code>nil</code> for <code>"self"</code> and <code>"player"</code> splats, for despawned victims, and <strong>always <code>nil</code> in <code>onApplied</code> events</strong></td>
 </tr>
 </tbody>
 </table>
 <p><code>target</code> is <code>nil</code> once the victim has despawned (a kill, or the splat that
-killed it) — the flat <code>targetId</code> / <code>targetName</code> / <code>spawnIndex</code> fields are
-always present, so a splat is never dropped just because its actor is gone.</p>
+killed it), and is never present on <code>onApplied</code> events — the flat <code>targetId</code> /
+<code>targetName</code> / <code>spawnIndex</code> fields are always present, so a splat is never
+dropped just because its actor is gone. To act on the victim from an event,
+find it by <code>spawnIndex</code> / <code>targetId</code> (for example with <code>srs.npc.byId</code>).</p>
 <p>NPC and player splats are attributed by different routes internally, but either
 way you get a <code>spawnIndex</code> — so an <code>"unresolved"</code> splat still tells you <em>which</em>
 actor was hit, even when its name or id could not be filled in.</p>
@@ -2431,14 +2428,10 @@ Do not branch on them. <code>amount</code> and <code>blocked</code> are unaffect
 reliable.</p>
 </div>
 <h2 id="threading">Threading<a class="headerlink" href="#threading" title="Permanent link">&para;</a></h2>
-<p>The engine hook fires on the game thread. Nothing here calls Lua from there:
-the hook queues, and the host drains + resolves on the script worker once per
-frame. So <code>srs.hitsplats.onApplied</code> fires on the <strong>script thread</strong>, exactly
-like <a href="../Projectiles/"><code>srs.projectiles.onSpawned</code></a>.</p>
-<p>The native <code>HitSplats::onApplied</code> is the raw C++ path and <strong>does</strong> fire on the
-game thread, with no target resolution (<code>targetKind</code> is always <code>"unresolved"</code>
-and only the raw <code>actor</code> pointer identifies the victim). Prefer the Lua path
-unless you genuinely need game-thread immediacy.</p>
+<p>Nothing here runs Lua on the game thread: the engine hook queues, and the host
+drains + resolves splats on the script worker once per frame. So
+<code>srs.hitsplats.onApplied</code> fires on the <strong>script thread</strong>, exactly like
+<a href="../Projectiles/"><code>srs.projectiles.onSpawned</code></a>.</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>Confirm you are actually damaging the boss, rather than guessing from
 animations:</p>

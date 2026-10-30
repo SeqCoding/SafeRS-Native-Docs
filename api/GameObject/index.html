@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2201,7 +2201,7 @@
 
 
 <h1 id="gameobject">GameObject<a class="headerlink" href="#gameobject" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::GameObject</code> / <code>srs.gameobject</code></p>
+<p><code>srs.gameobject</code></p>
 <p>Query and interact with scene loc objects — game objects, walls,
 decorations, ground decorations. Distinct from NPCs and players.</p>
 <p>Names come from the runtime <code>LocType</code> cache; entries with empty
@@ -2211,54 +2211,44 @@ names are nameless decorations (still queryable by id).</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>All locs (heavy)</td>
-<td><code>GameObject::all(ctx) → vector&lt;GameObjectEntry&gt;</code></td>
 <td><code>srs.gameobject.all() → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>By id</td>
-<td><code>GameObject::byId(ctx, id) → vector&lt;GameObjectEntry&gt;</code></td>
 <td><code>srs.gameobject.byId(id) → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>By name</td>
-<td><code>GameObject::byName(ctx, name) → vector&lt;GameObjectEntry&gt;</code></td>
 <td><code>srs.gameobject.byName(name) → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>Nearest (any)</td>
-<td><code>GameObject::nearest(ctx) → optional&lt;GameObjectEntry&gt;</code></td>
 <td><code>srs.gameobject.nearest() → GameObjectEntry \| nil</code></td>
 </tr>
 <tr>
 <td>Nearest by name</td>
-<td><code>GameObject::nearestByName(ctx, name) → optional&lt;GameObjectEntry&gt;</code></td>
 <td><code>srs.gameobject.nearestByName(name) → GameObjectEntry \| nil</code></td>
 </tr>
 <tr>
 <td>Interact (target + action)</td>
-<td><code>GameObject::interact(ctx, target, action) → bool</code></td>
 <td><code>srs.gameobject.interact(target, action) → bool</code></td>
 </tr>
 <tr>
 <td>Find-nearest-and-interact</td>
-<td><code>GameObject::interactNearest(ctx, name, action) → bool</code></td>
 <td><code>srs.gameobject.interactNearest(name, action) → bool</code></td>
 </tr>
 <tr>
 <td>Interact with first available verb</td>
-<td><code>GameObject::interactFirstAvailable(ctx, target, actions) → bool</code></td>
 <td><code>srs.gameobject.interactFirstAvailable(target, actions) → bool</code></td>
 </tr>
 <tr>
 <td>Examine</td>
-<td><code>GameObject::examine(ctx, target) → bool</code></td>
 <td><code>srs.gameobject.examine(target) → bool</code></td>
 </tr>
 </tbody>
@@ -2290,7 +2280,7 @@ helpers, or filter the result yourself.</p>
 <tbody>
 <tr>
 <td><code>id</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>LocType id</td>
 </tr>
 <tr>
@@ -2300,23 +2290,58 @@ helpers, or filter the result yourself.</p>
 </tr>
 <tr>
 <td><code>tileX</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>World tile X</td>
 </tr>
 <tr>
 <td><code>tileY</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>World tile Y</td>
 </tr>
 <tr>
 <td><code>plane</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>0..3</td>
 </tr>
 <tr>
 <td><code>actions</code></td>
-<td>string[]</td>
-<td>Menu-option verbs the loc exposes, in menu order (e.g. <code>{"Mine"}</code>, <code>{"Deposit"}</code>, <code>{"Search"}</code>). These are the exact strings <code>interact</code> accepts. Empty when the <code>LocType</code> isn't cached yet (renderer decodes lazily). In Lua this is a real 1-based table (a copy), safe to keep and iterate with <code>ipairs</code>.</td>
+<td>table of strings</td>
+<td>Menu-option verbs the loc exposes, in menu order (e.g. <code>{"Mine"}</code>, <code>{"Deposit"}</code>, <code>{"Search"}</code>). These are the exact strings <code>interact</code> accepts. Empty when the <code>LocType</code> isn't cached yet (renderer decodes lazily). A real 1-based table (a copy), safe to keep and iterate with <code>ipairs</code>.</td>
+</tr>
+<tr>
+<td><code>rotation</code></td>
+<td>integer</td>
+<td>Placement rotation, 0-3 (one quarter turn each); <code>-1</code> for wall decorations</td>
+</tr>
+<tr>
+<td><code>shape</code></td>
+<td>integer</td>
+<td>LocType shape (0-3 walls, 9 diagonal wall, 10 centrepiece, 11 diagonal centrepiece); <code>-1</code> for wall decorations</td>
+</tr>
+<tr>
+<td><code>orientation</code></td>
+<td>integer</td>
+<td><code>rotation * 512</code> (+256 for shape 11), 0-2047; <code>-1</code> for wall decorations</td>
+</tr>
+<tr>
+<td><code>animationId</code></td>
+<td>integer</td>
+<td>Animation the loc is playing; <code>-1</code> when not animating</td>
+</tr>
+<tr>
+<td><code>animationFrame</code></td>
+<td>integer</td>
+<td>Current animation frame; <code>-1</code> when not animating</td>
+</tr>
+<tr>
+<td><code>animationElapsed</code></td>
+<td>integer</td>
+<td>Client cycles (20 ms; 30 per game tick) into the current animation; <code>-1</code> when not animating</td>
+</tr>
+<tr>
+<td><code>animationLength</code></td>
+<td>integer</td>
+<td>Total length of the animation in client cycles; <code>-1</code> when not animating. Remaining = <code>animationLength - animationElapsed</code></td>
 </tr>
 </tbody>
 </table>
@@ -2333,36 +2358,17 @@ real click is dispatched — no speculative attempts). Returns the
 <code>LocType</code> isn't cached). This replaces the "loop over candidate verbs
 calling <code>interact</code> until one sticks" pattern.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// Chop the nearest tree</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">GameObject</span><span class="o">::</span><span class="n">interactNearest</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Tree&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Chop down&quot;</span><span class="p">);</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">// Open a deposit box without caring whether the verb is</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">// &quot;Deposit&quot;, &quot;Deposit-All&quot;, or &quot;Bank&quot;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">box</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GameObject</span><span class="o">::</span><span class="n">nearestByName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bank deposit box&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="n">GameObject</span><span class="o">::</span><span class="n">interactFirstAvailable</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">box</span><span class="p">,</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="p">{</span><span class="s">&quot;Deposit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Deposit-All&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bank&quot;</span><span class="p">});</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Chop the nearest tree</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">gameobject</span><span class="p">.</span><span class="nf">interactNearest</span><span class="p">(</span><span class="s2">&quot;Tree&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Chop down&quot;</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">-- Inspect what a loc can do</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kd">local</span><span class="w"> </span><span class="nv">box</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">gameobject</span><span class="p">.</span><span class="nf">nearestByName</span><span class="p">(</span><span class="s2">&quot;Bank deposit box&quot;</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kr">if</span><span class="w"> </span><span class="nv">box</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">verb</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">box</span><span class="p">.</span><span class="py">actions</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span><span class="w"> </span><span class="nb">print</span><span class="p">(</span><span class="nv">verb</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="c1">-- Click whichever deposit verb this box exposes</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">gameobject</span><span class="p">.</span><span class="nf">interactFirstAvailable</span><span class="p">(</span><span class="nv">box</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;Deposit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Deposit-All&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Bank&quot;</span><span class="p">})</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Chop the nearest tree</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">gameobject</span><span class="p">.</span><span class="nf">interactNearest</span><span class="p">(</span><span class="s2">&quot;Tree&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Chop down&quot;</span><span class="p">)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1">-- Inspect what a loc can do</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kd">local</span><span class="w"> </span><span class="nv">box</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">gameobject</span><span class="p">.</span><span class="nf">nearestByName</span><span class="p">(</span><span class="s2">&quot;Bank deposit box&quot;</span><span class="p">)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kr">if</span><span class="w"> </span><span class="nv">box</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">verb</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">box</span><span class="p">.</span><span class="py">actions</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span><span class="w"> </span><span class="nb">print</span><span class="p">(</span><span class="nv">verb</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="c1">-- Click whichever deposit verb this box exposes</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">gameobject</span><span class="p">.</span><span class="nf">interactFirstAvailable</span><span class="p">(</span><span class="nv">box</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;Deposit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Deposit-All&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Bank&quot;</span><span class="p">})</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

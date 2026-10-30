@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2245,7 +2245,7 @@
 
 
 <h1 id="session">Session<a class="headerlink" href="#session" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Session</code> / <code>srs.session</code></p>
+<p><code>srs.session</code></p>
 <p>Declare the stats your script wants tracked on the SafeRS website. Every
 value you declare shows up on the user's <strong>Script Stats</strong> page for this run:
 live while it runs, then in their history and lifetime totals per script.</p>
@@ -2257,40 +2257,34 @@ is shown only to the user who ran the script.</p>
 <table>
 <thead>
 <tr>
-<th>Description</th>
-<th>C++</th>
+<th>Method</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Set a number stat</td>
-<td><code>Session::stat(key, value)</code></td>
 <td><code>srs.session.stat(key, value)</code></td>
 </tr>
 <tr>
 <td>Set a number stat with a label / kind</td>
-<td><code>Session::stat(key, value, SessionStatOptions)</code></td>
 <td><code>srs.session.stat(key, value, opts)</code></td>
 </tr>
 <tr>
 <td>Set a text stat</td>
-<td><code>Session::text(key, value)</code></td>
 <td><code>srs.session.stat(key, "text")</code></td>
 </tr>
 <tr>
 <td>Set a text stat with a label</td>
-<td><code>Session::text(key, value, label)</code></td>
 <td><code>srs.session.stat(key, "text", { label = ... })</code></td>
 </tr>
 <tr>
 <td>Forget every stat declared for this run</td>
-<td><code>Session::reset()</code></td>
 <td><code>srs.session.reset()</code></td>
 </tr>
 </tbody>
 </table>
-<p>In Lua the type of <code>value</code> picks the stat: a number is a number stat, a string
+<p>The type of <code>value</code> picks the stat: a number is a number stat, a string
 is a text stat.</p>
 <h2 id="behaviour">Behaviour<a class="headerlink" href="#behaviour" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2301,14 +2295,13 @@ is a text stat.</p>
   3 minutes), so it is fine to call these every <code>pulse</code> or <code>onTick</code>.</li>
 <li>A <strong>run</strong> is one start → stop of your script. Stopping and starting it again
   begins a new run with no stats; a break pause does not end the run.</li>
-<li>Stats belong to the script whose callback is running (in Lua the top-level
-  chunk counts too); calls from anywhere else are ignored. C++ calls are
-  thread-safe.</li>
+<li>Stats belong to the script whose callback is running (the top-level
+  chunk counts too); calls from anywhere else are ignored.</li>
 <li>Scripts loaded from disk are tracked under their file name and show on the
   user's own page only; public totals count published plugins.</li>
 </ul>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
-<p><strong><code>SessionStatOptions</code></strong> (Lua: a table with the same keys, all optional):</p>
+<p><strong><code>SessionStatOptions</code></strong> (a table, all keys optional):</p>
 <table>
 <thead>
 <tr>
@@ -2387,9 +2380,6 @@ keeps the last value.</p>
 <li>Rates are capped server-side, so implausible values are not credited.</li>
 </ul>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Lua</label><label for="__tabbed_1_2">C++</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">made</span><span class="p">,</span><span class="w"> </span><span class="nv">profit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kd">local</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="nf">report</span><span class="p">()</span>
@@ -2398,21 +2388,11 @@ keeps the last value.</p>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">session</span><span class="p">.</span><span class="nf">stat</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Gold bars&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Current task&quot;</span><span class="w"> </span><span class="p">})</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kr">end</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="kr">function</span><span class="w"> </span><span class="nc">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">()</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="c1">-- ... smelt, update made/profit ...</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nf">report</span><span class="p">()</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="kr">end</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">Session</span><span class="o">::</span><span class="n">stat</span><span class="p">(</span><span class="s">&quot;bars&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">made</span><span class="p">,</span><span class="w"> </span><span class="n">SessionStatOptions</span><span class="p">{</span><span class="s">&quot;Bars made&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;count&quot;</span><span class="p">});</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">Session</span><span class="o">::</span><span class="n">stat</span><span class="p">(</span><span class="s">&quot;profit&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">profit</span><span class="p">,</span><span class="w"> </span><span class="n">SessionStatOptions</span><span class="p">{</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gp&quot;</span><span class="p">});</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">Session</span><span class="o">::</span><span class="n">text</span><span class="p">(</span><span class="s">&quot;task&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Gold bars&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Current task&quot;</span><span class="p">);</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

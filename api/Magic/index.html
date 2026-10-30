@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -1387,17 +1387,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#constants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2229,17 +2218,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#types" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Types
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#constants" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2279,7 +2257,7 @@
 
 
 <h1 id="magic">Magic<a class="headerlink" href="#magic" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Magic</code> / <code>srs.magic</code></p>
+<p><code>srs.magic</code></p>
 <p>Cast spells using the <a href="../Spells/">Spells</a> metadata table. All four
 spellbooks (Standard, Ancient, Lunar, Arceuus) share spellbook widget
 group 218; the matching book must be the active one when you cast.</p>
@@ -2288,81 +2266,66 @@ group 218; the matching book must be the active one when you cast.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Available rune count</td>
-<td><code>Magic::runeCount(ctx, runeItemId, src = {}) → int32</code></td>
 <td><code>srs.magic.runeCount(runeItemId) → int</code></td>
 </tr>
 <tr>
 <td>Can cast (level + rune availability)</td>
-<td><code>Magic::canCast(ctx, s, src = {}) → bool</code></td>
 <td><code>srs.magic.canCast(s) → bool</code></td>
 </tr>
 <tr>
 <td>Cast (no-target / self)</td>
-<td><code>Magic::cast(ctx, s) → bool</code></td>
 <td><code>srs.magic.cast(s) → bool</code></td>
 </tr>
 <tr>
 <td>Two-click cast on inv slot</td>
-<td><code>Magic::castOnInventory(ctx, s, slot) → bool</code></td>
 <td><code>srs.magic.castOnInventory(s, slot) → bool</code></td>
 </tr>
 <tr>
 <td>Two-click cast on an NPC</td>
-<td><code>Magic::castOnNpc(ctx, s, npc) → bool</code> (<code>NpcEntry</code> or <code>ActionTarget</code>)</td>
 <td><code>srs.magic.castOnNpc(s, target) → bool</code></td>
 </tr>
 <tr>
 <td>Two-click cast on a ground item</td>
-<td><code>Magic::castOnGroundItem(ctx, s, entry) → bool</code></td>
 <td><code>srs.magic.castOnGroundItem(s, entry) → bool</code></td>
 </tr>
 <tr>
 <td>Select the autocast spell</td>
-<td><code>Magic::setAutocast(ctx, s) → bool</code> / <code>setAutocast(ctx, s, defensive)</code></td>
 <td><code>srs.magic.setAutocast(s[, defensive]) → bool</code></td>
 </tr>
 <tr>
 <td>Autocast selected?</td>
-<td><code>Magic::isAutocasting(ctx) → bool</code></td>
 <td><code>srs.magic.isAutocasting() → bool</code></td>
 </tr>
 <tr>
 <td>Defensive autocast selected?</td>
-<td><code>Magic::isDefensiveAutocast(ctx) → bool</code></td>
 <td><code>srs.magic.isDefensiveAutocast() → bool</code></td>
 </tr>
 <tr>
 <td>Selected autocast spell</td>
-<td><code>Magic::autocastSpell(ctx) → optional&lt;Spell&gt;</code></td>
 <td><code>srs.magic.autocastSpell() → int \| nil</code></td>
 </tr>
 <tr>
 <td>High alch convenience</td>
-<td><code>Magic::highAlch(ctx, slot) → bool</code></td>
 <td><code>srs.magic.highAlch(slot) → bool</code></td>
 </tr>
 <tr>
 <td>Low alch convenience</td>
-<td><code>Magic::lowAlch(ctx, slot) → bool</code></td>
 <td><code>srs.magic.lowAlch(slot) → bool</code></td>
 </tr>
 </tbody>
 </table>
 <p><code>canCast</code> checks the Magic level plus every per-rune cost; <code>runeCount</code>
-totals the copies of one rune id across the requested sources. Both
-count <strong>inventory + rune pouch by default</strong> (<code>RuneSource</code> defaults).
-Bank counting (<code>RuneSource.bank</code>, C++ only) is only meaningful while the
-bank is open / cached. Elemental-staff substitution is still TODO, so
+totals the copies of one rune id. Both
+count <strong>inventory + rune pouch</strong> (the bank is never counted from Lua).
+Elemental-staff substitution is still TODO, so
 don't hard-gate a cast on <code>canCast</code> when the player wields a staff —
-try the cast and count failures instead. The Lua bindings don't expose
-<code>RuneSource</code> and always use the defaults.</p>
+try the cast and count failures instead.</p>
 <p><code>cast</code> fires the spell click — works for self-target / no-target
 spells (teleports, alchemy on self, etc.). It does <strong>not</strong> pre-select
 for use-on.</p>
@@ -2390,9 +2353,7 @@ than the return value.</p>
   spells, Monster Examine, the Arceuus Grasp / Demonbane spells and Dark
   Lure — see the per-book target tables in <a href="../Spells/">Spells</a>.
   Player-target spells (Teleport Block, Cure Other, Stat Spy, Energy
-  Transfer, Heal Other, Vengeance Other) are not supported by this call.
-  In Lua <code>target</code> is the <code>ActionTarget</code> that <code>srs.npc.*</code> returns; C++
-  also accepts an <code>NpcEntry</code>.</li>
+  Transfer, Heal Other, Vengeance Other) are not supported by this call.</li>
 <li><code>castOnGroundItem(s, entry)</code> — <code>entry</code> from <code>srs.grounditem.*</code>
   (Telekinetic Grab). The pile must still be on that tile and on screen
   at fire time.</li>
@@ -2402,7 +2363,7 @@ Swap, ...) use plain <code>cast</code>.</p>
 <p>All two-click casts (including <code>highAlch</code> / <code>lowAlch</code>) need the
 spellbook showing, and <strong>the script owns the tab</strong>: open it with
 <code>srs.tab.switchTo(srs.tab.MAGIC)</code> and check <code>srs.tab.isOpen</code> before
-casting. The facade never switches tabs itself; when the book is not
+casting. The API never switches tabs itself; when the book is not
 rendered it returns <code>false</code> and prints why. All
 variants return <code>false</code> when the spell metadata is unpopulated.</p>
 <h3 id="autocast">Autocast<a class="headerlink" href="#autocast" title="Permanent link">&para;</a></h3>
@@ -2430,67 +2391,36 @@ checks: Wind Strike on a chicken, Telekinetic Grab on a dropped item,
 autocast Wind Strike with a staff of air, autocast Ice Barrage with an
 Ancient staff.</p>
 </div>
-<h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
-<p><strong><code>RuneSource</code></strong> (C++-only; Lua uses the defaults):</p>
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">RuneSource</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">inventory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">pouch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bank</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
-</span></code></pre></div>
-<p>Selects where <code>canCast</code> / <code>runeCount</code> look for runes. <code>bank = true</code> is
-only meaningful while the bank is open / cached.</p>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <p>Spell and Spellbook constants live in <a href="../Spells/">Spells</a>.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Magic</span><span class="o">::</span><span class="n">canCast</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">HighAlchemy</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">Magic</span><span class="o">::</span><span class="n">highAlch</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">   </span><span class="c1">// alch slot 0</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">chicken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Npc</span><span class="o">::</span><span class="n">nearestByName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Chicken&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="n">Magic</span><span class="o">::</span><span class="n">castOnNpc</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">WindStrike</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">chicken</span><span class="p">);</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">boot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GroundItem</span><span class="o">::</span><span class="n">nearestByName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Right boot&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="n">Magic</span><span class="o">::</span><span class="n">castOnGroundItem</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">TelekineticGrab</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">boot</span><span class="p">);</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">}</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Magic</span><span class="o">::</span><span class="n">autocastSpell</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">FireStrike</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="n">Magic</span><span class="o">::</span><span class="n">setAutocast</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">FireStrike</span><span class="p">);</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">}</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1">// Ancient combat spell on an NPC (Ancient spellbook active)</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Npc</span><span class="o">::</span><span class="n">nearestByName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Chicken&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="n">Magic</span><span class="o">::</span><span class="n">castOnNpc</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">Spell</span><span class="o">::</span><span class="n">IceBarrage</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">npc</span><span class="p">);</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- castOnInventory / highAlch / lowAlch do not open the spellbook for you</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">MAGIC</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">switchTo</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">MAGIC</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">canCast</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">HIGH_ALCHEMY</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">highAlch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">-- Wind Strike on the nearest chicken (spellbook must be showing)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">MAGIC</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">switchTo</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">MAGIC</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="kd">local</span><span class="w"> </span><span class="nv">chicken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">nearestByName</span><span class="p">(</span><span class="s2">&quot;Chicken&quot;</span><span class="p">)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="kr">if</span><span class="w"> </span><span class="nv">chicken</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">castOnNpc</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">WIND_STRIKE</span><span class="p">,</span><span class="w"> </span><span class="nv">chicken</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">-- Telekinetic Grab a dropped item</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="kd">local</span><span class="w"> </span><span class="nv">boot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">grounditem</span><span class="p">.</span><span class="nf">nearestByName</span><span class="p">(</span><span class="s2">&quot;Right boot&quot;</span><span class="p">)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="kr">if</span><span class="w"> </span><span class="nv">boot</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">castOnGroundItem</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">TELEKINETIC_GRAB</span><span class="p">,</span><span class="w"> </span><span class="nv">boot</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1">-- Autocast Fire Strike (staff of air wielded), then attack</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">autocastSpell</span><span class="p">()</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">FIRE_STRIKE</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">COMBAT</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">setAutocast</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">FIRE_STRIKE</span><span class="p">)</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="kr">else</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">switchTo</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">COMBAT</span><span class="p">)</span><span class="w">           </span><span class="c1">-- the script owns the tab</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="kr">else</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">nearestByName</span><span class="p">(</span><span class="s2">&quot;Chicken&quot;</span><span class="p">)</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">target</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">attack</span><span class="p">(</span><span class="nv">target</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- castOnInventory / highAlch / lowAlch do not open the spellbook for you</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">MAGIC</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">switchTo</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">MAGIC</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">canCast</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">HIGH_ALCHEMY</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">highAlch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="kr">end</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1">-- Wind Strike on the nearest chicken (spellbook must be showing)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">MAGIC</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">switchTo</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">MAGIC</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="kd">local</span><span class="w"> </span><span class="nv">chicken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">nearestByName</span><span class="p">(</span><span class="s2">&quot;Chicken&quot;</span><span class="p">)</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="kr">if</span><span class="w"> </span><span class="nv">chicken</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">castOnNpc</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">WIND_STRIKE</span><span class="p">,</span><span class="w"> </span><span class="nv">chicken</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1">-- Telekinetic Grab a dropped item</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="kd">local</span><span class="w"> </span><span class="nv">boot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">grounditem</span><span class="p">.</span><span class="nf">nearestByName</span><span class="p">(</span><span class="s2">&quot;Right boot&quot;</span><span class="p">)</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="kr">if</span><span class="w"> </span><span class="nv">boot</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">castOnGroundItem</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">TELEKINETIC_GRAB</span><span class="p">,</span><span class="w"> </span><span class="nv">boot</span><span class="p">)</span><span class="w"> </span><span class="kr">end</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="c1">-- Autocast Fire Strike (staff of air wielded), then attack</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">autocastSpell</span><span class="p">()</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">FIRE_STRIKE</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">COMBAT</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">magic</span><span class="p">.</span><span class="nf">setAutocast</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">spell</span><span class="p">.</span><span class="py">FIRE_STRIKE</span><span class="p">)</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="kr">else</span>
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">switchTo</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">COMBAT</span><span class="p">)</span><span class="w">           </span><span class="c1">-- the script owns the tab</span>
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="kr">else</span>
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">attack</span><span class="p">(</span><span class="nv">target</span><span class="p">)</span>
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

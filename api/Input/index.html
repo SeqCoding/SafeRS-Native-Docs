@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2279,7 +2279,7 @@
 
 
 <h1 id="input">Input<a class="headerlink" href="#input" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Input</code> / <code>srs.input</code></p>
+<p><code>srs.input</code></p>
 <p>Keyboard primitives. Two families live here, and they take <strong>different
 roads into the engine</strong>:</p>
 <table>
@@ -2325,49 +2325,44 @@ reachable from scripts.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Type text into the focused field (<strong>blocks</strong>)</td>
-<td><code>Input::typeString(ctx, text) → size_t</code></td>
 <td><code>srs.input.typeString(text) → int</code></td>
 </tr>
 <tr>
 <td>Type, then Enter (<strong>blocks</strong>)</td>
-<td><code>Input::typeString(ctx, text, submit) → size_t</code></td>
 <td><code>srs.input.typeString(text, submit) → int</code></td>
 </tr>
 <tr>
 <td>Type with a custom pacing band (<strong>blocks</strong>)</td>
-<td><code>Input::typeString(ctx, text, submit, minMs, maxMs) → size_t</code></td>
 <td><code>srs.input.typeString(text, submit, minMs, maxMs) → int</code></td>
 </tr>
 <tr>
 <td>Tap one key, engine road (fire-and-forget)</td>
-<td><code>Input::pressKey(ctx, vk) → bool</code></td>
 <td><code>srs.input.pressKey(vk) → bool</code></td>
 </tr>
 <tr>
-<td>Enter / Escape, engine road</td>
-<td><code>Input::pressEnter(ctx) → bool</code> / <code>Input::pressEscape(ctx) → bool</code></td>
-<td><code>srs.input.pressEnter() → bool</code> / <code>srs.input.pressEscape() → bool</code></td>
+<td>Enter, engine road</td>
+<td><code>srs.input.pressEnter() → bool</code></td>
+</tr>
+<tr>
+<td>Escape, engine road</td>
+<td><code>srs.input.pressEscape() → bool</code></td>
 </tr>
 <tr>
 <td>Tap a key, WndProc road</td>
-<td>—</td>
 <td><code>srs.input.keyTap(vk, holdMs)</code></td>
 </tr>
 <tr>
 <td>Tap a key (deprecated alias of <code>keyTap</code>)</td>
-<td>—</td>
 <td><code>srs.input.osKeyTap(vk, holdMs)</code></td>
 </tr>
 <tr>
 <td>Any WndProc release still scheduled?</td>
-<td>—</td>
 <td><code>srs.input.isKeyPending() → bool</code></td>
 </tr>
 </tbody>
@@ -2403,10 +2398,9 @@ without <code>submit</code>.</p>
 <h3 id="keytap-vs-oskeytap">keyTap vs osKeyTap<a class="headerlink" href="#keytap-vs-oskeytap" title="Permanent link">&para;</a></h3>
 <p>There is <strong>one</strong> WndProc path: <code>keyTap</code> posts <code>WM_KEYDOWN</code> now and schedules
 the <code>WM_KEYUP</code> for <code>holdMs</code> later (<code>holdMs &lt; 0</code> clamps to 0). The release
-fires from <code>InputManager::update()</code> every rendered frame (~16 ms
-granularity). <code>osKeyTap</code> is a <strong>deprecated alias</strong> that forwards to <code>keyTap</code>
+fires every rendered frame (~16 ms granularity). <code>osKeyTap</code> is a <strong>deprecated alias</strong> that forwards to <code>keyTap</code>
 — it no longer uses <code>SendInput</code> and has no foreground requirement; it is
-kept only so older ported scripts keep compiling.</p>
+kept only so older scripts keep working.</p>
 <h2 id="vk-constants">VK constants<a class="headerlink" href="#vk-constants" title="Permanent link">&para;</a></h2>
 <p><code>srs.input.VK.*</code>:</p>
 <table>
@@ -2468,46 +2462,25 @@ kept only so older ported scripts keep compiling.</p>
 <p>For other keys pass the raw VK integer (see Microsoft's
 <a href="https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes">Virtual-Key Codes</a>).</p>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// Custom-quantity withdraw: withdrawX runs the whole Enter-amount prompt</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">// itself (click, wait for the prompt, type, Enter) for any amount other</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">// than 1/5/10 — no manual typing needed. amount &lt;= 0 returns false.</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">Bank</span><span class="o">::</span><span class="n">withdrawX</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Coins&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1337</span><span class="p">);</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">// typeString is for fields you open yourself: fire the trigger, wait for</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">// the prompt, then type + Enter.</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Prompt</span><span class="o">::</span><span class="n">waitOpen</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="n">Input</span><span class="o">::</span><span class="n">typeString</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;1337&quot;</span><span class="p">,</span><span class="w"> </span><span class="cm">/*submit*/</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Tutorial Island display-name box (widget 558): focus it, type, then</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">-- press the &quot;Set name&quot; button. Once — not every tick.</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="mi">558</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">typedName</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">clickReal</span><span class="p">(</span><span class="mi">558</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w">              </span><span class="c1">-- the NAME box</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="nf">typeString</span><span class="p">(</span><span class="s2">&quot;kebab&quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">math.random</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">999</span><span class="p">))</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nv">typedName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">click</span><span class="p">(</span><span class="mi">558</span><span class="p">,</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Set name&quot;</span><span class="p">)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kr">end</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">-- Public chat: type and send in one call.</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="nf">typeString</span><span class="p">(</span><span class="s2">&quot;gz&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Tutorial Island display-name box (widget 558): focus it, type, then</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">-- press the &quot;Set name&quot; button. Once — not every tick.</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="mi">558</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">typedName</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">clickReal</span><span class="p">(</span><span class="mi">558</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w">              </span><span class="c1">-- the NAME box</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="nf">typeString</span><span class="p">(</span><span class="s2">&quot;kebab&quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">math.random</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">999</span><span class="p">))</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nv">typedName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">click</span><span class="p">(</span><span class="mi">558</span><span class="p">,</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Set name&quot;</span><span class="p">)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kr">end</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1">-- Public chat: type and send in one call.</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="nf">typeString</span><span class="p">(</span><span class="s2">&quot;gz&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Calibrate yaw-rotation rate (WndProc road): hold left arrow for 1s.</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">y0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">getYaw</span><span class="p">()</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="nf">keyTap</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="py">VK</span><span class="p">.</span><span class="py">LEFT</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">nextTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">y1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">getYaw</span><span class="p">()</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;Δyaw over 1s = %d units&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">((</span><span class="nv">y1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">y0</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2048</span><span class="p">))</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="kr">end</span><span class="p">)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Calibrate yaw-rotation rate (WndProc road): hold left arrow for 1s.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">y0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">getYaw</span><span class="p">()</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="nf">keyTap</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">input</span><span class="p">.</span><span class="py">VK</span><span class="p">.</span><span class="py">LEFT</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">script</span><span class="p">.</span><span class="nf">nextTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">y1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">camera</span><span class="p">.</span><span class="nf">getYaw</span><span class="p">()</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;Δyaw over 1s = %d units&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">((</span><span class="nv">y1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">y0</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2048</span><span class="p">))</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 
 

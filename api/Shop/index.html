@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2267,7 +2267,7 @@
 
 
 <h1 id="shop">Shop<a class="headerlink" href="#shop" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Shop</code> / <code>srs.shop</code></p>
+<p><code>srs.shop</code></p>
 <p>Read shop stock, buy from the stock grid and sell from the side
 inventory. Stock is read from the shop's stock grid (<code>Shopmain.ITEMS</code>,
 widget 300/16) — each shop has its <strong>own</strong> inventory id, so there is no single
@@ -2276,11 +2276,10 @@ side is the player-inventory mirror in group 301.</p>
 <p>Per-item clicks use the same recipe as <a href="../Bank/">Bank</a> per-item withdraw:
 a CC_OP on the grid cell (dyn child of <code>Shopmain.ITEMS</code> (300, 16) or the
 <code>Shopside</code> inventory (301, 0)), routed through the engine's action
-dispatcher on the main thread with the input spoof. No packets are
-built by the facade.</p>
+dispatcher with the input spoof. No packets are built by the script API.</p>
 <div class="admonition warning">
 <p class="admonition-title">Buy / sell not yet verified in game</p>
-<p><code>buy</code> / <code>sell</code> compile and are built on the same
+<p><code>buy</code> / <code>sell</code> are built on the same
 approach as the Bank per-item withdraw, but have <strong>not</strong> been tested
 against a live shop. Menu positions are read from each slot's own
 action list; the fallback table (<code>Value</code> = 1, <code>1</code> = 2, <code>5</code> = 3,
@@ -2292,15 +2291,13 @@ on a cheap item before relying on them in a script.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Is shop open</td>
-<td><code>Shop::isOpen(ctx) → bool</code></td>
-<td><code>srs.shop.isOpen() → bool</code></td>
+<td><code>srs.shop.isOpen() → boolean</code></td>
 </tr>
 </tbody>
 </table>
@@ -2309,40 +2306,33 @@ on a cheap item before relying on them in a script.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>All stock</td>
-<td><code>Shop::stock(ctx) → vector&lt;InventoryItem&gt;</code></td>
 <td><code>srs.shop.stock() → table</code></td>
 </tr>
 <tr>
 <td>Has stock by id</td>
-<td><code>Shop::hasStock(ctx, id) → bool</code></td>
-<td><code>srs.shop.hasStock(id) → bool</code></td>
+<td><code>srs.shop.hasStock(id) → boolean</code></td>
 </tr>
 <tr>
 <td>Has stock by name</td>
-<td><code>Shop::hasStock(ctx, name) → bool</code></td>
-<td><code>srs.shop.hasStock(name) → bool</code></td>
+<td><code>srs.shop.hasStock(name) → boolean</code></td>
 </tr>
 <tr>
 <td>Stock count by id</td>
-<td><code>Shop::stockCount(ctx, id) → int32</code></td>
-<td><code>srs.shop.stockCount(id) → int</code></td>
+<td><code>srs.shop.stockCount(id) → integer</code></td>
 </tr>
 <tr>
 <td>Stock count by name</td>
-<td><code>Shop::stockCount(ctx, name) → int32</code></td>
-<td><code>srs.shop.stockCount(name) → int</code></td>
+<td><code>srs.shop.stockCount(name) → integer</code></td>
 </tr>
 <tr>
 <td>At-least-N in stock</td>
-<td><code>Shop::hasMinimumStock(ctx, id, min) → bool</code></td>
-<td><code>srs.shop.hasMinimumStock(id, min) → bool</code></td>
+<td><code>srs.shop.hasMinimumStock(id, min) → boolean</code></td>
 </tr>
 </tbody>
 </table>
@@ -2356,20 +2346,17 @@ them.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Buy N of an item</td>
-<td><code>Shop::buy(ctx, id\|name, qty = 1) → bool</code></td>
-<td><code>srs.shop.buy(id\|name[, qty = 1]) → bool</code></td>
+<td><code>srs.shop.buy(id\|name[, qty = 1]) → boolean</code></td>
 </tr>
 <tr>
 <td>Sell N of an item</td>
-<td><code>Shop::sell(ctx, id\|name, qty = 1) → bool</code></td>
-<td><code>srs.shop.sell(id\|name[, qty = 1]) → bool</code></td>
+<td><code>srs.shop.sell(id\|name[, qty = 1]) → boolean</code></td>
 </tr>
 </tbody>
 </table>
@@ -2388,12 +2375,12 @@ is delivered:</p>
   (or the stack being sold) runs out mid-way it stops early and still returns <code>true</code>
   for the clicks that fired.</li>
 <li><strong><code>Buy X</code> / <code>Sell X</code></strong> (when the UI exposes it): one click, then the
-  amount typed into the chatbox prompt (like <code>Bank::withdrawX</code>).</li>
+  amount typed into the chatbox prompt (like <code>srs.bank.withdrawX</code>).</li>
 <li><strong>bare <code>Buy</code> / <code>Sell</code></strong> (quantity-preset UI): the sticky preset is set
   via <code>setQuantity</code> to cover <code>qty</code> (X + typed amount when no preset
   matches), then the slot is clicked once.</li>
 </ul>
-<p>When the slot's action list can't be read (WidgetQuery not ready) the
+<p>When the slot's action list can't be read (widget data not ready) the
 standard identifier table is used: <code>Value</code> = 1, <code>1</code> = 2, <code>5</code> = 3,
 <code>10</code> = 4, <code>50</code> = 5.</p>
 <p><code>true</code> means the click(s) were dispatched, not that the trade happened —
@@ -2411,19 +2398,17 @@ the slot exposes a bare <code>Buy</code> / <code>Sell</code> op (see above).</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Set quantity</td>
-<td><code>Shop::setQuantity(ctx, q) → bool</code></td>
-<td><code>srs.shop.setQuantity(q) → bool</code></td>
+<td><code>srs.shop.setQuantity(q) → boolean</code></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Quantity constants</strong> (<code>Shop::Quantity</code> / <code>srs.shop.*</code>): <code>ONE</code>, <code>FIVE</code>, <code>TEN</code>, <code>FIFTY</code>, <code>X</code>.</p>
+<p><strong>Quantity constants</strong> (<code>srs.shop.*</code>): <code>ONE</code>, <code>FIVE</code>, <code>TEN</code>, <code>FIFTY</code>, <code>X</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Quantity enum differs from Bank / DepositBox</p>
 <p>Shop quantity has <code>FIFTY</code> and no <code>ALL</code>; <a href="../Bank/">Bank</a> /
@@ -2431,72 +2416,50 @@ the slot exposes a bare <code>Buy</code> / <code>Sell</code> op (see above).</p>
 are per-module — don't pass one module's value to another.</p>
 </div>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
-<p>C++ widget/container topology (<code>Shop::k*</code>):</p>
+<p>Widget topology (for use with <a href="../Widget/">Widget</a>):</p>
 <table>
 <thead>
 <tr>
-<th>Constant</th>
-<th>Value</th>
+<th>Widget</th>
+<th>Group</th>
+<th>Child</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>kShopContainerId</code></td>
+<td>Shop interface</td>
 <td>300</td>
-<td><strong>Deprecated</strong> — not a shop container (inventory 300 is unrelated); nothing reads it. Kept only so older plugins still compile</td>
-</tr>
-<tr>
-<td><code>kShopGroup</code></td>
-<td>300</td>
+<td>—</td>
 <td>Shop widget group</td>
 </tr>
 <tr>
-<td><code>kShopSideGroup</code></td>
-<td>301</td>
-<td>Player-inventory mirror (sell side)</td>
-</tr>
-<tr>
-<td><code>kShopItemsChild</code></td>
+<td>Stock grid (<code>Shopmain.ITEMS</code>)</td>
+<td>300</td>
 <td>16</td>
-<td><code>Shopmain.ITEMS</code> — stock grid; dyn children = stock slots</td>
+<td>Dyn children = stock slots</td>
 </tr>
 <tr>
-<td><code>kShopSideItemsChild</code></td>
+<td>Sell side (<code>Shopside</code>)</td>
+<td>301</td>
 <td>0</td>
-<td><code>Shopside</code> inventory grid; dyn children = backpack slots</td>
+<td>Player-inventory mirror; dyn children = backpack slots</td>
 </tr>
 </tbody>
 </table>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Shop</span><span class="o">::</span><span class="n">isOpen</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Shop</span><span class="o">::</span><span class="n">hasMinimumStock</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">1931</span><span class="w"> </span><span class="cm">/* pot */</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">Shop</span><span class="o">::</span><span class="n">buy</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">1931</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span><span class="w">          </span><span class="c1">// one &quot;Buy 5&quot; click</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Shop</span><span class="o">::</span><span class="n">isOpen</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Inventory</span><span class="o">::</span><span class="n">contains</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pot&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="n">Shop</span><span class="o">::</span><span class="n">sell</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pot&quot;</span><span class="p">);</span><span class="w">           </span><span class="c1">// one &quot;Sell 1&quot; click</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">stock</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;slot %d: id=%d x%d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">item</span><span class="p">.</span><span class="py">slot</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="py">quantity</span><span class="p">))</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">hasStock</span><span class="p">(</span><span class="s2">&quot;Karamjan rum&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s2">&quot;Karamjan rum&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="s2">&quot;Karamjan rum&quot;</span><span class="p">)</span><span class="w">          </span><span class="c1">-- Buy 1</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s2">&quot;Pot&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">sell</span><span class="p">(</span><span class="s2">&quot;Pot&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w">               </span><span class="c1">-- Sell 5, Sell 1, Sell 1 (blocks ~2 ticks)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">stock</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;slot %d: id=%d x%d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">item</span><span class="p">.</span><span class="py">slot</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="py">quantity</span><span class="p">))</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">hasStock</span><span class="p">(</span><span class="s2">&quot;Karamjan rum&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s2">&quot;Karamjan rum&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">buy</span><span class="p">(</span><span class="s2">&quot;Karamjan rum&quot;</span><span class="p">)</span><span class="w">          </span><span class="c1">-- Buy 1</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">count</span><span class="p">(</span><span class="s2">&quot;Pot&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="nv">srs</span><span class="p">.</span><span class="py">shop</span><span class="p">.</span><span class="nf">sell</span><span class="p">(</span><span class="s2">&quot;Pot&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w">               </span><span class="c1">-- Sell 5, Sell 1, Sell 1 (blocks ~2 ticks)</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

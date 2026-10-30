@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2223,28 +2223,26 @@
 
 
 <h1 id="ge-prices">GE Prices<a class="headerlink" href="#ge-prices" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::GePrices</code> / <code>srs.ge</code></p>
+<p><code>srs.ge</code></p>
 <p>Live Grand Exchange market / guide prices, for pricing offers sensibly.</p>
 <p>The <strong>native</strong> OSRS client has no "your price is far above the guide — are you
-sure?" dialog (that's a RuneLite feature), so
-<a href="../GrandExchange/"><code>GrandExchange::buyItem</code> / <code>sellItem</code></a> place whatever price
+sure?" dialog, so
+<a href="../GrandExchange/"><code>srs.ge.buyItem</code> / <code>sellItem</code></a> place whatever price
 you pass with no safety net. These methods give scripts an independent market
 reference.</p>
 <p>Prices are fetched <strong>client-side over HTTPS</strong> from the OSRS Wiki real-time API
 (with a GE-Tracker fallback) and cached per item id for 60 s. Lookups are keyed
-purely by item id — <strong>no <code>ScriptContext</code>, no login required</strong> — and are
-thread-safe.</p>
+purely by item id — <strong>no login required</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Blocking — never call from <code>draw</code></p>
 <p>The first lookup for an item is a blocking HTTPS round-trip on the calling
 script thread (subsequent calls within the TTL hit the cache). Call from
-<code>onTick</code> / <code>pulse</code> / your own logic, never from the <code>draw</code> / <code>onDraw</code>
-callback.</p>
+<code>onTick</code> / <code>pulse</code> / your own logic, never from the <code>draw</code> callback.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Wiki API etiquette</p>
 <p>The wiki requires a descriptive User-Agent with a contact. A default is
-sent; override it with <code>setUserAgent</code> (Lua <code>srs.ge.setPriceUserAgent</code>) if
+sent; override it with <code>srs.ge.setPriceUserAgent</code> if
 you distribute a script widely.</p>
 </div>
 <h2 id="prices">Prices<a class="headerlink" href="#prices" title="Permanent link">&para;</a></h2>
@@ -2253,39 +2251,32 @@ you distribute a script widely.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Full price record</td>
-<td><code>GePrices::prices(itemId) → GePriceInfo</code></td>
 <td><code>srs.ge.prices(itemId) → GePriceInfo</code></td>
 </tr>
 <tr>
 <td>Instant-buy price (what you pay now)</td>
-<td><code>GePrices::buyPrice(itemId) → int32</code></td>
 <td><code>srs.ge.buyPrice(itemId) → int</code></td>
 </tr>
 <tr>
 <td>Instant-sell price (what you get now)</td>
-<td><code>GePrices::sellPrice(itemId) → int32</code></td>
 <td><code>srs.ge.sellPrice(itemId) → int</code></td>
 </tr>
 <tr>
 <td>Midpoint guide price</td>
-<td><code>GePrices::guidePrice(itemId) → int32</code></td>
 <td><code>srs.ge.guidePrice(itemId) → int</code></td>
 </tr>
 <tr>
 <td>Adaptive buy price (widen to fill)</td>
-<td><code>GePrices::adaptiveBuyPrice(itemId, retry) → int32</code></td>
 <td><code>srs.ge.adaptiveBuyPrice(itemId, retry) → int</code></td>
 </tr>
 <tr>
 <td>Adaptive sell price (undercut to fill)</td>
-<td><code>GePrices::adaptiveSellPrice(itemId, retry) → int32</code></td>
 <td><code>srs.ge.adaptiveSellPrice(itemId, retry) → int</code></td>
 </tr>
 </tbody>
@@ -2303,24 +2294,20 @@ them to re-list more aggressively.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Set cache TTL (ms; <code>&lt;= 0</code> disables)</td>
-<td><code>GePrices::setCacheTtlMs(ms)</code></td>
 <td><code>srs.ge.setPriceCacheTtlMs(ms)</code></td>
 </tr>
 <tr>
 <td>Clear the price cache</td>
-<td><code>GePrices::clearCache()</code></td>
 <td><code>srs.ge.clearPriceCache()</code></td>
 </tr>
 <tr>
 <td>Override the wiki User-Agent</td>
-<td><code>GePrices::setUserAgent(ua)</code></td>
 <td><code>srs.ge.setPriceUserAgent(ua)</code></td>
 </tr>
 </tbody>
@@ -2333,8 +2320,8 @@ cache knobs are <code>Price</code>-suffixed in Lua (<code>setPriceCacheTtlMs</co
 offer surface.</p>
 </div>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
-<p><strong><code>GePriceInfo</code></strong> — fields are read-only; <code>isValid()</code> / <code>mid()</code> are callable in
-both C++ and Lua (<code>p:mid()</code>).</p>
+<p><strong><code>GePriceInfo</code></strong> — fields are read-only; <code>isValid()</code> / <code>mid()</code> are called with
+<code>:</code> (<code>p:mid()</code>).</p>
 <table>
 <thead>
 <tr>
@@ -2346,27 +2333,27 @@ both C++ and Lua (<code>p:mid()</code>).</p>
 <tbody>
 <tr>
 <td><code>itemId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Item id (−1 if unset)</td>
 </tr>
 <tr>
 <td><code>high</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Instant-buy price (gp) — what you pay to buy now</td>
 </tr>
 <tr>
 <td><code>low</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Instant-sell price (gp) — what you get selling now</td>
 </tr>
 <tr>
 <td><code>volume</code></td>
-<td>int64</td>
+<td>integer</td>
 <td>Recent traded volume (<code>0</code> if the source lacks it)</td>
 </tr>
 <tr>
 <td><code>valid</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td><code>true</code> if the lookup succeeded</td>
 </tr>
 </tbody>

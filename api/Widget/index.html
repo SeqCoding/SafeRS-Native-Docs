@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2345,7 +2345,7 @@
 
 
 <h1 id="widget">Widget<a class="headerlink" href="#widget" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Widget</code> / <code>srs.widget</code></p>
+<p><code>srs.widget</code></p>
 <p>Read-only inspection of the OSRS interface tree, plus a generic
 click. Widgets are identified by <code>(groupId, childId)</code>.</p>
 <h2 id="state-lookup">State / lookup<a class="headerlink" href="#state-lookup" title="Permanent link">&para;</a></h2>
@@ -2353,34 +2353,28 @@ click. Widgets are identified by <code>(groupId, childId)</code>.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>IfTypeManager warmed up</td>
-<td><code>Widget::isReady(ctx) → bool</code></td>
 <td><code>srs.widget.isReady() → bool</code></td>
 </tr>
 <tr>
 <td>Find by (group, child)</td>
-<td><code>Widget::find(ctx, g, c) → optional&lt;WidgetSnapshot&gt;</code></td>
 <td><code>srs.widget.find(g, c) → WidgetSnapshot \| nil</code></td>
 </tr>
 <tr>
 <td>All in group</td>
-<td><code>Widget::group(ctx, g) → vector&lt;WidgetSnapshot&gt;</code></td>
 <td><code>srs.widget.group(g) → table</code></td>
 </tr>
 <tr>
 <td>Dynamic children</td>
-<td><code>Widget::dynamicChildren(ctx, g, c) → vector&lt;WidgetSnapshot&gt;</code></td>
 <td><code>srs.widget.dynamicChildren(g, c) → table</code></td>
 </tr>
 <tr>
 <td>Readable label</td>
-<td><code>Widget::label(g, c) → string</code></td>
 <td><code>srs.widget.label(g, c) → string</code></td>
 </tr>
 </tbody>
@@ -2405,29 +2399,24 @@ holds the option label or item-derived caption.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Interface rendering</td>
-<td><code>Widget::isOpen(ctx, g) → bool</code></td>
 <td><code>srs.widget.isOpen(g) → bool</code></td>
 </tr>
 <tr>
 <td>Drawn last frame</td>
-<td><code>Widget::isVisible(ctx, g, c) → bool</code></td>
 <td><code>srs.widget.isVisible(g, c) → bool</code></td>
 </tr>
 <tr>
 <td>Hidden (or ancestor hidden)</td>
-<td><code>Widget::isHidden(ctx, g, c) → bool</code></td>
 <td><code>srs.widget.isHidden(g, c) → bool</code></td>
 </tr>
 <tr>
 <td>Wait until rendered (poll)</td>
-<td><code>Widget::waitVisible(ctx, g, c, timeoutMs) → bool</code></td>
 <td><code>srs.widget.waitVisible(g, c, timeoutMs) → bool</code></td>
 </tr>
 </tbody>
@@ -2449,19 +2438,16 @@ a prompt being open — typing into an unrendered box is silently dropped.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Hit-test screen point</td>
-<td><code>Widget::atPoint(ctx, sx, sy) → optional&lt;WidgetSnapshot&gt;</code></td>
 <td><code>srs.widget.atPoint(sx, sy) → WidgetSnapshot \| nil</code></td>
 </tr>
 <tr>
 <td>Currently hovered</td>
-<td><code>Widget::hovered(ctx) → optional&lt;WidgetSnapshot&gt;</code></td>
 <td><code>srs.widget.hovered() → WidgetSnapshot \| nil</code></td>
 </tr>
 </tbody>
@@ -2472,19 +2458,16 @@ a prompt being open — typing into an unrendered box is silently dropped.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Read scroll position</td>
-<td><code>Widget::scrollY(ctx, g, c) → optional&lt;int32&gt;</code></td>
 <td><code>srs.widget.scrollY(g, c) → int \| nil</code></td>
 </tr>
 <tr>
 <td>Write scroll position</td>
-<td><code>Widget::setScrollY(ctx, g, c, y) → bool</code></td>
 <td><code>srs.widget.setScrollY(g, c, y) → bool</code></td>
 </tr>
 </tbody>
@@ -2496,45 +2479,34 @@ clamp to <code>0</code>, but there is <strong>no</strong> upper clamp, so keep <
 widget's scrollable range yourself. The visible scrollbar thumb is
 painted by a separate CS2 script we don't invoke, so the thumb may look
 stale until the mouse moves, but items inside the viewport reflect the new
-offset immediately. Backs <code>Bank::scrollToSlot</code>.</p>
+offset immediately. Backs <code>srs.bank.scrollToSlot</code>.</p>
 <h2 id="click">Click<a class="headerlink" href="#click" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Click action</td>
-<td><code>Widget::click(ctx, g, c, action) → bool</code></td>
 <td><code>srs.widget.click(g, c, action) → bool</code></td>
 </tr>
 <tr>
 <td>Click a specific op (X-aware)</td>
-<td><code>Widget::clickOp(ctx, g, c, op, actionIndex, action, itemId = -1) → bool</code></td>
 <td><code>srs.widget.clickOp(g, c, op, actionIndex, action[, itemId=-1]) → bool</code></td>
 </tr>
 <tr>
-<td>Native CS2-button click (by position)</td>
-<td><code>Widget::clickFire(ctx, g, c) → bool</code></td>
-<td>—</td>
-</tr>
-<tr>
 <td>Real-input click (whole widget)</td>
-<td><code>Widget::clickReal(ctx, g, c) → bool</code></td>
 <td><code>srs.widget.clickReal(g, c) → bool</code></td>
 </tr>
 <tr>
 <td>Real-input click (dynamic child)</td>
-<td><code>Widget::clickRealDynChild(ctx, g, c, dynIndex) → bool</code></td>
 <td><code>srs.widget.clickRealDynChild(g, c, dynIndex) → bool</code></td>
 </tr>
 <tr>
 <td>Real-input click (sub-rect)</td>
-<td><code>Widget::clickRealAt(ctx, g, c, dx, dy, w, h) → bool</code></td>
 <td><code>srs.widget.clickRealAt(g, c, dx, dy, w, h) → bool</code></td>
 </tr>
 </tbody>
@@ -2542,7 +2514,7 @@ offset immediately. Backs <code>Bank::scrollToSlot</code>.</p>
 <p><code>click</code> resolves the widget's absolute screen rect as currently rendered,
 picks a random point inside it, and routes through <code>Interact</code>
 (always-on spoof). For inventory slots prefer
-<a href="../Inventory/">Inventory::interact</a> — same mechanism, narrower API.</p>
+<a href="../Inventory/"><code>srs.inventory.interact</code></a> — same mechanism, narrower API.</p>
 <p><code>clickOp</code> is the X-aware sibling of <code>click</code>: it exposes the two action
 fields <code>click</code> hard-codes — <code>op</code> (the menu sub-op selector; <code>-1</code> = none)
 and <code>actionIndex</code> (the spawn index; <code>1</code> for almost all widget actions,
@@ -2556,10 +2528,8 @@ repeated identical sub-op clicks ≥ 1 tick apart. <code>clickOp</code> resolves
 <p class="admonition-title">Clicking Grand Exchange buttons</p>
 <p>Some CS2 buttons — every Grand Exchange offer / stepper / confirm /
 collect button — need the engine to build their hover context itself,
-so a synthesized action no-ops on them. Use <code>clickFire</code> (native
-click dispatcher; op resolved by <strong>position</strong>, so the widget's rect
-must land on the intended button) or the <code>clickReal*</code> family (drives
-the real WndProc input pipeline — a curved <code>WM_MOUSEMOVE</code> then
+so a synthesized action no-ops on them. Use the <code>clickReal*</code> family
+(drives the real WndProc input pipeline — a curved <code>WM_MOUSEMOVE</code> then
 <code>WM_LBUTTONDOWN</code>/<code>UP</code> to a random point in the rect; focus-independent
 and background / multi-client safe). The <code>clickReal*</code> calls <strong>block</strong>
 until the move + click finishes and return <code>false</code> if the widget isn't
@@ -2583,57 +2553,57 @@ surface.</p>
 <tbody>
 <tr>
 <td><code>groupId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td></td>
 </tr>
 <tr>
 <td><code>childId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td></td>
 </tr>
 <tr>
 <td><code>parentGroupId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>-1 if no parent</td>
 </tr>
 <tr>
 <td><code>parentChildId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>-1 if no parent</td>
 </tr>
 <tr>
 <td><code>dynIndex</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>-1 = static child; ≥ 0 = dynamic-child slot</td>
 </tr>
 <tr>
 <td><code>x</code>, <code>y</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Parent-relative for <code>find</code>/<code>group</code>; absolute screen for <code>atPoint</code>/<code>hovered</code></td>
 </tr>
 <tr>
 <td><code>width</code>, <code>height</code></td>
-<td>int32</td>
+<td>integer</td>
 <td></td>
 </tr>
 <tr>
 <td><code>hidden</code></td>
-<td>bool</td>
+<td>boolean</td>
 <td></td>
 </tr>
 <tr>
 <td><code>itemId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>-1 if not an item-bearing widget</td>
 </tr>
 <tr>
 <td><code>itemQty</code></td>
-<td>int32</td>
+<td>integer</td>
 <td></td>
 </tr>
 <tr>
 <td><code>spriteId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>-1 if no sprite</td>
 </tr>
 <tr>
@@ -2653,56 +2623,44 @@ surface.</p>
 </tr>
 <tr>
 <td><code>actions</code></td>
-<td>vector<string></td>
-<td>Right-click options (first 5 only; overflow not fetched). <strong>Empty op slots are dropped, so a position in <code>actions</code> is not an op number</strong> — use <code>actionOps</code>. Lua: a real table of strings</td>
+<td>table (array of string)</td>
+<td>Right-click options (first 5 only; overflow not fetched). <strong>Empty op slots are dropped, so a position in <code>actions</code> is not an op number</strong> — use <code>actionOps</code>.</td>
 </tr>
 <tr>
 <td><code>actionOps</code></td>
-<td>vector<int32></td>
-<td>The real 1-based op of each <code>actions[i]</code> (same length and order as <code>actions</code>). Use this for any op you send (e.g. <code>clickOp</code>'s <code>actionIndex</code>). Lua: a real table of ints</td>
+<td>table (array of integer)</td>
+<td>The real 1-based op of each <code>actions[i]</code> (same length and order as <code>actions</code>). Use this for any op you send (e.g. <code>clickOp</code>'s <code>actionIndex</code>).</td>
 </tr>
 <tr>
 <td><code>dynChildCount</code></td>
-<td>uint64</td>
+<td>integer</td>
 <td>Use <code>dynamicChildren(g, c)</code> to walk them</td>
 </tr>
 <tr>
 <td><code>modelId</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Id of the model the widget renders; <code>-1</code> if none</td>
 </tr>
 <tr>
 <td><code>modelType</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>What <code>modelId</code> refers to: <code>1</code> = model, <code>2</code> = NPC chat head, <code>3</code> = player chat head; <code>0</code> or <code>-1</code> if none</td>
 </tr>
 </tbody>
 </table>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Widget</span><span class="o">::</span><span class="n">isReady</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="c1">// inventory slots live as dynamic children of (149, 0)</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Widget</span><span class="o">::</span><span class="n">dynamicChildren</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">149</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="c1">// w.itemId / w.itemQty / w.dynIndex per slot</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">isReady</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="mi">149</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">                    </span><span class="c1">-- inventory container</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">w</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;%s: %d dynamic children&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">label</span><span class="p">(</span><span class="mi">149</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">dynChildCount</span><span class="p">))</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="c1">-- inventory slots live as dynamic children of (149, 0)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">slot</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">dynamicChildren</span><span class="p">(</span><span class="mi">149</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">            </span><span class="c1">-- slot.itemId / slot.itemQty / slot.dynIndex per slot</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="kr">end</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">isReady</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="mi">149</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">                    </span><span class="c1">-- inventory container</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">w</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;%s: %d dynamic children&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">            </span><span class="nv">srs</span><span class="p">.</span><span class="py">widget</span><span class="p">.</span><span class="nf">label</span><span class="p">(</span><span class="mi">149</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="nv">w</span><span class="p">.</span><span class="py">dynChildCount</span><span class="p">))</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

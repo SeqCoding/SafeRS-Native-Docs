@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2267,74 +2267,61 @@
 
 
 <h1 id="inventory">Inventory<a class="headerlink" href="#inventory" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Inventory</code> / <code>srs.inventory</code></p>
+<p><code>srs.inventory</code></p>
 <p>Read-only view of the player's backpack (28 slots) plus item-action
-helpers. Action calls route through <code>Interact</code> (always-on spoof +
-DoAction).</p>
+helpers.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Snapshot all slots</td>
-<td><code>Inventory::all(ctx) → vector&lt;InventoryItem&gt;</code></td>
 <td><code>srs.inventory.all() → table (1-based list)</code></td>
 </tr>
 <tr>
 <td>One slot (0..27)</td>
-<td><code>Inventory::at(ctx, slot) → optional&lt;InventoryItem&gt;</code></td>
 <td><code>srs.inventory.at(slot) → InventoryItem \| nil</code></td>
 </tr>
 <tr>
 <td>Contains by id</td>
-<td><code>Inventory::contains(ctx, id) → bool</code></td>
-<td><code>srs.inventory.contains(id) → bool</code></td>
+<td><code>srs.inventory.contains(id) → boolean</code></td>
 </tr>
 <tr>
 <td>Contains by name</td>
-<td><code>Inventory::contains(ctx, name) → bool</code></td>
-<td><code>srs.inventory.contains(name) → bool</code></td>
+<td><code>srs.inventory.contains(name) → boolean</code></td>
 </tr>
 <tr>
 <td>Count by id</td>
-<td><code>Inventory::count(ctx, id) → int32</code></td>
-<td><code>srs.inventory.count(id) → int</code></td>
+<td><code>srs.inventory.count(id) → integer</code></td>
 </tr>
 <tr>
 <td>Count by name</td>
-<td><code>Inventory::count(ctx, name) → int32</code></td>
-<td><code>srs.inventory.count(name) → int</code></td>
+<td><code>srs.inventory.count(name) → integer</code></td>
 </tr>
 <tr>
 <td>First slot by id</td>
-<td><code>Inventory::firstSlot(ctx, id) → int32</code></td>
-<td><code>srs.inventory.firstSlot(id) → int</code></td>
+<td><code>srs.inventory.firstSlot(id) → integer</code></td>
 </tr>
 <tr>
 <td>First slot by name</td>
-<td><code>Inventory::firstSlot(ctx, name) → int32</code></td>
-<td><code>srs.inventory.firstSlot(name) → int</code></td>
+<td><code>srs.inventory.firstSlot(name) → integer</code></td>
 </tr>
 <tr>
 <td>Empty slots count</td>
-<td><code>Inventory::emptySlots(ctx) → int32</code></td>
-<td><code>srs.inventory.emptySlots() → int</code></td>
+<td><code>srs.inventory.emptySlots() → integer</code></td>
 </tr>
 <tr>
 <td>Full</td>
-<td><code>Inventory::isFull(ctx) → bool</code></td>
-<td><code>srs.inventory.isFull() → bool</code></td>
+<td><code>srs.inventory.isFull() → boolean</code></td>
 </tr>
 <tr>
 <td>Empty</td>
-<td><code>Inventory::isEmpty(ctx) → bool</code></td>
-<td><code>srs.inventory.isEmpty() → bool</code></td>
+<td><code>srs.inventory.isEmpty() → boolean</code></td>
 </tr>
 </tbody>
 </table>
@@ -2344,55 +2331,45 @@ DoAction).</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Click action on slot or item name</td>
-<td><code>Inventory::interact(ctx, slot\|name, action) → bool</code></td>
-<td><code>srs.inventory.interact(slot\|name, action) → bool</code></td>
+<td><code>srs.inventory.interact(slot\|name, action) → boolean</code></td>
 </tr>
 <tr>
 <td>Click by id</td>
-<td><code>Inventory::interactById(ctx, id, action) → bool</code></td>
-<td><code>srs.inventory.interactById(id, action) → bool</code></td>
+<td><code>srs.inventory.interactById(id, action) → boolean</code></td>
 </tr>
 <tr>
 <td>Click by name</td>
-<td><code>Inventory::interactByName(ctx, name, action) → bool</code></td>
-<td><code>srs.inventory.interactByName(name, action) → bool</code></td>
+<td><code>srs.inventory.interactByName(name, action) → boolean</code></td>
 </tr>
 <tr>
 <td>Click lowest dose of a potion family</td>
-<td><code>Inventory::interactByLowestDose(ctx, baseName, action) → bool</code></td>
-<td><code>srs.inventory.interactByLowestDose(baseName, action) → bool</code></td>
+<td><code>srs.inventory.interactByLowestDose(baseName, action) → boolean</code></td>
 </tr>
 <tr>
 <td>Examine slot's item</td>
-<td><code>Inventory::examine(ctx, slot) → bool</code></td>
-<td><code>srs.inventory.examine(slot) → bool</code></td>
+<td><code>srs.inventory.examine(slot) → boolean</code></td>
 </tr>
 <tr>
 <td>Drop all by id</td>
-<td><code>Inventory::dropAll(ctx, id) → int32</code></td>
-<td><code>srs.inventory.dropAll(id) → int</code></td>
+<td><code>srs.inventory.dropAll(id) → integer</code></td>
 </tr>
 <tr>
 <td>Drop all by name</td>
-<td><code>Inventory::dropAll(ctx, name) → int32</code></td>
-<td><code>srs.inventory.dropAll(name) → int</code></td>
+<td><code>srs.inventory.dropAll(name) → integer</code></td>
 </tr>
 <tr>
 <td>Drops still queued</td>
-<td><code>Inventory::pendingDropCount(ctx) → int32</code></td>
-<td><code>srs.inventory.pendingDropCount() → int</code></td>
+<td><code>srs.inventory.pendingDropCount() → integer</code></td>
 </tr>
 <tr>
 <td>Empty coal bag</td>
-<td><code>Inventory::emptyCoalBag(ctx) → bool</code></td>
-<td><code>srs.inventory.emptyCoalBag() → bool</code></td>
+<td><code>srs.inventory.emptyCoalBag() → boolean</code></td>
 </tr>
 </tbody>
 </table>
@@ -2422,7 +2399,7 @@ the description to chat (info-only, no server cost).</p>
 <p><code>emptyCoalBag</code> empties a coal bag via its contextual "Empty" op on the
 main inventory. Returns <code>false</code> if no coal bag is
 held. The fill half lives on the bank facade —
-<a href="../Bank/"><code>Bank::fillCoalBag</code></a> (bank must be open).</p>
+<a href="../Bank/"><code>srs.bank.fillCoalBag</code></a> (bank must be open).</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>dropAll</code> is asynchronous — poll <code>pendingDropCount</code></p>
 <p><code>dropAll</code> returns the number of drops it <strong>queued</strong> and schedules them
@@ -2440,50 +2417,41 @@ matching module.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>…on object</td>
-<td><code>Inventory::useItemOnObject(ctx, itemId, objectId) → bool</code></td>
-<td><code>srs.inventory.useItemOnObject(itemId, objectId) → bool</code></td>
+<td><code>srs.inventory.useItemOnObject(itemId, objectId) → boolean</code></td>
 </tr>
 <tr>
 <td>…on object (slot + entry)</td>
-<td><code>Inventory::useItemOnObject(ctx, srcSlot, GameObjectEntry) → bool</code></td>
-<td><code>srs.inventory.useItemOnObject(srcSlot, entry) → bool</code></td>
+<td><code>srs.inventory.useItemOnObject(srcSlot, entry) → boolean</code></td>
 </tr>
 <tr>
 <td>…on item</td>
-<td><code>Inventory::useItemOnItem(ctx, srcItemId, dstItemId) → bool</code></td>
-<td><code>srs.inventory.useItemOnItem(srcId, dstId) → bool</code></td>
+<td><code>srs.inventory.useItemOnItem(srcId, dstId) → boolean</code></td>
 </tr>
 <tr>
 <td>…on item, burst mode</td>
-<td><code>Inventory::useItemOnItemBatch(ctx, srcItemId, dstItemId, count) → bool</code></td>
-<td><code>srs.inventory.useItemOnItemBatch(srcId, dstId, count) → bool</code></td>
+<td><code>srs.inventory.useItemOnItemBatch(srcId, dstId, count) → boolean</code></td>
 </tr>
 <tr>
 <td>…on NPC</td>
-<td><code>Inventory::useItemOnNpc(ctx, itemId, npcId) → bool</code></td>
-<td><code>srs.inventory.useItemOnNpc(itemId, npcId) → bool</code></td>
+<td><code>srs.inventory.useItemOnNpc(itemId, npcId) → boolean</code></td>
 </tr>
 <tr>
 <td>…on NPC (slot + target)</td>
-<td><code>Inventory::useItemOnNpc(ctx, srcSlot, ActionTarget) → bool</code></td>
-<td><code>srs.inventory.useItemOnNpc(srcSlot, target) → bool</code></td>
+<td><code>srs.inventory.useItemOnNpc(srcSlot, target) → boolean</code></td>
 </tr>
 <tr>
 <td>…on ground item</td>
-<td><code>Inventory::useItemOnGroundItem(ctx, itemId, groundItemId) → bool</code></td>
-<td><code>srs.inventory.useItemOnGroundItem(itemId, groundItemId) → bool</code></td>
+<td><code>srs.inventory.useItemOnGroundItem(itemId, groundItemId) → boolean</code></td>
 </tr>
 <tr>
 <td>…on ground item (slot + entry)</td>
-<td><code>Inventory::useItemOnGroundItem(ctx, srcSlot, GroundItemEntry) → bool</code></td>
-<td><code>srs.inventory.useItemOnGroundItem(srcSlot, entry) → bool</code></td>
+<td><code>srs.inventory.useItemOnGroundItem(srcSlot, entry) → boolean</code></td>
 </tr>
 </tbody>
 </table>
@@ -2492,7 +2460,7 @@ matching module.</p>
 item-on-item up to <code>count</code> ∈ [1, 8] times for fast-fletching-style bursts.</p>
 <div class="admonition warning">
 <p class="admonition-title">NPC and ground-item variants not yet verified in game</p>
-<p><code>useItemOnNpc</code> and <code>useItemOnGroundItem</code> compile and
+<p><code>useItemOnNpc</code> and <code>useItemOnGroundItem</code> are bound and
 their menu actions follow the game's use-on-NPC / use-on-ground-item
 options, but they have <strong>not</strong> been tested against a live client.
 <code>useItemOnObject</code> and <code>useItemOnItem</code> are the established paths.
@@ -2511,10 +2479,8 @@ checks the pile is still on its tile first. Keep the target on screen
 (see <code>srs.camera.ensureVisible</code>).</p>
 </div>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>Inventory::kCapacity = 28</code> — backpack slot count (C++; Lua scripts can
-  hardcode 28).</li>
-</ul>
+<p>The backpack holds 28 slots (indices <code>0..27</code>); there is no Lua constant for
+it, so hardcode <code>28</code>.</p>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>InventoryItem</code></strong> (read-only):</p>
 <table>
@@ -2528,41 +2494,27 @@ checks the pile is still on its tile first. Keep the target on screen
 <tbody>
 <tr>
 <td><code>id</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>OSRS item id; ≤ 0 means empty slot</td>
 </tr>
 <tr>
 <td><code>quantity</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Stack qty</td>
 </tr>
 <tr>
 <td><code>slot</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>0..27</td>
 </tr>
 </tbody>
 </table>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Inventory</span><span class="o">::</span><span class="n">isFull</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">Inventory</span><span class="o">::</span><span class="n">dropAll</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bones&quot;</span><span class="p">);</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">Inventory</span><span class="o">::</span><span class="n">interactByName</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Lobster&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Eat&quot;</span><span class="p">);</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">isFull</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Bones&quot;</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">end</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactByName</span><span class="p">(</span><span class="s2">&quot;Lobster&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Eat&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">isFull</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Bones&quot;</span><span class="p">)</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kr">end</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">interactByName</span><span class="p">(</span><span class="s2">&quot;Lobster&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Eat&quot;</span><span class="p">)</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

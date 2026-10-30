@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -1423,6 +1423,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotanim-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spotanim events
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2192,6 +2209,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spotanim-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spotanim events
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2245,15 +2279,14 @@
 
 
 <h1 id="npc">NPC<a class="headerlink" href="#npc" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Npc</code> / <code>srs.npc</code></p>
+<p><code>srs.npc</code></p>
 <p>Find NPCs in the scene and act on them. The <code>srs.npc</code> table carries both
 the <strong>finders</strong> (which NPCs are nearby) and the <strong>actions</strong> (attack,
 talk-to, …) so scripts can stay in one table.</p>
-<p>A target is identified by its spawn index + world coords. In C++ the
-finders return <code>NpcEntry</code> (the recommended form for new plugin code); in
-Lua they return the <code>ActionTarget</code> usertype. The action methods accept
-either, so <code>srs.npc.attack(npc)</code> / <code>npc:attack()</code> work on whatever a
-finder handed you.</p>
+<p>A target is identified by its spawn index + world coords. The finders
+return the <code>ActionTarget</code> usertype, and the action functions take one, so
+<code>srs.npc.attack(npc)</code> / <code>npc:attack()</code> work on whatever a finder handed
+you.</p>
 <p>All <code>interact</code> / <code>attack</code> / <code>talkTo</code> / <code>bank</code> / <code>examine</code> calls route
 through <code>Interact</code>, which always spoofs mouse motion + click before
 engine action dispatch (no escape hatch).</p>
@@ -2262,39 +2295,32 @@ engine action dispatch (no escape hatch).</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>All NPCs in scene</td>
-<td><code>Npc::all(ctx) → vector&lt;NpcEntry&gt;</code></td>
 <td><code>srs.npc.all() → table</code></td>
 </tr>
 <tr>
 <td>By id</td>
-<td><code>Npc::byId(ctx, npcId) → vector&lt;NpcEntry&gt;</code></td>
 <td><code>srs.npc.byId(id) → table</code></td>
 </tr>
 <tr>
 <td>By name</td>
-<td><code>Npc::byName(ctx, name) → vector&lt;NpcEntry&gt;</code></td>
 <td><code>srs.npc.byName(name) → table</code></td>
 </tr>
 <tr>
 <td>Nearest (any)</td>
-<td><code>Npc::nearest(ctx) → optional&lt;NpcEntry&gt;</code></td>
 <td><code>srs.npc.nearest() → ActionTarget \| nil</code></td>
 </tr>
 <tr>
 <td>Nearest by id</td>
-<td><code>Npc::nearestById(ctx, npcId) → optional&lt;NpcEntry&gt;</code></td>
 <td><code>srs.npc.nearestById(id) → ActionTarget \| nil</code></td>
 </tr>
 <tr>
 <td>Nearest by name</td>
-<td><code>Npc::nearestByName(ctx, name) → optional&lt;NpcEntry&gt;</code></td>
 <td><code>srs.npc.nearestByName(name) → ActionTarget \| nil</code></td>
 </tr>
 </tbody>
@@ -2306,7 +2332,7 @@ going-forward form.</p>
 <div class="admonition note">
 <p class="admonition-title">Three equivalent finder surfaces</p>
 <p>Lua exposes the same finders three times — all hit the same
-<code>EntityQuery</code> backend, so pick whichever reads best and don't mix
+backend, so pick whichever reads best and don't mix
 them for "different" results:</p>
 <table>
 <thead>
@@ -2357,60 +2383,53 @@ them for "different" results:</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Generic interact</td>
-<td><code>Npc::interact(ctx, target, action) → bool</code></td>
 <td><code>srs.npc.interact(target, action) → bool</code></td>
 </tr>
 <tr>
 <td>Option by position</td>
-<td><code>Npc::interactOp(ctx, target, op, label) → bool</code></td>
 <td><code>srs.npc.interactOp(target, op[, label]) → bool</code></td>
 </tr>
 <tr>
 <td>Attack</td>
-<td><code>Npc::attack(ctx, target) → bool</code></td>
 <td><code>srs.npc.attack(target) → bool</code></td>
 </tr>
 <tr>
 <td>Talk-to</td>
-<td><code>Npc::talkTo(ctx, target) → bool</code></td>
 <td><code>srs.npc.talkTo(target) → bool</code></td>
 </tr>
 <tr>
 <td>Bank (banker NPCs)</td>
-<td><code>Npc::bank(ctx, target) → bool</code></td>
 <td><code>srs.npc.bank(target) → bool</code></td>
 </tr>
 <tr>
 <td>Examine</td>
-<td><code>Npc::examine(ctx, target) → bool</code></td>
 <td><code>srs.npc.examine(target) → bool</code></td>
 </tr>
 <tr>
 <td>Still in world map</td>
-<td><code>Npc::isAlive(ctx, target) → bool</code></td>
 <td><code>srs.npc.isAlive(target) → bool</code></td>
 </tr>
 <tr>
 <td>Overhead prayer headicon</td>
-<td><code>Npc::overheadPrayer(ctx, target) → OverheadPrayer</code></td>
 <td><code>srs.npc.overheadPrayer(target) → OverheadPrayer</code></td>
 </tr>
 <tr>
 <td>Overhead chat text</td>
-<td><code>Npc::overheadText(ctx, target) → std::string</code></td>
 <td><code>srs.npc.overheadText(target) → string</code></td>
 </tr>
 <tr>
-<td>Static definition (size, actions, max HP)</td>
-<td><code>Npc::definition(ctx, target \| npcId) → NpcDefinition</code></td>
-<td>— (use <code>srs.defs.npc(target \| id)</code>, see <a href="../Defs/">Defs</a>)</td>
+<td>Spotanims (graphics) on the actor</td>
+<td><code>srs.npc.spotAnims(target) → table</code></td>
+</tr>
+<tr>
+<td>Has a spotanim id</td>
+<td><code>srs.npc.hasSpotAnim(target, id) → bool</code></td>
 </tr>
 </tbody>
 </table>
@@ -2429,8 +2448,7 @@ NPC's description to chat.</p>
 <p><code>overheadPrayer</code> reads the NPC's protection-prayer headicon (live
 override when set, else the <code>NpcType</code> definition). Returns
 <code>OverheadPrayer.None</code> when the NPC shows no prayer icon or has
-despawned; only prayer-archive (440) icons are reported. The C++ side
-takes an <code>NpcEntry</code> (a legacy <code>ActionTarget</code> overload also exists). See
+despawned; only prayer-archive (440) icons are reported. See
 <a href="../Prayer/">Prayer</a> for the <code>OverheadPrayer</code> enum values —
 it's a Lua <strong>global</strong> enum, not under <code>srs.npc</code>.</p>
 <p><code>overheadText</code> is the chat text drawn above the actor right now —
@@ -2442,10 +2460,152 @@ an <code>overheadText</code> <strong>snapshot</strong> field plus <code>overhead
 left before it clears); the method
 re-reads the live actor and is what to use when you hold an older
 target. Works for NPC and player targets.</p>
+<p><code>spotAnims</code> lists the graphics playing <strong>on</strong> the actor right now: spell
+impacts, teleport flashes, boss charge-up effects. These are separate from
+tile graphics (<a href="../GraphicsObjects/">GraphicsObjects</a>) and in-flight
+<a href="../Projectiles/">Projectiles</a>. An actor can carry several at once, each
+in its own <code>slot</code>. Each entry has:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>slot</code></td>
+<td>0–255. Slot 0 is the classic single "graphic"</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>Spotanim id. This client's cache id, the same id space as projectile/graphics-object <code>id</code></td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td>Draw height offset</td>
+</tr>
+<tr>
+<td><code>startCycle</code></td>
+<td>Absolute client cycle (50 per second) the effect starts at</td>
+</tr>
+<tr>
+<td><code>delay</code></td>
+<td>Client cycles until it starts (0 once playing)</td>
+</tr>
+<tr>
+<td><code>active</code></td>
+<td><code>false</code> while it is still waiting on its start delay</td>
+</tr>
+</tbody>
+</table>
+<p>The game drops each entry when its animation finishes, so the list only
+holds effects that are playing or about to start. It is empty when there
+are none. <code>hasSpotAnim(target, id)</code> is <code>true</code> for a pending effect as
+well, which lets you react to a boss charge-up before it plays. Both
+work for NPC and player targets and always read the live actor.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">boss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">nearestByName</span><span class="p">(</span><span class="s2">&quot;Hunllef&quot;</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">boss</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">boss</span><span class="p">:</span><span class="nf">spotAnims</span><span class="p">())</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="nb">print</span><span class="p">((</span><span class="s2">&quot;slot %d  id %d  active %s&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">g</span><span class="p">.</span><span class="py">slot</span><span class="p">,</span><span class="w"> </span><span class="nv">g</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nv">g</span><span class="p">.</span><span class="py">active</span><span class="p">)))</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1">-- boss:hasSpotAnim(id) is true from the moment the server queues it</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kr">end</span>
+</span></code></pre></div>
+<h3 id="spotanim-events">Spotanim events<a class="headerlink" href="#spotanim-events" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Subscribe</td>
+<td><code>srs.npc.onSpotAnim(fn[, filter]) → token</code></td>
+</tr>
+<tr>
+<td>Unsubscribe</td>
+<td><code>srs.npc.offSpotAnim(token) → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>onSpotAnim</code> fires once for every new spotanim the server puts on <strong>any</strong>
+NPC or player. It fires on the frame the update arrives, so you don't need
+to poll <code>spotAnims()</code>. That is when the effect is <em>queued</em>. If the server
+gave it a delay, it starts drawing <code>delay</code> client cycles later, so you can
+react before it is even on screen. Callbacks run on the script thread
+in the same per-frame pass as <code>srs.hitsplats.onApplied</code>, roughly 16 ms after
+the update arrives. Cleared slots are not reported.</p>
+<p>The callback receives a table:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code>, <code>slot</code>, <code>height</code></td>
+<td>As in <code>spotAnims()</code></td>
+</tr>
+<tr>
+<td><code>delay</code></td>
+<td>Client cycles until it starts drawing (0 = right away)</td>
+</tr>
+<tr>
+<td><code>startCycle</code></td>
+<td>Absolute client cycle it starts at</td>
+</tr>
+<tr>
+<td><code>persist</code></td>
+<td><code>true</code> if the game keeps it after its animation ends</td>
+</tr>
+<tr>
+<td><code>targetKind</code></td>
+<td><code>"npc"</code>, <code>"player"</code>, <code>"self"</code> or <code>"unresolved"</code></td>
+</tr>
+<tr>
+<td><code>isSelf</code></td>
+<td><code>true</code> when it landed on you</td>
+</tr>
+<tr>
+<td><code>spawnIndex</code></td>
+<td>The actor's server index (−1 if unknown)</td>
+</tr>
+<tr>
+<td><code>npcId</code>, <code>name</code></td>
+<td>NPC id and name (<code>npcId</code> −1 for players)</td>
+</tr>
+<tr>
+<td><code>tileX</code>, <code>tileY</code>, <code>plane</code></td>
+<td>Where the actor stood</td>
+</tr>
+<tr>
+<td><code>wallClock</code></td>
+<td>Milliseconds timestamp</td>
+</tr>
+<tr>
+<td><code>target</code></td>
+<td>The live NPC <code>ActionTarget</code> (NPC targets only, else <code>nil</code>), so <code>e.target:attack()</code> works</td>
+</tr>
+</tbody>
+</table>
+<p><code>filter</code> is optional. Pass a spotanim id (a number), or a table with any of
+<code>id</code>, <code>npcId</code>, <code>spawnIndex</code> and <code>kind</code> (<code>"npc"</code>, <code>"player"</code> or <code>"self"</code>).
+Every field you give must match. The registration follows the same pause
+rules as <code>pulse</code>/<code>onTick</code>, and a script reload drops it.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">CHARGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234</span><span class="w">  </span><span class="c1">-- the boss&#39;s charge-up spotanim id</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">tok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">onSpotAnim</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nb">print</span><span class="p">((</span><span class="s2">&quot;%s got spotanim %d, starts in %d cycles&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">e</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">delay</span><span class="p">))</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kr">end</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">npcId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">BOSS_ID</span><span class="p">,</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">CHARGE</span><span class="w"> </span><span class="p">})</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1">-- later: srs.npc.offSpotAnim(tok)</span>
+</span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">isAlive semantics</p>
-<p><code>isAlive</code> is a host-side check that the NPC's <code>NpcInstance</code> is
-still present in the world hash map. After an NPC dies it lingers
+<p><code>isAlive</code> checks that the NPC is still present in the world. After an NPC dies it lingers
 a few ticks playing the death animation, then despawns — once
 that happens <code>isAlive</code> returns <code>false</code>. Currently does <em>not</em>
 treat HP-0-but-still-rendering as "dead"; callers that need that
@@ -2453,15 +2613,64 @@ treat HP-0-but-still-rendering as "dead"; callers that need that
 panel column or <code>entity.npcById(...)</code>.</p>
 </div>
 <h2 id="actiontarget-method-call-shortcuts-lua">ActionTarget method-call shortcuts (Lua)<a class="headerlink" href="#actiontarget-method-call-shortcuts-lua" title="Permanent link">&para;</a></h2>
-<p>The <code>ActionTarget</code> usertype exposes the same set as methods:</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">npc</span><span class="p">:</span><span class="nf">isAlive</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">attack</span><span class="p">()</span><span class="w">         </span><span class="c1">-- == srs.npc.attack(npc)</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">talkTo</span><span class="p">()</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">bank</span><span class="p">()</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">interact</span><span class="p">(</span><span class="s2">&quot;Pickpocket&quot;</span><span class="p">)</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">overheadPrayer</span><span class="p">()</span><span class="w"> </span><span class="c1">-- == srs.npc.overheadPrayer(npc)</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kr">end</span>
+<p>The <code>ActionTarget</code> usertype exposes these as methods (use <code>:</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Lua</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generic interact</td>
+<td><code>t:interact(action) → bool</code></td>
+</tr>
+<tr>
+<td>Attack</td>
+<td><code>t:attack() → bool</code></td>
+</tr>
+<tr>
+<td>Talk-to</td>
+<td><code>t:talkTo() → bool</code></td>
+</tr>
+<tr>
+<td>Bank</td>
+<td><code>t:bank() → bool</code></td>
+</tr>
+<tr>
+<td>Still in world map</td>
+<td><code>t:isAlive() → bool</code></td>
+</tr>
+<tr>
+<td>Overhead prayer headicon</td>
+<td><code>t:overheadPrayer() → OverheadPrayer</code></td>
+</tr>
+<tr>
+<td>Spotanims on the actor</td>
+<td><code>t:spotAnims() → table</code></td>
+</tr>
+<tr>
+<td>Has a spotanim id</td>
+<td><code>t:hasSpotAnim(id) → bool</code></td>
+</tr>
+<tr>
+<td>Handle still valid</td>
+<td><code>t:isValid() → bool</code></td>
+</tr>
+</tbody>
+</table>
+<p>For example:</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">npc</span><span class="p">:</span><span class="nf">isAlive</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">attack</span><span class="p">()</span><span class="w">         </span><span class="c1">-- == srs.npc.attack(npc)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">talkTo</span><span class="p">()</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">bank</span><span class="p">()</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">interact</span><span class="p">(</span><span class="s2">&quot;Pickpocket&quot;</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">overheadPrayer</span><span class="p">()</span><span class="w"> </span><span class="c1">-- == srs.npc.overheadPrayer(npc)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">spotAnims</span><span class="p">()</span><span class="w">      </span><span class="c1">-- == srs.npc.spotAnims(npc)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">hasSpotAnim</span><span class="p">(</span><span class="nv">id</span><span class="p">)</span><span class="w">  </span><span class="c1">-- == srs.npc.hasSpotAnim(npc, id)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="kr">end</span>
 </span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title"><code>examine</code> has no usertype shortcut</p>
@@ -2469,15 +2678,7 @@ panel column or <code>entity.npcById(...)</code>.</p>
 method — there is no <code>npc:examine()</code>. Call <code>srs.npc.examine(npc)</code>.</p>
 </div>
 <h2 id="target-fields">Target fields<a class="headerlink" href="#target-fields" title="Permanent link">&para;</a></h2>
-<p>In <strong>Lua</strong>, finders return the <code>ActionTarget</code> usertype. In <strong>C++</strong>, finders
-return <code>NpcEntry</code> — a plain struct with NPC-specific fields:
-<code>id</code>, <code>spawnIndex</code>, <code>name</code>, <code>tileX</code>, <code>tileY</code>, <code>plane</code>,
-<code>animationId</code> (−1 = idle), <code>orientation</code> (−1 = unknown),
-<code>currentHp</code> / <code>maxHp</code> (−1 = unknown), <code>combatLevel</code> (−1 = unknown),
-<code>modelMagnitude</code> (engine getXYZMag half-extent; 0 = unknown),
-<code>overheadText</code> (<code>""</code> = none) and <code>overheadCycles</code> (0 = none). The
-action methods accept either type.</p>
-<p>The <code>ActionTarget</code> usertype (Lua return) — read-only:</p>
+<p>Finders return the <strong><code>ActionTarget</code></strong> usertype. Its fields are read-only:</p>
 <table>
 <thead>
 <tr>
@@ -2488,7 +2689,7 @@ action methods accept either type.</p>
 <tbody>
 <tr>
 <td><code>kind</code></td>
-<td><code>TargetKind</code> enum (None / Npc / Player / Object / Tile)</td>
+<td><code>TargetKind</code> enum (<code>TargetKind.None</code> / <code>Npc</code> / <code>Player</code> / <code>Object</code> / <code>Tile</code>)</td>
 </tr>
 <tr>
 <td><code>tileX</code>, <code>tileY</code>, <code>tileZ</code></td>
@@ -2546,10 +2747,6 @@ action methods accept either type.</p>
 <td><code>combatLevel</code></td>
 <td>Combat level (−1 = unknown)</td>
 </tr>
-<tr>
-<td><code>isValid()</code></td>
-<td>Method, returns bool</td>
-</tr>
 </tbody>
 </table>
 <div class="admonition note">
@@ -2570,25 +2767,11 @@ may be mid-turn.
 (bankers, shopkeepers, pets).</p>
 </div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">auto</span><span class="w"> </span><span class="n">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="n">entityQuery</span><span class="o">-&gt;</span><span class="n">nearestNpc</span><span class="p">();</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">npc</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Npc</span><span class="o">::</span><span class="n">isAlive</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">npc</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="n">Npc</span><span class="o">::</span><span class="n">attack</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">npc</span><span class="p">);</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">npc</span><span class="p">:</span><span class="nf">isAlive</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">attack</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">npc</span><span class="p">:</span><span class="nf">isAlive</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">attack</span><span class="p">()</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

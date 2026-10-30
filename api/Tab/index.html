@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2235,9 +2235,9 @@
 
 
 <h1 id="tab">Tab<a class="headerlink" href="#tab" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Tab</code> / <code>srs.tab</code></p>
+<p><code>srs.tab</code></p>
 <p>Authoritative source for "which sidebar tab is open right now".</p>
-<p>Tab state lives in VarClient at index <code>TOPLEVEL_PANEL</code> (171). Reading
+<p>Tab state lives in client variable (varc) 171. Reading
 it is stricter than the open-iface map (which only says the inventory
 IfType is loaded, not that it's the <em>active</em> tab).</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
@@ -2245,42 +2245,36 @@ IfType is loaded, not that it's the <em>active</em> tab).</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Current tab enum</td>
-<td><code>Tab::current(ctx) → InterfaceTab</code></td>
-<td><code>srs.tab.current() → int</code></td>
+<td><code>srs.tab.current() → integer</code></td>
 </tr>
 <tr>
 <td>Is given tab open</td>
-<td><code>Tab::isOpen(ctx, tab) → bool</code></td>
-<td><code>srs.tab.isOpen(tab) → bool</code></td>
+<td><code>srs.tab.isOpen(tab) → boolean</code></td>
 </tr>
 <tr>
 <td>Switch to tab</td>
-<td><code>Tab::switchTo(ctx, tab) → bool</code></td>
-<td><code>srs.tab.switchTo(tab) → bool</code></td>
+<td><code>srs.tab.switchTo(tab) → boolean</code></td>
 </tr>
 <tr>
 <td>Raw varc value</td>
-<td><code>Tab::rawIndex(ctx) → int32</code></td>
-<td><code>srs.tab.rawIndex() → int</code></td>
+<td><code>srs.tab.rawIndex() → integer</code></td>
 </tr>
 <tr>
-<td>AWT VK code for tab hotkey</td>
-<td><code>Tab::hotkeyVk(ctx, tab) → int</code></td>
-<td><code>srs.tab.hotkeyVk(tab) → int</code></td>
+<td>Virtual-key code of the tab's bound hotkey</td>
+<td><code>srs.tab.hotkeyVk(tab) → integer</code></td>
 </tr>
 </tbody>
 </table>
 <h3 id="switchto-contract">switchTo contract<a class="headerlink" href="#switchto-contract" title="Permanent link">&para;</a></h3>
 <ol>
 <li><code>UNKNOWN</code> and <code>NOTHING_SELECTED</code> are not valid targets → return <code>false</code>.</li>
-<li>If <code>current(ctx) == tab</code> → return <code>true</code> immediately (no-op).</li>
+<li>If <code>current() == tab</code> → return <code>true</code> immediately (no-op).</li>
 <li>Otherwise it drives the <strong>chrome tab widget</strong> (the sidebar stone), not a
    hotkey. The chrome (group, child) pair is resolved from the live display
    mode (Fixed=548 / ResizableClassic=161 / ResizableModern=164). Preferred
@@ -2296,7 +2290,7 @@ IfType is loaded, not that it's the <em>active</em> tab).</p>
 It returns <code>0</code> if unbound (or if the varbit snapshot hasn't refreshed yet) and
 is useful for "Inventory tab bound to: F4" UI.</p>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
-<p><strong>InterfaceTab</strong> (<code>InterfaceTab</code> / <code>srs.tab.*</code>):</p>
+<p><strong>InterfaceTab</strong> (<code>srs.tab.*</code>):</p>
 <table>
 <thead>
 <tr>
@@ -2394,27 +2388,15 @@ is useful for "Inventory tab bound to: F4" UI.</p>
 enum's ordinal; <code>current()</code> converts it for you (use <code>rawIndex()</code> only
 if you need the raw value). Raw values, e.g. Combat=0, Inventory=3,
 AccMan=8, Friends=9, Logout=10.
-The value <code>-1</code> means "no tab selected" (fullscreen interface up,
-or pre-login).</p>
+A raw value of <code>-1</code> means "no tab selected" (fullscreen interface up)
+and <code>current()</code> reports it as <code>NOTHING_SELECTED</code>; <code>current()</code> returns
+<code>UNKNOWN</code> when the varc isn't readable yet (pre-login).</p>
 </div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">Tab</span><span class="o">::</span><span class="n">isOpen</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">InterfaceTab</span><span class="o">::</span><span class="n">Inventory</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">Tab</span><span class="o">::</span><span class="n">switchTo</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">InterfaceTab</span><span class="o">::</span><span class="n">Inventory</span><span class="p">);</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">INVENTORY</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">switchTo</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">INVENTORY</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kr">end</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">INVENTORY</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">switchTo</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">INVENTORY</span><span class="p">)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kr">end</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2279,7 +2279,7 @@
 
 
 <h1 id="depositbox">DepositBox<a class="headerlink" href="#depositbox" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::DepositBox</code> / <code>srs.depositbox</code></p>
+<p><code>srs.depositbox</code></p>
 <p>Deposit-box variant of bank operations. Reads the player's inventory
 (container 93) directly — there's no separate "deposit-box container".
 Group 192 (BankDepositbox) hosts the buttons and the deposit-side item
@@ -2291,14 +2291,12 @@ deposit buttons, per-item <code>depositAllExcept</code>, and the quantity preset
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Is deposit box open</td>
-<td><code>DepositBox::isOpen(ctx) → bool</code></td>
 <td><code>srs.depositbox.isOpen() → bool</code></td>
 </tr>
 </tbody>
@@ -2308,24 +2306,21 @@ deposit buttons, per-item <code>depositAllExcept</code>, and the quantity preset
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Open via nearest loc</td>
-<td><code>DepositBox::open(ctx) → bool</code></td>
 <td><code>srs.depositbox.open() → bool</code></td>
 </tr>
 <tr>
 <td>Close (X-button)</td>
-<td><code>DepositBox::close(ctx) → bool</code></td>
 <td><code>srs.depositbox.close() → bool</code></td>
 </tr>
 </tbody>
 </table>
-<p><code>open</code> mirrors <code>Bank::open</code>'s nearest-object resolution but targets a
+<p><code>open</code> mirrors <code>srs.bank.open</code>'s nearest-object resolution but targets a
 scene <strong>loc</strong> instead of a banker NPC: it tries <code>"Bank deposit box"</code> then
 <code>"Deposit box"</code>, resolves the nearest instance that actually exposes the
 <code>"Deposit"</code> verb (decorative twins are filtered), cancels any in-flight
@@ -2333,69 +2328,59 @@ walk, and fires OPLOC1 on the loc's SW anchor. Returns <code>true</code> if the 
 already open (no-op) <strong>or</strong> the click was issued — it does not mean the
 interface is open yet, so check <code>isOpen()</code> on a later tick. Returns <code>false</code>
 if no deposit box is in scene.</p>
-<p><code>close</code> clicks the close "X" — a runtime <strong>dynamic child [11] of
-component (192, 1)</strong> (the title-bar frame) — via CC_OP (slot 57) with
-that child's wrapper as <code>overrideWidgetPtr</code> — the same shape as the bank's
-own close. Returns <code>false</code> if the box isn't open or the button isn't
-rendered this frame.</p>
+<p><code>close</code> clicks the title-bar close "X" (a runtime-created child of
+component (192, 1)) — the same shape as the bank's own close. Returns
+<code>false</code> if the box isn't open or the button isn't rendered this frame.</p>
 <h2 id="bulk-deposit">Bulk deposit<a class="headerlink" href="#bulk-deposit" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Deposit whole inventory</td>
-<td><code>DepositBox::depositInventory(ctx) → bool</code></td>
 <td><code>srs.depositbox.depositInventory() → bool</code></td>
 </tr>
 <tr>
 <td>Deposit worn equipment</td>
-<td><code>DepositBox::depositEquipment(ctx) → bool</code></td>
 <td><code>srs.depositbox.depositEquipment() → bool</code></td>
 </tr>
 <tr>
 <td>Deposit looting bag</td>
-<td><code>DepositBox::depositLootingBag(ctx) → bool</code></td>
 <td><code>srs.depositbox.depositLootingBag() → bool</code></td>
 </tr>
 </tbody>
 </table>
 <h2 id="per-item-deposit">Per-item deposit<a class="headerlink" href="#per-item-deposit" title="Permanent link">&para;</a></h2>
 <p>The deposit-side inventory is widget <code>(192, 24)</code> — the box renders the
-player's backpack in its own grid (not the sidebar). These are UI/CS2
-widget actions, so they dispatch through the <strong>engine action dispatch</strong>, not
-as raw wire packets: a CC_OP (slot 57) at that widget with <code>subSlot = backpack
-slot (0..27)</code>, <code>itemId</code> from the backpack cache, and op index <strong>1</strong>
-(<code>spawnIdx</code>).</p>
+player's backpack in its own grid (not the sidebar). Each deposit is a
+widget click on that grid cell (backpack slot 0..27) using the item's first
+op (op index <strong>1</strong>).</p>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Deposit all except (by id)</td>
-<td><code>DepositBox::depositAllExcept(ctx, vector&lt;int32_t&gt;) → bool</code></td>
 <td><code>srs.depositbox.depositAllExcept({ids...}) → bool</code></td>
 </tr>
 <tr>
 <td>Deposit all except (by name)</td>
-<td><code>DepositBox::depositAllExcept(ctx, vector&lt;string&gt;) → bool</code></td>
 <td><code>srs.depositbox.depositAllExcept({"names"...}) → bool</code></td>
 </tr>
 </tbody>
 </table>
 <p><code>depositAllExcept</code> fires one deposit click on the FIRST non-kept inventory
 slot per call and returns <code>false</code>; the script polls each tick until only
-kept items remain, at which point it returns <code>true</code>. The by-name form matches
+kept items remain, at which point it returns <code>true</code> (it also returns
+<code>false</code> if the box isn't open). The by-name form matches
 by case-insensitive <strong>substring</strong> of the item's name (<code>"pickaxe"</code> keeps every
 pickaxe); the by-id form matches exactly.</p>
 <h3 id="the-item-ops-are-positional">The item ops are positional<a class="headerlink" href="#the-item-ops-are-positional" title="Permanent link">&para;</a></h3>
@@ -2434,31 +2419,28 @@ that worked under one preset means the same thing under another.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Set quantity</td>
-<td><code>DepositBox::setQuantity(ctx, q) → bool</code></td>
 <td><code>srs.depositbox.setQuantity(q) → bool</code></td>
 </tr>
 <tr>
 <td>Read quantity</td>
-<td><code>DepositBox::getQuantity(ctx) → optional&lt;Quantity&gt;</code></td>
 <td><code>srs.depositbox.getQuantity() → q \| nil</code></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Quantity constants</strong> (<code>DepositBox::Quantity</code> / <code>srs.depositbox.*</code>):
+<p><strong>Quantity constants</strong> (<code>srs.depositbox.*</code>):
 <code>ONE</code>, <code>FIVE</code>, <code>TEN</code>, <code>X</code>, <code>ALL</code>. Same set as <a href="../Bank/">Bank</a>; the
 <a href="../Shop/">Shop</a> <code>Quantity</code> enum differs — <code>ONE / FIVE / TEN / FIFTY / X</code>,
 no <code>ALL</code> — so don't reuse constants across the tables.</p>
 <p><code>setQuantity</code> clicks the matching 1/5/10/X/All button and needs the box
 open. <code>getQuantity</code> reads varbit <code>DEPOSITBOX_MODE</code> (4430) instead, so it
 works whether or not the box is open — the preset is sticky across visits.
-It returns <code>nullopt</code> / <code>nil</code> if the varbit can't be read. Use it rather than
+It returns <code>nil</code> if the varbit can't be read. Use it rather than
 reading 4430 yourself: the raw values are <strong>not</strong> in button order (measured
 in-client 2026-07-14 — <code>1</code>=0, <code>5</code>=1, <code>All</code>=2, <code>X</code>=3, <code>10</code>=4), so the mapping
 is not something to infer from the button layout.</p>

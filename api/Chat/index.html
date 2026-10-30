@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2223,13 +2223,13 @@
 
 
 <h1 id="chat">Chat<a class="headerlink" href="#chat" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Chat</code> / <code>srs.chat</code></p>
+<p><code>srs.chat</code></p>
 <p>Read the game chatbox as an event stream. Every line the engine adds funnels
 through one native choke point, so a single subscription observes them all:
 server <strong>game / system messages</strong> (the minigame and boss status lines), <strong>public
 player chat</strong>, private messages, clan / friends-chat, broadcasts, and the friend
-login/out notifier. This is the native equivalent of RuneLite's <code>ChatMessage</code>
-event. There is no polling reader — chat is delivered only as events.</p>
+login/out notifier. There is no polling reader — chat is delivered only as
+events.</p>
 <div class="admonition note">
 <p class="admonition-title">System vs. player messages</p>
 <p><code>sender</code> is <strong>empty</strong> for server/system (game) messages and <strong>non-empty</strong>
@@ -2237,43 +2237,35 @@ for player chat. That is the robust way to tell a minigame/boss status line
 from someone actually talking — prefer it over matching on <code>type</code>, since
 server game messages are server-driven and don't carry one fixed type value.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Callback thread differs by language</p>
-<p>The <strong>C++</strong> callback runs <strong>on the game thread</strong>, synchronously inside the
-engine — keep it cheap and thread-safe. The <strong>Lua</strong> callback is delivered on
-the <strong>script thread</strong> (queued by the hook, drained once per frame), so it is
-safe to call the rest of the <code>srs.*</code> API from it. Per-script pause applies to
-the Lua path.</p>
+<div class="admonition note">
+<p class="admonition-title">Callback thread</p>
+<p>The callback is delivered on the <strong>script thread</strong> (queued by the hook,
+drained once per frame), so it is safe to call the rest of the <code>srs.*</code> API
+from it. Per-script pause applies.</p>
 </div>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Subscribe to chat lines</td>
-<td><code>Chat::onMessage(cb) → uint64</code></td>
 <td><code>srs.chat.onMessage(fn) → token</code></td>
 </tr>
 <tr>
 <td>Unsubscribe</td>
-<td><code>Chat::offMessage(token)</code></td>
 <td><code>srs.chat.offMessage(token) → bool</code></td>
 </tr>
 </tbody>
 </table>
 <p><code>onMessage</code> fires for <strong>every</strong> line, not just messages aimed at you — filter in
-your handler. Returns a token (<code>0</code> in C++ on failure — a null callback or the hook not installed); pass it to
-<code>offMessage</code> to stop listening.</p>
-<p><strong>C++</strong>: process-wide, takes no <code>ScriptContext</code>. The callback
-(<code>ChatMessageCallback = std::function&lt;void(const ChatMessageEvent&amp;)&gt;</code>) runs on the
-game thread.</p>
-<p><strong>Lua</strong>: <code>fn</code> receives a table <code>{type, sender, message, channel, wallClock}</code>.</p>
+your handler. Returns a token; pass it to <code>offMessage</code> to stop listening.</p>
+<p><code>fn</code> receives a table <code>{type, sender, message, channel, wallClock}</code> (see
+<a href="#types">Types</a>).</p>
 <div class="admonition note">
 <p class="admonition-title">Unsubscribing</p>
 <p><code>srs.chat.offMessage(token)</code> removes the callback registered under that token.
@@ -2282,7 +2274,7 @@ unknown or already-removed token. A full script reload clears all subscriptions
 automatically, so a register-once-at-load callback needs no explicit cleanup.</p>
 </div>
 <h2 id="chat-types">Chat types<a class="headerlink" href="#chat-types" title="Permanent link">&para;</a></h2>
-<p><code>srs.chat.type.*</code> — engine chat-type ints (RuneLite <code>ChatMessageType</code> values) to
+<p><code>srs.chat.type.*</code> — engine chat-type ints to
 compare against <code>event.type</code>. <code>GAMEMESSAGE</code> and <code>PUBLIC</code> are the two you can rely
 on; treat the rest as best-effort labels. <strong>Server / system messages do not use a single
 value</strong> — level-ups and examines arrive as <code>GAMEMESSAGE</code> (<code>0</code>), while filterable "spam"
@@ -2351,7 +2343,7 @@ sender), not a type match. Log <code>event.type</code> to discover others on you
 </tbody>
 </table>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
-<p><strong><code>ChatMessageEvent</code></strong> (C++; Lua receives the equivalent table):</p>
+<p><strong><code>ChatMessageEvent</code></strong> (the table passed to the <code>onMessage</code> callback):</p>
 <table>
 <thead>
 <tr>
@@ -2363,7 +2355,7 @@ sender), not a type match. Log <code>event.type</code> to discover others on you
 <tbody>
 <tr>
 <td><code>type</code></td>
-<td>int32</td>
+<td>integer</td>
 <td>Engine chat-type int (see <a href="#chat-types">Chat types</a>)</td>
 </tr>
 <tr>
@@ -2382,56 +2374,30 @@ sender), not a type match. Log <code>event.type</code> to discover others on you
 <td>Clan / friends-chat name (empty for most)</td>
 </tr>
 <tr>
-<td><code>wallClock_ms</code></td>
-<td>int64</td>
-<td><code>GetTickCount64()</code> when the message was observed (Lua: <code>wallClock</code>)</td>
+<td><code>wallClock</code></td>
+<td>number</td>
+<td>Millisecond timestamp (system tick count) when the message was observed</td>
 </tr>
 </tbody>
 </table>
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">ChatMessageEvent</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kt">int32_t</span><span class="w">     </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">sender</span><span class="p">;</span><span class="w">      </span><span class="c1">// empty for server/system messages</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">message</span><span class="p">;</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">channel</span><span class="p">;</span><span class="w">     </span><span class="c1">// clan / FC name (empty for most)</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kt">int64_t</span><span class="w">     </span><span class="n">wallClock_ms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">};</span>
-</span></code></pre></div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">C++</label><label for="__tabbed_1_2">Lua</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">srs</span><span class="o">::</span><span class="nn">api</span><span class="p">;</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">// Register once (e.g. in onStart). Runs on the game thread — keep it cheap.</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kt">uint64_t</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Chat</span><span class="o">::</span><span class="n">onMessage</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">ChatMessageEvent</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">sender</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="c1">// server/system line — minigame + boss status shows up here</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="c1">// e.g. if (e.message.find(&quot;wave&quot;) != std::string::npos) ...</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">});</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1">// ... later: Chat::offMessage(token);</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">myName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">displayName</span><span class="p">()</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">srs</span><span class="p">.</span><span class="py">chat</span><span class="p">.</span><span class="nf">onMessage</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="c1">-- 1) Minigame / boss status: server messages have an EMPTY sender</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">sender</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">:</span><span class="nf">find</span><span class="p">(</span><span class="s2">&quot;wave&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">:</span><span class="nf">find</span><span class="p">(</span><span class="s2">&quot;enrage&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">            </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;STATUS: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="kr">end</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="kr">return</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="c1">-- 2) Someone talking to us by name (public chat has a sender)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">myName</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">:</span><span class="nf">lower</span><span class="p">():</span><span class="nf">find</span><span class="p">(</span><span class="nv">myName</span><span class="p">:</span><span class="nf">lower</span><span class="p">(),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nv">e</span><span class="p">.</span><span class="py">sender</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; mentioned us: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">myName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">player</span><span class="p">.</span><span class="nf">displayName</span><span class="p">()</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nv">srs</span><span class="p">.</span><span class="py">chat</span><span class="p">.</span><span class="nf">onMessage</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="c1">-- 1) Minigame / boss status: server messages have an EMPTY sender</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">sender</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="kr">if</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">:</span><span class="nf">find</span><span class="p">(</span><span class="s2">&quot;wave&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">:</span><span class="nf">find</span><span class="p">(</span><span class="s2">&quot;enrage&quot;</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">            </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">&quot;STATUS: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="kr">end</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="kr">return</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="c1">-- 2) Someone talking to us by name (public chat has a sender)</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">myName</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">:</span><span class="nf">lower</span><span class="p">():</span><span class="nf">find</span><span class="p">(</span><span class="nv">myName</span><span class="p">:</span><span class="nf">lower</span><span class="p">(),</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">        </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="nv">e</span><span class="p">.</span><span class="py">sender</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; mentioned us: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">message</span><span class="p">)</span>
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="kr">end</span>
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="kr">end</span><span class="p">)</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
 
 
 

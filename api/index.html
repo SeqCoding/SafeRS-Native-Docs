@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2080,14 +2080,12 @@
 
 
 <h1 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h1>
-<p>Every public module, alphabetical. Each page shows the C++ and Lua
-signatures side-by-side; what's not listed here isn't part of the
-public contract.</p>
+<p>Every public module, alphabetical. Each page lists the module's Lua
+functions; what's not listed here isn't part of the public contract.</p>
 <table>
 <thead>
 <tr>
 <th>Module</th>
-<th>C++ class</th>
 <th>Lua table</th>
 <th>One-liner</th>
 </tr>
@@ -2095,339 +2093,284 @@ public contract.</p>
 <tbody>
 <tr>
 <td><a href="Actions/">Actions</a></td>
-<td><code>srs::api::Actions</code></td>
 <td><code>srs.actions</code></td>
 <td>Same-tick action batching + dispatch tickets — did the action actually reach the server?</td>
 </tr>
 <tr>
 <td><a href="Antiban/">Antiban</a></td>
-<td><code>srs::api::Antiban</code></td>
 <td><code>srs.antiban</code></td>
 <td>Human-like timing + idle helpers</td>
 </tr>
 <tr>
 <td><a href="Area/">Area</a></td>
-<td><code>srs::api::Area</code></td>
 <td><code>srs.area</code></td>
 <td>Player-position area checks + <code>WorldTile</code> / <code>WorldArea</code> value types</td>
 </tr>
 <tr>
 <td><a href="Bank/">Bank</a></td>
-<td><code>srs::api::Bank</code></td>
 <td><code>srs.bank</code></td>
 <td>Bank UI state + container reads + bulk deposit</td>
 </tr>
 <tr>
 <td><a href="Breaks/">Breaks</a></td>
-<td><code>srs::api::Breaks</code></td>
 <td><code>srs.breaks</code></td>
 <td>BreakManager — schedule, observe, react to break cycles</td>
 </tr>
 <tr>
 <td><a href="Camera/">Camera</a></td>
-<td><code>srs::api::Camera</code></td>
 <td><code>srs.camera</code></td>
 <td>Camera control (rotate / zoom / events)</td>
 </tr>
 <tr>
 <td><a href="Cannon/">Cannon</a></td>
-<td><code>srs::api::Cannon</code></td>
 <td><code>srs.cannon</code></td>
 <td>Dwarf Multicannon refill + repair</td>
 </tr>
 <tr>
 <td><a href="Chat/">Chat</a></td>
-<td><code>srs::api::Chat</code></td>
 <td><code>srs.chat</code></td>
 <td>Read the chatbox — game/system, public, PM, clan/FC (event stream)</td>
 </tr>
 <tr>
 <td><a href="Combat/">Combat</a></td>
-<td><code>srs::api::Combat</code></td>
 <td><code>srs.combat</code></td>
 <td>Combat-tab queries, spec / attack-style toggles, exact interact target</td>
 </tr>
 <tr>
 <td><a href="Defs/">Defs</a></td>
-<td>— (see <a href="Game/">Game</a> / <a href="Npc/">NPC</a>)</td>
 <td><code>srs.defs</code></td>
 <td>Definition / cache metadata by id — "what <em>is</em> this thing"</td>
 </tr>
 <tr>
 <td><a href="DepositBox/">DepositBox</a></td>
-<td><code>srs::api::DepositBox</code></td>
 <td><code>srs.depositbox</code></td>
 <td>Deposit-box bulk-deposit + quantity preset</td>
 </tr>
 <tr>
 <td><a href="Dialogue/">Dialogue</a></td>
-<td><code>srs::api::Dialogue</code></td>
 <td><code>srs.dialogue</code></td>
 <td>Detect + advance dialogue (continue / options) + answer the chatbox text/amount prompt</td>
 </tr>
 <tr>
 <td><a href="Drawing/">Drawing</a></td>
-<td><code>srs::api::Drawing</code></td>
 <td><code>srs.draw</code></td>
 <td>Overlay drawing (ImGui) — anchors, widgets, primitives</td>
 </tr>
 <tr>
 <td><a href="Engine/">Engine</a></td>
-<td><code>srs::api::Engine</code></td>
 <td><code>srs.engine</code></td>
 <td>Per-tick action-cap introspection + low-level engine primitives</td>
 </tr>
 <tr>
 <td><a href="Entity/">Entity</a></td>
-<td>—</td>
 <td><code>entity</code> (global)</td>
 <td>NPC / player scene query (returns ActionTarget); global <code>npc.*</code> aliases the same finders — see <a href="Npc/">NPC</a></td>
 </tr>
 <tr>
 <td><a href="Equipment/">Equipment</a></td>
-<td><code>srs::api::Equipment</code></td>
 <td><code>srs.equipment</code></td>
 <td>Worn-items view</td>
 </tr>
 <tr>
 <td><a href="Events/">Events</a></td>
-<td>—</td>
 <td><code>srs.events</code></td>
 <td>Central named-event registry (inventory, chat, XP, …)</td>
 </tr>
 <tr>
 <td><a href="Food/">Food</a></td>
-<td><code>srs::api::Food</code></td>
 <td><code>srs.food</code></td>
 <td>Edible-item table + eat helpers</td>
 </tr>
 <tr>
 <td><a href="Game/">Game</a></td>
-<td><code>srs::api::Game</code></td>
 <td><code>srs.game</code></td>
 <td>Engine-level state (login screen, logged in, login index)</td>
 </tr>
 <tr>
 <td><a href="GameTable/">Game (legacy table)</a></td>
-<td>—</td>
 <td><code>game</code> (global)</td>
 <td>Projection, collision, transports, raw clicks — low-level</td>
 </tr>
 <tr>
 <td><a href="GameObject/">GameObject</a></td>
-<td><code>srs::api::GameObject</code></td>
 <td><code>srs.gameobject</code></td>
 <td>Scene loc objects (trees, doors, banks, …)</td>
 </tr>
 <tr>
 <td><a href="GePrices/">GE Prices</a></td>
-<td><code>srs::api::GePrices</code></td>
 <td><code>srs.ge</code></td>
 <td>Live GE market / guide prices (wiki real-time API)</td>
 </tr>
 <tr>
 <td><a href="Globals/">Globals &amp; Enums</a></td>
-<td>—</td>
 <td>(global scope)</td>
 <td>Global enums, tables, and usertype index</td>
 </tr>
 <tr>
 <td><a href="GrandExchange/">Grand Exchange</a></td>
-<td><code>srs::api::GrandExchange</code></td>
 <td><code>srs.ge</code></td>
 <td>Read GE offer slots + place / collect offers</td>
 </tr>
 <tr>
 <td><a href="GraphicsObjects/">GraphicsObjects</a></td>
-<td><code>srs::api::GraphicsObjects</code></td>
 <td><code>srs.graphicsObjects</code></td>
 <td>Tile-bound SpotAnims (debris, splatters, sparkles) (EXPERIMENTAL — needs one-time setup per client build)</td>
 </tr>
 <tr>
 <td><a href="GroundItem/">GroundItem</a></td>
-<td><code>srs::api::GroundItem</code></td>
 <td><code>srs.grounditem</code></td>
 <td>Dropped-item enumeration + loot</td>
 </tr>
 <tr>
 <td><a href="HitSplats/">Hit splats</a></td>
-<td><code>srs::api::HitSplats</code></td>
 <td><code>srs.hitsplats</code></td>
 <td>Combat ground truth — every damage number, with the victim resolved</td>
 </tr>
 <tr>
 <td><a href="Input/">Input</a></td>
-<td><code>srs::api::Input</code></td>
 <td><code>srs.input</code></td>
 <td>Typed text entry (<code>typeString</code>, human-paced, background-safe) + key taps + VK constants</td>
 </tr>
 <tr>
 <td><a href="Inventory/">Inventory</a></td>
-<td><code>srs::api::Inventory</code></td>
 <td><code>srs.inventory</code></td>
 <td>Backpack view + click actions</td>
 </tr>
 <tr>
 <td><a href="Magic/">Magic</a></td>
-<td><code>srs::api::Magic</code></td>
 <td><code>srs.magic</code></td>
 <td>Spell casting</td>
 </tr>
 <tr>
 <td><a href="MenuEntry/">MenuEntry</a></td>
-<td><code>srs::api::MenuEntry</code> / <code>srs::api::Menu</code></td>
 <td><code>srs.menuEntry</code> / <code>srs.menu</code></td>
 <td>Raw MenuAction builder (still spoofed) + live menu-entry reader</td>
 </tr>
 <tr>
 <td><a href="Npc/">NPC</a></td>
-<td><code>srs::api::Npc</code></td>
 <td><code>srs.npc</code></td>
 <td>Per-NPC actions (attack / talk-to / bank / generic)</td>
 </tr>
 <tr>
 <td><a href="Notify/">Notify</a></td>
-<td><code>srs::api::Notify</code></td>
 <td><code>srs.notify</code> (function)</td>
 <td>Push a notification to the launcher (and Discord webhook)</td>
 </tr>
 <tr>
 <td><a href="Screenshot/">Screenshot</a></td>
-<td><code>srs::api::Screenshot</code></td>
 <td><code>srs.screenshot</code> (function)</td>
 <td>Save a PNG of the game canvas to the screenshots folder</td>
 </tr>
 <tr>
 <td><a href="Session/">Session</a></td>
-<td><code>srs::api::Session</code></td>
 <td><code>srs.session</code></td>
 <td>Declare per-run stats (profit, counts, task) shown on the SafeRS website</td>
 </tr>
 <tr>
 <td><a href="Object/">Object</a></td>
-<td>—</td>
 <td><code>object</code> (global)</td>
 <td>Scene loc query (low-level — prefer <code>srs.gameobject</code>)</td>
 </tr>
 <tr>
 <td><a href="Overlay/">Overlay</a></td>
-<td><code>srs::api::Overlay</code></td>
 <td><code>srs.overlay</code></td>
 <td>Themed HUD kit (panels, XP rows, rings) layered on Drawing</td>
 </tr>
 <tr>
 <td><a href="Player/">Player</a></td>
-<td><code>srs::api::Player</code></td>
 <td><code>srs.player</code></td>
 <td>Local-player state</td>
 </tr>
 <tr>
 <td><a href="PluginSettings/">PluginSettings</a></td>
-<td><code>srs::api::PluginSettings</code></td>
 <td>— (see <code>script.setSetting</code>)</td>
 <td>Write back to your plugin/script's own schema-driven settings</td>
 </tr>
 <tr>
 <td><a href="Prayer/">Prayer</a></td>
-<td><code>srs::api::Prayer</code></td>
 <td><code>srs.prayer</code></td>
 <td>Prayer book state + clicks + overhead-prayer (headicon) enum</td>
 </tr>
 <tr>
 <td><a href="Projectiles/">Projectiles</a></td>
-<td><code>srs::api::Projectiles</code></td>
 <td><code>srs.projectiles</code></td>
 <td>In-flight projectile enumeration + spawn events</td>
 </tr>
 <tr>
 <td><a href="Prompt/">Prompt</a></td>
-<td><code>srs::api::Prompt</code></td>
 <td><code>srs.prompt</code></td>
 <td>The chatbox "Enter amount / name" input prompt</td>
 </tr>
 <tr>
 <td><a href="RandomEvents/">Random events</a></td>
-<td><code>srs::api::RandomEvents</code></td>
 <td><code>srs.randomEvents</code></td>
 <td>Built-in random-event handler: state + suspend / resume</td>
 </tr>
 <tr>
 <td><a href="RunePouch/">RunePouch</a></td>
-<td><code>srs::api::RunePouch</code></td>
 <td><code>srs.runepouch</code></td>
 <td>Rune pouch contents + pouch window (open / store / withdraw)</td>
 </tr>
 <tr>
 <td><a href="Sailing/">Sailing</a></td>
-<td><code>srs::api::Sailing</code></td>
 <td><code>srs.sailing</code></td>
 <td>Boat state, helm / sails, cargo hold, port-task board</td>
 </tr>
 <tr>
 <td><a href="Script/">Script lifecycle</a></td>
-<td>—</td>
 <td><code>script</code> / <code>log</code> / <code>srs.wait</code></td>
 <td>Callbacks, settings, logging, tick waits</td>
 </tr>
 <tr>
 <td><a href="Settings/">Settings</a></td>
-<td><code>srs::api::Settings</code></td>
 <td><code>srs.settings</code></td>
 <td>Varbit / varp / varc reads</td>
 </tr>
 <tr>
 <td><a href="Shop/">Shop</a></td>
-<td><code>srs::api::Shop</code></td>
 <td><code>srs.shop</code></td>
 <td>Shop UI stock reads, per-item buy / sell, quantity preset</td>
 </tr>
 <tr>
 <td><a href="Spells/">Spells</a></td>
-<td><code>srs::api::Spells</code></td>
 <td><code>srs.spells</code></td>
 <td>Static spell metadata</td>
 </tr>
 <tr>
 <td><a href="Stats/">Stats</a></td>
-<td><code>srs::api::Stats</code></td>
 <td><code>srs.stats</code></td>
 <td>Session XP / runtime tracker (gained + per-hour rates)</td>
 </tr>
 <tr>
 <td><a href="Tab/">Tab</a></td>
-<td><code>srs::api::Tab</code></td>
 <td><code>srs.tab</code></td>
 <td>Sidebar tab detection + switching</td>
 </tr>
 <tr>
 <td><a href="Tile/">Tile</a></td>
-<td><code>srs::api::Tile</code></td>
 <td><code>srs.tile</code></td>
 <td>Collision-map queries</td>
 </tr>
 <tr>
 <td><a href="Walk/">Walk</a></td>
-<td><code>srs::api::Walk</code></td>
 <td><code>srs.walk</code></td>
 <td>High-level navigation (pathfinder + transports)</td>
 </tr>
 <tr>
 <td><a href="Widget/">Widget</a></td>
-<td><code>srs::api::Widget</code></td>
 <td><code>srs.widget</code></td>
 <td>Interface-tree inspection + generic click</td>
 </tr>
 <tr>
 <td><a href="World/">World</a></td>
-<td><code>srs::api::World</code></td>
 <td><code>srs.world</code></td>
 <td>Current world number, seamless hop, world list</td>
 </tr>
 </tbody>
 </table>
-<p><code>srs.ge</code> is one Lua table backed by <strong>two</strong> C++ classes —
-<a href="GePrices/">GE Prices</a> (<code>GePrices</code>) and
-<a href="GrandExchange/">Grand Exchange</a> (<code>GrandExchange</code>).</p>
+<p><code>srs.ge</code> is one Lua table documented on <strong>two</strong> pages —
+<a href="GePrices/">GE Prices</a> (market prices) and
+<a href="GrandExchange/">Grand Exchange</a> (offer slots).</p>
 
 
 

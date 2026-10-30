@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Public scripting and plugin API reference (C++ / Lua)">
+        <meta name="description" content="Public Lua scripting API reference">
       
       
       
@@ -2257,32 +2257,30 @@
 
 
 <h1 id="engine">Engine<a class="headerlink" href="#engine" title="Permanent link">&para;</a></h1>
-<p><code>srs::api::Engine</code> / <code>srs.engine</code></p>
+<p><code>srs.engine</code></p>
 <p>Engine-level introspection and low-level primitives. Two distinct surfaces
 live in the same Lua table:</p>
 <ol>
 <li><strong>Action-cap introspection</strong> — observe the per-server-tick action
-   counter that <code>PacketSendHook</code> maintains and <code>GameData::onTick</code> resets.
-   Backs the official C++ API at <code>srs::api::Engine</code>.</li>
-<li><strong>Diagnostic primitives</strong> — RuneLite-style <code>client.*</code> helpers
-   (VarClient reads / writes, raw CS2 <code>runScript</code>, input-block toggle).
-   Lua-only — no equivalent in <code>srs::api::Engine</code> because they're
-   intended for one-shot RE / diagnostic probes, not production scripts.</li>
+   counter the client maintains and resets every game tick.</li>
+<li><strong>Diagnostic primitives</strong> — low-level helpers (VarClient reads /
+   writes, raw CS2 <code>runScript</code>, input-block toggle) intended for
+   one-shot diagnostic probes, not production scripts.</li>
 </ol>
 <div class="admonition warning">
 <p class="admonition-title">Scripts MUST NOT block</p>
 <p>Script callbacks (<code>pulse</code> / <code>onTick</code> / <code>nextTick</code>) run on the script
-worker thread; a blocked callback stalls your script. To gate on action capacity, check <code>canDispatchAction()</code> and yield via
+worker thread; a blocked callback stalls your script. To gate on action
+capacity, check <code>canDispatchAction()</code> and yield via
 <code>script.nextTick(...)</code> if it returns false — never spin-wait.</p>
 </div>
 <h2 id="action-cap-introspection">Action-cap introspection<a class="headerlink" href="#action-cap-introspection" title="Permanent link">&para;</a></h2>
 <p>The OSRS server enforces a cap of <strong>8 action-class packets per game
-cycle</strong> (vanilla). The DLL counts every action-class opcode that
-<code>srs::engine::isAction()</code> recognises — <code>OpLoc*</code>, <code>OpNpc*</code>, <code>OpObj*</code>,
-<code>IfButton*</code>, etc. — but <strong>not</strong> input-bundle traffic (mouse moves,
-clicks, key events, heartbeats). Note that a sidebar <strong>tab switch counts</strong>:
+cycle</strong> (vanilla). The client counts every action-class packet — object,
+NPC, ground-item and widget-button actions, etc. — but <strong>not</strong>
+input traffic (mouse moves, clicks, key events, heartbeats). Note that a sidebar <strong>tab switch counts</strong>:
 a chrome-tab click emits <code>IF_BUTTON</code> like any other widget click.</p>
-<p><code>EngineDispatch::drainOnMainThread</code> has a budget gate, but it <strong>defers</strong>
+<p>The client's action dispatcher has a budget gate, but it <strong>defers</strong>
 an over-cap action rather than dropping it — it fires some unbounded number
 of ticks later, against a world that has moved on. That is fine for a
 drop-all and wrong for anything tick-scoped.</p>
@@ -2295,29 +2293,24 @@ instead of deferring, and reports every step per outcome.</p>
 <thead>
 <tr>
 <th>Method</th>
-<th>C++</th>
 <th>Lua</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Actions sent this tick</td>
-<td><code>Engine::actionsSentThisTick(ctx) → int</code></td>
 <td><code>srs.engine.actionsSentThisTick() → int</code></td>
 </tr>
 <tr>
 <td>Per-tick action cap</td>
-<td><code>Engine::actionLimit(ctx) → int</code></td>
 <td><code>srs.engine.actionLimit() → int</code></td>
 </tr>
 <tr>
 <td>Can dispatch another?</td>
-<td><code>Engine::canDispatchAction(ctx) → bool</code></td>
 <td><code>srs.engine.canDispatchAction() → bool</code></td>
 </tr>
 <tr>
 <td>Lifetime action count</td>
-<td><code>Engine::totalActionsCounted(ctx) → uint64</code></td>
 <td><code>srs.engine.totalActionsCounted() → number</code></td>
 </tr>
 </tbody>
@@ -2336,31 +2329,28 @@ single int and an opcode-aware overload will be added alongside.</p>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="diagnostic-primitives-lua-only">Diagnostic primitives (Lua-only)<a class="headerlink" href="#diagnostic-primitives-lua-only" title="Permanent link">&para;</a></h2>
-<p>For RE work, one-shot probes, and scripts that need a CS2 hook the
-high-level API doesn't expose yet. Mirrors a subset of RuneLite's
-<code>client.*</code> surface. No C++ equivalent on <code>srs::api::Engine</code> — these
-intentionally live only in Lua so they don't accidentally become part
-of the production plugin contract.</p>
+<p>For one-shot diagnostic probes and scripts that need a CS2 hook the
+high-level API doesn't expose yet.</p>
 <h3 id="varclient-cs2">VarClient + CS2<a class="headerlink" href="#varclient-cs2" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
+<th>Method</th>
 <th>Lua</th>
-<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>Read a <code>VarClientInt</code>; <code>nil</code> if the id is unset</td>
 <td><code>srs.engine.getVarcInt(varcId) → int or nil</code></td>
-<td>Read a <code>VarClientInt</code>. Returns <code>nil</code> if the id is unset.</td>
 </tr>
 <tr>
+<td>Write a <code>VarClientInt</code></td>
 <td><code>srs.engine.setVarcInt(varcId, value) → bool</code></td>
-<td>Write a <code>VarClientInt</code>. RuneLite's <code>setVarcIntValue</code> equivalent.</td>
 </tr>
 <tr>
+<td>Invoke a CS2 client script (variadic ints only; <code>false</code> if it can't run)</td>
 <td><code>srs.engine.runScript(scriptId, ...args) → bool</code></td>
-<td>Invoke a CS2 client script. Variadic ints only.</td>
 </tr>
 </tbody>
 </table>
@@ -2371,24 +2361,24 @@ purpose-built API for the CS2 routine you need to drive.</p>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">scrollY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">getVarcInt</span><span class="p">(</span><span class="mi">51</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="input-block-toggle">Input-block toggle<a class="headerlink" href="#input-block-toggle" title="Permanent link">&para;</a></h3>
-<p>The script engine holds an input gate that prevents the user's WndProc
+<p>The script engine holds an input gate that prevents the user's
 clicks from racing the script's spoofed clicks (which would corrupt the
 engine's click slot mid-spoof). These two calls pop / push that gate.</p>
 <table>
 <thead>
 <tr>
+<th>Method</th>
 <th>Lua</th>
-<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>Lift the gate so the <strong>user</strong> can interact with the game mid-script</td>
 <td><code>srs.engine.releaseInputBlock()</code></td>
-<td>Lift the gate so the <strong>user</strong> can interact with the game mid-script.</td>
 </tr>
 <tr>
+<td>Restore the gate</td>
 <td><code>srs.engine.takeInputBlock()</code></td>
-<td>Restore the gate.</td>
 </tr>
 </tbody>
 </table>
