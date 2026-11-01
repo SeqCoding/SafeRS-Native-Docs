@@ -2231,7 +2231,9 @@
 (varbits / varps). This module is about the script's own UI values.</p>
 <p>The functions live in the <a href="../Script/"><code>script.*</code></a> namespace. The write is
 attributed to the <strong>currently firing script</strong> (the one whose callback is
-running); a call that cannot be attributed to a script is silently dropped.</p>
+running), falling back to the script that is currently loading (a call from
+the top-level chunk); a call that cannot be attributed to either is silently
+dropped. An empty <code>key</code> is ignored.</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2257,7 +2259,10 @@ they must run in the top-level chunk. Called later from <code>pulse</code> / <co
 <code>draw</code> they are silently ignored. <code>script.setSetting</code>, by contrast, works from
 any callback. Registering the same <code>name</code> again replaces the earlier handler.</p>
 <p><code>name</code> is the <code>action</code> string of a settings row whose <code>kind</code> is <code>button</code>.
-<code>fn</code> takes no arguments.</p>
+<code>fn</code> takes no arguments. A click is ignored while the script is paused, or
+while it is neither enabled nor prepared (installed and loaded); a prepared
+but not yet started script still runs its button handlers, so gear-pull
+buttons work while you configure it.</p>
 <p><code>key</code> is <code>"&lt;groupId&gt;.&lt;rowId&gt;"</code> — the same flat encoding <code>script.onSettingsChanged</code>
 receives. <code>value</code> may be a boolean, number, string or table, and should match the row's
 kind: <code>boolean</code> for <code>check</code>, <code>number</code> for <code>number</code> / <code>slider</code>, <code>string</code> for

@@ -575,6 +575,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#human-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Human timing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-timing-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input timing telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2151,6 +2173,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#human-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Human timing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-timing-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input timing telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2241,8 +2285,156 @@
 <td>Total random moves</td>
 <td><code>srs.antiban.totalRandomMoves() → int</code></td>
 </tr>
+<tr>
+<td>Recommended for every script: opt in to human click timing (off by default)</td>
+<td><code>srs.antiban.setHumanTiming(true \| false \| opts)</code></td>
+</tr>
+<tr>
+<td>Current human-timing settings</td>
+<td><code>srs.antiban.humanTiming() → table</code></td>
+</tr>
+<tr>
+<td>Run <code>fn</code> with human timing bypassed</td>
+<td><code>srs.antiban.immediate(fn, ...) → any</code></td>
+</tr>
+<tr>
+<td>Scripted-click timing summary</td>
+<td><code>srs.antiban.inputTiming() → table</code></td>
+</tr>
+<tr>
+<td>Recent scripted clicks</td>
+<td><code>srs.antiban.inputTimingRows(n?) → table[]</code></td>
+</tr>
+<tr>
+<td>Clear the timing telemetry</td>
+<td><code>srs.antiban.resetInputTiming()</code></td>
+</tr>
 </tbody>
 </table>
+<h2 id="human-timing">Human timing<a class="headerlink" href="#human-timing" title="Permanent link">&para;</a></h2>
+<p>By default a scripted click goes out a few milliseconds after the action
+call. A script that acts from <code>onTick</code> therefore clicks right at the start
+of every tick, which real players don't do. Human timing is an opt-in fix:</p>
+<ul>
+<li>a per-account <strong>reaction delay</strong> (roughly 150–350 ms, different for each
+  character) before the mouse starts moving;</li>
+<li>the mouse path then <strong>plays out in real time</strong>, and the click is sent
+  when the cursor arrives instead of ahead of its own movement.</li>
+</ul>
+<p>Action calls still return straight away (<code>true</code> = queued). The click, and the
+action paired with it, land later in the same tick. With <code>tickSafe</code> (the
+default) the delay and path are squeezed to finish within <code>deadlineMs</code>
+(default 450) of the tick, so the server still takes the action on the next
+tick and your script's throughput is unchanged.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- top-level chunk: opt in once</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">antiban</span><span class="p">.</span><span class="nf">setHumanTiming</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1">-- or with options</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nv">srs</span><span class="p">.</span><span class="py">antiban</span><span class="p">.</span><span class="py">setHumanTiming</span><span class="p">{</span><span class="w"> </span><span class="nv">reaction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nv">tickSafe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nv">deadlineMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">450</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1">-- a prayer flick or other tick-critical click: skip the delay for this call</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="nv">srs</span><span class="p">.</span><span class="py">antiban</span><span class="p">.</span><span class="nf">immediate</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="nf">setActive</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="py">PROTECT_MAGIC</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kr">end</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>srs.antiban.humanTiming()</code> returns the current settings as a table:
+<code>{enabled, reaction, tickSafe, deadlineMs, queued}</code>, where <code>queued</code> is the
+number of clicks still waiting to go out.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>true</code> when a table is passed</td>
+<td><code>false</code> turns it off</td>
+</tr>
+<tr>
+<td><code>reaction</code></td>
+<td><code>true</code></td>
+<td>add the reaction delay before the move</td>
+</tr>
+<tr>
+<td><code>tickSafe</code></td>
+<td><code>true</code></td>
+<td>finish within <code>deadlineMs</code> of the tick; <code>false</code> also allows rare longer "attention lapses"</td>
+</tr>
+<tr>
+<td><code>deadlineMs</code></td>
+<td><code>450</code></td>
+<td>latest click time after the tick, 100–600</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">What human timing changes for your script</p>
+<ul>
+<li>The action lands 150–450 ms after your call instead of right away. Code
+  that checks the result <strong>on the next tick</strong> is unaffected; code that
+  fires several actions in one tick sees them go out one after another,
+  each with its own movement.</li>
+<li>Up to 8 clicks can be queued; a ninth action call returns <code>false</code>.</li>
+<li>Clicks always go out in call order, including <code>immediate</code> ones made
+  while others are still queued (those skip only their own delay).</li>
+<li>Only mouse clicks are timed. Key presses, minimap walking and widget
+  <code>clickFire</code> actions are unchanged.</li>
+<li>The setting is cleared whenever the script VM rebuilds (any script is
+  disabled or reloaded). Call <code>setHumanTiming</code> from your top-level chunk
+  so it's applied again on every start.</li>
+</ul>
+</div>
+<h2 id="input-timing-telemetry">Input timing telemetry<a class="headerlink" href="#input-timing-telemetry" title="Permanent link">&para;</a></h2>
+<p>Every scripted click is timed against the moment the client saw the tick
+it was made in, whether or not human timing is on. Use it to see how your
+script's input sits inside the 600 ms tick.</p>
+<p><code>srs.antiban.inputTiming()</code> returns:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rows</code>, <code>humanRows</code></td>
+<td>clicks recorded (last 1024), and how many used human timing</td>
+</tr>
+<tr>
+<td><code>ticksSeen</code></td>
+<td>game ticks the client has seen so far</td>
+</tr>
+<tr>
+<td><code>stage</code>, <code>release</code>, <code>drain</code></td>
+<td><code>{n, mean, sd, p10, p50, p90}</code> in ms after the tick: action call, click sent, paired action run</td>
+</tr>
+<tr>
+<td><code>releaseUnder100</code></td>
+<td>share of clicks sent within 100 ms of the tick</td>
+</tr>
+<tr>
+<td><code>gapNearTick</code></td>
+<td>share of gaps between clicks within 60 ms of a multiple of 600 ms (about 0.2 if unrelated to the tick)</td>
+</tr>
+<tr>
+<td><code>clickBeforePath</code></td>
+<td>clicks sent before the mouse path they claim had finished</td>
+</tr>
+<tr>
+<td><code>pathOverlaps</code></td>
+<td>paths that started before the previous path's last point</td>
+</tr>
+</tbody>
+</table>
+<p><code>srs.antiban.inputTimingRows(n)</code> returns the last <code>n</code> clicks (default 50),
+oldest first: <code>{seq, tick, mode, stageMs, releaseMs, drainMs, pathMs,
+reactionMs, overlapMs, clickGapMs}</code>, where <code>mode</code> is <code>"instant"</code>, <code>"human"</code>
+or <code>"immediate"</code> and <code>-1</code> means "not yet".</p>
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>shouldDelay</code>'s <code>fatigue</code> argument is the per-call skip probability

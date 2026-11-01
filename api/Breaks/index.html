@@ -2312,6 +2312,10 @@ account out for the break and logs back in when it ends. Set it to
 <code>false</code> in the profile to idle in place instead. Because <code>setProfile</code>
 is declarative, a script that calls it without this key gets the
 logout behaviour.</p>
+<p>Logging back in needs an account bound in the launcher. If none is
+bound, the break ends without a re-login and scripts resume in place.
+If the logout itself has not landed after 60 seconds, the scheduler
+gives up and idles in place for the rest of the break.</p>
 </div>
 <h2 id="lifecycle-control">Lifecycle control<a class="headerlink" href="#lifecycle-control" title="Permanent link">&para;</a></h2>
 <table>
@@ -2350,6 +2354,9 @@ logout behaviour.</p>
 </table>
 <p><code>setHopWorld</code> makes the BreakManager hop to a different world when it logs
 back in after a break; a <code>0</code> / negative value disables hopping.</p>
+<p><code>requestBreakNow</code> only has an effect while the phase is <code>Running</code>; in any
+other phase the call is ignored. A positive <code>minutes</code> fixes the length of
+that break; <code>-1</code> (the default) uses the profile's break length.</p>
 <h2 id="state-queries">State queries<a class="headerlink" href="#state-queries" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2376,11 +2383,11 @@ back in after a break; a <code>0</code> / negative value disables hopping.</p>
 <td><code>srs.breaks.failureName() → string</code></td>
 </tr>
 <tr>
-<td>Seconds until next break</td>
+<td>Seconds until next break (<code>-1</code> unless the phase is <code>Running</code>)</td>
 <td><code>srs.breaks.secondsUntilBreak() → int</code></td>
 </tr>
 <tr>
-<td>Seconds remaining in current break</td>
+<td>Seconds remaining in current break (<code>-1</code> unless the phase is <code>Idle</code>)</td>
 <td><code>srs.breaks.secondsRemainingInBreak() → int</code></td>
 </tr>
 <tr>

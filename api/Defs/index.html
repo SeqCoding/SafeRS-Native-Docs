@@ -2397,8 +2397,7 @@ from <code>draw</code>. For hot loops over known ids, resolve once and cache the
 </span></code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Loc definitions</p>
-<p>Loc/object definitions are handled at the source rather than via a separate
-<code>srs.defs.loc</code>: the object lookup resolves the <strong>multiloc <code>transform</code></strong>, so a
+<p>There is no loc-definition function in <code>srs.defs</code>. Instead, the object lookup resolves the <strong>multiloc <code>transform</code></strong>, so a
 <code>_PARENT</code> loc (GOTR portals, staged doors/banks) reports its varbit-selected
 child's real name + actions through the existing
 <a href="../Object/"><code>object.lookup</code></a> / <a href="../GameObject/"><code>GameObjectEntry.actions</code></a> /

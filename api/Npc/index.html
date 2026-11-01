@@ -2577,15 +2577,15 @@ the update arrives. Cleared slots are not reported.</p>
 </tr>
 <tr>
 <td><code>npcId</code>, <code>name</code></td>
-<td>NPC id and name (<code>npcId</code> −1 for players)</td>
+<td>NPC id and name (<code>npcId</code> is −1 for players and <code>"self"</code>; <code>name</code> is <code>""</code> for <code>"self"</code> and <code>"unresolved"</code>)</td>
 </tr>
 <tr>
 <td><code>tileX</code>, <code>tileY</code>, <code>plane</code></td>
-<td>Where the actor stood</td>
+<td>Where the actor stood. Left at <code>0</code> for <code>"self"</code> and <code>"unresolved"</code> (read <code>srs.player</code> for your own tile)</td>
 </tr>
 <tr>
 <td><code>wallClock</code></td>
-<td>Milliseconds timestamp</td>
+<td>Millisecond tick count when the update arrived (time since the system started, not a calendar time); use it for ordering and deltas</td>
 </tr>
 <tr>
 <td><code>target</code></td>
@@ -2597,11 +2597,12 @@ the update arrives. Cleared slots are not reported.</p>
 <code>id</code>, <code>npcId</code>, <code>spawnIndex</code> and <code>kind</code> (<code>"npc"</code>, <code>"player"</code> or <code>"self"</code>).
 Every field you give must match. The registration follows the same pause
 rules as <code>pulse</code>/<code>onTick</code>, and a script reload drops it.</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">CHARGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234</span><span class="w">  </span><span class="c1">-- the boss&#39;s charge-up spotanim id</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">tok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">onSpotAnim</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nb">print</span><span class="p">((</span><span class="s2">&quot;%s got spotanim %d, starts in %d cycles&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">e</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">delay</span><span class="p">))</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kr">end</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">npcId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">BOSS_ID</span><span class="p">,</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">CHARGE</span><span class="w"> </span><span class="p">})</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1">-- later: srs.npc.offSpotAnim(tok)</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">BOSS_ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9021</span><span class="w">  </span><span class="c1">-- placeholder: the boss&#39;s NPC id</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">local</span><span class="w"> </span><span class="nv">CHARGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234</span><span class="w">   </span><span class="c1">-- placeholder: the boss&#39;s charge-up spotanim id</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">local</span><span class="w"> </span><span class="nv">tok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">onSpotAnim</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="nv">e</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nb">print</span><span class="p">((</span><span class="s2">&quot;%s got spotanim %d, starts in %d cycles&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span><span class="nv">e</span><span class="p">.</span><span class="py">name</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nv">e</span><span class="p">.</span><span class="py">delay</span><span class="p">))</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kr">end</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">npcId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">BOSS_ID</span><span class="p">,</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">CHARGE</span><span class="w"> </span><span class="p">})</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1">-- later: srs.npc.offSpotAnim(tok)</span>
 </span></code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">isAlive semantics</p>

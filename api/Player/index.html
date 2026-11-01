@@ -2403,7 +2403,8 @@ optional so Lua callers don't have to deal with a multi-return shape.</p>
   brew). Returns <code>0</code> when hitpoints aren't readable (e.g. logged out).</li>
 <li><strong><code>toggleRunEnergy</code></strong> — despite the name this <em>sets</em> the run state: it
   reads the current run toggle and returns <code>true</code> without clicking if it
-  already matches <code>on</code>; otherwise it clicks the run orb.</li>
+  already matches <code>on</code>; otherwise it clicks the run orb. Returns <code>false</code> if
+  the current run state can't be read.</li>
 <li><strong><code>prayer</code> / <code>maxPrayer</code></strong> — current prayer points (live, drains with
   use) + base prayer level. Mirrors <code>srs.prayer.points</code> /
   <code>srs.prayer.level</code>.</li>

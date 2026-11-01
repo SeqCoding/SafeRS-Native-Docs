@@ -2422,8 +2422,8 @@ safe-tile selection. Two Lua namespaces exist side by side:</p>
   <code>walkFastCanvas</code>, <code>walkSmart</code>, <code>findSafeTile</code>, <code>isWalkable</code>). They drive
   the same path executor but are <strong>not</strong> routed through <code>srs.walk</code>.</li>
 </ul>
-<p>All calls are safe no-ops (returning <code>false</code> / <code>true</code> depending on
-intent) when the executor isn't wired (pre-init host).</p>
+<p>All calls are safe no-ops (returning <code>false</code>) when the executor isn't wired
+(pre-init host).</p>
 <h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

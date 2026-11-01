@@ -2801,7 +2801,7 @@ call returns <code>false</code> if the bank isn't open or the index is out of ra
 <tbody>
 <tr>
 <td>All slots</td>
-<td><code>srs.bank.all() → table (1-based list of items)</code></td>
+<td><code>srs.bank.all() → table (1-based list of InventoryItem)</code></td>
 </tr>
 <tr>
 <td>Contains by id</td>
@@ -2821,6 +2821,7 @@ call returns <code>false</code> if the bank isn't open or the index is out of ra
 </tr>
 </tbody>
 </table>
+<p>Each entry has read-only fields <code>id</code>, <code>quantity</code> and <code>slot</code>.</p>
 <p>Name lookups match the item's in-game display name (case- and whitespace-insensitive substring). <code>contains("prayer potion")</code> matches all 4 dose variants because every dose string contains it.</p>
 <div class="admonition note">
 <p class="admonition-title">Bank slot index</p>
@@ -2958,8 +2959,9 @@ match).</p>
 - Any other amount → opens the Withdraw-X prompt (identifier 6), waits
   for the "Enter amount" chatbox input (up to ~2.4 s), then types each
   digit and presses Enter. Blocks roughly 1-3 seconds.</p>
-<p>Placeholders (id present, quantity 0) are skipped — every withdraw finds
-the first slot with a positive quantity. Withdraws return <code>false</code> when the
+<p>Bank placeholders (the empty slots the bank keeps for an item) are skipped —
+every withdraw finds the first real stack. <code>all</code> / <code>contains</code> / <code>count</code> ignore
+placeholders too. Withdraws return <code>false</code> when the
 inventory is full, except <code>withdrawAllButOne</code>, which returns <code>true</code> in that
 case.</p>
 <h2 id="per-item-deposit">Per-item deposit<a class="headerlink" href="#per-item-deposit" title="Permanent link">&para;</a></h2>

@@ -2336,7 +2336,7 @@ on a cheap item before relying on them in a script.</p>
 </tr>
 </tbody>
 </table>
-<p>Name lookups match the item's in-game display name (case- and whitespace-insensitive substring).</p>
+<p>Name lookups match the item's in-game display name (case-insensitive substring; spaces, <code>_</code> and <code>-</code> are ignored).</p>
 <p><code>stock()</code> returns an empty list while the shop is closed. The <code>slot</code> field on
 returned items is the index into the shop's stock grid (top-left = 0,
 row-major). Out-of-stock entries (quantity 0) stay in the list; <code>buy</code> skips
@@ -2370,8 +2370,9 @@ is delivered:</p>
 <li><strong><code>Buy 1 / 5 / 10 / 50</code></strong> (the standard shop menu): an exact op fires
   when <code>qty</code> matches one. Otherwise the largest ops ≤ <code>qty</code> fire in turn
   (7 = <em>Buy 5, Buy 1, Buy 1</em>), one per game tick — the call <strong>blocks</strong>
-  for (clicks − 1) ticks. It never over-buys on the standard menu (a
-  slot with no <code>Buy 1</code> op would fire its smallest op instead); if stock
+  for (clicks − 1) ticks. It never over-buys on the standard menu; a
+  slot with no <code>Buy 1</code> op fires its smallest op for any remainder, which
+  can over-buy. If stock
   (or the stack being sold) runs out mid-way it stops early and still returns <code>true</code>
   for the clicks that fired.</li>
 <li><strong><code>Buy X</code> / <code>Sell X</code></strong> (when the UI exposes it): one click, then the
@@ -2388,7 +2389,7 @@ coins, stock and a full backpack are server-side outcomes. Poll
 <code>stockCount</code> / <code>srs.inventory.count</code> to confirm, and throttle the call
 (one per few ticks) rather than firing it every pulse.</p>
 <p>Name lookups match the item's in-game display name the same way the
-stock reads do (case- and whitespace-insensitive substring); pass an id
+stock reads do (case-insensitive substring; spaces, <code>_</code> and <code>-</code> are ignored); pass an id
 when two stocked items share a substring (e.g. <code>Pot</code> vs <code>Pot lid</code>).</p>
 <h2 id="quantity-preset">Quantity preset<a class="headerlink" href="#quantity-preset" title="Permanent link">&para;</a></h2>
 <p>Sticky across subsequent buy/sell clicks. Maps to the 1 / 5 / 10 / 50 / X

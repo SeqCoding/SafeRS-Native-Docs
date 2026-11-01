@@ -2278,7 +2278,7 @@ Chebyshev tile distance from the local player.</p>
 </tr>
 </tbody>
 </table>
-<p>Name lookups match the item's in-game display name (case- and whitespace-insensitive substring). <code>byName("bones")</code> returns all bone variants on the floor.</p>
+<p>Name lookups match the item's in-game display name (case-insensitive substring; spaces, <code>_</code> and <code>-</code> are ignored). <code>byName("bones")</code> returns all bone variants on the floor.</p>
 <p><code>loot</code> / <code>lootByName</code> click the pile's first option (Take) through the
 always-on input spoof and the engine action dispatch.
 Returns <code>false</code> if no match, the tile isn't visible on screen, or the
@@ -2385,7 +2385,7 @@ a group-ironman variant, so it is the right test for "loot my items only".</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Items you have not received an <code>OBJ_ADD</code> for — other players' drops before
+<p>Items the client has not been told about — other players' drops before
 they become public — are not in the pile at all, so they never appear in
 <code>all()</code>. Ownership is fixed when the pile entry is created.</p>
 </div>

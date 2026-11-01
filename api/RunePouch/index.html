@@ -2318,8 +2318,9 @@ for the window, or for the typed amount prompt). Reads need no window.</p>
 </tr>
 </tbody>
 </table>
-<p><code>hasPouch</code> checks the 4 pouch item ids (regular / divine, plain / noted)
-against the inventory, and the 2 un-noted ids against worn equipment (cheap).</p>
+<p><code>hasPouch</code> checks the pouch item ids in the backpack (regular / divine,
+plain / noted, plus the locked variants) and the two plain pouch ids
+against worn equipment (cheap).</p>
 <p><code>contents</code> returns up to 6 entries (4 standard + 2 divine) — empty
 slots are omitted, so <code>#contents()</code> equals the number of active runes.</p>
 <p>The pouch varbits are registered for you when the API loads, so even the very

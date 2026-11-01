@@ -2359,8 +2359,9 @@ re-point it.</p>
 </tr>
 </tbody>
 </table>
-<p><code>nearby(cx, cz, plane, radius)</code> returns entries whose <code>tileX/tileZ</code> are
-within Chebyshev distance <code>radius</code> of <code>(cx, cz)</code> on the given plane.</p>
+<p><code>nearby(cx, cz, plane, radius)</code> returns entries on the given plane whose
+<code>tileX/tileZ</code> are within <code>radius</code> tiles of <code>(cx, cz)</code> by <strong>straight-line
+(Euclidean) distance</strong> — a circle, not a square ring.</p>
 <p><code>next()</code> returns the active graphics object with the lowest <code>startCycle</code> —
 the one that began rendering first — or <code>nil</code> when none are active. It is a
 best-effort proxy for "ends first": the engine exposes no end time, since

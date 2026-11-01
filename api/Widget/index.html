@@ -2514,7 +2514,12 @@ offset immediately. Backs <code>srs.bank.scrollToSlot</code>.</p>
 <p><code>click</code> resolves the widget's absolute screen rect as currently rendered,
 picks a random point inside it, and routes through <code>Interact</code>
 (always-on spoof). For inventory slots prefer
-<a href="../Inventory/"><code>srs.inventory.interact</code></a> — same mechanism, narrower API.</p>
+<a href="../Inventory/"><code>srs.inventory.interact</code></a> — same mechanism, narrower API.
+<code>action</code> must be a recognised button verb (matched ignoring case, spaces and
+hyphens — e.g. <code>Continue</code>, <code>Confirm</code>, <code>OK</code>, <code>Cancel</code>, <code>Close</code>, <code>Select</code>, <code>Toggle</code>,
+<code>Activate</code>, <code>Open</code>, <code>Logout</code>, <code>Deposit-All</code>, <code>Withdraw-X</code>); an unrecognised verb
+returns <code>false</code> without clicking. <code>click</code> also returns <code>false</code> if the widget wasn't
+rendered last frame, and it resolves the <strong>static</strong> <code>(g, c)</code> only.</p>
 <p><code>clickOp</code> is the X-aware sibling of <code>click</code>: it exposes the two action
 fields <code>click</code> hard-codes — <code>op</code> (the menu sub-op selector; <code>-1</code> = none)
 and <code>actionIndex</code> (the spawn index; <code>1</code> for almost all widget actions,

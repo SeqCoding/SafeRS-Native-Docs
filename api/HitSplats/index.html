@@ -2392,12 +2392,12 @@ Lua table (<code>target</code> is the one field that differs, see below):</p>
 <tr>
 <td><code>targetName</code></td>
 <td>string</td>
-<td>display name, <code>""</code> when unresolved</td>
+<td>display name, <code>""</code> when unresolved or for <code>"self"</code></td>
 </tr>
 <tr>
 <td><code>tileX</code> <code>tileY</code> <code>plane</code></td>
 <td>integer</td>
-<td>victim's tile</td>
+<td>victim's tile (<code>0</code> for <code>"self"</code> and unresolved splats — use <code>srs.player.position()</code> for yourself)</td>
 </tr>
 <tr>
 <td><code>target</code></td>

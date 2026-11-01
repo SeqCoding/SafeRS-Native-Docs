@@ -2283,8 +2283,12 @@ a built-in <code>interact()</code> helper.</p>
 </table>
 <p><code>object.all()</code> is <strong>heavy</strong> — tens of thousands of rows in a typical
 city. Prefer <code>byId</code> / <code>byName</code> / <code>nearest*</code>, or filter yourself.</p>
-<p>Name lookups are case- and whitespace-insensitive (<code>"Bank booth"</code>,
-<code>"bankbooth"</code>, <code>"BANK_BOOTH"</code> all match the same target).</p>
+<p>Name lookups are case-insensitive and ignore spaces, <code>_</code> and <code>-</code> (<code>"Bank booth"</code>,
+<code>"bankbooth"</code>, <code>"BANK_BOOTH"</code> all match the same target). The whole normalised
+name must match (not a substring).</p>
+<p><code>nearest()</code> picks the closest loc on any plane. <code>nearestByName(name)</code> prefers
+matches on the player's current plane and only falls back to other planes when
+none share it.</p>
 <h2 id="loctypedata">LocTypeData<a class="headerlink" href="#loctypedata" title="Permanent link">&para;</a></h2>
 <p>Returned by <code>object.lookup(id)</code>. Read-only.</p>
 <table>
@@ -2322,7 +2326,7 @@ city. Prefer <code>byId</code> / <code>byName</code> / <code>nearest*</code>, or
 yet — pan the camera onto an instance and try again.</p>
 <h2 id="actiontarget">ActionTarget<a class="headerlink" href="#actiontarget" title="Permanent link">&para;</a></h2>
 <p>See <a href="../Entity/#actiontarget">Entity</a> for the full field/method list.
-For locs, <code>kind == 3</code> (<code>TargetKind::Object</code>) and <code>entityId</code> is the
+For locs, <code>kind == 3</code> (<code>TargetKind.Object</code>) and <code>entityId</code> is the
 LocType id.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">-- Chop the nearest tree</span>

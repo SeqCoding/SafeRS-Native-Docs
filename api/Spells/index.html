@@ -2903,11 +2903,15 @@ the active one for the spell to be clickable.</p>
 </tr>
 </tbody>
 </table>
-<p>Rune costs are the plain wiki costs; staff substitution (Iban's staff,
-slayer staff, god staves, elemental staves) is not modelled, so <code>canCast</code>
-reports <code>false</code> for Iban Blast / Magic Dart / the god spells unless the
-base runes are carried. Non-rune reagents (bones, ashes, ensouled heads,
-logs, etc.) are not modelled either.</p>
+<p>Rune costs are the plain wiki costs. <code>canCast</code> counts runes in the
+inventory and rune pouch, accepts combination runes (mist, dust, smoke,
+mud, steam, lava) for their elements, and treats a worn elemental staff,
+battlestaff or tome (weapon / shield slot) as an unlimited supply of its
+elements. Other staff substitution (Iban's staff, slayer staff, god
+staves) is not modelled, so <code>canCast</code> reports <code>false</code> for Iban Blast /
+Magic Dart / the god spells unless the base runes are carried. Non-rune
+reagents (bones, ashes, ensouled heads, logs, etc.) are not modelled
+either.</p>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <p><strong><code>SpellInfo</code></strong> (read-only):</p>
 <table>

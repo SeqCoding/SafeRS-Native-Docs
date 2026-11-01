@@ -2262,7 +2262,7 @@ IfType is loaded, not that it's the <em>active</em> tab).</p>
 <td><code>srs.tab.switchTo(tab) → boolean</code></td>
 </tr>
 <tr>
-<td>Raw varc value</td>
+<td>Raw varc value (<code>-1</code> when none selected or unreadable)</td>
 <td><code>srs.tab.rawIndex() → integer</code></td>
 </tr>
 <tr>
@@ -2282,7 +2282,8 @@ IfType is loaded, not that it's the <em>active</em> tab).</p>
    hand-click would. If that handler can't be located, fall back to a
    synthetic left-click on the stone (this fallback returns <code>true</code> without
    confirming the switch).</li>
-<li>Returns <code>false</code> if the stone isn't in the current render snapshot.</li>
+<li>Returns <code>false</code> if the stone isn't in the current render snapshot, or the
+   display mode can't be determined.</li>
 </ol>
 <p>A switch costs one action slot and lands on a later frame — poll <code>current()</code>
 (or <code>isOpen()</code>) rather than assuming it took effect the same tick.</p>
@@ -2390,7 +2391,8 @@ if you need the raw value). Raw values, e.g. Combat=0, Inventory=3,
 AccMan=8, Friends=9, Logout=10.
 A raw value of <code>-1</code> means "no tab selected" (fullscreen interface up)
 and <code>current()</code> reports it as <code>NOTHING_SELECTED</code>; <code>current()</code> returns
-<code>UNKNOWN</code> when the varc isn't readable yet (pre-login).</p>
+<code>UNKNOWN</code> when the varc isn't readable yet (pre-login). <code>rawIndex()</code>
+cannot tell those two cases apart — it returns <code>-1</code> for both.</p>
 </div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">tab</span><span class="p">.</span><span class="py">INVENTORY</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>

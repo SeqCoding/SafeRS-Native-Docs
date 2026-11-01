@@ -2253,14 +2253,20 @@ names are nameless decorations (still queryable by id).</p>
 </tr>
 </tbody>
 </table>
-<p><code>interactNearest</code> prefers the nearest same-name loc that actually exposes
-<code>action</code> (skipping decorative twins with no menu), and only falls back to the
-nearest by name alone if the loc cache hasn't decoded any yet. <code>interact</code> and
+<p><code>interactNearest</code> prefers the nearest same-name loc on your floor that provably
+exposes <code>action</code> (skipping decorative twins with no menu), and falls back to the
+nearest by name alone if none can be shown to offer it (for example the loc cache
+hasn't decoded them yet). <code>interact</code> and
 <code>interactFirstAvailable</code> re-resolve the loc from the entry's tile and plane, so
 pass an entry from a recent query.</p>
-<p><code>byName</code> / <code>nearestByName</code> are case- and whitespace-insensitive
-against the in-game display name (e.g. <code>"Bank booth"</code>, <code>"bankbooth"</code>,
-and <code>"BANK_BOOTH"</code> all hit the same target).</p>
+<p><code>byName</code> / <code>nearestByName</code> compare the whole in-game display name, ignoring
+case, spaces, <code>_</code> and <code>-</code> (e.g. <code>"Bank booth"</code>, <code>"bankbooth"</code>,
+and <code>"BANK_BOOTH"</code> all hit the same target); a partial name does not match.</p>
+<p><code>nearestByName</code> returns one entry per physical loc (multi-tile locs are not
+repeated) and prefers locs on your current plane, only looking at other planes
+when none share it. <code>nearest()</code> is plain tile distance across all planes.
+<code>all</code>, <code>byId</code> and <code>byName</code> list a multi-tile loc once per tile it occupies, so
+count distinct locs by anchor tile if that matters.</p>
 <div class="admonition warning">
 <p class="admonition-title">all() is heavy</p>
 <p><code>all()</code> returns every loc in every loaded scene (all 4 planes).

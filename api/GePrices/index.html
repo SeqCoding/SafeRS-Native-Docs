@@ -2241,9 +2241,10 @@ script thread (subsequent calls within the TTL hit the cache). Call from
 </div>
 <div class="admonition note">
 <p class="admonition-title">Wiki API etiquette</p>
-<p>The wiki requires a descriptive User-Agent with a contact. A default is
-sent; override it with <code>srs.ge.setPriceUserAgent</code> if
-you distribute a script widely.</p>
+<p>The wiki asks for a descriptive User-Agent with a contact. The default
+is a generic browser-style string; set your own with
+<code>srs.ge.setPriceUserAgent</code> if you distribute a script widely (an empty
+string is ignored).</p>
 </div>
 <h2 id="prices">Prices<a class="headerlink" href="#prices" title="Permanent link">&para;</a></h2>
 <p><code>itemId &lt;= 0</code> is always invalid / <code>0</code>.</p>
@@ -2358,7 +2359,7 @@ offer surface.</p>
 </tr>
 </tbody>
 </table>
-<p>Helpers: <code>isValid()</code>, <code>mid()</code> (rounded midpoint, falling back to whichever side
+<p>Helpers: <code>isValid()</code>, <code>mid()</code> (integer midpoint, <code>(high + low) / 2</code> truncated, falling back to whichever side
 is populated). <code>high</code> / <code>low</code> follow the wiki's sense — <code>high</code> is the most
 recent instant-buy, <code>low</code> the most recent instant-sell — so you pay ~<code>high</code> to
 buy now and receive ~<code>low</code> to sell now.</p>

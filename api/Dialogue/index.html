@@ -2534,7 +2534,8 @@ round-trip after whatever triggered it), type the value with human pacing
 see <a href="../Input/">Input</a>), then tap Enter. They <strong>block</strong> the calling script
 for the whole sequence, so call them from <code>pulse</code> / <code>onTick</code>, never from
 <code>draw</code>, and once per prompt rather than every tick. <code>false</code> means the
-prompt never opened (nothing is typed then); <code>true</code> means typed and
+prompt never opened (nothing is typed then), or the value was rejected
+up front (a negative amount, or empty text); <code>true</code> means typed and
 submitted, <strong>not</strong> accepted — poll <code>isTextPrompt()</code> a tick later if you
 need to know it closed. These are the same calls as
 <a href="../Prompt/"><code>srs.prompt.*</code></a>, placed here so dialogue-driven code has them

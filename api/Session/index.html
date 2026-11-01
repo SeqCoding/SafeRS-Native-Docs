@@ -2296,7 +2296,10 @@ is a text stat.</p>
 <li>A <strong>run</strong> is one start → stop of your script. Stopping and starting it again
   begins a new run with no stats; a break pause does not end the run.</li>
 <li>Stats belong to the script whose callback is running (the top-level
-  chunk counts too); calls from anywhere else are ignored.</li>
+  chunk counts too); calls from anywhere else are ignored. Stats are also
+  ignored while the script is not running (no open run) — e.g. a call in the
+  top chunk when it executes at <strong>install</strong> time, before the user ticks
+  <strong>Enabled</strong> (see <a href="../Script/#install-vs-start">Install vs start</a>).</li>
 <li>Scripts loaded from disk are tracked under their file name and show on the
   user's own page only; public totals count published plugins.</li>
 </ul>

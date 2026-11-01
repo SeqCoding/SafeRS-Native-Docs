@@ -2320,12 +2320,14 @@ group 218; the matching book must be the active one when you cast.</p>
 </tr>
 </tbody>
 </table>
-<p><code>canCast</code> checks the Magic level plus every per-rune cost; <code>runeCount</code>
-totals the copies of one rune id. Both
+<p><code>canCast</code> checks the base Magic level plus every per-rune cost.
+<code>runeCount</code> totals the copies of one rune id. Both
 count <strong>inventory + rune pouch</strong> (the bank is never counted from Lua).
-Elemental-staff substitution is still TODO, so
-don't hard-gate a cast on <code>canCast</code> when the player wields a staff —
-try the cast and count failures instead.</p>
+<code>canCast</code> also treats an elemental rune as covered when a worn staff or
+tome (weapon / shield slot) supplies that element, and counts
+combination runes (mist, dust, smoke, mud, steam, lava) towards the
+elements they contain. <code>runeCount</code> itself counts only the exact id you
+pass.</p>
 <p><code>cast</code> fires the spell click — works for self-target / no-target
 spells (teleports, alchemy on self, etc.). It does <strong>not</strong> pre-select
 for use-on.</p>

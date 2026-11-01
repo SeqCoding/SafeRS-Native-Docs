@@ -2280,7 +2280,7 @@ helpers.</p>
 </thead>
 <tbody>
 <tr>
-<td>Snapshot all slots</td>
+<td>Snapshot all slots (empty slots included, <code>id</code> ≤ 0)</td>
 <td><code>srs.inventory.all() → table (1-based list)</code></td>
 </tr>
 <tr>
@@ -2455,9 +2455,11 @@ matching module.</p>
 </tr>
 </tbody>
 </table>
-<p><code>useItemOnItem</code> picks the first inventory slot holding each id (returns
-<code>false</code> if both resolve to the same slot). <code>useItemOnItemBatch</code> repeats the
-item-on-item up to <code>count</code> ∈ [1, 8] times for fast-fletching-style bursts.</p>
+<p><code>useItemOnItem</code> picks the first inventory slot holding each id; if both ids are
+the same it uses the next slot holding that id for the target (and returns <code>false</code>
+if only one slot holds it). <code>useItemOnItemBatch</code> repeats the item-on-item <code>count</code>
+times (<code>count</code> below 1 returns <code>false</code>, above 8 is clamped to 8) for
+fast-fletching-style bursts; it returns <code>false</code> if both ids resolve to the same slot.</p>
 <div class="admonition warning">
 <p class="admonition-title">NPC and ground-item variants not yet verified in game</p>
 <p><code>useItemOnNpc</code> and <code>useItemOnGroundItem</code> are bound and

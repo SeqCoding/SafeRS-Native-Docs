@@ -2273,7 +2273,8 @@ interface, opening the equipment tab if needed.</p>
 particular slot, fall back to clicking the item through
 <a href="../Widget/"><code>srs.widget.click</code></a>.</p>
 </div>
-<p><code>equip</code> returns <code>false</code> when the item isn't in the backpack; if the item's
+<p><code>unequip</code> returns <code>false</code> when nothing is worn in that slot. <code>at</code> returns <code>nil</code>
+for an empty slot. <code>equip</code> returns <code>false</code> when the item isn't in the backpack; if the item's
 equip verb can't be read it falls back to <code>"Wear"</code>.</p>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <p><strong>Slot constants</strong> (<code>srs.equipment.*</code>):</p>
