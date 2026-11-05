@@ -3081,11 +3081,13 @@ click to drain against, and it leaks into a later tick. A frame is ~16 ms and
 a tick is ~600 ms, so a paced ladder still fits ~30 actions per tick; the real
 limit is the server's cap, below.</p>
 <h3 id="the-per-tick-cap-and-what-a-tab-switch-costs">The per-tick cap, and what a tab switch costs<a class="headerlink" href="#the-per-tick-cap-and-what-a-tab-switch-costs" title="Permanent link">&para;</a></h3>
-<p>The server processes at most <strong>8</strong> action-class packets per game cycle
-(<code>srs.engine.actionLimit()</code>). Over-cap packets are dropped, not queued.</p>
-<p><strong>A sidebar tab switch is one of those 8.</strong> Clicking a chrome tab is an
+<p>The client caps itself at <code>srs.engine.actionLimit()</code> actions per tick: 8 on a
+normal build, 10 on a same-tick v2 build (the server's limit as two emulators
+give it). Over-cap actions aren't dropped by the server, but they are read a
+tick late and delay everything behind them, so the runner gates instead.</p>
+<p><strong>A sidebar tab switch is one of those slots.</strong> Clicking a chrome tab is an
 ordinary action packet, no different from clicking an item. A ladder that hops
-prayer → inventory → prayer therefore spends 3 of its 8 slots on sidebar
+prayer → inventory → prayer therefore spends 3 of its slots on sidebar
 management alone — prefer a resting tab and let the runner coalesce
 consecutive steps that share one.</p>
 <p>The engine's own per-tick budget gate <strong>defers</strong> an over-cap action to a

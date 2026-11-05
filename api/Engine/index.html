@@ -2313,15 +2313,73 @@ instead of deferring, and reports every step per outcome.</p>
 <td>Lifetime action count</td>
 <td><code>srs.engine.totalActionsCounted() → number</code></td>
 </tr>
+<tr>
+<td>This tick, by source</td>
+<td><code>srs.engine.actionStats() → table</code></td>
+</tr>
+<tr>
+<td>Last n ticks, by source</td>
+<td><code>srs.engine.actionHistory(n?) → table[]</code></td>
+</tr>
+<tr>
+<td>Same-tick v2 build?</td>
+<td><code>srs.engine.sameTickV2() → bool</code></td>
+</tr>
+<tr>
+<td>Click pairing telemetry</td>
+<td><code>srs.engine.clickTicketStats() → table</code></td>
+</tr>
 </tbody>
 </table>
 <p><code>canDispatchAction()</code> is a probabilistic guard, not a guarantee — the
 server has the final say, and the client observes what it <strong>sent</strong>, not
 what the server <strong>processed</strong>. For burst-action scripts the match is
 much closer to engine behaviour than a blind sleep.</p>
-<p><code>actionLimit()</code> is currently the constant <code>8</code>. If a future OSRS revision
-makes the cap per-opcode, the method signature will keep returning a
-single int and an opcode-aware overload will be added alongside.</p>
+<p><code>actionLimit()</code> is <code>8</code> on a normal build and <code>10</code> on a same-tick v2 build
+(<code>sameTickV2()</code>). 10 is the server's per-tick limit on game actions as two
+server emulators give it; no Jagex statement exists either way. Going over is
+harmful even though nothing is dropped: the server reads the excess with the
+next tick's input, and everything behind it waits.</p>
+<p>Every action counts against the cap, whatever sent it. That includes a
+script's clicks, walk packets, minimap walks and bank-PIN clicks (sent as
+window messages), dialogue keys, and the player's own clicks.
+<code>actionStats()</code> / <code>actionHistory(n)</code> break it down:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tick</code></td>
+<td>tick number (client-side counter)</td>
+</tr>
+<tr>
+<td><code>total</code></td>
+<td>actions counted for the tick</td>
+</tr>
+<tr>
+<td><code>click</code>, <code>packet</code>, <code>wndproc</code>, <code>keyboard</code>, <code>human</code></td>
+<td>by source</td>
+</tr>
+<tr>
+<td><code>unclassified</code></td>
+<td>counted packets whose opcode isn't in the client's action table yet</td>
+</tr>
+<tr>
+<td><code>late</code></td>
+<td>actions sent after the previous tick's input window, so the server reads them with this one (v2 only)</td>
+</tr>
+</tbody>
+</table>
+<p><code>actionHistory(n)</code> returns up to 32 finished ticks, newest first (default 10).</p>
+<p><code>clickTicketStats()</code> is for live-testing the v2 build. Each scripted action
+runs on its own click. <code>foreignClick2</code> counts clicks we didn't send (the
+player's own), which run nothing. <code>heldForBudget</code>, <code>expired</code> and <code>cancelled</code>
+count clicks held back or dropped together with their action. All zero on a
+normal build.</p>
 <div class="language-lua highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">script</span><span class="p">.</span><span class="nf">onTick</span><span class="p">(</span><span class="kr">function</span><span class="p">()</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">engine</span><span class="p">.</span><span class="nf">canDispatchAction</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">inventory</span><span class="p">.</span><span class="nf">dropAll</span><span class="p">(</span><span class="s2">&quot;Big bones&quot;</span><span class="p">)</span>

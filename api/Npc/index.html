@@ -2694,7 +2694,11 @@ method — there is no <code>npc:examine()</code>. Call <code>srs.npc.examine(np
 </tr>
 <tr>
 <td><code>tileX</code>, <code>tileY</code>, <code>tileZ</code></td>
-<td>World tile coords</td>
+<td>World tile coords — where the NPC is <strong>drawn</strong>; trails a walking NPC (see below)</td>
+</tr>
+<tr>
+<td><code>serverTileX</code>, <code>serverTileY</code></td>
+<td>World tile the <strong>server</strong> has the NPC on right now (south-west tile for NPCs bigger than 1×1). Same as <code>tileX</code>/<code>tileY</code> for players</td>
 </tr>
 <tr>
 <td><code>plane</code></td>
@@ -2751,6 +2755,20 @@ method — there is no <code>npc:examine()</code>. Call <code>srs.npc.examine(np
 </tbody>
 </table>
 <div class="admonition note">
+<p class="admonition-title"><code>tileX</code> vs <code>serverTileX</code></p>
+<p>When the server moves an NPC one tile, the client slides the model across
+over the next tick. <code>tileX</code>/<code>tileY</code> follow the model, so for part of every
+step they still show the old tile — longer when steps queue up. Use
+<code>serverTileX</code>/<code>serverTileY</code> for anything that has to match the server's
+view of the NPC: attack range, line of sight, predicting who attacks next.</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">srs</span><span class="p">.</span><span class="py">npc</span><span class="p">.</span><span class="nf">nearest</span><span class="p">()</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nv">log</span><span class="p">.</span><span class="nf">info</span><span class="p">((</span><span class="s2">&quot;drawn %d,%d  server %d,%d&quot;</span><span class="p">):</span><span class="nf">format</span><span class="p">(</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="nv">npc</span><span class="p">.</span><span class="py">tileX</span><span class="p">,</span><span class="w"> </span><span class="nv">npc</span><span class="p">.</span><span class="py">tileY</span><span class="p">,</span><span class="w"> </span><span class="nv">npc</span><span class="p">.</span><span class="py">serverTileX</span><span class="p">,</span><span class="w"> </span><span class="nv">npc</span><span class="p">.</span><span class="py">serverTileY</span><span class="p">))</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kr">end</span>
+</span></code></pre></div>
+</div>
+<div class="admonition note">
 <p class="admonition-title">Defs</p>
 <p>For static NPC definition data (size, menu actions, max HP) see
 <code>srs.defs</code> in <a href="../Defs/">Defs</a>.</p>
@@ -2768,10 +2786,10 @@ may be mid-turn.
 (bankers, shopkeepers, pets).</p>
 </div>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">npc</span><span class="p">:</span><span class="nf">isAlive</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">attack</span><span class="p">()</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="kr">end</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">local</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entity</span><span class="p">.</span><span class="nf">nearestNpc</span><span class="p">()</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kr">if</span><span class="w"> </span><span class="nv">npc</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">npc</span><span class="p">:</span><span class="nf">isAlive</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nv">npc</span><span class="p">:</span><span class="nf">attack</span><span class="p">()</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kr">end</span>
 </span></code></pre></div>
 
 

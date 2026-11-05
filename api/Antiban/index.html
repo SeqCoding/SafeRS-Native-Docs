@@ -2314,7 +2314,8 @@
 <h2 id="human-timing">Human timing<a class="headerlink" href="#human-timing" title="Permanent link">&para;</a></h2>
 <p>By default a scripted click goes out a few milliseconds after the action
 call. A script that acts from <code>onTick</code> therefore clicks right at the start
-of every tick, which real players don't do. Human timing is an opt-in fix:</p>
+of every tick, which real players don't do. Human timing is an opt-in fix
+for <strong>your script's own clicks</strong> (other scripts are never affected):</p>
 <ul>
 <li>a per-account <strong>reaction delay</strong> (roughly 150–350 ms, different for each
   character) before the mouse starts moving;</li>
@@ -2326,7 +2327,7 @@ action paired with it, land later in the same tick. With <code>tickSafe</code> (
 default) the delay and path are squeezed to finish within <code>deadlineMs</code>
 (default 450) of the tick, so the server still takes the action on the next
 tick and your script's throughput is unchanged.</p>
-<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- top-level chunk: opt in once</span>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- opt in once, from the top-level chunk (or onTick)</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">srs</span><span class="p">.</span><span class="py">antiban</span><span class="p">.</span><span class="nf">setHumanTiming</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1">-- or with options</span>
@@ -2337,7 +2338,7 @@ tick and your script's throughput is unchanged.</p>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="nf">setActive</span><span class="p">(</span><span class="nv">srs</span><span class="p">.</span><span class="py">prayer</span><span class="p">.</span><span class="py">PROTECT_MAGIC</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="kr">end</span><span class="p">)</span>
 </span></code></pre></div>
-<p><code>srs.antiban.humanTiming()</code> returns the current settings as a table:
+<p><code>srs.antiban.humanTiming()</code> returns your script's settings as a table:
 <code>{enabled, reaction, tickSafe, deadlineMs, queued}</code>, where <code>queued</code> is the
 number of clicks still waiting to go out.</p>
 <table>
@@ -2381,11 +2382,16 @@ number of clicks still waiting to go out.</p>
 <li>Up to 8 clicks can be queued; a ninth action call returns <code>false</code>.</li>
 <li>Clicks always go out in call order, including <code>immediate</code> ones made
   while others are still queued (those skip only their own delay).</li>
-<li>Only mouse clicks are timed. Key presses, minimap walking and widget
-  <code>clickFire</code> actions are unchanged.</li>
-<li>The setting is cleared whenever the script VM rebuilds (any script is
-  disabled or reloaded). Call <code>setHumanTiming</code> from your top-level chunk
-  so it's applied again on every start.</li>
+<li>Only mouse clicks made from your script's own callbacks (<code>onTick</code>,
+  <code>pulse</code>, <code>nextTick</code>, event handlers) are timed. Key presses, minimap
+  walking, widget <code>clickFire</code> actions and <code>srs.actions.batch</code> steps are
+  unchanged.</li>
+<li>The setting belongs to your script and lasts until its code runs again
+  (a reload starts from off), so calling it once from the top-level chunk
+  is enough. Calling it from <code>onTick</code> works too.</li>
+<li>There is one cursor: while another script's timed clicks are still
+  queued, a click from your script waits behind them (without a reaction
+  delay). This only matters when two scripts click at the same time.</li>
 </ul>
 </div>
 <h2 id="input-timing-telemetry">Input timing telemetry<a class="headerlink" href="#input-timing-telemetry" title="Permanent link">&para;</a></h2>

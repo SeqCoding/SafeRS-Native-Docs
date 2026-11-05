@@ -2266,7 +2266,11 @@ IfType is loaded, not that it's the <em>active</em> tab).</p>
 <td><code>srs.tab.rawIndex() → integer</code></td>
 </tr>
 <tr>
-<td>Virtual-key code of the tab's bound hotkey</td>
+<td>Bound key as the game stores it (<code>0</code> none, <code>1</code>–<code>12</code> F1–F12, <code>13</code> Esc; <code>nil</code> until read)</td>
+<td><code>srs.tab.hotkey(tab) → integer?</code></td>
+</tr>
+<tr>
+<td>Virtual-key code of the bound key (<code>112</code>–<code>123</code> F1–F12, <code>27</code> Esc, <code>0</code> none)</td>
 <td><code>srs.tab.hotkeyVk(tab) → integer</code></td>
 </tr>
 </tbody>
@@ -2275,21 +2279,25 @@ IfType is loaded, not that it's the <em>active</em> tab).</p>
 <ol>
 <li><code>UNKNOWN</code> and <code>NOTHING_SELECTED</code> are not valid targets → return <code>false</code>.</li>
 <li>If <code>current() == tab</code> → return <code>true</code> immediately (no-op).</li>
-<li>Otherwise it drives the <strong>chrome tab widget</strong> (the sidebar stone), not a
-   hotkey. The chrome (group, child) pair is resolved from the live display
-   mode (Fixed=548 / ResizableClassic=161 / ResizableModern=164). Preferred
-   path: fire the stone's own click action and run its handler, exactly as a
-   hand-click would. If that handler can't be located, fall back to a
-   synthetic left-click on the stone (this fallback returns <code>true</code> without
-   confirming the switch).</li>
-<li>Returns <code>false</code> if the stone isn't in the current render snapshot, or the
-   display mode can't be determined.</li>
+<li>If an F-key is bound to the tab (Settings → Controls → Keybindings), it
+   presses that key, the way a player would. The game's own key handler does
+   the switch, and no interface click is sent. The press lands a frame or two
+   later. While it is in flight, more <code>switchTo</code> calls for the same tab return
+   <code>true</code> without pressing again.</li>
+<li>Otherwise it clicks the <strong>chrome tab widget</strong> (the sidebar stone). The
+   chrome (group, child) pair is resolved from the live display mode
+   (Fixed=548 / ResizableClassic=161 / ResizableModern=164). It also clicks
+   when the tab is bound to Esc (Esc also closes interfaces), while a fullscreen
+   interface is up, when the binding
+   hasn't been read yet, or when an earlier press for that tab didn't switch
+   it. That tab then uses the click for 30 seconds.</li>
+<li>Returns <code>false</code> if the click is needed but the stone isn't in the current
+   render snapshot, or the display mode can't be determined.</li>
 </ol>
-<p>A switch costs one action slot and lands on a later frame — poll <code>current()</code>
-(or <code>isOpen()</code>) rather than assuming it took effect the same tick.</p>
-<p><code>hotkeyVk</code> is <strong>informational only</strong>: <code>switchTo</code> never presses the bound key.
-It returns <code>0</code> if unbound (or if the varbit snapshot hasn't refreshed yet) and
-is useful for "Inventory tab bound to: F4" UI.</p>
+<p>Either way the switch lands on a later frame. Poll <code>current()</code> (or <code>isOpen()</code>)
+rather than assuming it took effect the same tick.</p>
+<p><code>hotkey</code> returns <code>nil</code> until the binding has been read. The first read only
+asks for it, so ask again next tick.</p>
 <h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
 <p><strong>InterfaceTab</strong> (<code>srs.tab.*</code>):</p>
 <table>
